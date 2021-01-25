@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ReLogic.Utilities;
+using Terraria;
 using Terraria.Utilities;
 
 namespace AdvancedSeedGen
@@ -8,10 +10,14 @@ namespace AdvancedSeedGen
     public class SeedHelper
     {
         public static List<string> Options;
-        
+
         public static void SetSeedOptions(List<string> newOptions)
         {
             Options = newOptions;
+
+            WorldGen.notTheBees = OptionsContains("NotTheBees", "SmallNotTheBees");
+
+            WorldGen.getGoodWorldGen = OptionsContains("ForTheWorthy");
         }
 
         public static bool OptionsContains(params string[] value)
@@ -44,7 +50,7 @@ namespace AdvancedSeedGen
             {
                 if (strings.Length == 2)
                 {
-                    if (!int.TryParse(strings[1], out seed)) seed = strings[1].GetHashCode();
+                    if (!int.TryParse(strings[1], out seed)) seed = Crc32.Calculate(strings[1]);
 
                     seed = seed == int.MinValue ? int.MaxValue : Math.Abs(seed);
                 }
@@ -54,6 +60,8 @@ namespace AdvancedSeedGen
                     seed = rand.Next(999999999);
                     seedText += ":" + seed;
                 }
+
+                WorldGen.currentWorldSeed = seedText;
             }
         }
     }

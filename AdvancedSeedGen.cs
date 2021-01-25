@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using IL.Terraria.IO;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Newtonsoft.Json;
 using Terraria.ModLoader;
-using OpCodes = Mono.Cecil.Cil.OpCodes;
 
 namespace AdvancedSeedGen
 {
