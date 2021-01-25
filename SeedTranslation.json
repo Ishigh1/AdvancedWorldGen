@@ -1,0 +1,125 @@
+{
+  "random": [
+    "Random"
+  ],
+  "painted": [
+    "Paint"
+  ],
+  "painted random": [
+    "Paint",
+    "Random"
+  ],
+  "small not the bees":[
+    "SmallNotTheBees"
+  ],
+  "not the bees":[
+    "NotTheBees"
+  ],
+  "not the bees!":[
+    "NotTheBees"
+  ],
+  "not the random!": [
+    "SmallNotTheBees",
+    "Random"
+  ],
+  "drunk": [
+    "Drunk"
+  ],
+  "5162020": [
+    "Drunk"
+  ],
+  "05162020": [
+    "Drunk"
+  ],
+  "random drunk": [
+    "Drunk",
+    "Random"
+  ],
+  "not the drunks!": [
+    "Drunk",
+    "NotTheBees"
+  ],
+  "for the worthy": [
+    "ForTheWorthy"
+  ],
+  "for the random": [
+    "ForTheWorthy",
+    "Random"
+  ],
+  "for the painted": [
+    "ForTheWorthy",
+    "Paint"
+  ],
+  "for the bees": [
+    "ForTheWorthy",
+    "NotTheBees"
+  ],
+  "for the bees!": [
+    "ForTheWorthy",
+    "NotTheBees"
+  ],
+  "for the drunks": [
+    "ForTheWorthy",
+    "Drunk"
+  ],
+  "for the random drunks": [
+    "ForTheWorthy",
+    "Drunk",
+    "Random"
+  ],
+  "painted for the drunks": [
+    "ForTheWorthy",
+    "Drunk",
+    "Painted"
+  ],
+  "painted for the random drunks": [
+    "ForTheWorthy",
+    "Drunk",
+    "Painted",
+    "Random"
+  ],
+  "terraria": [
+    "ForTheWorthy",
+    "Drunk",
+    "NotTheBees"
+  ],
+  "random terraria": [
+    "ForTheWorthy",
+    "Drunk",
+    "SmallNotTheBees",
+    "Random"
+  ],
+  "painted terraria": [
+    "ForTheWorthy",
+    "Drunk",
+    "SmallNotTheBees",
+    "Painted"
+  ],
+  "painted random terraria": [
+    "ForTheWorthy",
+    "Drunk",
+    "SmallNotTheBees",
+    "Painted",
+    "Random"
+  ],
+  "entropy": [
+    "Entropy"
+  ],
+  "many randoms": [
+    "Entropy",
+    "Random"
+  ],
+  "many painted randoms": [
+    "Entropy",
+    "Painted",
+    "Random"
+  ],
+  "santa": [
+    "Santa"
+  ],
+  "for the drunk santa":[
+    "Santa",
+    "ForTheWorthy",
+    "Drunk"
+  ]
+}

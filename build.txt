@@ -1,0 +1,3 @@
+displayName = Advanced Seed Generation
+author = Gaelyte
+version = 0.1
