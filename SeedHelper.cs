@@ -8,7 +8,7 @@ namespace AdvancedSeedGen
     public class SeedHelper
     {
         public static List<string> Options;
-        
+
         public static void SetSeedOptions(List<string> newOptions)
         {
             Options = newOptions;
