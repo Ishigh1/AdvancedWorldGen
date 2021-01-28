@@ -1,1 +1,10 @@
-Advanced Seed Generation is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+This mod aims to make more special seeds like 1.4's drunk world, for the worthy or not the bees.
+
+For now, it adds 4 more simple seeds :
+- Random : Features a world where each block and wall type is randomized.
+- Painted : Features a world where each block and wall type get a paint.
+- Entropy : Features a normal world, but each dusk and dawn, a part of the world has one type of tiles and walls randomized
+- Santa : Unlike the others, this seed is christmas themed.
+
+To get the world of your dreams, you may combine multiple special seeds by a comma, so "painted,santa" will be a painted christmas world.
+Unlike vanilla special seeds, the true seed can be set, so you may copy a world by using its seed, you will still get the same world.
