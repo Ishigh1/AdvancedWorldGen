@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.World.Generation;
 using static Terraria.ID.TileID;
 
@@ -28,16 +29,16 @@ namespace AdvancedSeedGen
 	public class TileReplacer
 	{
 		public const int None = -1;
-		public const ushort Water = Count;
-		public const ushort Lava = Count + 1;
-		public const ushort Honey = Count + 2;
+		public static int Water = TileLoader.TileCount;
+		public static int Lava = TileLoader.TileCount + 1;
+		public static int Honey = TileLoader.TileCount + 2;
 		public static TileReplacer Snow;
 
 
-		public Dictionary<ushort, int> Dictionary;
-		public Dictionary<ushort, SpecialCase> SpecialCases;
+		public Dictionary<int, int> Dictionary;
+		public Dictionary<int, SpecialCase> SpecialCases;
 
-		public TileReplacer(Dictionary<ushort, int> dictionary, Dictionary<ushort, SpecialCase> specialCases)
+		public TileReplacer(Dictionary<int, int> dictionary, Dictionary<int, SpecialCase> specialCases)
 		{
 			Dictionary = dictionary;
 			SpecialCases = specialCases;
@@ -45,7 +46,7 @@ namespace AdvancedSeedGen
 
 		public static void Initialize()
 		{
-			Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
+			Dictionary<int, int> dictionary = new Dictionary<int, int>();
 			UpdateDictionary(dictionary, SnowBlock, Dirt, Grass, CorruptGrass, ClayBlock, FleshGrass);
 			UpdateDictionary(dictionary, IceBlock, Stone, GreenMoss, BrownMoss, RedMoss, BlueMoss,
 				PurpleMoss, LavaMoss);
@@ -59,7 +60,7 @@ namespace AdvancedSeedGen
 				FleshWeeds,
 				CrimsonVines, VineFlowers);
 
-			Dictionary<ushort, SpecialCase> specialCases = new Dictionary<ushort, SpecialCase>
+			Dictionary<int, SpecialCase> specialCases = new Dictionary<int, SpecialCase>
 			{
 				{
 					ImmatureHerbs, new SpecialCase(None,
@@ -90,10 +91,10 @@ namespace AdvancedSeedGen
 			Snow = null;
 		}
 
-		public static void UpdateDictionary(Dictionary<ushort, int> dictionary, int to,
-			params ushort[] from)
+		public static void UpdateDictionary(Dictionary<int, int> dictionary, int to,
+			params int[] from)
 		{
-			foreach (ushort tile in from) dictionary.Add(tile, to);
+			foreach (int tile in from) dictionary.Add(tile, to);
 		}
 
 		public void ReplaceTiles(GenerationProgress progress, string s)
@@ -110,7 +111,7 @@ namespace AdvancedSeedGen
 					if (tile == null) continue;
 					if (tile.active()) HandleReplacement(tile.type, i, j, tile, false);
 
-					if (tile.liquid > 0) HandleReplacement((ushort) (tile.liquidType() + Count), i, j, tile, true);
+					if (tile.liquid > 0) HandleReplacement((ushort) (tile.liquidType() + TileLoader.TileCount), i, j, tile, true);
 				}
 			}
 		}
@@ -125,7 +126,7 @@ namespace AdvancedSeedGen
 				type = specialCase.Type;
 			}
 
-			if (liquid && tile.active() && (type < Count || type == -1)) return;
+			if (liquid && tile.active() && (type < TileLoader.TileCount || type == -1)) return;
 
 			if (type == -1)
 			{
@@ -134,7 +135,7 @@ namespace AdvancedSeedGen
 				else
 					tile.active(false);
 			}
-			else if (type < Count)
+			else if (type < TileLoader.TileCount)
 			{
 				if (liquid)
 				{
@@ -152,7 +153,7 @@ namespace AdvancedSeedGen
 					tile.liquid = byte.MaxValue;
 				}
 
-				tile.liquidType(type - Count);
+				tile.liquidType(type - TileLoader.TileCount);
 			}
 		}
 
@@ -197,7 +198,7 @@ namespace AdvancedSeedGen
 				{
 					do
 					{
-						type = (ushort) Main.rand.Next(1, WallID.Count);
+						type = (ushort) Main.rand.Next(1, WallLoader.WallCount);
 					} while (wallRandom.ContainsValue(type));
 
 					wallRandom[tile.wall] = type;
@@ -233,7 +234,7 @@ namespace AdvancedSeedGen
 					{
 						do
 						{
-							type = (ushort) Main.rand.Next(Count);
+							type = (ushort) Main.rand.Next(TileLoader.TileCount);
 						} while (!Main.tileSolid[type] || Sets.Platforms[type] ||
 						         AdvancedSeedGen.NotReplaced.Contains(type) ||
 						         tileRandom.ContainsValue(type));
@@ -262,23 +263,20 @@ namespace AdvancedSeedGen
 
 		private static void FallSand(int x, int y)
 		{
-			while (true)
+			while (y >= 0)
 			{
-				if (y >= 0)
+				Tile tile = Main.tile[x, y];
+				if (tile != null && tile.active() && Sets.Falling[tile.type] &&
+				    !Main.tile[x, y + 1].active())
 				{
-					Tile tile = Main.tile[x, y];
-					if (tile != null && tile.active() && Sets.Falling[tile.type] &&
-					    !Main.tile[x, y + 1].active())
-					{
-						if (Main.tile[x, y + 1] == null) Main.tile[x, y + 1] = new Tile();
+					if (Main.tile[x, y + 1] == null) Main.tile[x, y + 1] = new Tile();
 
-						Main.tile[x, y + 1].active(true);
-						Main.tile[x, y + 1].type = tile.type;
-						Main.tile[x, y].active(false);
+					Main.tile[x, y + 1].active(true);
+					Main.tile[x, y + 1].type = tile.type;
+					Main.tile[x, y].active(false);
 
-						y--;
-						continue;
-					}
+					y--;
+					continue;
 				}
 
 				break;

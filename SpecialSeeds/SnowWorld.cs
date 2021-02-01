@@ -115,7 +115,7 @@ namespace AdvancedSeedGen
 
 			ilCursor.Index += 2;
 			object label = ilCursor.Prev.Operand;
-
+			
 			ilCursor.Emit(OpCodes.Ldc_I4_1);
 			ilCursor.Emit(OpCodes.Newarr, typeof(string));
 			ilCursor.Emit(OpCodes.Dup);

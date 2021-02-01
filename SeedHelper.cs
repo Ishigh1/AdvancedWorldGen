@@ -41,7 +41,6 @@ namespace AdvancedSeedGen
 
 			strings = strings[0].Split(',');
 
-
 			foreach (string s in strings)
 				if (AdvancedSeedGen.SeedTranslator.TryGetValue(s.ToLower(), out List<string> collection))
 					list.AddRange(collection);

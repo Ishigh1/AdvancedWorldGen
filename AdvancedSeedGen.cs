@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using AdvancedSeedGen.SeedUI;
 using Newtonsoft.Json;
 using On.Terraria;
+using On.Terraria.GameContent.UI.States;
+using On.Terraria.UI;
 using Terraria.ModLoader;
 using static Terraria.ID.TileID;
 using Projectile = IL.Terraria.Projectile;
@@ -13,12 +16,13 @@ namespace AdvancedSeedGen
 	{
 		public static List<string> Options;
 		public static Dictionary<string, List<string>> SeedTranslator;
-		public static List<ushort> NotReplaced;
+		public static List<int> NotReplaced;
 		public SeedHelper SeedHelper;
+		public CancelWorldGen CancelWorldGen;
 
 		public override void Load()
 		{
-			NotReplaced = new List<ushort>
+			NotReplaced = new List<int>
 			{
 				ClosedDoor, MagicalIceBlock, Traps, Boulder, Teleporter, PlanterBox, TallGateClosed
 			};
@@ -26,27 +30,28 @@ namespace AdvancedSeedGen
 				Encoding.UTF8.GetString(GetFileBytes("SeedTranslation.json")));
 			TileReplacer.Initialize();
 
-			Main.OnSeedSelected += WorldFileDataOnSetSeed;
+			CancelWorldGen = new CancelWorldGen();
+			
+			Main.OnSeedSelected += CancelWorldGen.WorldFileDataOnSetSeed;
+			UIWorldLoad.ctor += CancelWorldGen.AddCancel;
+			UIElement.Append += CancelWorldGen.StealProgressBar;
 			Main.checkXMas += SnowWorld.MainOncheckXMas;
 			Projectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
 		}
 
 		public override void Unload()
 		{
-			NotReplaced = null;
-			SeedTranslator = null;
-			TileReplacer.Unload();
-
-			Main.OnSeedSelected -= WorldFileDataOnSetSeed;
+			Main.OnSeedSelected -= CancelWorldGen.WorldFileDataOnSetSeed;
+			UIWorldLoad.ctor -= CancelWorldGen.AddCancel;
+			UIElement.Append -= CancelWorldGen.StealProgressBar;
 			Main.checkXMas -= SnowWorld.MainOncheckXMas;
 			Projectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
-		}
-
-		private static void WorldFileDataOnSetSeed(Main.orig_OnSeedSelected origOnSeedSelected, Terraria.Main main,
-			string seedtext)
-		{
-			string seedText = SeedHelper.TweakSeedText(seedtext);
-			origOnSeedSelected(main, seedText);
+			
+			CancelWorldGen = null;
+			
+			TileReplacer.Unload();
+			NotReplaced = null;
+			SeedTranslator = null;
 		}
 
 		public override void HandlePacket(BinaryReader reader, int whoAmI)

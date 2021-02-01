@@ -14,16 +14,16 @@ namespace AdvancedSeedGen
 	public class Entropy
 	{
 		public int NewTile;
-		public ushort NewWall;
+		public int NewWall;
 		public int OldTile;
-		public ushort OldWall;
+		public int OldWall;
 		public byte PaintTile;
 		public byte PaintWall;
 		public UnifiedRandom Rand;
 		public SeedHelper SeedHelper;
 		public int SquareSize;
 		public Dictionary<int, ArrayList> Tiles;
-		public Dictionary<ushort, ArrayList> Walls;
+		public Dictionary<int, ArrayList> Walls;
 		public int X;
 		public int Y;
 
@@ -31,14 +31,14 @@ namespace AdvancedSeedGen
 		{
 			SeedHelper = seedHelper;
 			Tiles = new Dictionary<int, ArrayList>();
-			Walls = new Dictionary<ushort, ArrayList>();
+			Walls = new Dictionary<int, ArrayList>();
 			Rand = new UnifiedRandom();
 			NewTile = -1;
 			NewWall = 0;
 			OldTile = -1;
 			OldWall = 0;
-			PaintTile = (byte) Rand.Next(32);
-			PaintWall = (byte) Rand.Next(32);
+			PaintTile = (byte) Rand.Next(PaintID.Count);
+			PaintWall = (byte) Rand.Next(PaintID.Count);
 			SquareSize = squareSize;
 			X = Rand.Next(Main.maxTilesX);
 			Y = Rand.Next(Main.maxTilesY);
@@ -74,7 +74,7 @@ namespace AdvancedSeedGen
 					ArrayList arrayList;
 					if (tile.active())
 					{
-						ushort type = tile.type;
+						int type = tile.type;
 						if (Main.tileSolid[type] && !TileID.Sets.Platforms[type] &&
 						    !AdvancedSeedGen.NotReplaced.Contains(type))
 						{
@@ -105,15 +105,15 @@ namespace AdvancedSeedGen
 
 		public void RandomizeEntropy()
 		{
-			if (Tiles.Count != 0 && Tiles.Count != 623)
+			if (Tiles.Count != 0 && Tiles.Count != TileLoader.TileCount)
 			{
 				int c = 0;
 				while (++c < 10 && (OldTile == -1 || !Main.tileSolid[OldTile] || TileID.Sets.Platforms[OldTile] ||
 				                    AdvancedSeedGen.NotReplaced.Contains((ushort) OldTile)))
 				{
-					ushort tile = (ushort) Rand.Next(Tiles.Count);
+					int tile = Rand.Next(Tiles.Count);
 					OldTile = tile;
-					tile -= (ushort) Tiles.Keys.Count(key => key < tile);
+					tile -= Tiles.Keys.Count(key => key < tile);
 					while (tile != 0 || !Tiles.ContainsKey(OldTile))
 					{
 						if (Tiles.ContainsKey(OldTile)) tile--;
@@ -128,9 +128,9 @@ namespace AdvancedSeedGen
 				while (++c < 10 && (NewTile == -1 || !Main.tileSolid[NewTile] || TileID.Sets.Platforms[NewTile] ||
 				                    AdvancedSeedGen.NotReplaced.Contains((ushort) NewTile)))
 				{
-					ushort tile = (ushort) Rand.Next(623 - Tiles.Count);
+					int tile = Rand.Next(TileLoader.TileCount - Tiles.Count);
 					NewTile = tile;
-					tile = (ushort) Tiles.Keys.Count(key => key < tile);
+					tile = Tiles.Keys.Count(key => key < tile);
 					while (tile != 0 || Tiles.ContainsKey(NewTile))
 					{
 						if (!Tiles.ContainsKey(NewTile)) tile--;
@@ -142,11 +142,11 @@ namespace AdvancedSeedGen
 				}
 			}
 
-			if (Walls.Count != 0 && Walls.Count != 315)
+			if (Walls.Count != 0 && Walls.Count != WallLoader.WallCount)
 			{
-				ushort wall = (ushort) Rand.Next(1, Walls.Count + 1);
+				int wall = Rand.Next(1, Walls.Count + 1);
 				OldWall = wall;
-				wall -= (ushort) Walls.Keys.Count(key => key < wall);
+				wall -= Walls.Keys.Count(key => key < wall);
 				while (wall != 0 || !Walls.ContainsKey(OldWall))
 				{
 					if (Walls.ContainsKey(OldWall)) wall--;
@@ -154,7 +154,7 @@ namespace AdvancedSeedGen
 					OldWall++;
 				}
 
-				wall = (ushort) Rand.Next(1, 316 - Walls.Count);
+				wall = (ushort) Rand.Next(1, WallLoader.WallCount - Walls.Count);
 				NewWall = wall;
 				wall = (ushort) Walls.Keys.Count(key => key < wall);
 				while (wall != 0 || Walls.ContainsKey(NewWall))
@@ -201,7 +201,7 @@ namespace AdvancedSeedGen
 				foreach (Tuple<int, int> tuple in Walls[OldWall])
 					if (Main.tile[tuple.Item1, tuple.Item2].wall == OldWall)
 					{
-						Main.tile[tuple.Item1, tuple.Item2].wall = NewWall;
+						Main.tile[tuple.Item1, tuple.Item2].wall = (ushort) NewWall;
 						if (CustomSeededWorld.OptionsContains("Paint"))
 							Main.tile[tuple.Item1, tuple.Item2].wallColor(PaintWall);
 					}
@@ -268,7 +268,7 @@ namespace AdvancedSeedGen
 
 					if (tile.wall == OldWall && NewTile != 0)
 					{
-						tile.wall = NewWall;
+						tile.wall = (ushort) NewWall;
 						tile.wallColor(PaintWall);
 					}
 				}
