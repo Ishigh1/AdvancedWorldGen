@@ -9,3 +9,5 @@ You can select the options you want with the UI in the seed selection screen
 
 To get the world of your dreams, you may combine multiple special seeds by a comma, so "painted,santa" will be a painted christmas world.
 Unlike vanilla special seeds, the true seed can be set, so you may copy a world by using its seed, you will still get the same world.
+
+The changelog is with the source code on Github (link in the forum)
