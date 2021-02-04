@@ -58,7 +58,7 @@ namespace AdvancedSeedGen
 				npcs++;
 			}
 
-			if (SeedHelper.OptionsContains("Paint"))
+			if (SeedHelper.OptionsContains("Painted"))
 			{
 				AddNpc(Painter);
 				npcs++;
@@ -89,17 +89,17 @@ namespace AdvancedSeedGen
 				Nurse, ArmsDealer, Dryad, Guide, Clothier, GoblinTinkerer, Wizard, Mechanic, Truffle, Steampunker,
 				DyeTrader, Cyborg, WitchDoctor, Pirate, Stylist, Angler, TaxCollector, DD2Bartender
 			};
-			if (!SeedHelper.OptionsContains("Paint")) npcs.Add(Painter);
+			if (!SeedHelper.OptionsContains("Painted")) npcs.Add(Painter);
 
 			return Utils.SelectRandom(Main.rand, npcs.ToArray());
 		}
 
-		private void ReplaceTiles(GenerationProgress progress)
+		public void ReplaceTiles(GenerationProgress progress)
 		{
 			if (SeedHelper.OptionsContains("Santa"))
 				TileReplacer.Snow.ReplaceTiles(progress, "Making the world colder");
 
-			if (SeedHelper.OptionsContains("Random", "Paint")) TileReplacer.RandomizeWorld(progress, SeedHelper);
+			if (SeedHelper.OptionsContains("Random", "Painted")) TileReplacer.RandomizeWorld(progress, SeedHelper);
 		}
 
 		public override void PostUpdate()

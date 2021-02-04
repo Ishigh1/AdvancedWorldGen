@@ -2,7 +2,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace AdvancedSeedGen
+namespace AdvancedSeedGen.SpecialSeeds
 {
 	public class SellDirt : GlobalNPC
 	{

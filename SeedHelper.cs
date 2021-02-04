@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AdvancedSeedGen.SpecialSeeds;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -12,6 +13,7 @@ namespace AdvancedSeedGen
 {
 	public class SeedHelper
 	{
+		public static Dictionary<string, List<string>> SeedTranslator;
 		public AdvancedSeedGen AdvancedSeedGen;
 		public List<string> Options;
 		public SnowWorld SnowWorld;
@@ -42,7 +44,7 @@ namespace AdvancedSeedGen
 			strings = strings[0].Split(',');
 
 			foreach (string s in strings)
-				if (AdvancedSeedGen.SeedTranslator.TryGetValue(s.ToLower(), out List<string> collection))
+				if (SeedTranslator.TryGetValue(s.ToLower(), out List<string> collection))
 					list.AddRange(collection);
 
 			return list;
@@ -123,6 +125,16 @@ namespace AdvancedSeedGen
 					new Entropy(500, reader).TreatTiles();
 					break;
 			}
+		}
+
+		public static List<string> GetWorldOptions()
+		{
+			List<string> options = new List<string>();
+			foreach (string s in SeedTranslator.Values.SelectMany(seedTranslatorValue =>
+				seedTranslatorValue.Where(s => !options.Contains(s))))
+				options.Add(s);
+
+			return options;
 		}
 	}
 }

@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Threading;
 using On.Terraria;
 using On.Terraria.GameContent.UI.States;
@@ -12,8 +11,9 @@ namespace AdvancedSeedGen.SeedUI
 	{
 		public Thread Thread;
 		public UIGenProgressBar UiGenProgressBar;
-		
-		public void AddCancel(UIWorldLoad.orig_ctor orig, Terraria.GameContent.UI.States.UIWorldLoad self, GenerationProgress progress)
+
+		public void AddCancel(UIWorldLoad.orig_ctor orig, Terraria.GameContent.UI.States.UIWorldLoad self,
+			GenerationProgress progress)
 		{
 			orig(self, progress);
 			UITextPanel<string> uiTextPanel = new UITextPanel<string>("");
@@ -28,17 +28,14 @@ namespace AdvancedSeedGen.SeedUI
 		}
 
 		public void WorldFileDataOnSetSeed(Main.orig_OnSeedSelected origOnSeedSelected, Terraria.Main main,
-			string seedtext)
+			string seedText)
 		{
-			string seedText = SeedHelper.TweakSeedText(seedtext);
-			Thread = new Thread(() =>
-			{
-				origOnSeedSelected(main, seedText);
-			});
+			seedText = SeedHelper.TweakSeedText(seedText);
+			Thread = new Thread(() => { origOnSeedSelected(main, seedText); });
 			Thread.Start();
 		}
 
-		private void UiTextPanelOnOnClick(UIMouseEvent evt, UIElement listeningelement)
+		public void UiTextPanelOnOnClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Thread.Abort();
 			Terraria.Main.menuMode = 5000;
@@ -48,9 +45,7 @@ namespace AdvancedSeedGen.SeedUI
 		{
 			if (self.GetType() == typeof(Terraria.GameContent.UI.States.UIWorldLoad) &&
 			    element.GetType() == typeof(UIGenProgressBar))
-			{
 				UiGenProgressBar = (UIGenProgressBar) element;
-			}
 			orig(self, element);
 		}
 	}

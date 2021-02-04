@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
-namespace AdvancedSeedGen
+namespace AdvancedSeedGen.SpecialSeeds
 {
 	public class Entropy
 	{
@@ -22,16 +21,16 @@ namespace AdvancedSeedGen
 		public UnifiedRandom Rand;
 		public SeedHelper SeedHelper;
 		public int SquareSize;
-		public Dictionary<int, ArrayList> Tiles;
-		public Dictionary<int, ArrayList> Walls;
+		public Dictionary<int, List<Tuple<int, int>>> Tiles;
+		public Dictionary<int, List<Tuple<int, int>>> Walls;
 		public int X;
 		public int Y;
 
 		public Entropy(int squareSize, SeedHelper seedHelper)
 		{
 			SeedHelper = seedHelper;
-			Tiles = new Dictionary<int, ArrayList>();
-			Walls = new Dictionary<int, ArrayList>();
+			Tiles = new Dictionary<int, List<Tuple<int, int>>>();
+			Walls = new Dictionary<int, List<Tuple<int, int>>>();
 			Rand = new UnifiedRandom();
 			NewTile = -1;
 			NewWall = 0;
@@ -71,33 +70,33 @@ namespace AdvancedSeedGen
 					int y = (j + Y) % Main.maxTilesY;
 					Tile tile = Main.tile[x, y];
 					if (tile == null) continue;
-					ArrayList arrayList;
+					List<Tuple<int, int>> coords;
 					if (tile.active())
 					{
 						int type = tile.type;
 						if (Main.tileSolid[type] && !TileID.Sets.Platforms[type] &&
 						    !AdvancedSeedGen.NotReplaced.Contains(type))
 						{
-							if (!Tiles.TryGetValue(type, out arrayList))
+							if (!Tiles.TryGetValue(type, out coords))
 							{
-								arrayList = new ArrayList();
-								Tiles.Add(type, arrayList);
+								coords = new List<Tuple<int, int>>();
+								Tiles.Add(type, coords);
 							}
 
-							arrayList.Add(new Tuple<int, int>(x, y));
+							coords.Add(new Tuple<int, int>(x, y));
 						}
 					}
 
 					ushort wall = tile.wall;
 					if (wall != 0)
 					{
-						if (!Walls.TryGetValue(wall, out arrayList))
+						if (!Walls.TryGetValue(wall, out coords))
 						{
-							arrayList = new ArrayList();
-							Walls.Add(wall, arrayList);
+							coords = new List<Tuple<int, int>>();
+							Walls.Add(wall, coords);
 						}
 
-						arrayList.Add(new Tuple<int, int>(x, y));
+						coords.Add(new Tuple<int, int>(x, y));
 					}
 				}
 			}
@@ -166,7 +165,7 @@ namespace AdvancedSeedGen
 			}
 		}
 
-		private void SendData()
+		public void SendData()
 		{
 			if (Main.netMode == NetmodeID.Server &&
 			    (OldTile != -1 && NewTile != -1 || OldWall != 0 && NewWall != 0))
@@ -193,7 +192,7 @@ namespace AdvancedSeedGen
 					if (Main.tile[tuple.Item1, tuple.Item2].type == OldTile)
 					{
 						Main.tile[tuple.Item1, tuple.Item2].type = (ushort) NewTile;
-						if (CustomSeededWorld.OptionsContains("Paint"))
+						if (CustomSeededWorld.OptionsContains("Painted"))
 							Main.tile[tuple.Item1, tuple.Item2].color(PaintTile);
 					}
 
@@ -202,7 +201,7 @@ namespace AdvancedSeedGen
 					if (Main.tile[tuple.Item1, tuple.Item2].wall == OldWall)
 					{
 						Main.tile[tuple.Item1, tuple.Item2].wall = (ushort) NewWall;
-						if (CustomSeededWorld.OptionsContains("Paint"))
+						if (CustomSeededWorld.OptionsContains("Painted"))
 							Main.tile[tuple.Item1, tuple.Item2].wallColor(PaintWall);
 					}
 		}
@@ -218,13 +217,13 @@ namespace AdvancedSeedGen
 		public string Values()
 		{
 			string s = "";
-			foreach (KeyValuePair<int, ArrayList> keyValuePair in Tiles)
+			foreach (KeyValuePair<int, List<Tuple<int, int>>> keyValuePair in Tiles)
 			{
 				s += keyValuePair.Key + "\n{\n";
-				foreach (Tuple<int, int> tuple in keyValuePair.Value)
+				foreach ((int x, int y) in keyValuePair.Value)
 				{
-					s += "(" + tuple.Item1 + ", " + tuple.Item2 + ") : ";
-					Tile tile = Main.tile[tuple.Item1, tuple.Item2];
+					s += "(" + x + ", " + y + ") : ";
+					Tile tile = Main.tile[x, y];
 					s += tile + "\n";
 				}
 

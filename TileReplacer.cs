@@ -6,7 +6,6 @@ using Terraria.ModLoader;
 using Terraria.World.Generation;
 using static Terraria.ID.TileID;
 
-
 namespace AdvancedSeedGen
 {
 	public class SpecialCase
@@ -111,12 +110,13 @@ namespace AdvancedSeedGen
 					if (tile == null) continue;
 					if (tile.active()) HandleReplacement(tile.type, i, j, tile, false);
 
-					if (tile.liquid > 0) HandleReplacement((ushort) (tile.liquidType() + TileLoader.TileCount), i, j, tile, true);
+					if (tile.liquid > 0)
+						HandleReplacement((ushort) (tile.liquidType() + TileLoader.TileCount), i, j, tile, true);
 				}
 			}
 		}
 
-		private void HandleReplacement(ushort tileType, int i, int j, Tile tile, bool liquid)
+		public void HandleReplacement(ushort tileType, int i, int j, Tile tile, bool liquid)
 		{
 			if (!Dictionary.TryGetValue(tileType, out int type))
 			{
@@ -206,7 +206,7 @@ namespace AdvancedSeedGen
 				}
 			}
 
-			if (seedHelper.OptionsContains("Paint"))
+			if (seedHelper.OptionsContains("Painted"))
 			{
 				if (!paintWallRandom.TryGetValue(tile.wall, out byte paint))
 				{
@@ -249,7 +249,7 @@ namespace AdvancedSeedGen
 				}
 			}
 
-			if (seedHelper.OptionsContains("Paint"))
+			if (seedHelper.OptionsContains("Painted"))
 			{
 				if (!paintRandom.TryGetValue(tile.type, out byte paint))
 				{
@@ -261,7 +261,7 @@ namespace AdvancedSeedGen
 			}
 		}
 
-		private static void FallSand(int x, int y)
+		public static void FallSand(int x, int y)
 		{
 			while (y >= 0)
 			{

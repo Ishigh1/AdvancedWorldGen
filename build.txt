@@ -1,4 +1,4 @@
 displayName = Advanced World Generation Seeds
 author = Gaelyte
-version = 1.1.0
+version = 1.2.0
 homepage = https://forums.terraria.org/index.php?threads/.97942/

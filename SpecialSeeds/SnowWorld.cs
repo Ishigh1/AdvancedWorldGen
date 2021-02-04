@@ -10,7 +10,7 @@ using NPC = Terraria.NPC;
 using Projectile = Terraria.Projectile;
 using Tile = Terraria.Tile;
 
-namespace AdvancedSeedGen
+namespace AdvancedSeedGen.SpecialSeeds
 {
 	public class SnowWorld
 	{
@@ -115,7 +115,7 @@ namespace AdvancedSeedGen
 
 			ilCursor.Index += 2;
 			object label = ilCursor.Prev.Operand;
-			
+
 			ilCursor.Emit(OpCodes.Ldc_I4_1);
 			ilCursor.Emit(OpCodes.Newarr, typeof(string));
 			ilCursor.Emit(OpCodes.Dup);
