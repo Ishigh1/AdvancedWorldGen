@@ -1,68 +1,57 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using ReLogic.Utilities;
 using Terraria;
 using Terraria.Utilities;
 
 namespace AdvancedSeedGen
 {
-    public class SeedHelper
-    {
-        public static List<string> Options;
+	public class SeedHelper
+	{
+		public static List<string> Options;
 
-        public static void SetSeedOptions(List<string> newOptions)
-        {
-            Options = newOptions;
+		public static void SetSeedOptions(List<string> newOptions)
+		{
+			Options = newOptions;
 
-            WorldGen.notTheBees = OptionsContains("NotTheBees", "SmallNotTheBees");
+			WorldGen.notTheBees = OptionsContains("Not The Bees", "Small Not The Bees");
 
-            WorldGen.getGoodWorldGen = OptionsContains("ForTheWorthy");
-        }
+			WorldGen.getGoodWorldGen = OptionsContains("For The Worthy");
+		}
 
-        public static bool OptionsContains(params string[] value)
-        {
-            return Options != null && value.Any(s => Options.Contains(s));
-        }
+		public static bool OptionsContains(params string[] value)
+		{
+			return Options != null && value.Any(s => Options.Contains(s));
+		}
 
-        public static void ExtractOptions(string seed)
-        {
-            if (seed == null) return;
-            List<string> seedOptions = new List<string>();
-            string[] strings = seed.Split(':');
+		public static void ExtractOptions(string seed)
+		{
+			if (seed == null) return;
+			List<string> seedOptions = new List<string>();
+			string[] strings = seed.Split(':');
 
-            strings = strings[0].Split(',');
+			strings = strings[0].Split(',');
 
 
-            foreach (string s in strings)
-                if (AdvancedSeedGen.SeedTranslator.TryGetValue(s.ToLower(), out List<string> collection))
-                    seedOptions.AddRange(collection);
+			foreach (string s in strings)
+				if (AdvancedSeedGen.SeedTranslator.TryGetValue(s.ToLower(), out List<string> collection))
+					seedOptions.AddRange(collection);
 
-            SetSeedOptions(seedOptions);
-        }
+			SetSeedOptions(seedOptions);
+		}
 
-        public static void TweakSeed(ref int seed, ref string seedText)
-        {
-            ExtractOptions(seedText);
+		public static string TweakSeed(string seedText)
+		{
+			ExtractOptions(seedText);
+			string[] strings = seedText.Split(':');
+			if (Options.Count != 0)
+				if (strings.Length != 2)
+				{
+					UnifiedRandom rand = new UnifiedRandom();
+					int seed = rand.Next(999999999);
+					return seedText + ":" + seed;
+				}
 
-            string[] strings = seedText.Split(':');
-            if (Options.Count != 0)
-            {
-                if (strings.Length == 2)
-                {
-                    if (!int.TryParse(strings[1], out seed)) seed = Crc32.Calculate(strings[1]);
-
-                    seed = seed == int.MinValue ? int.MaxValue : Math.Abs(seed);
-                }
-                else
-                {
-                    UnifiedRandom rand = new UnifiedRandom();
-                    seed = rand.Next(999999999);
-                    seedText += ":" + seed;
-                }
-
-                WorldGen.currentWorldSeed = seedText;
-            }
-        }
-    }
+			return seedText;
+		}
+	}
 }

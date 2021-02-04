@@ -10,16 +10,16 @@
     "Random"
   ],
   "small not the bees":[
-    "SmallNotTheBees"
+    "Small Not The Bees"
   ],
   "not the bees":[
-    "NotTheBees"
+    "Not The Bees"
   ],
   "not the bees!":[
-    "NotTheBees"
+    "Not The Bees"
   ],
   "not the random!": [
-    "SmallNotTheBees",
+    "Small Not The Bees",
     "Random"
   ],
   "drunk": [
@@ -37,68 +37,68 @@
   ],
   "not the drunks!": [
     "Drunk",
-    "NotTheBees"
+    "Not The Bees"
   ],
   "for the worthy": [
-    "ForTheWorthy"
+    "For The Worthy"
   ],
   "for the random": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Random"
   ],
   "for the painted": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Paint"
   ],
   "for the bees": [
-    "ForTheWorthy",
-    "NotTheBees"
+    "For The Worthy",
+    "Not The Bees"
   ],
   "for the bees!": [
-    "ForTheWorthy",
-    "NotTheBees"
+    "For The Worthy",
+    "Not The Bees"
   ],
   "for the drunks": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Drunk"
   ],
   "for the random drunks": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Drunk",
     "Random"
   ],
   "painted for the drunks": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Drunk",
     "Painted"
   ],
   "painted for the random drunks": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Drunk",
     "Painted",
     "Random"
   ],
   "terraria": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Drunk",
-    "NotTheBees"
+    "Not The Bees"
   ],
   "random terraria": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Drunk",
-    "SmallNotTheBees",
+    "Small Not The Bees",
     "Random"
   ],
   "painted terraria": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Drunk",
-    "SmallNotTheBees",
+    "Small Not The Bees",
     "Painted"
   ],
   "painted random terraria": [
-    "ForTheWorthy",
+    "For The Worthy",
     "Drunk",
-    "SmallNotTheBees",
+    "Small Not The Bees",
     "Painted",
     "Random"
   ],
@@ -119,7 +119,7 @@
   ],
   "for the drunk santa":[
     "Santa",
-    "ForTheWorthy",
+    "For The Worthy",
     "Drunk"
   ]
 }
