@@ -1,0 +1,20 @@
+# Options
+NotTheBees=Not The Bees
+SmallNotTheBees=Small Not The Bees
+Drunk=Drunk
+ForTheWorthy=For The Worthy
+Random=Random
+Painted=Painted
+Entropy=Entropy
+Santa=Santa
+
+# Options description
+NoneSelected=Please choose the options you want.
+NotTheBees.description=The classic not the bees settings.
+SmallNotTheBees.description=Like not the bees, but without the entire world being a jungle.
+Drunk.description=The classic 5162020 settings.
+ForTheWorthy.description=The classic for the worthy settings.
+Random.description=A world where each block and wall type is randomized.
+Painted.description=A world where each block and wall type get a paint.
+Entropy.description=A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.
+Santa.description=A christmas themed world.

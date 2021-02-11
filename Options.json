@@ -1,0 +1,36 @@
+{
+  "NotTheBees":{
+    "Id": 1,
+    "Description": "The classic not the bees settings.",
+    "Conflicts": ["SmallNotTheBees"]
+  },
+  "SmallNotTheBees":{
+    "Id": 2,
+    "Description": "Like not the bees, but without the entire world being a jungle.",
+    "Conflicts": ["NotTheBees"]
+  },
+  "Drunk":{
+    "Id": 3,
+    "Description": "The classic 5162020 settings."
+  },
+  "ForTheWorthy":{
+    "Id": 4,
+    "Description": "The classic for the worthy settings."
+  },
+  "Random": {
+    "Id": 5,
+    "Description": "A world where each block and wall type is randomized."
+  },
+  "Painted": {
+    "Id": 6,
+    "Description": "A world where each block and wall type get a paint."
+  },
+  "Entropy": {
+    "Id": 7,
+    "Description": "A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized."
+  },
+  "Santa": {
+    "Id": 8,
+    "Description": "A christmas themed world."
+  }
+}
