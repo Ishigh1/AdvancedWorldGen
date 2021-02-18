@@ -13,4 +13,16 @@
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Tool\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Tool\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Tool\**" />
+    <None Remove=".gitignore" />
+    <None Remove=".gitattributes" />
+    <None Remove="LICENSE" />
+  </ItemGroup>
 </Project>

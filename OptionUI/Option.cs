@@ -5,6 +5,7 @@ namespace AdvancedWorldGen.SeedUI
 	public class Option
 	{
 		public List<string> Conflicts;
-		public int Id;
+		public bool Hidden;
+		public ushort Id;
 	}
 }

@@ -19,16 +19,16 @@ namespace AdvancedWorldGen.SpecialSeeds
 		public byte PaintTile;
 		public byte PaintWall;
 		public UnifiedRandom Rand;
-		public SeedHelper SeedHelper;
+		public OptionHelper OptionHelper;
 		public int SquareSize;
 		public Dictionary<int, List<Tuple<int, int>>> Tiles;
 		public Dictionary<int, List<Tuple<int, int>>> Walls;
 		public int X;
 		public int Y;
 
-		public Entropy(int squareSize, SeedHelper seedHelper)
+		public Entropy(int squareSize, OptionHelper optionHelper)
 		{
-			SeedHelper = seedHelper;
+			OptionHelper = optionHelper;
 			Tiles = new Dictionary<int, List<Tuple<int, int>>>();
 			Walls = new Dictionary<int, List<Tuple<int, int>>>();
 			Rand = new UnifiedRandom();
@@ -45,7 +45,7 @@ namespace AdvancedWorldGen.SpecialSeeds
 
 		public Entropy(int squareSize, BinaryReader reader)
 		{
-			SeedHelper = null;
+			OptionHelper = null;
 			Tiles = null;
 			Walls = null;
 			Rand = null;
@@ -114,11 +114,8 @@ namespace AdvancedWorldGen.SpecialSeeds
 					OldTile = tile;
 					tile -= Tiles.Keys.Count(key => key < tile);
 					while (tile != 0 || !Tiles.ContainsKey(OldTile))
-					{
-						if (Tiles.ContainsKey(OldTile)) tile--;
-
-						OldTile++;
-					}
+						if (Tiles.ContainsKey(++OldTile))
+							tile--;
 
 					c++;
 				}
@@ -131,11 +128,8 @@ namespace AdvancedWorldGen.SpecialSeeds
 					NewTile = tile;
 					tile = Tiles.Keys.Count(key => key < tile);
 					while (tile != 0 || Tiles.ContainsKey(NewTile))
-					{
-						if (!Tiles.ContainsKey(NewTile)) tile--;
-
-						NewTile++;
-					}
+						if (!Tiles.ContainsKey(++NewTile))
+							tile--;
 
 					c++;
 				}
@@ -147,21 +141,15 @@ namespace AdvancedWorldGen.SpecialSeeds
 				OldWall = wall;
 				wall -= Walls.Keys.Count(key => key < wall);
 				while (wall != 0 || !Walls.ContainsKey(OldWall))
-				{
-					if (Walls.ContainsKey(OldWall)) wall--;
+					if (Walls.ContainsKey(++OldWall))
+						wall--;
 
-					OldWall++;
-				}
-
-				wall = (ushort) Rand.Next(1, WallLoader.WallCount - Walls.Count);
+				wall = Rand.Next(1, WallLoader.WallCount - Walls.Count);
 				NewWall = wall;
-				wall = (ushort) Walls.Keys.Count(key => key < wall);
+				wall = Walls.Keys.Count(key => key < wall);
 				while (wall != 0 || Walls.ContainsKey(NewWall))
-				{
-					if (!Walls.ContainsKey(NewWall)) wall--;
-
-					NewWall++;
-				}
+					if (!Walls.ContainsKey(++NewWall))
+						wall--;
 			}
 		}
 
@@ -170,7 +158,7 @@ namespace AdvancedWorldGen.SpecialSeeds
 			if (Main.netMode == NetmodeID.Server &&
 			    (OldTile != -1 && NewTile != -1 || OldWall != 0 && NewWall != 0))
 			{
-				ModPacket modPacket = SeedHelper.AdvancedWorldGen.GetPacket();
+				ModPacket modPacket = OptionHelper.AdvancedWorldGen.GetPacket();
 				modPacket.Write((byte) ServerChangeId.Freezing);
 				modPacket.Write(NewTile);
 				modPacket.Write(NewWall);
@@ -188,22 +176,22 @@ namespace AdvancedWorldGen.SpecialSeeds
 		public void ApplyChanges()
 		{
 			if (OldTile != -1 && NewTile != -1)
-				foreach (Tuple<int, int> tuple in Tiles[OldTile])
-					if (Main.tile[tuple.Item1, tuple.Item2].type == OldTile)
-					{
-						Main.tile[tuple.Item1, tuple.Item2].type = (ushort) NewTile;
-						if (CustomSeededWorld.OptionsContains("Painted"))
-							Main.tile[tuple.Item1, tuple.Item2].Color = PaintTile;
-					}
+				foreach ((int x, int y) in Tiles[OldTile]
+					.Where(tuple => Main.tile[tuple.Item1, tuple.Item2].type == OldTile))
+				{
+					Main.tile[x, y].type = (ushort) NewTile;
+					if (ModifiedWorld.OptionsContains("Painted"))
+						Main.tile[x, y].Color = PaintTile;
+				}
 
 			if (OldWall != 0 && NewWall != 0)
-				foreach (Tuple<int, int> tuple in Walls[OldWall])
-					if (Main.tile[tuple.Item1, tuple.Item2].wall == OldWall)
-					{
-						Main.tile[tuple.Item1, tuple.Item2].wall = (ushort) NewWall;
-						if (CustomSeededWorld.OptionsContains("Painted"))
-							Main.tile[tuple.Item1, tuple.Item2].WallColor = PaintWall;
-					}
+				foreach ((int x, int y) in Walls[OldWall]
+					.Where(tuple => Main.tile[tuple.Item1, tuple.Item2].wall == OldWall))
+				{
+					Main.tile[x, y].wall = (ushort) NewWall;
+					if (ModifiedWorld.OptionsContains("Painted"))
+						Main.tile[x, y].WallColor = PaintWall;
+				}
 		}
 
 		public override string ToString()
@@ -233,16 +221,16 @@ namespace AdvancedWorldGen.SpecialSeeds
 			return s;
 		}
 
-		public static void StartEntropy(SeedHelper seedHelper)
+		public static void StartEntropy(OptionHelper optionHelper)
 		{
-			if (!CustomSeededWorld.OptionsContains("Entropy")) return;
+			if (!optionHelper.OptionsContains("Entropy")) return;
 			Thread thread = new Thread(DoEntropy) {Priority = ThreadPriority.Lowest};
-			thread.Start(seedHelper);
+			thread.Start(optionHelper);
 		}
 
 		public static void DoEntropy(object o)
 		{
-			Entropy entropy = new Entropy(500, o as SeedHelper);
+			Entropy entropy = new Entropy(500, o as OptionHelper);
 			entropy.ExtractData();
 			entropy.RandomizeEntropy();
 			entropy.SendData();

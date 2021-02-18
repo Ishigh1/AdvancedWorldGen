@@ -171,7 +171,7 @@ namespace AdvancedWorldGen
 			}
 		}
 
-		public static void RandomizeWorld(GenerationProgress progress, SeedHelper seedHelper)
+		public static void RandomizeWorld(GenerationProgress progress, OptionHelper optionHelper)
 		{
 			Dictionary<ushort, ushort> tileRandom = new Dictionary<ushort, ushort>();
 			Dictionary<ushort, ushort> wallRandom = new Dictionary<ushort, ushort>();
@@ -189,9 +189,9 @@ namespace AdvancedWorldGen
 					Tile tile = Main.tile[i, j];
 					if (tile != null)
 					{
-						if (tile.IsActive) RandomizeTile(seedHelper, tile, tileRandom, paintRandom);
+						if (tile.IsActive) RandomizeTile(optionHelper, tile, tileRandom, paintRandom);
 
-						if (tile.wall != 0) RandomizeWall(seedHelper, wallRandom, tile, paintWallRandom);
+						if (tile.wall != 0) RandomizeWall(optionHelper, wallRandom, tile, paintWallRandom);
 					}
 
 					FallSand(i, j - 1);
@@ -199,10 +199,10 @@ namespace AdvancedWorldGen
 			}
 		}
 
-		public static void RandomizeWall(SeedHelper seedHelper, Dictionary<ushort, ushort> wallRandom, Tile tile,
+		public static void RandomizeWall(OptionHelper optionHelper, Dictionary<ushort, ushort> wallRandom, Tile tile,
 			Dictionary<ushort, byte> paintWallRandom)
 		{
-			if (seedHelper.OptionsContains("Random"))
+			if (optionHelper.OptionsContains("Random"))
 			{
 				if (wallRandom.TryGetValue(tile.wall, out ushort type))
 				{
@@ -220,7 +220,7 @@ namespace AdvancedWorldGen
 				}
 			}
 
-			if (seedHelper.OptionsContains("Painted"))
+			if (optionHelper.OptionsContains("Painted"))
 			{
 				if (!paintWallRandom.TryGetValue(tile.wall, out byte paint))
 				{
@@ -232,10 +232,10 @@ namespace AdvancedWorldGen
 			}
 		}
 
-		public static void RandomizeTile(SeedHelper seedHelper, Tile tile, Dictionary<ushort, ushort> tileRandom,
+		public static void RandomizeTile(OptionHelper optionHelper, Tile tile, Dictionary<ushort, ushort> tileRandom,
 			Dictionary<ushort, byte> paintRandom)
 		{
-			if (seedHelper.OptionsContains("Random"))
+			if (optionHelper.OptionsContains("Random"))
 			{
 				if (Main.tileSolid[tile.type])
 				{
@@ -263,7 +263,7 @@ namespace AdvancedWorldGen
 				}
 			}
 
-			if (seedHelper.OptionsContains("Painted"))
+			if (optionHelper.OptionsContains("Painted"))
 			{
 				if (!paintRandom.TryGetValue(tile.type, out byte paint))
 				{

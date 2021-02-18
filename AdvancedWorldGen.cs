@@ -4,7 +4,9 @@ using System.Text;
 using AdvancedWorldGen.SeedUI;
 using AdvancedWorldGen.SpecialSeeds;
 using Newtonsoft.Json;
+using On.Terraria.GameContent.UI.Elements;
 using On.Terraria.GameContent.UI.States;
+using On.Terraria.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Projectile = IL.Terraria.Projectile;
@@ -23,14 +25,26 @@ namespace AdvancedWorldGen
 			TileReplacer.Initialize();
 
 			UiChanger = new UiChanger();
-			if (!Main.dedServ) UiChanger.OptionsTexture = GetTexture("Images/WorldOptions");
-
+			if (!Main.dedServ)
+			{
+				UiChanger.OptionsTexture = GetTexture("Images/WorldOptions");
+				UiChanger.CopyOptionsTexture = GetTexture("Images/CopyWorldButton");
+			}
+			
 			UIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
+			UIWorldListItem.ctor += UiChanger.CopySettingsButton;
 			WorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
 			UIWorldLoad.ctor += UiChanger.AddCancel;
+			// Removed as On.[...].UIWorldCreation.ProcessSpecialWorldSeeds doesn't exist
+			// UIWorldCreation.ProcessSpecialWorldSeeds += ModifiedWorld.IgnoreSpecialSeed;
+			IL.Terraria.WorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
+			WorldFile.CreateMetadata += DedServUi.DedServOptions;
 
-			On.Terraria.Main.UpdateTime_StartDay += CustomSeededWorld.OnDawn;
-			On.Terraria.Main.UpdateTime_StartNight += CustomSeededWorld.OnDusk;
+			WorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
+			IL.Terraria.WorldGen.makeTemple += ClassicOptions.ReduceTemple;
+
+			On.Terraria.Main.UpdateTime_StartDay += ModifiedWorld.OnDawn;
+			On.Terraria.Main.UpdateTime_StartNight += ModifiedWorld.OnDusk;
 			On.Terraria.Main.checkXMas += SnowWorld.MainOncheckXMas;
 			Projectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
 		}
@@ -40,12 +54,18 @@ namespace AdvancedWorldGen
 			UIWorldCreation.AddDescriptionPanel -= UiChanger.TweakWorldGenUi;
 			WorldGen.worldGenCallback -= UiChanger.ThreadifyWorldGen;
 			UIWorldLoad.ctor -= UiChanger.AddCancel;
+			IL.Terraria.WorldGen.GenerateWorld -= ModifiedWorld.OverrideWorldOptions;
+			WorldFile.CreateMetadata -= DedServUi.DedServOptions;
 
-			On.Terraria.Main.UpdateTime_StartDay -= CustomSeededWorld.OnDawn;
-			On.Terraria.Main.UpdateTime_StartNight -= CustomSeededWorld.OnDusk;
+			WorldGen.NotTheBees -= ClassicOptions.SmallNotTheBees;
+			IL.Terraria.WorldGen.makeTemple -= ClassicOptions.ReduceTemple;
+
+			On.Terraria.Main.UpdateTime_StartDay -= ModifiedWorld.OnDawn;
+			On.Terraria.Main.UpdateTime_StartNight -= ModifiedWorld.OnDusk;
 			On.Terraria.Main.checkXMas -= SnowWorld.MainOncheckXMas;
 			Projectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
 
+			UiChanger.OptionsTexture = null;
 			UiChanger = null;
 
 			OptionsSelector.OptionDict = null;
@@ -54,7 +74,7 @@ namespace AdvancedWorldGen
 
 		public override void HandlePacket(BinaryReader reader, int whoAmI)
 		{
-			SeedHelper.HandlePacket(reader, whoAmI);
+			OptionHelper.HandlePacket(reader, whoAmI);
 		}
 	}
 }

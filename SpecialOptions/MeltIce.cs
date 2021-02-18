@@ -9,7 +9,7 @@ namespace AdvancedWorldGen.SpecialSeeds
 	{
 		public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
 		{
-			if (type == BreakableIce && !fail && CustomSeededWorld.OptionsContains("Santa"))
+			if (type == BreakableIce && !fail && ModifiedWorld.OptionsContains("Santa"))
 			{
 				Main.tile[i, j].LiquidAmount = byte.MaxValue;
 				Main.tile[i, j].LiquidType = LiquidID.Water;

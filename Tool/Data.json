@@ -1,0 +1,100 @@
+{
+    "BigTemple": {
+        "conflicts": {
+            "StupidlyBigTemple": "Having a temple size modifier twice doesn't do anything.",
+            "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
+        },
+        "description": "Makes the temple bigger.",
+        "displayed_name": "Big Temple",
+        "hidden": true,
+        "internal_name": "BigTemple"
+    },
+    "Drunk": {
+        "conflicts": {},
+        "description": "The classic 5162020 settings.",
+        "displayed_name": "Drunk",
+        "hidden": false,
+        "internal_name": "Drunk"
+    },
+    "Entropy": {
+        "conflicts": {},
+        "description": "A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.",
+        "displayed_name": "Entropy",
+        "hidden": true,
+        "internal_name": "Entropy"
+    },
+    "ForTheWorthy": {
+        "conflicts": {},
+        "description": "The classic for the worthy settings.",
+        "displayed_name": "For The Worthy",
+        "hidden": false,
+        "internal_name": "ForTheWorthy"
+    },
+    "NotTheBees": {
+        "conflicts": {
+            "Random": "Not the bees only leaves a few blocks to be randomized.",
+            "Santa": "Santa will not have much effect on a not the bees world.",
+            "SmallNotTheBees": "Having not the bees twice doesn't do anything"
+        },
+        "description": "The classic not the bees settings.",
+        "displayed_name": "Not The Bees",
+        "hidden": false,
+        "internal_name": "NotTheBees"
+    },
+    "Painted": {
+        "conflicts": {},
+        "description": "A world where each block and wall type get a paint.",
+        "displayed_name": "Painted",
+        "hidden": false,
+        "internal_name": "Painted"
+    },
+    "Random": {
+        "conflicts": {
+            "NotTheBees": "Not the bees only leaves a few blocks to be randomized.",
+            "Santa": "Santa only leaves a few blocks to be randomized."
+        },
+        "description": "A world where each block and wall type is randomized.",
+        "displayed_name": "Random",
+        "hidden": false,
+        "internal_name": "Random"
+    },
+    "Santa": {
+        "conflicts": {
+            "NotTheBees": "Santa will not have much effect on a not the bees world.",
+            "Random": "Santa only leaves a few blocks to be randomized."
+        },
+        "description": "A christmas themed world.",
+        "displayed_name": "Santa",
+        "hidden": false,
+        "internal_name": "Santa"
+    },
+    "SmallNotTheBees": {
+        "conflicts": {
+            "NotTheBees": "Having not the bees twice doesn't do anything"
+        },
+        "description": "Like not the bees, but without the entire world being a jungle.",
+        "displayed_name": "Small Not The Bees",
+        "hidden": false,
+        "internal_name": "SmallNotTheBees"
+    },
+    "StupidlyBigTemple": {
+        "conflicts": {
+            "BigTemple": "Having a temple size modifier twice doesn't do anything.",
+            "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
+        },
+        "description": "Make the temple really big.",
+        "displayed_name": "Stupidly Big Temple",
+        "hidden": true,
+        "internal_name": "StupidlyBigTemple"
+    },
+    "StupidlyHugeTemple": {
+        "conflicts": {
+            "BigTemple": "Having a temple size modifier twice doesn't do anything.",
+            "StupidlyBigTemple": "Having a temple size modifier twice doesn't do anything."
+        },
+        "description": "Makes a temple that covers most of the jungle.",
+        "displayed_name": "Stupidly Huge Temple",
+        "hidden": true,
+        "internal_name": "StupidlyHugeTemple"
+    }
+}

@@ -11,24 +11,22 @@ using Terraria.ModLoader;
 
 namespace AdvancedWorldGen
 {
-	public class SeedHelper
+	public class OptionHelper
 	{
 		public AdvancedWorldGen AdvancedWorldGen;
-		public List<string> Options;
+		public HashSet<	string> Options;
 		public SnowWorld SnowWorld;
 
-		public SeedHelper(List<string> options)
+		public OptionHelper()
 		{
-			Options = options;
-			WorldGen.notTheBees = OptionsContains("NotTheBees", "SmallNotTheBees");
-			WorldGen.getGoodWorldGen = OptionsContains("ForTheWorthy");
-
+			Options = new HashSet<string>();
 			SnowWorld = new SnowWorld(this);
+			AdvancedWorldGen = (AdvancedWorldGen) ModLoader.GetMod("AdvancedWorldGen");
 		}
 
 		public bool OptionsContains(params string[] value)
 		{
-			return Options != null && value.Any(s => Options.Contains(s));
+			return value.Any(s => Options.Contains(s));
 		}
 
 		public void OnTick()

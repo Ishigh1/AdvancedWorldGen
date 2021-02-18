@@ -24,7 +24,29 @@ Main tiles are inverted :
 * Everything is considered as underground or deeper (for spawn purposes)
 * Big columns with a world roof (maybe a surface at the space layer)
 
-## Unstable world :
-* World is divided in chunks and each is linked to non adjacent ones, exiting one teleports you to the other
-* Would be better if say the right side of the square would be linked to the top of another and adjust the gravity with it
-* Would again be better if the visual was showing the linked chunk instead of the adjacent
+## (un)lucky worlds :
+* Prefix rerolled to be better/worse (during play too)
+* Affect character luck (of course)
+* More/no pyramids
+* More/less rare enemies
+* Bigger/smaller and more common/rarer ore veins (also when altar broken)
+* Impact biome chests ?
+
+## Gravity world :
+* Everything but the floating blocks can fall if not held
+* Worldgen must verified to avoid floating things and some things should be added
+
+## Halloween :
+* Many tombstones
+* Sneaky (but avoidable) traps (wires, pressure plates and pumps are invisible unless spectre googles are worn)
+* Some graveyard
+* Few mausoleum
+* Dimmer light
+* Permanent "graveyard" background
+* Tombstone and ground below need at least 45%(silver) pickaxe power (cant be blown up) or gravedigger
+* Permanent Halloween
+
+### Hollow temple (hidden) :
+* The temple becomes just one room
+
+### Bigger temple rooms

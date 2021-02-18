@@ -8,7 +8,7 @@ namespace AdvancedWorldGen.SpecialSeeds
 	{
 		public override void SetupShop(int type, Chest shop, ref int nextSlot)
 		{
-			if (type == NPCID.Dryad && CustomSeededWorld.OptionsContains("Random"))
+			if (type == NPCID.Dryad && ModifiedWorld.OptionsContains("Random"))
 			{
 				Item expensiveDirt = shop.item[nextSlot++];
 				expensiveDirt.SetDefaults(ItemID.DirtBlock);

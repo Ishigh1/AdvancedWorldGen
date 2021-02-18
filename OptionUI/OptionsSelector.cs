@@ -1,36 +1,39 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.OS;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 //TODO : Add the interface to import settings
-//TODO : Add a scrollbar
 namespace AdvancedWorldGen.SeedUI
 {
 	public class OptionsSelector : UIState
 	{
 		public static Dictionary<string, Option> OptionDict;
-
-		public SeedHelper SeedHelper;
-		public UIWorldCreation UiWorldCreation;
 		public LocalizedText Description;
 
-		public OptionsSelector(UIWorldCreation uiWorldCreation, SeedHelper seedHelper)
+		public UIWorldCreation UiWorldCreation;
+
+		public OptionsSelector(UIWorldCreation uiWorldCreation)
 		{
-			SeedHelper = seedHelper;
 			UiWorldCreation = uiWorldCreation;
-			Description = Language.GetText("Mods.AdvancedWorldGen.NoneSelected");
+			Description = Language.GetText("Mods.AdvancedWorldGen.NoneSelected.description");
 
 			CreateOptionPanel();
 		}
 
-		private void GoBack(UIMouseEvent evt, UIElement listeningElement)
+		public void GoBack(UIMouseEvent evt, UIElement listeningElement)
 		{
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			Main.MenuUI.SetState(UiWorldCreation);
 		}
 
@@ -40,7 +43,7 @@ namespace AdvancedWorldGen.SeedUI
 			{
 				HAlign = 0.5f,
 				VAlign = 0.5f,
-				Width = new StyleDimension(0, 0.4f),
+				Width = new StyleDimension(0, 0.5f),
 				Height = new StyleDimension(0, 0.5f),
 				BackgroundColor = UICommon.MainPanelBackground
 			};
@@ -90,50 +93,173 @@ namespace AdvancedWorldGen.SeedUI
 				HAlign = 0.5f
 			};
 			goBack.OnMouseDown += GoBack;
+			goBack.OnMouseOver += UiChanger.FadedMouseOver;
+			goBack.OnMouseOut += UiChanger.FadedMouseOut;
 			Append(goBack);
 		}
 
-		private void CreateSelectableOptions(UIElement uiPanel, UIText uiDescription)
+		public void CreateSelectableOptions(UIElement uiPanel, UIText uiDescription)
+		{
+			UIScrollbar uiScrollbar = new UIScrollbar
+			{
+				Height = new StyleDimension(-110f, 1f),
+				Top = new StyleDimension(50, 0f),
+				HAlign = 1f
+			};
+			UIList uiList = new UIList
+			{
+				Height = new StyleDimension(-110f, 1f),
+				Width = new StyleDimension(-20f, 1f),
+				Top = new StyleDimension(50, 0f)
+			};
+			uiList.SetScrollbar(uiScrollbar);
+			uiPanel.Append(uiScrollbar);
+			uiPanel.Append(uiList);
+			CreateOptionList(uiDescription, uiList, false);
+
+			bool showHidden = false;
+			LocalizedText showHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.ShowHidden.description");
+			LocalizedText hideHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.HideHidden.description");
+			UIImage uiImage = new UIImage(TextureAssets.InventoryTickOff)
+			{
+				HAlign = 1f
+			};
+			uiImage.OnMouseDown += delegate
+			{
+				SoundEngine.PlaySound(SoundID.MenuTick);
+				showHidden = !showHidden;
+				uiImage.SetImage(showHidden ? TextureAssets.InventoryTickOn : TextureAssets.InventoryTickOff);
+				CreateOptionList(uiDescription, uiList, showHidden);
+				uiDescription.SetText(showHidden ? hideHiddenDescription : showHiddenDescription);
+			};
+			uiImage.OnMouseOver += delegate
+			{
+				SoundEngine.PlaySound(SoundID.MenuTick);
+				uiDescription.SetText(showHidden ? hideHiddenDescription : showHiddenDescription);
+			};
+			uiImage.OnMouseOut += delegate
+			{
+				SoundEngine.PlaySound(SoundID.MenuTick);
+				uiDescription.SetText(Description);
+			};
+			uiPanel.Append(uiImage);
+		}
+
+		public void CreateOptionList(UIText uiDescription, UIList uiList, bool showHidden)
 		{
 			float currentHeight = 50;
+			uiList.Clear();
+			bool isLookingAtConflict = false;
+
+			GroupOptionButton<bool> importButton = new GroupOptionButton<bool>(true,
+				Language.GetText("Mods.AdvancedWorldGen.Import"),
+				Language.GetText("Mods.AdvancedWorldGen.Import.description"), Color.White, null)
+			{
+				HAlign = 0.5f,
+				Width = new StyleDimension(0f, 1f),
+				Height = new StyleDimension(40f, 0f),
+				Top = new StyleDimension(currentHeight, 0f)
+			};
+			currentHeight += 40;
+			uiList.Add(importButton);
+
+			importButton.SetCurrentOption(false);
+			importButton.OnMouseDown += delegate
+			{
+				HashSet<string> options = TextToOptions(Platform.Get<IClipboard>().Value);
+				if (options != null)
+				{
+					SoundEngine.PlaySound(SoundID.MenuOpen);
+					ModifiedWorld.OptionHelper.Options = options;
+					CreateOptionList(uiDescription, uiList, showHidden);
+				}
+			};
+			importButton.OnMouseOver += delegate { uiDescription.SetText(importButton.Description); };
+			importButton.OnMouseOut += delegate { uiDescription.SetText(Description); };
+
 			foreach (KeyValuePair<string, Option> keyValuePair in OptionDict)
 			{
+				if (keyValuePair.Value.Hidden && !showHidden) continue;
+				string option = keyValuePair.Key;
 				GroupOptionButton<bool> clickableText = new GroupOptionButton<bool>(true,
-					Language.GetText("Mods.AdvancedWorldGen." + keyValuePair.Key),
-					Language.GetText("Mods.AdvancedWorldGen." + keyValuePair.Key + ".description"), Color.White, null)
+					Language.GetText("Mods.AdvancedWorldGen." + option),
+					Language.GetText("Mods.AdvancedWorldGen." + option + ".description"), Color.White, null)
 				{
 					HAlign = 0.5f,
-					Width = new StyleDimension(-uiPanel.MarginLeft - uiPanel.MarginRight, 1f),
+					Width = new StyleDimension(0f, 1f),
 					Height = new StyleDimension(40f, 0f),
 					Top = new StyleDimension(currentHeight, 0f)
 				};
 				currentHeight += 40;
-				uiPanel.Append(clickableText);
+				uiList.Add(clickableText);
 
-				clickableText.SetCurrentOption(false);
+				clickableText.SetCurrentOption(ModifiedWorld.OptionHelper.OptionsContains(option));
 				clickableText.OnMouseDown += delegate
 				{
 					bool selected = clickableText.IsSelected;
 					if (selected)
-					{
-						SeedHelper.Options.Remove(keyValuePair.Key);
-					}
+						ModifiedWorld.OptionHelper.Options.Remove(option);
 					else
-					{
-						SeedHelper.Options.Add(keyValuePair.Key);
-					}
+						ModifiedWorld.OptionHelper.Options.Add(option);
 
-					clickableText.SetCurrentOption(!selected);
+					if (OptionDict[option].Conflicts
+						.Any(conflict => ModifiedWorld.OptionHelper.OptionsContains(conflict)))
+						CreateOptionList(uiDescription, uiList, showHidden);
+					else
+						clickableText.SetCurrentOption(!selected);
 				};
 				clickableText.OnMouseOver += delegate
 				{
-					uiDescription.SetText(clickableText.Description);
+					if (!isLookingAtConflict)
+						uiDescription.SetText(clickableText.Description);
 				};
-				clickableText.OnMouseOut += delegate
-				{
-					uiDescription.SetText(Description);
-				};
+				clickableText.OnMouseOut += delegate { uiDescription.SetText(Description); };
+				if (ModifiedWorld.OptionHelper.OptionsContains(option))
+					foreach (string conflict in OptionDict[option].Conflicts)
+						if (ModifiedWorld.OptionHelper.OptionsContains(conflict))
+						{
+							LocalizedText conflictDescription =
+								Language.GetText("Mods.AdvancedWorldGen.conflict." + option + "." + conflict);
+							UIImage uiImage = new UIImage(UICommon.ButtonErrorTexture)
+							{
+								Left = new StyleDimension(-15, 0f),
+								HAlign = 1f,
+								VAlign = 0.5f
+							};
+							uiImage.OnMouseOver += delegate
+							{
+								SoundEngine.PlaySound(SoundID.MenuTick);
+								uiDescription.SetText(conflictDescription);
+								isLookingAtConflict = true;
+							};
+							uiImage.OnMouseOut += delegate
+							{
+								SoundEngine.PlaySound(SoundID.MenuTick);
+								uiDescription.SetText(clickableText.Description);
+								isLookingAtConflict = false;
+							};
+							clickableText.Append(uiImage);
+							break;
+						}
 			}
+		}
+
+		public static HashSet<string> TextToOptions(string text)
+		{
+			HashSet<string> options = new HashSet<string>();
+			foreach (string s in text.Split('|'))
+			{
+				if (OptionDict.Keys.Contains(s))
+				{
+					options.Add(s);
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+			return options;
 		}
 	}
 }

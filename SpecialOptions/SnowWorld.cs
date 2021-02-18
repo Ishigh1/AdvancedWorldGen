@@ -14,17 +14,17 @@ namespace AdvancedWorldGen.SpecialSeeds
 {
 	public class SnowWorld
 	{
-		public SeedHelper SeedHelper;
+		public OptionHelper OptionHelper;
 
-		public SnowWorld(SeedHelper seedHelper)
+		public SnowWorld(OptionHelper optionHelper)
 		{
-			SeedHelper = seedHelper;
+			OptionHelper = optionHelper;
 		}
 
 		public void FallSnow()
 		{
-			if (!SeedHelper.OptionsContains("Santa")) return;
-			if (Terraria.Main.rand.Next((int) (10000 / (Terraria.Main.maxRaining + .1))) >=
+			if (!OptionHelper.OptionsContains("Santa")) return;
+			if (Terraria.Main.rand.Next((int) (10000 / (Terraria.Main.maxRaining + .01))) >=
 			    Terraria.Main.maxTilesX) return;
 			int x = Terraria.Main.rand.Next(Terraria.Main.maxTilesX);
 			int y = Terraria.Main.rand.Next((int) Terraria.Main.worldSurface);
@@ -39,7 +39,7 @@ namespace AdvancedWorldGen.SpecialSeeds
 
 				if (Terraria.Main.netMode == NetmodeID.Server)
 				{
-					ModPacket modPacket = SeedHelper.AdvancedWorldGen.GetPacket();
+					ModPacket modPacket = OptionHelper.AdvancedWorldGen.GetPacket();
 					modPacket.Write((byte) ServerChangeId.Freezing);
 					modPacket.Write(x);
 					modPacket.Write(y);
@@ -103,14 +103,14 @@ namespace AdvancedWorldGen.SpecialSeeds
 
 		public static void MainOncheckXMas(Main.orig_checkXMas orig)
 		{
-			if (CustomSeededWorld.OptionsContains("Santa"))
+			if (ModifiedWorld.OptionsContains("Santa"))
 				Terraria.Main.xMas = true;
 			else
 				orig();
 		}
 
 		/*
-		 * after IL_2356e, && !CustomSeededWorld.CurrentCustomSeededWorld.SeedHelper.OptionsContains("Santa")
+		 * after IL_2356e, && !ModifiedWorld.CurrentCustomSeededWorld.OptionHelper.OptionsContains("Santa")
 		 */
 		public static void RemoveSnowDropDuringChristmas(ILContext il)
 		{
@@ -128,7 +128,7 @@ namespace AdvancedWorldGen.SpecialSeeds
 			ilCursor.Emit(OpCodes.Ldc_I4_0);
 			ilCursor.Emit(OpCodes.Ldstr, "Santa");
 			ilCursor.Emit(OpCodes.Stelem_Ref);
-			ilCursor.Emit(OpCodes.Call, typeof(CustomSeededWorld).GetMethod("OptionsContains"));
+			ilCursor.Emit(OpCodes.Call, typeof(ModifiedWorld).GetMethod("OptionsContains"));
 			ilCursor.Emit(OpCodes.Brtrue, label);
 		}
 	}
