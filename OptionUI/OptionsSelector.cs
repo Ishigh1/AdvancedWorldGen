@@ -217,8 +217,9 @@ namespace AdvancedWorldGen.OptionUI
 				{
 					if (!isLookingAtConflict)
 						uiDescription.SetText(clickableText.Description);
-				clickableText.OnMouseOut += SetDefaultDescription;
 				};
+				clickableText.OnMouseOut += SetDefaultDescription;
+				
 				if (ModifiedWorld.OptionHelper.OptionsContains(option))
 					foreach (string conflict in OptionDict[option].Conflicts)
 						if (ModifiedWorld.OptionHelper.OptionsContains(conflict))
