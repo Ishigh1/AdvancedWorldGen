@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AdvancedWorldGen.SpecialSeeds;
+using AdvancedWorldGen.SpecialOptions;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Chat;

@@ -14,7 +14,6 @@ using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
-using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
@@ -23,7 +22,7 @@ using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
 using OnWorldGen = On.Terraria.WorldGen;
 using UIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
 
-namespace AdvancedWorldGen.SeedUI
+namespace AdvancedWorldGen.OptionUI
 {
 	public class UiChanger
 	{

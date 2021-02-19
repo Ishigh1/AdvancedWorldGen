@@ -8,7 +8,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
-namespace AdvancedWorldGen.SpecialSeeds
+namespace AdvancedWorldGen.SpecialOptions
 {
 	public class Entropy
 	{

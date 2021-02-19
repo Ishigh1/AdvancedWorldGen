@@ -6,7 +6,7 @@ using Terraria.IO;
 using Terraria.Localization;
 using WorldFile = On.Terraria.IO.WorldFile;
 
-namespace AdvancedWorldGen.SeedUI
+namespace AdvancedWorldGen.OptionUI
 {
 	public class DedServUi
 	{

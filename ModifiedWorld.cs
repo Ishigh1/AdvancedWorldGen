@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AdvancedWorldGen.SeedUI;
+using AdvancedWorldGen.OptionUI;
 using MonoMod.Cil;
 using On.Terraria;
 using Terraria.GameContent.Generation;

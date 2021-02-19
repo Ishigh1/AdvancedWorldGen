@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using AdvancedWorldGen.SeedUI;
-using AdvancedWorldGen.SpecialSeeds;
+using AdvancedWorldGen.OptionUI;
+using AdvancedWorldGen.SpecialOptions;
 using Newtonsoft.Json;
 using On.Terraria.GameContent.UI.Elements;
 using On.Terraria.GameContent.UI.States;
@@ -70,6 +70,8 @@ namespace AdvancedWorldGen
 
 			OptionsSelector.OptionDict = null;
 			TileReplacer.Unload();
+
+			ModifiedWorld.OptionHelper = null;
 		}
 
 		public override void HandlePacket(BinaryReader reader, int whoAmI)

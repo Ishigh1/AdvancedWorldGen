@@ -10,7 +10,7 @@ using NPC = Terraria.NPC;
 using Projectile = Terraria.Projectile;
 using Tile = Terraria.Tile;
 
-namespace AdvancedWorldGen.SpecialSeeds
+namespace AdvancedWorldGen.SpecialOptions
 {
 	public class SnowWorld
 	{

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;
@@ -14,7 +15,7 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 //TODO : Add the interface to import settings
-namespace AdvancedWorldGen.SeedUI
+namespace AdvancedWorldGen.OptionUI
 {
 	public class OptionsSelector : UIState
 	{
@@ -175,7 +176,11 @@ namespace AdvancedWorldGen.SeedUI
 				}
 			};
 			importButton.OnMouseOver += delegate { uiDescription.SetText(importButton.Description); };
-			importButton.OnMouseOut += delegate { uiDescription.SetText(Description); };
+			void SetDefaultDescription(UIMouseEvent evt, UIElement listeningElement)
+			{
+				uiDescription.SetText(Description);
+			}
+			importButton.OnMouseOut += SetDefaultDescription;
 
 			foreach (KeyValuePair<string, Option> keyValuePair in OptionDict)
 			{
@@ -212,8 +217,8 @@ namespace AdvancedWorldGen.SeedUI
 				{
 					if (!isLookingAtConflict)
 						uiDescription.SetText(clickableText.Description);
+				clickableText.OnMouseOut += SetDefaultDescription;
 				};
-				clickableText.OnMouseOut += delegate { uiDescription.SetText(Description); };
 				if (ModifiedWorld.OptionHelper.OptionsContains(option))
 					foreach (string conflict in OptionDict[option].Conflicts)
 						if (ModifiedWorld.OptionHelper.OptionsContains(conflict))

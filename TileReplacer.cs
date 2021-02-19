@@ -28,10 +28,11 @@ namespace AdvancedWorldGen
 	public class TileReplacer
 	{
 		public const int None = -1;
+		public const int Water = -2;
+		public const int Lava = -3;
+		public const int Honey = -4;
+		
 		public static List<int> NotReplaced;
-		public static int Water = TileLoader.TileCount;
-		public static int Lava = TileLoader.TileCount + 1;
-		public static int Honey = TileLoader.TileCount + 2;
 		public static TileReplacer Snow;
 
 
@@ -46,6 +47,7 @@ namespace AdvancedWorldGen
 
 		public static void Initialize()
 		{
+			
 			NotReplaced = new List<int>
 			{
 				ClosedDoor, MagicalIceBlock, Traps, Boulder, Teleporter, MetalBars, PlanterBox, TrapdoorClosed,
@@ -125,12 +127,12 @@ namespace AdvancedWorldGen
 					if (tile.IsActive) HandleReplacement(tile.type, i, j, tile, false);
 
 					if (tile.LiquidAmount > 0)
-						HandleReplacement((ushort) (tile.LiquidType + TileLoader.TileCount), i, j, tile, true);
+						HandleReplacement(-tile.LiquidType - 2, i, j, tile, true);
 				}
 			}
 		}
 
-		public void HandleReplacement(ushort tileType, int i, int j, Tile tile, bool liquid)
+		public void HandleReplacement(int tileType, int i, int j, Tile tile, bool liquid)
 		{
 			if (!Dictionary.TryGetValue(tileType, out int type))
 			{
@@ -140,7 +142,7 @@ namespace AdvancedWorldGen
 				type = specialCase.Type;
 			}
 
-			if (liquid && tile.IsActive && (type < TileLoader.TileCount || type == -1)) return;
+			if (liquid && tile.IsActive && type > -1) return;
 
 			if (type == -1)
 			{
@@ -149,7 +151,7 @@ namespace AdvancedWorldGen
 				else
 					tile.IsActive = false;
 			}
-			else if (type < TileLoader.TileCount)
+			else if (type > -1)
 			{
 				if (liquid)
 				{
@@ -167,7 +169,7 @@ namespace AdvancedWorldGen
 					tile.LiquidAmount = byte.MaxValue;
 				}
 
-				tile.LiquidType = type - TileLoader.TileCount;
+				tile.LiquidType = -type + 2;
 			}
 		}
 

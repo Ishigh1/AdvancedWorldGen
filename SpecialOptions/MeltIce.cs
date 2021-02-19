@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ID.TileID;
 
-namespace AdvancedWorldGen.SpecialSeeds
+namespace AdvancedWorldGen.SpecialOptions
 {
 	public class MeltIce : GlobalTile
 	{

@@ -4,7 +4,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using On.Terraria;
 
-namespace AdvancedWorldGen.SpecialSeeds
+namespace AdvancedWorldGen.SpecialOptions
 {
 	public class ClassicOptions
 	{
