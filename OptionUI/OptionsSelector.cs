@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;
@@ -176,10 +175,12 @@ namespace AdvancedWorldGen.OptionUI
 				}
 			};
 			importButton.OnMouseOver += delegate { uiDescription.SetText(importButton.Description); };
+
 			void SetDefaultDescription(UIMouseEvent evt, UIElement listeningElement)
 			{
 				uiDescription.SetText(Description);
 			}
+
 			importButton.OnMouseOut += SetDefaultDescription;
 
 			foreach (KeyValuePair<string, Option> keyValuePair in OptionDict)
@@ -219,7 +220,7 @@ namespace AdvancedWorldGen.OptionUI
 						uiDescription.SetText(clickableText.Description);
 				};
 				clickableText.OnMouseOut += SetDefaultDescription;
-				
+
 				if (ModifiedWorld.OptionHelper.OptionsContains(option))
 					foreach (string conflict in OptionDict[option].Conflicts)
 						if (ModifiedWorld.OptionHelper.OptionsContains(conflict))
@@ -254,16 +255,10 @@ namespace AdvancedWorldGen.OptionUI
 		{
 			HashSet<string> options = new HashSet<string>();
 			foreach (string s in text.Split('|'))
-			{
 				if (OptionDict.Keys.Contains(s))
-				{
 					options.Add(s);
-				}
 				else
-				{
 					return null;
-				}
-			}
 
 			return options;
 		}

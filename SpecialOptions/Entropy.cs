@@ -16,10 +16,10 @@ namespace AdvancedWorldGen.SpecialOptions
 		public int NewWall;
 		public int OldTile;
 		public int OldWall;
+		public OptionHelper OptionHelper;
 		public byte PaintTile;
 		public byte PaintWall;
 		public UnifiedRandom Rand;
-		public OptionHelper OptionHelper;
 		public int SquareSize;
 		public Dictionary<int, List<Tuple<int, int>>> Tiles;
 		public Dictionary<int, List<Tuple<int, int>>> Walls;

@@ -31,7 +31,7 @@ namespace AdvancedWorldGen
 		public const int Water = -2;
 		public const int Lava = -3;
 		public const int Honey = -4;
-		
+
 		public static List<int> NotReplaced;
 		public static TileReplacer Snow;
 
@@ -47,7 +47,6 @@ namespace AdvancedWorldGen
 
 		public static void Initialize()
 		{
-			
 			NotReplaced = new List<int>
 			{
 				ClosedDoor, MagicalIceBlock, Traps, Boulder, Teleporter, MetalBars, PlanterBox, TrapdoorClosed,

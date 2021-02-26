@@ -7,14 +7,23 @@
             "StupidlyHugeTemple"
         ]
     },
+    "Crimruption": {
+        "Hidden": true,
+        "id": 102,
+        "Conflicts": [
+            "Drunk"
+        ]
+    },
     "Drunk": {
         "Hidden": false,
         "id": 1,
-        "Conflicts": []
+        "Conflicts": [
+            "Crimruption"
+        ]
     },
     "Entropy": {
         "Hidden": true,
-        "id": 102,
+        "id": 103,
         "Conflicts": []
     },
     "ForTheWorthy": {
@@ -69,7 +78,7 @@
     },
     "StupidlyHugeTemple": {
         "Hidden": true,
-        "id": 104,
+        "id": 106,
         "Conflicts": [
             "BigTemple",
             "StupidlyBigTemple"

@@ -7,6 +7,7 @@ Import.description=Import settings from clipboard
 
 # Options
 BigTemple=Big Temple
+Crimruption=Crimruption
 Drunk=Drunk
 Entropy=Entropy
 ForTheWorthy=For The Worthy
@@ -20,6 +21,7 @@ StupidlyHugeTemple=Stupidly Huge Temple
 
 # Options description
 BigTemple.description=Makes the temple bigger.
+Crimruption.description=Both Crimson and Corruption are in this world
 Drunk.description=The classic 5162020 settings.
 Entropy.description=A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.
 ForTheWorthy.description=The classic for the worthy settings.
@@ -34,6 +36,8 @@ StupidlyHugeTemple.description=Makes a temple that covers most of the jungle.
 # Conflicts description
 conflict.BigTemple.StupidlyBigTemple=Having a temple size modifier twice doesn't do anything.
 conflict.BigTemple.StupidlyHugeTemple=Having a temple size modifier twice doesn't do anything.
+conflict.Crimruption.Drunk=Drunk already contains Crimruption
+conflict.Drunk.Crimruption=Drunk already contains Crimruption
 conflict.NotTheBees.Random=Not the bees only leaves a few blocks to be randomized.
 conflict.NotTheBees.Santa=Santa will not have much effect on a not the bees world.
 conflict.NotTheBees.SmallNotTheBees=Having not the bees twice doesn't do anything

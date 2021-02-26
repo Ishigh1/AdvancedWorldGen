@@ -100,8 +100,10 @@ namespace AdvancedWorldGen.OptionUI
 		public static void HandleDedServId(string s, ref string errorMessage, bool showHidden)
 		{
 			if (!int.TryParse(s, out int id) || id <= 0 ||
-			                 !ConvertIdToOption(showHidden, ref id))
+			    !ConvertIdToOption(showHidden, ref id))
+			{
 				errorMessage = "Input not recognized";
+			}
 			else
 			{
 				string[] strings = s.Split(' ');
@@ -109,13 +111,9 @@ namespace AdvancedWorldGen.OptionUI
 				{
 					HashSet<string> options = OptionsSelector.TextToOptions(strings[1]);
 					if (options == null)
-					{
 						errorMessage = "Input not recognized";
-					}
 					else
-					{
 						ModifiedWorld.OptionHelper.Options = options;
-					}
 				}
 			}
 		}

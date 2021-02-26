@@ -45,6 +45,7 @@ Main tiles are inverted :
 * Permanent "graveyard" background
 * Tombstone and ground below need at least 45%(silver) pickaxe power (cant be blown up) or gravedigger
 * Permanent Halloween
+* Bosses have a ghost attack
 
 ### Hollow temple (hidden) :
 * The temple becomes just one room

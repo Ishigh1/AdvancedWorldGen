@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace AdvancedWorldGen
 	public class OptionHelper
 	{
 		public AdvancedWorldGen AdvancedWorldGen;
-		public HashSet<	string> Options;
+		public HashSet<string> Options;
 		public SnowWorld SnowWorld;
 
 		public OptionHelper()
@@ -46,6 +47,8 @@ namespace AdvancedWorldGen
 				if (Main.netMode == NetmodeID.Server)
 					NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, 0, 1f, Main.invasionType + 3);
 			}
+
+			if (OptionsContains("Crimruption") && !WorldGen.drunkWorldGen) WorldGen.crimson = !WorldGen.crimson;
 		}
 
 		public void OnDusk()
@@ -88,6 +91,8 @@ namespace AdvancedWorldGen
 				case ServerChangeId.Entropy:
 					new Entropy(500, reader).TreatTiles();
 					break;
+				default:
+					throw new ArgumentOutOfRangeException();
 			}
 		}
 	}

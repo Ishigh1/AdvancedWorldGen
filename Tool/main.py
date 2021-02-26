@@ -11,6 +11,7 @@ while True:
     command = input("command : ")
     if command == "exit":
         break
+
     elif command == "add":
         option = {}
         option["displayed_name"] = input("displayed name : ")
@@ -53,6 +54,7 @@ while True:
         file = open("Data.json", "w")
         json.dump(options, file, indent=4, sort_keys=True)
         file.close()
+
     elif command == "make":
         file = open("Data.json", "r")
         options = json.load(file)
@@ -103,6 +105,24 @@ while True:
         file = open("Options.json", "w")
         json.dump(jsonText, file, indent=4)
         file.close()
+
     elif command == "setup":
         shutil.copy("en-US.lang", "../Localization/en-US.lang")
         shutil.copy("Options.json", "../Options.json")
+
+    elif command == "conflict":
+        option1 = input("option 1 : ")
+        option2 = input("option 2 : ")
+        conflict_description = input("description : ")
+
+        option1 = string.capwords(option1).replace(" ", "")
+        option2 = string.capwords(option2).replace(" ", "")
+        options[option1]["conflicts"][option2] = conflict_description
+        options[option2]["conflicts"][option1] = conflict_description
+
+        file = open("Data.json", "w")
+        json.dump(options, file, indent=4, sort_keys=True)
+        file.close()
+
+    else:
+        print("command unknown")

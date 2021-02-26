@@ -20,23 +20,23 @@ namespace AdvancedWorldGen.SpecialOptions
 		 */
 		public static void ReduceTemple(ILContext il)
 		{
-			ILCursor ilCursor = new ILCursor(il);
-			if (!ilCursor.TryGotoNext(instruction => instruction.MatchLdcI4(100))) return;
+			ILCursor cursor = new ILCursor(il);
+			if (!cursor.TryGotoNext(instruction => instruction.MatchLdcI4(100))) return;
 
-			while (ilCursor.Next.OpCode != OpCodes.Ldsfld) ilCursor.Remove();
+			while (cursor.Next.OpCode != OpCodes.Ldsfld) cursor.Remove();
 
-			ilCursor.Emit(OpCodes.Ldarga_S, (byte) 1);
+			cursor.Emit(OpCodes.Ldarga_S, (byte) 1);
 
-			ilCursor.GotoNext(instruction => instruction.MatchStloc(1));
-			ilCursor.Emit(OpCodes.Call, typeof(ClassicOptions).GetMethod("GetTempleRooms"));
-			ilCursor.Emit(OpCodes.Stloc_2);
-			ilCursor.Emit(OpCodes.Ldloc_2);
-			ilCursor.Emit(OpCodes.Newarr, typeof(Rectangle));
-			ilCursor.Emit(OpCodes.Stloc_0);
+			cursor.GotoNext(instruction => instruction.MatchStloc(1));
+			cursor.Emit(OpCodes.Call, typeof(ClassicOptions).GetMethod("GetTempleRooms"));
+			cursor.Emit(OpCodes.Stloc_2);
+			cursor.Emit(OpCodes.Ldloc_2);
+			cursor.Emit(OpCodes.Newarr, typeof(Rectangle));
+			cursor.Emit(OpCodes.Stloc_0);
 			int c = 0;
-			while (ilCursor.Next.OpCode != OpCodes.Stloc_2 || c++ < 2) ilCursor.Remove();
+			while (cursor.Next.OpCode != OpCodes.Stloc_2 || c++ < 2) cursor.Remove();
 
-			ilCursor.Remove();
+			cursor.Remove();
 		}
 
 		public static int GetTempleRooms(ref int y, float worldSize)

@@ -9,8 +9,19 @@
         "hidden": true,
         "internal_name": "BigTemple"
     },
+    "Crimruption": {
+        "conflicts": {
+            "Drunk": "Drunk already contains Crimruption"
+        },
+        "description": "Both Crimson and Corruption are in this world",
+        "displayed_name": "Crimruption",
+        "hidden": true,
+        "internal_name": "Crimruption"
+    },
     "Drunk": {
-        "conflicts": {},
+        "conflicts": {
+            "Crimruption": "Drunk already contains Crimruption"
+        },
         "description": "The classic 5162020 settings.",
         "displayed_name": "Drunk",
         "hidden": false,

@@ -16,6 +16,7 @@ namespace AdvancedWorldGen
 {
 	public class AdvancedWorldGen : Mod
 	{
+		public Crimruption Crimruption;
 		public UiChanger UiChanger;
 
 		public override void Load()
@@ -30,7 +31,10 @@ namespace AdvancedWorldGen
 				UiChanger.OptionsTexture = GetTexture("Images/WorldOptions");
 				UiChanger.CopyOptionsTexture = GetTexture("Images/CopyWorldButton");
 			}
-			
+
+			Crimruption = new Crimruption();
+			Crimruption.Load();
+
 			UIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
 			UIWorldListItem.ctor += UiChanger.CopySettingsButton;
 			WorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
@@ -47,11 +51,14 @@ namespace AdvancedWorldGen
 			On.Terraria.Main.UpdateTime_StartNight += ModifiedWorld.OnDusk;
 			On.Terraria.Main.checkXMas += SnowWorld.MainOncheckXMas;
 			Projectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
+
+			IL.Terraria.WorldGen.MakeDungeon += Crimruption.CrimruptionChest;
 		}
 
 		public override void Unload()
 		{
 			UIWorldCreation.AddDescriptionPanel -= UiChanger.TweakWorldGenUi;
+			UIWorldListItem.ctor -= UiChanger.CopySettingsButton;
 			WorldGen.worldGenCallback -= UiChanger.ThreadifyWorldGen;
 			UIWorldLoad.ctor -= UiChanger.AddCancel;
 			IL.Terraria.WorldGen.GenerateWorld -= ModifiedWorld.OverrideWorldOptions;
@@ -65,8 +72,13 @@ namespace AdvancedWorldGen
 			On.Terraria.Main.checkXMas -= SnowWorld.MainOncheckXMas;
 			Projectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
 
+			IL.Terraria.WorldGen.MakeDungeon -= Crimruption.CrimruptionChest;
+
 			UiChanger.OptionsTexture = null;
 			UiChanger = null;
+
+			Crimruption.Unload();
+			Crimruption = null;
 
 			OptionsSelector.OptionDict = null;
 			TileReplacer.Unload();

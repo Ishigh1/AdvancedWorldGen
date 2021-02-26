@@ -42,6 +42,7 @@ namespace AdvancedWorldGen
 			if (list != null)
 			{
 				OptionHelper.Options = new HashSet<string>(list);
+				Terraria.Main.checkHalloween();
 				Terraria.Main.checkXMas();
 			}
 		}
@@ -69,6 +70,7 @@ namespace AdvancedWorldGen
 				if (list.Count == 0) break;
 			}
 
+			Terraria.Main.checkHalloween();
 			Terraria.Main.checkXMas();
 		}
 
@@ -94,19 +96,19 @@ namespace AdvancedWorldGen
 		//Deletes all the now-useless stuff about special seeds
 		public static void OverrideWorldOptions(ILContext il)
 		{
-			ILCursor ilCursor = new ILCursor(il);
-			if (ilCursor.TryGotoNext(instruction => instruction.MatchLdcI4(0)))
+			ILCursor cursor = new ILCursor(il);
+			if (cursor.TryGotoNext(instruction => instruction.MatchLdcI4(0)))
 				for (int i = 0; i < 44; i++)
-					ilCursor.Remove();
+					cursor.Remove();
 		}
 
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
-			int npcIndex = tasks.FindIndex(pass => pass.Name == "Guide");
-			if (npcIndex != -1)
+			int passIndex = tasks.FindIndex(pass => pass.Name == "Guide");
+			if (passIndex != -1)
 			{
-				tasks.RemoveAt(npcIndex);
-				tasks.Insert(npcIndex, new PassLegacy("NPCs", HandleNpcs));
+				tasks.RemoveAt(passIndex);
+				tasks.Insert(passIndex, new PassLegacy("NPCs", HandleNpcs));
 			}
 
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
@@ -182,7 +184,7 @@ namespace AdvancedWorldGen
 			return Utils.SelectRandom(Terraria.Main.rand, npcs.ToArray());
 		}
 
-		public void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
+		public static void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
 		{
 			if (OptionHelper.OptionsContains("Santa"))
 				TileReplacer.Snow.ReplaceTiles(progress, "Making the world colder");

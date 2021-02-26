@@ -26,12 +26,12 @@ namespace AdvancedWorldGen.OptionUI
 {
 	public class UiChanger
 	{
+		public Asset<Texture2D> CopyOptionsTexture;
 		public UIText Description;
 		public OptionsSelector OptionsSelector;
+		public Asset<Texture2D> OptionsTexture;
 		public Thread Thread;
 		public UIWorldCreation UiWorldCreation;
-		public Asset<Texture2D> OptionsTexture;
-		public Asset<Texture2D> CopyOptionsTexture;
 
 		public void AddCancel(OnUIWorldLoad.orig_ctor orig, UIWorldLoad self)
 		{
@@ -147,31 +147,36 @@ namespace AdvancedWorldGen.OptionUI
 				PaddingTop = 4f,
 				PaddingLeft = 4f
 			};
+			
+			List<string> options = GetOptionsFromData(data);
 
-			List<string> options = null;
+			options = SetupCopyButton(copyOptionButton, options, uiText);
 
-			void UpdateOptions()
-			{
-				if (options != null) return;
-				string path = Path.ChangeExtension(data.Path, ".twld");
-				byte[] buf = FileUtilities.ReadAllBytes(path, data.IsCloudSave);
-				TagCompound tags = TagIO.FromStream(new MemoryStream(buf));
-				IList<TagCompound> modTags = tags.GetList<TagCompound>("modData");
-				foreach (TagCompound tagCompound in modTags)
-				{
-					if (tagCompound.GetString("mod") == "AdvancedWorldGen")
-					{
-						options = (List<string>) tagCompound.GetCompound("data")?.GetList<string>("Options");
-						return;
-					}
-				}
+			uiText.Left.Pixels += 24f;
+			self.Append(copyOptionButton);
 
-				options = new List<string>();
-			}
+			data.DrunkWorld = data.DrunkWorld || options.Contains("Crimruption");
+		}
 
+		private static List<string> GetOptionsFromData(WorldFileData data)
+		{
+			string path = Path.ChangeExtension(data.Path, ".twld");
+			byte[] buf = FileUtilities.ReadAllBytes(path, data.IsCloudSave);
+			TagCompound tags = TagIO.FromStream(new MemoryStream(buf));
+			IList<TagCompound> modTags = tags.GetList<TagCompound>("modData");
+			List<string> options =
+				(from tagCompound in modTags
+					where tagCompound.GetString("mod") == "AdvancedWorldGen"
+					select (List<string>) tagCompound.GetCompound("data")?.GetList<string>("Options"))
+				.FirstOrDefault() ??
+				new List<string>();
+			return options;
+		}
+
+		private static List<string> SetupCopyButton(UIImageButton copyOptionButton, List<string> options, UIText uiText)
+		{
 			copyOptionButton.OnMouseOver += delegate
 			{
-				UpdateOptions();
 				if (options.Count == 0)
 				{
 					uiText.SetText("World without options");
@@ -183,10 +188,7 @@ namespace AdvancedWorldGen.OptionUI
 				for (int index = 0; index < options.Count && !tooMuch; index++)
 				{
 					string option = Language.GetTextValue("Mods.AdvancedWorldGen." + options[index]);
-					if (text != "")
-					{
-						text += ", ";
-					}
+					if (text != "") text += ", ";
 
 					text += option;
 					if (text.Length > 40)
@@ -197,19 +199,14 @@ namespace AdvancedWorldGen.OptionUI
 				}
 
 				uiText.SetText("Copy settings \"" + text + "\"");
-				options = null;
 			};
 			copyOptionButton.OnMouseDown += delegate
 			{
-				UpdateOptions();
 				if (options.Count == 0) return;
 				string text = "";
 				foreach (string option in options)
 				{
-					if (text != "")
-					{
-						text += "|";
-					}
+					if (text != "") text += "|";
 
 					text += option;
 				}
@@ -218,9 +215,7 @@ namespace AdvancedWorldGen.OptionUI
 				uiText.SetText("Settings copied to clipboard");
 			};
 			copyOptionButton.OnMouseOut += delegate { uiText.SetText(""); };
-
-			uiText.Left.Pixels += 24f;
-			self.Append(copyOptionButton);
+			return options;
 		}
 	}
 }

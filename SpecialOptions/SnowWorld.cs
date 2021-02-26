@@ -64,7 +64,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			Terraria.Main.projectile[projectile].netUpdate = true;
 		}
 
-		public void ComputeSnowBall(out double damages, out double knockback)
+		public static void ComputeSnowBall(out double damages, out double knockback)
 		{
 			damages = 10;
 			knockback = 4.5;
@@ -114,22 +114,16 @@ namespace AdvancedWorldGen.SpecialOptions
 		 */
 		public static void RemoveSnowDropDuringChristmas(ILContext il)
 		{
-			ILCursor ilCursor = new ILCursor(il);
+			ILCursor cursor = new ILCursor(il);
 			for (int i = 0; i < 4; i++)
-				if (!ilCursor.TryGotoNext(instruction => instruction.MatchLdcI4(109)))
+				if (!cursor.TryGotoNext(instruction => instruction.MatchLdcI4(109)))
 					return; // Instruction not found
 
-			ilCursor.Index += 2;
-			object label = ilCursor.Prev.Operand;
+			cursor.Index += 2;
+			object label = cursor.Prev.Operand;
 
-			ilCursor.Emit(OpCodes.Ldc_I4_1);
-			ilCursor.Emit(OpCodes.Newarr, typeof(string));
-			ilCursor.Emit(OpCodes.Dup);
-			ilCursor.Emit(OpCodes.Ldc_I4_0);
-			ilCursor.Emit(OpCodes.Ldstr, "Santa");
-			ilCursor.Emit(OpCodes.Stelem_Ref);
-			ilCursor.Emit(OpCodes.Call, typeof(ModifiedWorld).GetMethod("OptionsContains"));
-			ilCursor.Emit(OpCodes.Brtrue, label);
+			ILHelper.OptionContains(cursor, "Santa");
+			cursor.Emit(OpCodes.Brtrue, label);
 		}
 	}
 }
