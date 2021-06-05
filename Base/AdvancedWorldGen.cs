@@ -3,16 +3,20 @@ using System.IO;
 using System.Text;
 using AdvancedWorldGen.OptionUI;
 using AdvancedWorldGen.SpecialOptions;
+using AdvancedWorldGen.SpecialOptions.Halloween;
 using Newtonsoft.Json;
-using On.Terraria.GameContent.UI.Elements;
-using On.Terraria.GameContent.UI.States;
-using On.Terraria.IO;
 using Terraria;
 using Terraria.ModLoader;
-using Projectile = IL.Terraria.Projectile;
-using WorldGen = On.Terraria.WorldGen;
+using OnWorldGen = On.Terraria.WorldGen;
+using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
+using OnUIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
+using OnUIWorldLoad = On.Terraria.GameContent.UI.States.UIWorldLoad;
+using OnWorldFile = On.Terraria.IO.WorldFile;
+using OnMain = On.Terraria.Main;
+using ILProjectile = IL.Terraria.Projectile;
+using ILWorldGen = IL.Terraria.WorldGen;
 
-namespace AdvancedWorldGen
+namespace AdvancedWorldGen.Base
 {
 	public class AdvancedWorldGen : Mod
 	{
@@ -35,44 +39,46 @@ namespace AdvancedWorldGen
 			Crimruption = new Crimruption();
 			Crimruption.Load();
 
-			UIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
-			UIWorldListItem.ctor += UiChanger.CopySettingsButton;
-			WorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
-			UIWorldLoad.ctor += UiChanger.AddCancel;
-			// Removed as On.[...].UIWorldCreation.ProcessSpecialWorldSeeds doesn't exist
-			// UIWorldCreation.ProcessSpecialWorldSeeds += ModifiedWorld.IgnoreSpecialSeed;
-			IL.Terraria.WorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
-			WorldFile.CreateMetadata += DedServUi.DedServOptions;
+			OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
+			OnUIWorldListItem.ctor += UiChanger.CopySettingsButton;
+			OnWorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
+			OnUIWorldLoad.ctor += UiChanger.AddCancel;
+			ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
+			OnWorldFile.CreateMetadata += DedServUi.DedServOptions;
 
-			WorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
-			IL.Terraria.WorldGen.makeTemple += ClassicOptions.ReduceTemple;
+			OnWorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
+			ILWorldGen.makeTemple += ClassicOptions.ReduceTemple;
 
-			On.Terraria.Main.UpdateTime_StartDay += ModifiedWorld.OnDawn;
-			On.Terraria.Main.UpdateTime_StartNight += ModifiedWorld.OnDusk;
-			On.Terraria.Main.checkXMas += SnowWorld.MainOncheckXMas;
-			Projectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
+			OnMain.UpdateTime_StartDay += ModifiedWorld.OnDawn;
+			OnMain.UpdateTime_StartNight += ModifiedWorld.OnDusk;
+			OnMain.checkXMas += SnowWorld.MainOnCheckXMas;
+			ILProjectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
 
-			IL.Terraria.WorldGen.MakeDungeon += Crimruption.CrimruptionChest;
+			ILWorldGen.MakeDungeon += Crimruption.CrimruptionChest;
+
+			HalloweenCommon.Setup();
 		}
 
 		public override void Unload()
 		{
-			UIWorldCreation.AddDescriptionPanel -= UiChanger.TweakWorldGenUi;
-			UIWorldListItem.ctor -= UiChanger.CopySettingsButton;
-			WorldGen.worldGenCallback -= UiChanger.ThreadifyWorldGen;
-			UIWorldLoad.ctor -= UiChanger.AddCancel;
-			IL.Terraria.WorldGen.GenerateWorld -= ModifiedWorld.OverrideWorldOptions;
-			WorldFile.CreateMetadata -= DedServUi.DedServOptions;
+			OnUIWorldCreation.AddDescriptionPanel -= UiChanger.TweakWorldGenUi;
+			OnUIWorldListItem.ctor -= UiChanger.CopySettingsButton;
+			OnWorldGen.worldGenCallback -= UiChanger.ThreadifyWorldGen;
+			OnUIWorldLoad.ctor -= UiChanger.AddCancel;
+			ILWorldGen.GenerateWorld -= ModifiedWorld.OverrideWorldOptions;
+			OnWorldFile.CreateMetadata -= DedServUi.DedServOptions;
 
-			WorldGen.NotTheBees -= ClassicOptions.SmallNotTheBees;
-			IL.Terraria.WorldGen.makeTemple -= ClassicOptions.ReduceTemple;
+			OnWorldGen.NotTheBees -= ClassicOptions.SmallNotTheBees;
+			ILWorldGen.makeTemple -= ClassicOptions.ReduceTemple;
 
-			On.Terraria.Main.UpdateTime_StartDay -= ModifiedWorld.OnDawn;
-			On.Terraria.Main.UpdateTime_StartNight -= ModifiedWorld.OnDusk;
-			On.Terraria.Main.checkXMas -= SnowWorld.MainOncheckXMas;
-			Projectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
+			OnMain.UpdateTime_StartDay -= ModifiedWorld.OnDawn;
+			OnMain.UpdateTime_StartNight -= ModifiedWorld.OnDusk;
+			OnMain.checkXMas -= SnowWorld.MainOnCheckXMas;
+			ILProjectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
 
-			IL.Terraria.WorldGen.MakeDungeon -= Crimruption.CrimruptionChest;
+			ILWorldGen.MakeDungeon -= Crimruption.CrimruptionChest;
+
+			HalloweenCommon.UnSetup();
 
 			UiChanger.OptionsTexture = null;
 			UiChanger = null;
@@ -88,7 +94,7 @@ namespace AdvancedWorldGen
 
 		public override void HandlePacket(BinaryReader reader, int whoAmI)
 		{
-			OptionHelper.HandlePacket(reader, whoAmI);
+			OptionHelper.HandlePacket(reader);
 		}
 	}
 }

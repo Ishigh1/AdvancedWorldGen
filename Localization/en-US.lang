@@ -7,6 +7,7 @@ Import.description=Import settings from clipboard
 
 # Options
 BigTemple=Big Temple
+Celebrationmk10=Celebration Mk 10
 Crimruption=Crimruption
 Drunk=Drunk
 Entropy=Entropy
@@ -16,11 +17,13 @@ Painted=Painted
 Random=Random
 Santa=Santa
 SmallNotTheBees=Small Not The Bees
+Spooky=Spooky
 StupidlyBigTemple=Stupidly Big Temple
 StupidlyHugeTemple=Stupidly Huge Temple
 
 # Options description
 BigTemple.description=Makes the temple bigger.
+Celebrationmk10.description=The classic tenth anniversary secret seed.
 Crimruption.description=Both Crimson and Corruption are in this world
 Drunk.description=The classic 5162020 settings.
 Entropy.description=A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.
@@ -30,6 +33,7 @@ Painted.description=A world where each block and wall type get a paint.
 Random.description=A world where each block and wall type is randomized.
 Santa.description=A christmas themed world.
 SmallNotTheBees.description=Like not the bees, but without the entire world being a jungle.
+Spooky.description=An halloween themed world.
 StupidlyBigTemple.description=Make the temple really big.
 StupidlyHugeTemple.description=Makes a temple that covers most of the jungle.
 

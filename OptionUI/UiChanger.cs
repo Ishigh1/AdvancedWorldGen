@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using AdvancedWorldGen.Base;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -38,7 +39,7 @@ namespace AdvancedWorldGen.OptionUI
 			orig(self);
 			if (!Main.dedServ)
 			{
-				UITextPanel<string> uiTextPanel = new UITextPanel<string>("");
+				UITextPanel<string> uiTextPanel = new("");
 				self.Append(uiTextPanel);
 				uiTextPanel.VAlign = 0.75f;
 				uiTextPanel.HAlign = 0.5f;
@@ -77,7 +78,7 @@ namespace AdvancedWorldGen.OptionUI
 			UICharacterNameButton characterNameButton = (UICharacterNameButton) fieldInfo.GetValue(self);
 			characterNameButton.Width.Pixels -= 48;
 
-			GroupOptionButton<bool> groupOptionButton = new GroupOptionButton<bool>(true, null, null, Color.White, null)
+			GroupOptionButton<bool> groupOptionButton = new(true, null, null, Color.White, null)
 			{
 				Width = new StyleDimension(40f, 0f),
 				Height = new StyleDimension(40f, 0f),
@@ -140,14 +141,14 @@ namespace AdvancedWorldGen.OptionUI
 				BindingFlags.NonPublic |
 				BindingFlags.Instance);
 			UIText uiText = (UIText) fieldInfo.GetValue(self);
-			UIImageButton copyOptionButton = new UIImageButton(CopyOptionsTexture)
+			UIImageButton copyOptionButton = new(CopyOptionsTexture)
 			{
 				VAlign = 1f,
 				Left = new StyleDimension(uiText.Left.Pixels - 4, 0f),
 				PaddingTop = 4f,
 				PaddingLeft = 4f
 			};
-			
+
 			List<string> options = GetOptionsFromData(data);
 
 			options = SetupCopyButton(copyOptionButton, options, uiText);
@@ -158,7 +159,7 @@ namespace AdvancedWorldGen.OptionUI
 			data.DrunkWorld = data.DrunkWorld || options.Contains("Crimruption");
 		}
 
-		private static List<string> GetOptionsFromData(WorldFileData data)
+		public static List<string> GetOptionsFromData(WorldFileData data)
 		{
 			string path = Path.ChangeExtension(data.Path, ".twld");
 			byte[] buf = FileUtilities.ReadAllBytes(path, data.IsCloudSave);
@@ -173,7 +174,7 @@ namespace AdvancedWorldGen.OptionUI
 			return options;
 		}
 
-		private static List<string> SetupCopyButton(UIImageButton copyOptionButton, List<string> options, UIText uiText)
+		public static List<string> SetupCopyButton(UIImageButton copyOptionButton, List<string> options, UIText uiText)
 		{
 			copyOptionButton.OnMouseOver += delegate
 			{

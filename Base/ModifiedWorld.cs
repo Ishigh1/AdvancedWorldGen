@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AdvancedWorldGen.OptionUI;
+using AdvancedWorldGen.SpecialOptions.Halloween;
 using MonoMod.Cil;
-using On.Terraria;
+using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
@@ -11,15 +12,20 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 using static Terraria.ID.NPCID;
-using NPC = Terraria.NPC;
-using Utils = Terraria.Utils;
-using WorldGen = Terraria.WorldGen;
+using OnMain = On.Terraria.Main;
 
-namespace AdvancedWorldGen
+namespace AdvancedWorldGen.Base
 {
 	public class ModifiedWorld : ModSystem
 	{
 		public static OptionHelper OptionHelper;
+
+		public static List<int> NPCs = new()
+		{
+			Merchant, Nurse, ArmsDealer, Dryad, Guide, Demolitionist, Clothier, GoblinTinkerer, Wizard, Mechanic,
+			Truffle, Steampunker, DyeTrader, PartyGirl, Cyborg, Painter, WitchDoctor, Pirate, Stylist, Angler,
+			TaxCollector, DD2Bartender, Golfer, BestiaryGirl, Princess, TownBunny, TownDog
+		};
 
 		public override void OnModLoad()
 		{
@@ -42,14 +48,14 @@ namespace AdvancedWorldGen
 			if (list != null)
 			{
 				OptionHelper.Options = new HashSet<string>(list);
-				Terraria.Main.checkHalloween();
-				Terraria.Main.checkXMas();
+				Main.checkHalloween();
+				Main.checkXMas();
 			}
 		}
 
 		public override TagCompound SaveWorldData()
 		{
-			return new TagCompound
+			return new()
 			{
 				{"Options", OptionHelper.Options.ToList()}
 			};
@@ -57,7 +63,7 @@ namespace AdvancedWorldGen
 
 		public override void NetReceive(BinaryReader reader)
 		{
-			List<int> list = new List<int>();
+			List<int> list = new();
 			OptionHelper.Options.Clear();
 
 			int id;
@@ -70,8 +76,8 @@ namespace AdvancedWorldGen
 				if (list.Count == 0) break;
 			}
 
-			Terraria.Main.checkHalloween();
-			Terraria.Main.checkXMas();
+			Main.checkHalloween();
+			Main.checkXMas();
 		}
 
 		public override void NetSend(BinaryWriter writer)
@@ -85,20 +91,22 @@ namespace AdvancedWorldGen
 		public override void PreWorldGen()
 		{
 			WorldGen.notTheBees = OptionsContains("NotTheBees", "SmallNotTheBees");
-			Terraria.Main.getGoodWorld = OptionsContains("ForTheWorthy");
-			WorldGen.getGoodWorldGen = Terraria.Main.getGoodWorld;
-			Terraria.Main.drunkWorld = OptionsContains("Drunk");
-			WorldGen.drunkWorldGen = Terraria.Main.drunkWorld;
-			WorldGen.drunkWorldGenText = Terraria.Main.drunkWorld;
-			if (!Terraria.Main.dayTime) Terraria.Main.time = 0;
+			Main.getGoodWorld = OptionsContains("ForTheWorthy");
+			WorldGen.getGoodWorldGen = Main.getGoodWorld;
+			Main.drunkWorld = OptionsContains("Drunk");
+			WorldGen.drunkWorldGen = Main.drunkWorld;
+			WorldGen.drunkWorldGenText = Main.drunkWorld;
+			Main.tenthAnniversaryWorld = OptionsContains("Celebrationmk10");
+			if (!Main.dayTime) Main.time = 0;
 		}
 
 		//Deletes all the now-useless stuff about special seeds
 		public static void OverrideWorldOptions(ILContext il)
 		{
-			ILCursor cursor = new ILCursor(il);
+			ILCursor cursor = new(il);
 			if (cursor.TryGotoNext(instruction => instruction.MatchLdcI4(0)))
-				for (int i = 0; i < 44; i++)
+				while (!cursor.Next.MatchLdstr(
+					"Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}"))
 					cursor.Remove();
 		}
 
@@ -111,77 +119,54 @@ namespace AdvancedWorldGen
 				tasks.Insert(passIndex, new PassLegacy("NPCs", HandleNpcs));
 			}
 
+			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Micro Biomes");
+			if (passIndex != -1)
+				passIndex = HalloweenCommon.InsertTasks(tasks, passIndex);
+
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
 		}
 
-		public void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
+		public static void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
 		{
-			int npcs = 0;
-			if (OptionHelper.OptionsContains("Painted"))
+			List<int> availableNPCs = NPCs.ToList();
+			if (OptionHelper.OptionsContains("Painted")) AddNpc(Painter, availableNPCs);
+
+			if (WorldGen.notTheBees) AddNpc(Merchant, availableNPCs);
+
+			if (WorldGen.getGoodWorldGen) AddNpc(Demolitionist, availableNPCs);
+
+			if (WorldGen.drunkWorldGen) AddNpc(PartyGirl, availableNPCs);
+
+			if (Main.tenthAnniversaryWorld)
 			{
-				AddNpc(Painter);
-				npcs++;
+				AddNpc(Princess, availableNPCs);
+				AddNpc(Steampunker, availableNPCs);
+				AddNpc(Guide, availableNPCs);
+				AddNpc(PartyGirl, availableNPCs);
+				AddNpc(TownBunny, availableNPCs);
 			}
 
-			if (WorldGen.notTheBees)
-			{
-				AddNpc(Merchant);
-				npcs++;
-			}
+			if (OptionHelper.OptionsContains("Santa")) AddNpc(SantaClaus, availableNPCs);
 
-			if (WorldGen.getGoodWorldGen)
-			{
-				AddNpc(Demolitionist);
-				npcs++;
-			}
+			if (OptionHelper.OptionsContains("Random")) AddNpc(RandomNpc(availableNPCs), availableNPCs);
 
-			if (WorldGen.drunkWorldGen)
-			{
-				AddNpc(PartyGirl);
-				npcs++;
-			}
-
-			if (OptionHelper.OptionsContains("Santa"))
-			{
-				AddNpc(SantaClaus);
-				npcs++;
-			}
-
-			if (OptionHelper.OptionsContains("Random"))
-			{
-				AddNpc(RandomNpc());
-				npcs++;
-			}
-
-			if (npcs == 0) AddNpc(Guide);
+			if (availableNPCs.Count == NPCs.Count) AddNpc(Guide, availableNPCs);
 		}
 
-		public static void AddNpc(int npc)
+		public static void AddNpc(int npc, List<int> availableNPCs)
 		{
-			int npcId = NPC.NewNPC(Terraria.Main.spawnTileX * 16, Terraria.Main.spawnTileY * 16, npc);
-			Terraria.Main.npc[npcId].homeTileX = Terraria.Main.spawnTileX;
-			Terraria.Main.npc[npcId].homeTileY = Terraria.Main.spawnTileY;
-			Terraria.Main.npc[npcId].direction = Terraria.Main.rand.Next(2) == 0 ? 1 : -1;
-			Terraria.Main.npc[npcId].homeless = true;
+			if(!availableNPCs.Contains(npc)) return;
+			int npcId = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, npc);
+			Main.npc[npcId].homeTileX = Main.spawnTileX;
+			Main.npc[npcId].homeTileY = Main.spawnTileY;
+			Main.npc[npcId].direction = Main.rand.Next(2) == 0 ? 1 : -1;
+			Main.npc[npcId].homeless = true;
+			availableNPCs.RemoveAll(i => i == npc);
 		}
 
-		public int RandomNpc()
+		public static int RandomNpc(List<int> availableNPCs)
 		{
-			List<int> npcs = new List<int>
-			{
-				Nurse, ArmsDealer, Dryad, Guide, Clothier, GoblinTinkerer, Wizard, Mechanic, Truffle, Steampunker,
-				DyeTrader, Cyborg, WitchDoctor, Pirate, Stylist, Angler, TaxCollector, DD2Bartender, Golfer,
-				BestiaryGirl, Princess
-			};
-			if (!WorldGen.notTheBees) npcs.Add(Merchant);
-
-			if (!WorldGen.getGoodWorldGen) npcs.Add(Demolitionist);
-
-			if (!WorldGen.drunkWorldGen) npcs.Add(PartyGirl);
-
-			if (!OptionHelper.OptionsContains("Painted")) npcs.Add(Painter);
-
-			return Utils.SelectRandom(Terraria.Main.rand, npcs.ToArray());
+			return Utils.SelectRandom(Main.rand, availableNPCs.ToArray());
 		}
 
 		public static void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
@@ -194,16 +179,16 @@ namespace AdvancedWorldGen
 
 		public override void PostUpdateTime()
 		{
-			if (Terraria.Main.netMode != NetmodeID.MultiplayerClient) OptionHelper.OnTick();
+			if (Main.netMode != NetmodeID.MultiplayerClient) OptionHelper.OnTick();
 		}
 
-		public static void OnDawn(Main.orig_UpdateTime_StartDay orig, ref bool stopEvents)
+		public static void OnDawn(OnMain.orig_UpdateTime_StartDay orig, ref bool stopEvents)
 		{
 			orig(ref stopEvents);
 			OptionHelper.OnDawn();
 		}
 
-		public static void OnDusk(Main.orig_UpdateTime_StartNight orig, ref bool stopEvents)
+		public static void OnDusk(OnMain.orig_UpdateTime_StartNight orig, ref bool stopEvents)
 		{
 			orig(ref stopEvents);
 			OptionHelper.OnDusk();

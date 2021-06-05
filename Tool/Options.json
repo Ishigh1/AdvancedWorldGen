@@ -7,6 +7,11 @@
             "StupidlyHugeTemple"
         ]
     },
+    "Celebrationmk10": {
+        "Hidden": false,
+        "id": 1,
+        "Conflicts": []
+    },
     "Crimruption": {
         "Hidden": true,
         "id": 102,
@@ -16,7 +21,7 @@
     },
     "Drunk": {
         "Hidden": false,
-        "id": 1,
+        "id": 2,
         "Conflicts": [
             "Crimruption"
         ]
@@ -28,12 +33,12 @@
     },
     "ForTheWorthy": {
         "Hidden": false,
-        "id": 2,
+        "id": 3,
         "Conflicts": []
     },
     "NotTheBees": {
         "Hidden": false,
-        "id": 3,
+        "id": 4,
         "Conflicts": [
             "Random",
             "Santa",
@@ -42,12 +47,12 @@
     },
     "Painted": {
         "Hidden": false,
-        "id": 4,
+        "id": 5,
         "Conflicts": []
     },
     "Random": {
         "Hidden": false,
-        "id": 5,
+        "id": 6,
         "Conflicts": [
             "NotTheBees",
             "Santa"
@@ -55,7 +60,7 @@
     },
     "Santa": {
         "Hidden": false,
-        "id": 6,
+        "id": 7,
         "Conflicts": [
             "NotTheBees",
             "Random"
@@ -63,14 +68,19 @@
     },
     "SmallNotTheBees": {
         "Hidden": false,
-        "id": 7,
+        "id": 8,
         "Conflicts": [
             "NotTheBees"
         ]
     },
+    "Spooky": {
+        "Hidden": true,
+        "id": 104,
+        "Conflicts": []
+    },
     "StupidlyBigTemple": {
         "Hidden": true,
-        "id": 103,
+        "id": 105,
         "Conflicts": [
             "BigTemple",
             "StupidlyHugeTemple"

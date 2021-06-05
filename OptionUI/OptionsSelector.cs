@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AdvancedWorldGen.Base;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;
@@ -39,7 +40,7 @@ namespace AdvancedWorldGen.OptionUI
 
 		public void CreateOptionPanel()
 		{
-			UIPanel uiPanel = new UIPanel
+			UIPanel uiPanel = new()
 			{
 				HAlign = 0.5f,
 				VAlign = 0.5f,
@@ -49,7 +50,7 @@ namespace AdvancedWorldGen.OptionUI
 			};
 			Append(uiPanel);
 
-			UIText uiTitle = new UIText("Seed options", 0.75f, true) {HAlign = 0.5f};
+			UIText uiTitle = new("Seed options", 0.75f, true) {HAlign = 0.5f};
 			uiTitle.Height = uiTitle.MinHeight;
 			uiPanel.Append(uiTitle);
 			uiPanel.Append(new UIHorizontalSeparator
@@ -59,7 +60,7 @@ namespace AdvancedWorldGen.OptionUI
 				Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 			});
 
-			UIText uiDescription = new UIText(Description, 0.75f) {HAlign = 0.5f, VAlign = 0.5f};
+			UIText uiDescription = new(Description, 0.75f) {HAlign = 0.5f, VAlign = 0.5f};
 
 			CreateSelectableOptions(uiPanel, uiDescription);
 
@@ -72,7 +73,7 @@ namespace AdvancedWorldGen.OptionUI
 
 			uiDescription.Height = uiDescription.MinHeight;
 			UISlicedImage uIDescriptionBox =
-				new UISlicedImage(Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelHighlight"))
+				new(Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelHighlight"))
 				{
 					Width = new StyleDimension(0f, 1f),
 					Height = new StyleDimension(40f, 0),
@@ -86,7 +87,7 @@ namespace AdvancedWorldGen.OptionUI
 
 			uiPanel.Recalculate();
 
-			UITextPanel<string> goBack = new UITextPanel<string>("Go back")
+			UITextPanel<string> goBack = new("Go back")
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),
@@ -100,13 +101,13 @@ namespace AdvancedWorldGen.OptionUI
 
 		public void CreateSelectableOptions(UIElement uiPanel, UIText uiDescription)
 		{
-			UIScrollbar uiScrollbar = new UIScrollbar
+			UIScrollbar uiScrollbar = new()
 			{
 				Height = new StyleDimension(-110f, 1f),
 				Top = new StyleDimension(50, 0f),
 				HAlign = 1f
 			};
-			UIList uiList = new UIList
+			UIList uiList = new()
 			{
 				Height = new StyleDimension(-110f, 1f),
 				Width = new StyleDimension(-20f, 1f),
@@ -120,7 +121,7 @@ namespace AdvancedWorldGen.OptionUI
 			bool showHidden = false;
 			LocalizedText showHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.ShowHidden.description");
 			LocalizedText hideHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.HideHidden.description");
-			UIImage uiImage = new UIImage(TextureAssets.InventoryTickOff)
+			UIImage uiImage = new(TextureAssets.InventoryTickOff)
 			{
 				HAlign = 1f
 			};
@@ -151,7 +152,7 @@ namespace AdvancedWorldGen.OptionUI
 			uiList.Clear();
 			bool isLookingAtConflict = false;
 
-			GroupOptionButton<bool> importButton = new GroupOptionButton<bool>(true,
+			GroupOptionButton<bool> importButton = new(true,
 				Language.GetText("Mods.AdvancedWorldGen.Import"),
 				Language.GetText("Mods.AdvancedWorldGen.Import.description"), Color.White, null)
 			{
@@ -187,7 +188,7 @@ namespace AdvancedWorldGen.OptionUI
 			{
 				if (keyValuePair.Value.Hidden && !showHidden) continue;
 				string option = keyValuePair.Key;
-				GroupOptionButton<bool> clickableText = new GroupOptionButton<bool>(true,
+				GroupOptionButton<bool> clickableText = new(true,
 					Language.GetText("Mods.AdvancedWorldGen." + option),
 					Language.GetText("Mods.AdvancedWorldGen." + option + ".description"), Color.White, null)
 				{
@@ -227,7 +228,7 @@ namespace AdvancedWorldGen.OptionUI
 						{
 							LocalizedText conflictDescription =
 								Language.GetText("Mods.AdvancedWorldGen.conflict." + option + "." + conflict);
-							UIImage uiImage = new UIImage(UICommon.ButtonErrorTexture)
+							UIImage uiImage = new(UICommon.ButtonErrorTexture)
 							{
 								Left = new StyleDimension(-15, 0f),
 								HAlign = 1f,
@@ -253,7 +254,7 @@ namespace AdvancedWorldGen.OptionUI
 
 		public static HashSet<string> TextToOptions(string text)
 		{
-			HashSet<string> options = new HashSet<string>();
+			HashSet<string> options = new();
 			foreach (string s in text.Split('|'))
 				if (OptionDict.Keys.Contains(s))
 					options.Add(s);

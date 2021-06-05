@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using static Terraria.ID.TileID;
 
-namespace AdvancedWorldGen
+namespace AdvancedWorldGen.Base
 {
 	public class SpecialCase
 	{
@@ -53,7 +53,7 @@ namespace AdvancedWorldGen
 				TallGateClosed
 			};
 
-			Dictionary<int, int> dictionary = new Dictionary<int, int>();
+			Dictionary<int, int> dictionary = new();
 			UpdateDictionary(dictionary, SnowBlock, Dirt, Grass, CorruptGrass, ClayBlock, CrimsonGrass);
 			UpdateDictionary(dictionary, IceBlock, Stone, GreenMoss, BrownMoss, RedMoss, BlueMoss,
 				PurpleMoss, LavaMoss, KryptonMoss, XenonMoss, ArgonMoss);
@@ -65,7 +65,7 @@ namespace AdvancedWorldGen
 			UpdateDictionary(dictionary, None, Plants, CorruptPlants, Sunflower, Vines, Plants2, CrimsonPlants,
 				CrimsonVines, VineFlowers, CorruptThorns, CrimsonThorns);
 
-			Dictionary<int, SpecialCase> specialCases = new Dictionary<int, SpecialCase>
+			Dictionary<int, SpecialCase> specialCases = new()
 			{
 				{
 					ImmatureHerbs, new SpecialCase(None,
@@ -174,10 +174,10 @@ namespace AdvancedWorldGen
 
 		public static void RandomizeWorld(GenerationProgress progress, OptionHelper optionHelper)
 		{
-			Dictionary<ushort, ushort> tileRandom = new Dictionary<ushort, ushort>();
-			Dictionary<ushort, ushort> wallRandom = new Dictionary<ushort, ushort>();
-			Dictionary<ushort, byte> paintRandom = new Dictionary<ushort, byte>();
-			Dictionary<ushort, byte> paintWallRandom = new Dictionary<ushort, byte>();
+			Dictionary<ushort, ushort> tileRandom = new();
+			Dictionary<ushort, ushort> wallRandom = new();
+			Dictionary<ushort, byte> paintRandom = new();
+			Dictionary<ushort, byte> paintWallRandom = new();
 
 			float step = 1 / (float) Main.maxTilesY;
 			float prog = 0;
