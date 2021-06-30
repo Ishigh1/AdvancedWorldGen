@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace AdvancedWorldGen
+namespace AdvancedWorldGen.Base
 {
 	public class OptionHelper
 	{
@@ -75,12 +75,12 @@ namespace AdvancedWorldGen
 			}
 		}
 
-		public static void HandlePacket(BinaryReader reader, int whoAmI)
+		public static void HandlePacket(BinaryReader reader)
 		{
-			ServerChangeId serverChangeId = (ServerChangeId) reader.ReadByte();
-			switch (serverChangeId)
+			PacketId packetId = (PacketId) reader.ReadByte();
+			switch (packetId)
 			{
-				case ServerChangeId.Freezing:
+				case PacketId.SantaWaterFreezing:
 					int x = reader.Read();
 					int y = reader.Read();
 					Tile tile = Main.tile[x, y];
@@ -88,7 +88,7 @@ namespace AdvancedWorldGen
 					tile.IsActive = true;
 					tile.type = TileID.BreakableIce;
 					break;
-				case ServerChangeId.Entropy:
+				case PacketId.EntropyHappening:
 					new Entropy(500, reader).TreatTiles();
 					break;
 				default:

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdvancedWorldGen.Base;
 using Terraria;
 using Terraria.IO;
 using Terraria.Localization;
@@ -19,7 +20,7 @@ namespace AdvancedWorldGen.OptionUI
 				bool showHidden = false;
 				string errorMessage = "";
 
-				ModifiedWorld.OptionHelper.Options.Clear();
+				ModifiedWorld.Instance.OptionHelper.Options.Clear();
 
 				while (!finished)
 				{
@@ -56,7 +57,9 @@ namespace AdvancedWorldGen.OptionUI
 				where !keyValuePair.Value.Hidden || hidden
 				select keyValuePair)
 				Console.WriteLine(id++ + " : " + Language.GetTextValue("Mods.AdvancedWorldGen." + keyValuePair.Key) +
-				                  (ModifiedWorld.OptionHelper.OptionsContains(keyValuePair.Key) ? "(chosen)" : ""));
+				                  (ModifiedWorld.Instance.OptionHelper.OptionsContains(keyValuePair.Key)
+					                  ? "(chosen)"
+					                  : ""));
 
 			if (!showHidden) Console.WriteLine("h : Show hidden options");
 
@@ -77,7 +80,7 @@ namespace AdvancedWorldGen.OptionUI
 		public static void PrintConflicts()
 		{
 			bool conflict = false;
-			List<string> options = ModifiedWorld.OptionHelper.Options.ToList();
+			List<string> options = ModifiedWorld.Instance.OptionHelper.Options.ToList();
 			for (int i = 0; i < options.Count; i++)
 			{
 				string option = options[i];
@@ -113,7 +116,7 @@ namespace AdvancedWorldGen.OptionUI
 					if (options == null)
 						errorMessage = "Input not recognized";
 					else
-						ModifiedWorld.OptionHelper.Options = options;
+						ModifiedWorld.Instance.OptionHelper.Options = options;
 				}
 			}
 		}
@@ -125,10 +128,10 @@ namespace AdvancedWorldGen.OptionUI
 				KeyValuePair<string, Option> pair = OptionsSelector.OptionDict.ElementAt(i);
 				if ((!pair.Value.Hidden || showHidden) && --id == 0)
 				{
-					if (ModifiedWorld.OptionHelper.OptionsContains(pair.Key))
-						ModifiedWorld.OptionHelper.Options.Remove(pair.Key);
+					if (ModifiedWorld.Instance.OptionHelper.OptionsContains(pair.Key))
+						ModifiedWorld.Instance.OptionHelper.Options.Remove(pair.Key);
 					else
-						ModifiedWorld.OptionHelper.Options.Add(pair.Key);
+						ModifiedWorld.Instance.OptionHelper.Options.Add(pair.Key);
 
 					return true;
 				}

@@ -1,14 +1,16 @@
 using System;
+using AdvancedWorldGen.Base;
 using Microsoft.Xna.Framework;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using On.Terraria;
+using Terraria;
+using OnWorldGen = On.Terraria.WorldGen;
 
 namespace AdvancedWorldGen.SpecialOptions
 {
 	public class ClassicOptions
 	{
-		public static void SmallNotTheBees(WorldGen.orig_NotTheBees orig)
+		public static void SmallNotTheBees(OnWorldGen.orig_NotTheBees orig)
 		{
 			if (!ModifiedWorld.OptionsContains("SmallNotTheBees")) orig();
 		}
@@ -20,7 +22,7 @@ namespace AdvancedWorldGen.SpecialOptions
 		 */
 		public static void ReduceTemple(ILContext il)
 		{
-			ILCursor cursor = new ILCursor(il);
+			ILCursor cursor = new(il);
 			if (!cursor.TryGotoNext(instruction => instruction.MatchLdcI4(100))) return;
 
 			while (cursor.Next.OpCode != OpCodes.Ldsfld) cursor.Remove();
@@ -48,9 +50,9 @@ namespace AdvancedWorldGen.SpecialOptions
 				templeSize = 20;
 			else if (ModifiedWorld.OptionsContains("BigTemple"))
 				templeSize = 15;
-			else if (Terraria.WorldGen.getGoodWorldGen && Terraria.WorldGen.drunkWorldGen)
+			else if (WorldGen.getGoodWorldGen && WorldGen.drunkWorldGen)
 				templeSize = 6;
-			else if (Terraria.WorldGen.getGoodWorldGen || Terraria.WorldGen.drunkWorldGen) templeSize = 3;
+			else if (WorldGen.getGoodWorldGen || WorldGen.drunkWorldGen) templeSize = 3;
 
 			if (templeSize > 10)
 			{
@@ -58,7 +60,7 @@ namespace AdvancedWorldGen.SpecialOptions
 				y = Math.Max(y, 50);
 			}
 
-			return Terraria.WorldGen.genRand.Next((int) (10 * worldSize * templeSize),
+			return WorldGen.genRand.Next((int) (10 * worldSize * templeSize),
 				(int) (16 * worldSize * templeSize));
 		}
 	}

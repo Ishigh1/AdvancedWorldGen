@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using AdvancedWorldGen.Base;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -68,7 +69,7 @@ namespace AdvancedWorldGen.SpecialOptions
 				for (int j = 0; j < SquareSize; j++)
 				{
 					int y = (j + Y) % Main.maxTilesY;
-					Tile tile = Main.tile[x, y];
+					Tile tile = Framing.GetTileSafely(x, y);
 					if (tile == null) continue;
 					List<Tuple<int, int>> coords;
 					if (tile.IsActive)
@@ -102,7 +103,27 @@ namespace AdvancedWorldGen.SpecialOptions
 			}
 		}
 
-		public void RandomizeEntropy()
+		public void RandomizeWalls()
+		{
+			if (Walls.Count != 0 && Walls.Count != WallLoader.WallCount)
+			{
+				int wall = Rand.Next(1, Walls.Count + 1);
+				OldWall = wall;
+				wall -= Walls.Keys.Count(key => key < wall);
+				while (wall != 0 || !Walls.ContainsKey(OldWall))
+					if (Walls.ContainsKey(++OldWall))
+						wall--;
+
+				wall = Rand.Next(1, WallLoader.WallCount - Walls.Count);
+				NewWall = wall;
+				wall = Walls.Keys.Count(key => key < wall);
+				while (wall != 0 || Walls.ContainsKey(NewWall))
+					if (!Walls.ContainsKey(++NewWall))
+						wall--;
+			}
+		}
+
+		public void RandomizeTiles()
 		{
 			if (Tiles.Count != 0 && Tiles.Count != TileLoader.TileCount)
 			{
@@ -134,23 +155,6 @@ namespace AdvancedWorldGen.SpecialOptions
 					c++;
 				}
 			}
-
-			if (Walls.Count != 0 && Walls.Count != WallLoader.WallCount)
-			{
-				int wall = Rand.Next(1, Walls.Count + 1);
-				OldWall = wall;
-				wall -= Walls.Keys.Count(key => key < wall);
-				while (wall != 0 || !Walls.ContainsKey(OldWall))
-					if (Walls.ContainsKey(++OldWall))
-						wall--;
-
-				wall = Rand.Next(1, WallLoader.WallCount - Walls.Count);
-				NewWall = wall;
-				wall = Walls.Keys.Count(key => key < wall);
-				while (wall != 0 || Walls.ContainsKey(NewWall))
-					if (!Walls.ContainsKey(++NewWall))
-						wall--;
-			}
 		}
 
 		public void SendData()
@@ -159,7 +163,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			    (OldTile != -1 && NewTile != -1 || OldWall != 0 && NewWall != 0))
 			{
 				ModPacket modPacket = OptionHelper.AdvancedWorldGen.GetPacket();
-				modPacket.Write((byte) ServerChangeId.Freezing);
+				modPacket.Write((byte) PacketId.SantaWaterFreezing);
 				modPacket.Write(NewTile);
 				modPacket.Write(NewWall);
 				modPacket.Write(OldTile);
@@ -177,20 +181,20 @@ namespace AdvancedWorldGen.SpecialOptions
 		{
 			if (OldTile != -1 && NewTile != -1)
 				foreach ((int x, int y) in Tiles[OldTile]
-					.Where(tuple => Main.tile[tuple.Item1, tuple.Item2].type == OldTile))
+					.Where(tuple => Framing.GetTileSafely(tuple.Item1, tuple.Item2).type == OldTile))
 				{
-					Main.tile[x, y].type = (ushort) NewTile;
+					Framing.GetTileSafely(x, y).type = (ushort) NewTile;
 					if (ModifiedWorld.OptionsContains("Painted"))
-						Main.tile[x, y].Color = PaintTile;
+						Framing.GetTileSafely(x, y).Color = PaintTile;
 				}
 
 			if (OldWall != 0 && NewWall != 0)
 				foreach ((int x, int y) in Walls[OldWall]
-					.Where(tuple => Main.tile[tuple.Item1, tuple.Item2].wall == OldWall))
+					.Where(tuple => Framing.GetTileSafely(tuple.Item1, tuple.Item2).wall == OldWall))
 				{
-					Main.tile[x, y].wall = (ushort) NewWall;
+					Framing.GetTileSafely(x, y).wall = (ushort) NewWall;
 					if (ModifiedWorld.OptionsContains("Painted"))
-						Main.tile[x, y].WallColor = PaintWall;
+						Framing.GetTileSafely(x, y).WallColor = PaintWall;
 				}
 		}
 
@@ -211,7 +215,7 @@ namespace AdvancedWorldGen.SpecialOptions
 				foreach ((int x, int y) in keyValuePair.Value)
 				{
 					s += "(" + x + ", " + y + ") : ";
-					Tile tile = Main.tile[x, y];
+					Tile tile = Framing.GetTileSafely(x, y);
 					s += tile + "\n";
 				}
 
@@ -224,15 +228,16 @@ namespace AdvancedWorldGen.SpecialOptions
 		public static void StartEntropy(OptionHelper optionHelper)
 		{
 			if (!optionHelper.OptionsContains("Entropy")) return;
-			Thread thread = new Thread(DoEntropy) {Priority = ThreadPriority.Lowest};
+			Thread thread = new(DoEntropy) {Priority = ThreadPriority.Lowest};
 			thread.Start(optionHelper);
 		}
 
 		public static void DoEntropy(object o)
 		{
-			Entropy entropy = new Entropy(500, o as OptionHelper);
+			Entropy entropy = new(500, o as OptionHelper);
 			entropy.ExtractData();
-			entropy.RandomizeEntropy();
+			entropy.RandomizeTiles();
+			entropy.RandomizeWalls();
 			entropy.SendData();
 			entropy.ApplyChanges();
 		}
@@ -245,7 +250,7 @@ namespace AdvancedWorldGen.SpecialOptions
 				for (int j = 0; j < SquareSize; j++)
 				{
 					int y = (j + Y) % Main.maxTilesY;
-					Tile tile = Main.tile[x, y];
+					Tile tile = Framing.GetTileSafely(x, y);
 					if (tile == null) continue;
 					if (tile.type == OldTile && NewTile != -1)
 					{

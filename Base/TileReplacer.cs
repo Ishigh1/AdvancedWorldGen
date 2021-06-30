@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using static Terraria.ID.TileID;
 
-namespace AdvancedWorldGen
+namespace AdvancedWorldGen.Base
 {
 	public class SpecialCase
 	{
@@ -33,8 +33,6 @@ namespace AdvancedWorldGen
 		public const int Honey = -4;
 
 		public static List<int> NotReplaced;
-		public static TileReplacer Snow;
-
 
 		public Dictionary<int, int> Dictionary;
 		public Dictionary<int, SpecialCase> SpecialCases;
@@ -45,6 +43,56 @@ namespace AdvancedWorldGen
 			SpecialCases = specialCases;
 		}
 
+		public static TileReplacer Snow
+		{
+			get
+			{
+				Dictionary<int, int> dictionary = new();
+				UpdateDictionary(dictionary, SnowBlock, Dirt, Grass, CorruptGrass, ClayBlock, CrimsonGrass);
+				UpdateDictionary(dictionary, IceBlock, Stone, GreenMoss, BrownMoss, RedMoss, BlueMoss,
+					PurpleMoss, LavaMoss, KryptonMoss, XenonMoss, ArgonMoss);
+				UpdateDictionary(dictionary, CorruptIce, Ebonstone);
+				UpdateDictionary(dictionary, FleshIce, Crimstone);
+				UpdateDictionary(dictionary, BorealWood, WoodBlock);
+				UpdateDictionary(dictionary, BreakableIce, Water);
+				UpdateDictionary(dictionary, Slush, Silt);
+				UpdateDictionary(dictionary, None, Plants, CorruptPlants, Sunflower, Vines, Plants2, CrimsonPlants,
+					CrimsonVines, VineFlowers, CorruptThorns, CrimsonThorns);
+				Dictionary<int, SpecialCase> specialCases = new()
+				{
+					{
+						ImmatureHerbs, new SpecialCase(None,
+							(x, y, tile) => tile.frameX == 0 || tile.frameX == 32 || tile.frameX == 32 * 2 ||
+							                tile.frameX == 32 * 3 || tile.frameX == 32 * 6)
+					},
+					{
+						MatureHerbs, new SpecialCase(None,
+							(x, y, tile) => tile.frameX == 0 || tile.frameX == 32 || tile.frameX == 32 * 2 ||
+							                tile.frameX == 32 * 3 || tile.frameX == 32 * 6)
+					},
+					{
+						BloomingHerbs, new SpecialCase(None,
+							(x, y, tile) => tile.frameX == 0 || tile.frameX == 32 || tile.frameX == 32 * 2 ||
+							                tile.frameX == 32 * 3 || tile.frameX == 32 * 6)
+					},
+					{
+						Cattail, new SpecialCase(None,
+							(x, y, tile) => tile.frameY == 0 || tile.frameY == 32 * 3 || tile.frameY == 32 * 4)
+					},
+					{
+						LilyPad, new SpecialCase(None,
+							(x, y, tile) => tile.frameY == 0 || tile.frameY == 32 * 3 || tile.frameY == 32 * 4)
+					},
+					{
+						DyePlants, new SpecialCase(None,
+							(x, y, tile) => tile.frameX == 32 * 3 || tile.frameX == 32 * 4 || tile.frameX == 32 * 7)
+					}
+				};
+
+				return new TileReplacer(dictionary, specialCases);
+			}
+		}
+
 		public static void Initialize()
 		{
 			NotReplaced = new List<int>
@@ -52,57 +100,11 @@ namespace AdvancedWorldGen
 				ClosedDoor, MagicalIceBlock, Traps, Boulder, Teleporter, MetalBars, PlanterBox, TrapdoorClosed,
 				TallGateClosed
 			};
-
-			Dictionary<int, int> dictionary = new Dictionary<int, int>();
-			UpdateDictionary(dictionary, SnowBlock, Dirt, Grass, CorruptGrass, ClayBlock, CrimsonGrass);
-			UpdateDictionary(dictionary, IceBlock, Stone, GreenMoss, BrownMoss, RedMoss, BlueMoss,
-				PurpleMoss, LavaMoss, KryptonMoss, XenonMoss, ArgonMoss);
-			UpdateDictionary(dictionary, CorruptIce, Ebonstone);
-			UpdateDictionary(dictionary, FleshIce, Crimstone);
-			UpdateDictionary(dictionary, BorealWood, WoodBlock);
-			UpdateDictionary(dictionary, BreakableIce, Water);
-			UpdateDictionary(dictionary, Slush, Silt);
-			UpdateDictionary(dictionary, None, Plants, CorruptPlants, Sunflower, Vines, Plants2, CrimsonPlants,
-				CrimsonVines, VineFlowers, CorruptThorns, CrimsonThorns);
-
-			Dictionary<int, SpecialCase> specialCases = new Dictionary<int, SpecialCase>
-			{
-				{
-					ImmatureHerbs, new SpecialCase(None,
-						(x, y, tile) => tile.frameX == 0 || tile.frameX == 32 || tile.frameX == 32 * 2 ||
-						                tile.frameX == 32 * 3 || tile.frameX == 32 * 6)
-				},
-				{
-					MatureHerbs, new SpecialCase(None,
-						(x, y, tile) => tile.frameX == 0 || tile.frameX == 32 || tile.frameX == 32 * 2 ||
-						                tile.frameX == 32 * 3 || tile.frameX == 32 * 6)
-				},
-				{
-					BloomingHerbs, new SpecialCase(None,
-						(x, y, tile) => tile.frameX == 0 || tile.frameX == 32 || tile.frameX == 32 * 2 ||
-						                tile.frameX == 32 * 3 || tile.frameX == 32 * 6)
-				},
-				{
-					Cattail, new SpecialCase(None,
-						(x, y, tile) => tile.frameY == 0 || tile.frameY == 32 * 3 || tile.frameY == 32 * 4)
-				},
-				{
-					LilyPad, new SpecialCase(None,
-						(x, y, tile) => tile.frameY == 0 || tile.frameY == 32 * 3 || tile.frameY == 32 * 4)
-				},
-				{
-					DyePlants, new SpecialCase(None,
-						(x, y, tile) => tile.frameX == 32 * 3 || tile.frameX == 32 * 4 || tile.frameX == 32 * 7)
-				}
-			};
-
-			Snow = new TileReplacer(dictionary, specialCases);
 		}
 
 		public static void Unload()
 		{
 			NotReplaced = null;
-			Snow = null;
 		}
 
 		public static void UpdateDictionary(Dictionary<int, int> dictionary, int to,
@@ -174,10 +176,10 @@ namespace AdvancedWorldGen
 
 		public static void RandomizeWorld(GenerationProgress progress, OptionHelper optionHelper)
 		{
-			Dictionary<ushort, ushort> tileRandom = new Dictionary<ushort, ushort>();
-			Dictionary<ushort, ushort> wallRandom = new Dictionary<ushort, ushort>();
-			Dictionary<ushort, byte> paintRandom = new Dictionary<ushort, byte>();
-			Dictionary<ushort, byte> paintWallRandom = new Dictionary<ushort, byte>();
+			Dictionary<ushort, ushort> tileRandom = new();
+			Dictionary<ushort, ushort> wallRandom = new();
+			Dictionary<ushort, byte> paintRandom = new();
+			Dictionary<ushort, byte> paintWallRandom = new();
 
 			float step = 1 / (float) Main.maxTilesY;
 			float prog = 0;
@@ -213,7 +215,7 @@ namespace AdvancedWorldGen
 				{
 					do
 					{
-						type = (ushort) Main.rand.Next(1, WallLoader.WallCount);
+						type = (ushort) WorldGen._genRand.Next(1, WallLoader.WallCount);
 					} while (wallRandom.ContainsValue(type));
 
 					wallRandom[tile.wall] = type;
@@ -225,7 +227,7 @@ namespace AdvancedWorldGen
 			{
 				if (!paintWallRandom.TryGetValue(tile.wall, out byte paint))
 				{
-					paint = (byte) Main.rand.Next(PaintID.IlluminantPaint + 1);
+					paint = (byte) WorldGen._genRand.Next(PaintID.IlluminantPaint + 1);
 					paintWallRandom[tile.wall] = paint;
 				}
 
@@ -249,7 +251,7 @@ namespace AdvancedWorldGen
 					{
 						do
 						{
-							type = (ushort) Main.rand.Next(TileLoader.TileCount);
+							type = (ushort) WorldGen._genRand.Next(TileLoader.TileCount);
 						} while (!Main.tileSolid[type] || Sets.Platforms[type] ||
 						         NotReplaced.Contains(type) ||
 						         tileRandom.ContainsValue(type));
@@ -268,7 +270,7 @@ namespace AdvancedWorldGen
 			{
 				if (!paintRandom.TryGetValue(tile.type, out byte paint))
 				{
-					paint = (byte) Main.rand.Next(PaintID.IlluminantPaint + 1);
+					paint = (byte) WorldGen._genRand.Next(PaintID.IlluminantPaint + 1);
 					paintRandom[tile.type] = paint;
 				}
 

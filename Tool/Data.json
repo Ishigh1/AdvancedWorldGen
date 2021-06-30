@@ -9,6 +9,13 @@
         "hidden": true,
         "internal_name": "BigTemple"
     },
+    "Celebrationmk10": {
+        "conflicts": {},
+        "description": "The classic tenth anniversary secret seed.",
+        "displayed_name": "Celebration Mk 10",
+        "hidden": false,
+        "internal_name": "Celebrationmk10"
+    },
     "Crimruption": {
         "conflicts": {
             "Drunk": "Drunk already contains Crimruption"

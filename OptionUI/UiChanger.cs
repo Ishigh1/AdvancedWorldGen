@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using AdvancedWorldGen.Base;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -38,7 +39,7 @@ namespace AdvancedWorldGen.OptionUI
 			orig(self);
 			if (!Main.dedServ)
 			{
-				UITextPanel<string> uiTextPanel = new UITextPanel<string>("");
+				UITextPanel<string> uiTextPanel = new("");
 				self.Append(uiTextPanel);
 				uiTextPanel.VAlign = 0.75f;
 				uiTextPanel.HAlign = 0.5f;
@@ -48,28 +49,21 @@ namespace AdvancedWorldGen.OptionUI
 			}
 		}
 
-		public void ThreadifyWorldGen(OnWorldGen.orig_worldGenCallback orig, object threadContext)
-		{
-			if (!Main.dedServ)
-			{
-				Thread = new Thread(() => { orig(threadContext); });
-				Thread.Start();
-			}
-			else
-			{
-				orig(threadContext);
-			}
-		}
-
 		public void UiTextPanelOnOnClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Thread.Abort();
+			WorldGen._genRand = null;
 			Main.MenuUI.SetState(UiWorldCreation);
 		}
 
 		public void TweakWorldGenUi(OnUIWorldCreation.orig_AddDescriptionPanel origAddDescriptionPanel,
 			UIWorldCreation self, UIElement container, float accumulatedHeight, string tagGroup)
 		{
+			using (StreamWriter file =
+				new(@"D:\debug.txt", true))
+			{
+				file.WriteLine("2");
+			}
+
 			origAddDescriptionPanel(self, container, accumulatedHeight, tagGroup);
 			UiWorldCreation = self;
 			FieldInfo fieldInfo = typeof(UIWorldCreation).GetField("_seedPlate", BindingFlags.NonPublic |
@@ -77,7 +71,7 @@ namespace AdvancedWorldGen.OptionUI
 			UICharacterNameButton characterNameButton = (UICharacterNameButton) fieldInfo.GetValue(self);
 			characterNameButton.Width.Pixels -= 48;
 
-			GroupOptionButton<bool> groupOptionButton = new GroupOptionButton<bool>(true, null, null, Color.White, null)
+			GroupOptionButton<bool> groupOptionButton = new(true, null, null, Color.White, null)
 			{
 				Width = new StyleDimension(40f, 0f),
 				Height = new StyleDimension(40f, 0f),
@@ -102,7 +96,7 @@ namespace AdvancedWorldGen.OptionUI
 
 			container.Append(groupOptionButton);
 
-			ModifiedWorld.OptionHelper.Options.Clear();
+			ModifiedWorld.Instance.OptionHelper.Options.Clear();
 			OptionsSelector = new OptionsSelector(self);
 		}
 
@@ -140,14 +134,14 @@ namespace AdvancedWorldGen.OptionUI
 				BindingFlags.NonPublic |
 				BindingFlags.Instance);
 			UIText uiText = (UIText) fieldInfo.GetValue(self);
-			UIImageButton copyOptionButton = new UIImageButton(CopyOptionsTexture)
+			UIImageButton copyOptionButton = new(CopyOptionsTexture)
 			{
 				VAlign = 1f,
 				Left = new StyleDimension(uiText.Left.Pixels - 4, 0f),
 				PaddingTop = 4f,
 				PaddingLeft = 4f
 			};
-			
+
 			List<string> options = GetOptionsFromData(data);
 
 			options = SetupCopyButton(copyOptionButton, options, uiText);
@@ -156,9 +150,14 @@ namespace AdvancedWorldGen.OptionUI
 			self.Append(copyOptionButton);
 
 			data.DrunkWorld = data.DrunkWorld || options.Contains("Crimruption");
+			using (StreamWriter file =
+				new(@"D:\debug.txt", true))
+			{
+				file.WriteLine("3");
+			}
 		}
 
-		private static List<string> GetOptionsFromData(WorldFileData data)
+		public static List<string> GetOptionsFromData(WorldFileData data)
 		{
 			string path = Path.ChangeExtension(data.Path, ".twld");
 			byte[] buf = FileUtilities.ReadAllBytes(path, data.IsCloudSave);
@@ -173,7 +172,7 @@ namespace AdvancedWorldGen.OptionUI
 			return options;
 		}
 
-		private static List<string> SetupCopyButton(UIImageButton copyOptionButton, List<string> options, UIText uiText)
+		public static List<string> SetupCopyButton(UIImageButton copyOptionButton, List<string> options, UIText uiText)
 		{
 			copyOptionButton.OnMouseOver += delegate
 			{
@@ -184,17 +183,16 @@ namespace AdvancedWorldGen.OptionUI
 				}
 
 				string text = "";
-				bool tooMuch = false;
-				for (int index = 0; index < options.Count && !tooMuch; index++)
+				foreach (string optionText in options.Select(option =>
+					Language.GetTextValue("Mods.AdvancedWorldGen." + option)))
 				{
-					string option = Language.GetTextValue("Mods.AdvancedWorldGen." + options[index]);
 					if (text != "") text += ", ";
 
-					text += option;
+					text += optionText;
 					if (text.Length > 40)
 					{
 						text = text.Substring(0, 35) + "[...]";
-						tooMuch = true;
+						break;
 					}
 				}
 

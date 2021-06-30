@@ -7,6 +7,7 @@ Import.description=Import settings from clipboard
 
 # Options
 BigTemple=Big Temple
+Celebrationmk10=Celebration Mk 10
 Crimruption=Crimruption
 Drunk=Drunk
 Entropy=Entropy
@@ -21,6 +22,7 @@ StupidlyHugeTemple=Stupidly Huge Temple
 
 # Options description
 BigTemple.description=Makes the temple bigger.
+Celebrationmk10.description=The classic tenth anniversary secret seed.
 Crimruption.description=Both Crimson and Corruption are in this world
 Drunk.description=The classic 5162020 settings.
 Entropy.description=A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.
