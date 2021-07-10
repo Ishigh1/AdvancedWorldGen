@@ -9,12 +9,12 @@ namespace AdvancedWorldGen.Base
 		{
 			float power = Main.GameModeInfo.EnemyDamageMultiplier;
 
+			if (Main.getGoodWorld) power++;
 			CreativePowers.DifficultySliderPower difficultySliderPower =
 				CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
 			if (difficultySliderPower != null && difficultySliderPower.GetIsUnlocked())
 				power *= difficultySliderPower.StrengthMultiplierToGiveNPCs;
 
-			if (Main.getGoodWorld) power++;
 			return power;
 		}
 	}
