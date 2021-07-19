@@ -86,7 +86,7 @@ namespace AdvancedWorldGen.OptionUI
 
 			uiPanel.Recalculate();
 
-			UITextPanel<string> goBack = new("Go back")
+			UITextPanel<string> goBack = new("Back")
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),
