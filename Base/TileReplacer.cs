@@ -100,6 +100,9 @@ namespace AdvancedWorldGen.Base
 				ClosedDoor, MagicalIceBlock, Traps, Boulder, Teleporter, MetalBars, PlanterBox, TrapdoorClosed,
 				TallGateClosed
 			};
+			IEnumerable<ModTile> modTiles = ModLoader.GetMod("ModLoader").GetContent<ModTile>();
+
+			foreach (ModTile modTile in modTiles) NotReplaced.Add(modTile.Type);
 		}
 
 		public static void Unload()
