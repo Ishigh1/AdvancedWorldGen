@@ -5,6 +5,7 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
+using MonoMod.Utils;
 using Terraria;
 using ILWorldGen = IL.Terraria.WorldGen;
 
@@ -12,7 +13,7 @@ namespace AdvancedWorldGen.SpecialOptions
 {
 	public class Crimruption
 	{
-		public MethodInfo CorruptionGen;
+		public MethodBase CorruptionGen;
 		public FieldInfo Drunk;
 
 		public event ILContext.Manipulator OnIlCorruptionGeneration
@@ -48,9 +49,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			if (!cursor.TryGotoNext(instruction => instruction.OpCode == OpCodes.Ldftn)) return;
 			MethodReference methodReference = (MethodReference) cursor.Next.Operand;
 
-			Assembly assembly = typeof(Main).Assembly;
-			Type type = assembly.GetType("Terraria.WorldGen+" + methodReference.DeclaringType.Name);
-			CorruptionGen = type.GetMethod(methodReference.Name, BindingFlags.Instance | BindingFlags.NonPublic);
+			CorruptionGen = methodReference.ResolveReflection();
 		}
 
 		public void Unload()
