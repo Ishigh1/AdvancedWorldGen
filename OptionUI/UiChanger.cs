@@ -44,6 +44,19 @@ namespace AdvancedWorldGen.OptionUI
 			}
 		}
 		
+		public void ThreadifyWorldGen(OnWorldGen.orig_worldGenCallback orig, object threadContext)
+		{
+			if (!Main.dedServ)
+			{
+				Thread = new Thread(() => { orig(threadContext); });
+				Thread.Start();
+			}
+			else
+			{
+				orig(threadContext);
+			}
+		}
+		
 		public void AddCancel(OnUIWorldLoad.orig_ctor orig, UIWorldLoad self)
 		{
 			orig(self);
@@ -55,14 +68,20 @@ namespace AdvancedWorldGen.OptionUI
 				uiTextPanel.HAlign = 0.5f;
 				uiTextPanel.SetText("Abort");
 				uiTextPanel.Recalculate();
+				uiTextPanel.OnMouseOver += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
+				uiTextPanel.OnMouseOut += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
 				uiTextPanel.OnClick += UiTextPanelOnOnClick;
 			}
 		}
 
 		public void UiTextPanelOnOnClick(UIMouseEvent evt, UIElement listeningElement)
 		{
+			SoundEngine.PlaySound(SoundID.MenuClose);
+			Tile[,] tiles = Main.tile;
+			Main.tile = null;
 			WorldGen._genRand = null;
-			Main.MenuUI.SetState(UiWorldCreation);
+			Thread.Join();
+			Main.tile = tiles;
 		}
 
 		public void TweakWorldGenUi(OnUIWorldCreation.orig_AddDescriptionPanel origAddDescriptionPanel,

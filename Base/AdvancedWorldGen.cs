@@ -36,6 +36,7 @@ namespace AdvancedWorldGen.Base
 			OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
 			OnUIWorldListItem.ctor += UiChanger.CopySettingsButton;
 			OnUIWorldLoad.ctor += UiChanger.AddCancel;
+			OnWorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
 			ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
 			OnWorldFile.CreateMetadata += DedServUi.DedServOptions;
 
@@ -56,6 +57,7 @@ namespace AdvancedWorldGen.Base
 			OnUIWorldCreation.AddDescriptionPanel -= UiChanger.TweakWorldGenUi;
 			OnUIWorldListItem.ctor -= UiChanger.CopySettingsButton;
 			OnUIWorldLoad.ctor -= UiChanger.AddCancel;
+			OnWorldGen.worldGenCallback -= UiChanger.ThreadifyWorldGen;
 			ILWorldGen.GenerateWorld -= ModifiedWorld.OverrideWorldOptions;
 			OnWorldFile.CreateMetadata -= DedServUi.DedServOptions;
 
