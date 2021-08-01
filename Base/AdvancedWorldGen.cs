@@ -28,12 +28,7 @@ namespace AdvancedWorldGen.Base
 				Encoding.UTF8.GetString(GetFileBytes("Options.json")));
 			TileReplacer.Initialize();
 
-			UiChanger = new UiChanger();
-			if (!Main.dedServ)
-			{
-				UiChanger.OptionsTexture = GetTexture("Images/WorldOptions");
-				UiChanger.CopyOptionsTexture = GetTexture("Images/CopyWorldButton");
-			}
+			UiChanger = new UiChanger(this);
 
 			Crimruption = new Crimruption();
 			Crimruption.Load();
@@ -57,6 +52,7 @@ namespace AdvancedWorldGen.Base
 
 		public override void Unload()
 		{
+			
 			OnUIWorldCreation.AddDescriptionPanel -= UiChanger.TweakWorldGenUi;
 			OnUIWorldListItem.ctor -= UiChanger.CopySettingsButton;
 			OnUIWorldLoad.ctor -= UiChanger.AddCancel;
@@ -72,12 +68,7 @@ namespace AdvancedWorldGen.Base
 			ILProjectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
 
 			ILWorldGen.MakeDungeon -= Crimruption.CrimruptionChest;
-
-			UiChanger.OptionsTexture = null;
-			UiChanger = null;
-
 			Crimruption.Unload();
-			Crimruption = null;
 
 			OptionsSelector.OptionDict = null;
 			TileReplacer.Unload();

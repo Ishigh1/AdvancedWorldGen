@@ -1,4 +1,4 @@
 displayName = Advanced World Generation
 author = Gaelyte
-version = 2.2.1
+version = 2.2.1.1
 homepage = https://forums.terraria.org/index.php?threads/.97942/

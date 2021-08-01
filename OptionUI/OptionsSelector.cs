@@ -7,6 +7,7 @@ using ReLogic.OS;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
@@ -166,8 +167,9 @@ namespace AdvancedWorldGen.OptionUI
 			importButton.SetCurrentOption(false);
 			importButton.OnMouseDown += delegate
 			{
-				HashSet<string> options = TextToOptions(Platform.Get<IClipboard>().Value);
-				if (options != null)
+				string optionText = Platform.Get<IClipboard>().Value;
+				HashSet<string> options = TextToOptions(optionText);
+				if (options.Count != 0)
 				{
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					ModifiedWorld.Instance.OptionHelper.Options = options;
@@ -254,11 +256,8 @@ namespace AdvancedWorldGen.OptionUI
 		public static HashSet<string> TextToOptions(string text)
 		{
 			HashSet<string> options = new();
-			foreach (string s in text.Split('|'))
-				if (OptionDict.Keys.Contains(s))
-					options.Add(s);
-				else
-					return null;
+			foreach (string s in text.Split('|').Where(s => OptionDict.Keys.Contains(s)))
+				options.Add(s);
 
 			return options;
 		}

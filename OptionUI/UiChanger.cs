@@ -15,6 +15,7 @@ using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
@@ -34,6 +35,15 @@ namespace AdvancedWorldGen.OptionUI
 		public Thread Thread;
 		public UIWorldCreation UiWorldCreation;
 
+		public UiChanger(Mod mod)
+		{
+			if (!Main.dedServ)
+			{
+				OptionsTexture = mod.Assets.Request<Texture2D>("Images/WorldOptions");
+				CopyOptionsTexture = mod.Assets.Request<Texture2D>("Images/CopyWorldButton");
+			}
+		}
+		
 		public void AddCancel(OnUIWorldLoad.orig_ctor orig, UIWorldLoad self)
 		{
 			orig(self);
@@ -58,12 +68,6 @@ namespace AdvancedWorldGen.OptionUI
 		public void TweakWorldGenUi(OnUIWorldCreation.orig_AddDescriptionPanel origAddDescriptionPanel,
 			UIWorldCreation self, UIElement container, float accumulatedHeight, string tagGroup)
 		{
-			using (StreamWriter file =
-				new(@"D:\debug.txt", true))
-			{
-				file.WriteLine("2");
-			}
-
 			origAddDescriptionPanel(self, container, accumulatedHeight, tagGroup);
 			UiWorldCreation = self;
 			FieldInfo fieldInfo = typeof(UIWorldCreation).GetField("_seedPlate", BindingFlags.NonPublic |
@@ -150,11 +154,6 @@ namespace AdvancedWorldGen.OptionUI
 			self.Append(copyOptionButton);
 
 			data.DrunkWorld = data.DrunkWorld || options.Contains("Crimruption");
-			using (StreamWriter file =
-				new(@"D:\debug.txt", true))
-			{
-				file.WriteLine("3");
-			}
 		}
 
 		public static List<string> GetOptionsFromData(WorldFileData data)
