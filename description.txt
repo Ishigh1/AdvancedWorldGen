@@ -4,4 +4,5 @@ You can select the different seed option with the gear on the right of where the
 This mod also removes the vanilla way of triggering the secret seeds, so no seed will trigger a secret, they can only be enabled by the option UI.
 
 I am working on a modifiable world size, it is still in progress, don't expect a bug-free world generation with it.
+Also check the options to make some parts of the generation faster in big worlds (even if it might cause it to look a bit less good).
 Link to github : https://github.com/Ishigh1/AdvancedWorldGen/tree/1.4

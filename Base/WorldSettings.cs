@@ -40,6 +40,9 @@ namespace AdvancedWorldGen.Base
 		{
 			switch (sizeId)
 			{
+				case -1:
+					SizeX = 0;
+					break;
 				case 0:
 					SizeX = 4200;
 					SizeY = 1200;

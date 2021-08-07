@@ -8,8 +8,10 @@ using Terraria;
 using Terraria.GameContent.Events;
 using AdvancedWorldGen.SpecialOptions.Halloween;
 using MonoMod.Cil;
+using On.Terraria.UI;
 using Terraria;
 using Terraria.GameContent.Generation;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
@@ -18,6 +20,7 @@ using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 using static Terraria.ID.NPCID;
 using OnMain = On.Terraria.Main;
+using UIState = Terraria.UI.UIState;
 
 namespace AdvancedWorldGen.Base
 {
@@ -130,7 +133,7 @@ namespace AdvancedWorldGen.Base
 
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Micro Biomes");
 			if (passIndex != -1)
-				passIndex = HalloweenCommon.InsertTasks(tasks, passIndex);
+				HalloweenCommon.InsertTasks(tasks, ref passIndex);
 
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
 		}
@@ -223,6 +226,16 @@ namespace AdvancedWorldGen.Base
 		public static bool OptionsContains(params string[] s)
 		{
 			return Instance.OptionHelper.OptionsContains(s);
+		}
+
+		public void ResetSettings(UserInterface.orig_SetState orig, Terraria.UI.UserInterface self, UIState state)
+		{
+			orig(self, state);
+			if (state is UIWorldSelect)
+			{
+				OptionHelper.Options = new HashSet<string>();
+				OptionHelper.WorldSettings.SetSizeTo(-1);
+			}
 		}
 	}
 }

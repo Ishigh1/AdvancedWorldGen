@@ -96,11 +96,12 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween
 			cursor.MarkLabel(label);
 		}
 
-		public static int InsertTasks(List<GenPass> tasks, int passIndex)
+		public static void InsertTasks(List<GenPass> tasks, ref int passIndex)
 		{
+			if(!ModifiedWorld.OptionsContains("Spooky"))
+				return;
 			tasks.Insert(++passIndex, new PassLegacy("Graveyards", Graveyards.GenerateStructures));
 			tasks.Insert(++passIndex, new PassLegacy("HalloweenTraps", Traps.PlaceTraps));
-			return passIndex;
 		}
 	}
 }

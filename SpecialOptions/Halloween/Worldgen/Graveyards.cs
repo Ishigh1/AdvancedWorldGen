@@ -13,13 +13,13 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 	{
 		public static void GenerateStructures(GenerationProgress progress, GameConfiguration configuration)
 		{
-			for (int i = 0; i < 20 * Utilities.WorldSize; i++) PlaceSimpleGraveyard();
+			for (int i = 0; i < Utilities.WorldSize; i++) PlaceSimpleGraveyard();
 		}
 
 		public static void PlaceSimpleGraveyard()
 		{
+			int size = Main.rand.Next(10, 30) * Utilities.WorldSize;
 			int x = Main.rand.Next(WorldGen.beachDistance, Main.maxTilesX - WorldGen.beachDistance);
-			int size = Main.rand.Next(20, 50) * Utilities.WorldSize;
 			int y;
 			int prevTerrainY = -1;
 			if (!FlattenGround(x - size, x + size))

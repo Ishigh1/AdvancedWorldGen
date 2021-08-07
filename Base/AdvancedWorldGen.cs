@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.OptionUI;
 using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
 using AdvancedWorldGen.UI;
 using Newtonsoft.Json;
-using Terraria;
 using Terraria.ModLoader;
 using OnWorldGen = On.Terraria.WorldGen;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
 using OnUIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
+using OnUserInterface = On.Terraria.UI.UserInterface;
 using OnUIWorldLoad = On.Terraria.GameContent.UI.States.UIWorldLoad;
 using OnWorldFile = On.Terraria.IO.WorldFile;
 using OnMain = On.Terraria.Main;
@@ -38,10 +39,14 @@ namespace AdvancedWorldGen.Base
 
 			OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
 			OnUIWorldListItem.ctor += UiChanger.CopySettingsButton;
-			OnUIWorldLoad.ctor += UiChanger.AddCancel;
-			OnWorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
+			
 			ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
 			OnWorldFile.CreateMetadata += DedServUi.DedServOptions;
+			
+			OnUIWorldLoad.ctor += UiChanger.AddCancel;
+			OnWorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
+
+			OnUserInterface.SetState += ModifiedWorld.Instance.ResetSettings;
 
 			OnWorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
 			ILWorldGen.makeTemple += ClassicOptions.ReduceTemple;
@@ -52,6 +57,8 @@ namespace AdvancedWorldGen.Base
 			ILProjectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
 
 			ILWorldGen.MakeDungeon += Crimruption.CrimruptionChest;
+			
+			Replacer.Replace();
 
 			HalloweenCommon.Setup();
 		}
@@ -73,6 +80,8 @@ namespace AdvancedWorldGen.Base
 			ILProjectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
 
 			ILWorldGen.MakeDungeon -= Crimruption.CrimruptionChest;
+			
+			Replacer.UnReplace();
 
 			HalloweenCommon.UnSetup();
 			Crimruption.Unload();
