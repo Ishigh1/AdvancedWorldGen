@@ -52,4 +52,8 @@ Main tiles are inverted :
 
 ### Bigger temple rooms
 
-### Make Custom sized work
+### Make custom sized tile framing work
+
+### Look at why ftw + drunk generate evil on one side
+
+### Verify snowball IL code
