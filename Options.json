@@ -80,7 +80,7 @@
     },
     "StupidlyBigTemple": {
         "Hidden": true,
-        "id": 104,
+        "id": 105,
         "Conflicts": [
             "BigTemple",
             "StupidlyHugeTemple"
@@ -88,7 +88,7 @@
     },
     "StupidlyHugeTemple": {
         "Hidden": true,
-        "id": 105,
+        "id": 106,
         "Conflicts": [
             "BigTemple",
             "StupidlyBigTemple"
