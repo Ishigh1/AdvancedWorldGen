@@ -17,10 +17,12 @@ namespace AdvancedWorldGen.Base
 		public AdvancedWorldGen AdvancedWorldGen;
 		public HashSet<string> Options;
 		public SnowWorld SnowWorld;
+		public WorldSettings WorldSettings;
 
 		public OptionHelper()
 		{
 			Options = new HashSet<string>();
+			WorldSettings = new WorldSettings();
 			SnowWorld = new SnowWorld(this);
 			AdvancedWorldGen = (AdvancedWorldGen) ModLoader.GetMod("AdvancedWorldGen");
 		}

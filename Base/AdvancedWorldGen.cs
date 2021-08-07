@@ -3,8 +3,8 @@ using System.IO;
 using System.Text;
 using AdvancedWorldGen.OptionUI;
 using AdvancedWorldGen.SpecialOptions;
+using AdvancedWorldGen.UI;
 using Newtonsoft.Json;
-using Terraria;
 using Terraria.ModLoader;
 using OnWorldGen = On.Terraria.WorldGen;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
@@ -21,6 +21,7 @@ namespace AdvancedWorldGen.Base
 	{
 		public Crimruption Crimruption;
 		public UiChanger UiChanger;
+		public static AdvancedWorldGen Instance => ModContent.GetInstance<AdvancedWorldGen>();
 
 		public override void Load()
 		{
@@ -53,7 +54,6 @@ namespace AdvancedWorldGen.Base
 
 		public override void Unload()
 		{
-			
 			OnUIWorldCreation.AddDescriptionPanel -= UiChanger.TweakWorldGenUi;
 			OnUIWorldListItem.ctor -= UiChanger.CopySettingsButton;
 			OnUIWorldLoad.ctor -= UiChanger.AddCancel;

@@ -24,7 +24,7 @@ using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
 using OnWorldGen = On.Terraria.WorldGen;
 using UIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
 
-namespace AdvancedWorldGen.OptionUI
+namespace AdvancedWorldGen.UI
 {
 	public class UiChanger
 	{
@@ -33,7 +33,6 @@ namespace AdvancedWorldGen.OptionUI
 		public OptionsSelector OptionsSelector;
 		public Asset<Texture2D> OptionsTexture;
 		public Thread Thread;
-		public UIWorldCreation UiWorldCreation;
 
 		public UiChanger(Mod mod)
 		{
@@ -43,12 +42,12 @@ namespace AdvancedWorldGen.OptionUI
 				CopyOptionsTexture = mod.Assets.Request<Texture2D>("Images/CopyWorldButton");
 			}
 		}
-		
+
 		public void ThreadifyWorldGen(OnWorldGen.orig_worldGenCallback orig, object threadContext)
 		{
 			if (!Main.dedServ)
 			{
-				Thread = new Thread(() => { orig(threadContext); });
+				Thread = new Thread(() => { orig(threadContext); }) {Name = "WorldGen"};
 				Thread.Start();
 			}
 			else
@@ -56,7 +55,7 @@ namespace AdvancedWorldGen.OptionUI
 				orig(threadContext);
 			}
 		}
-		
+
 		public void AddCancel(OnUIWorldLoad.orig_ctor orig, UIWorldLoad self)
 		{
 			orig(self);
@@ -88,7 +87,6 @@ namespace AdvancedWorldGen.OptionUI
 			UIWorldCreation self, UIElement container, float accumulatedHeight, string tagGroup)
 		{
 			origAddDescriptionPanel(self, container, accumulatedHeight, tagGroup);
-			UiWorldCreation = self;
 			FieldInfo fieldInfo = typeof(UIWorldCreation).GetField("_seedPlate", BindingFlags.NonPublic |
 				BindingFlags.Instance);
 			UICharacterNameButton characterNameButton = (UICharacterNameButton) fieldInfo.GetValue(self);
@@ -154,8 +152,7 @@ namespace AdvancedWorldGen.OptionUI
 			orig(self, data, orderInList, canBePlayed);
 
 			FieldInfo fieldInfo = typeof(Terraria.GameContent.UI.Elements.UIWorldListItem).GetField("_buttonLabel",
-				BindingFlags.NonPublic |
-				BindingFlags.Instance);
+				BindingFlags.NonPublic | BindingFlags.Instance);
 			UIText uiText = (UIText) fieldInfo.GetValue(self);
 			UIImageButton copyOptionButton = new(CopyOptionsTexture)
 			{
@@ -178,6 +175,8 @@ namespace AdvancedWorldGen.OptionUI
 		public static List<string> GetOptionsFromData(WorldFileData data)
 		{
 			string path = Path.ChangeExtension(data.Path, ".twld");
+			if (!FileUtilities.Exists(path, data.IsCloudSave))
+				return new List<string>();
 			byte[] buf = FileUtilities.ReadAllBytes(path, data.IsCloudSave);
 			TagCompound tags = TagIO.FromStream(new MemoryStream(buf));
 			IList<TagCompound> modTags = tags.GetList<TagCompound>("modData");

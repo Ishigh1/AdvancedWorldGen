@@ -1,4 +1,5 @@
 displayName = Advanced World Generation
 author = Gaelyte
-version = 2.2.2
+version = 2.3
 homepage = https://forums.terraria.org/index.php?threads/.97942/
+buildIgnore = Tool\*

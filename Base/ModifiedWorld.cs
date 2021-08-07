@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AdvancedWorldGen.OptionUI;
+using AdvancedWorldGen.UI;
 using MonoMod.Cil;
 using Terraria;
 using Terraria.GameContent.Events;
@@ -19,6 +20,8 @@ namespace AdvancedWorldGen.Base
 {
 	public class ModifiedWorld : ModSystem
 	{
+		public CustomSizeUI CustomSizeUI;
+
 		public List<int> NPCs = new()
 		{
 			Merchant, Nurse, ArmsDealer, Dryad, Guide, Demolitionist, Clothier, GoblinTinkerer, Wizard, Mechanic,
@@ -32,6 +35,7 @@ namespace AdvancedWorldGen.Base
 		public override void OnModLoad()
 		{
 			OptionHelper = new OptionHelper();
+			CustomSizeUI = new CustomSizeUI(OptionHelper.WorldSettings);
 		}
 
 		public override void Unload()

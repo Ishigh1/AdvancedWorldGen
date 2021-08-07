@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.OptionUI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
@@ -15,7 +15,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
-namespace AdvancedWorldGen.OptionUI
+namespace AdvancedWorldGen.UI
 {
 	public class OptionsSelector : UIState
 	{
@@ -87,16 +87,33 @@ namespace AdvancedWorldGen.OptionUI
 
 			uiPanel.Recalculate();
 
+			UITextPanel<string> customSize = new("Custom Size")
+			{
+				Width = new StyleDimension(0f, 0.1f),
+				Top = new StyleDimension(0f, 0.75f),
+				HAlign = 0.40f
+			};
+			customSize.OnMouseDown += GoToCustomSize;
+			customSize.OnMouseOver += UiChanger.FadedMouseOver;
+			customSize.OnMouseOut += UiChanger.FadedMouseOut;
+			Append(customSize);
+
 			UITextPanel<string> goBack = new("Back")
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),
-				HAlign = 0.5f
+				HAlign = 0.60f
 			};
 			goBack.OnMouseDown += GoBack;
 			goBack.OnMouseOver += UiChanger.FadedMouseOver;
 			goBack.OnMouseOut += UiChanger.FadedMouseOut;
 			Append(goBack);
+		}
+
+		public void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
+		{
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			Main.MenuUI.SetState(ModifiedWorld.Instance.CustomSizeUI);
 		}
 
 		public void CreateSelectableOptions(UIElement uiPanel, UIText uiDescription)
