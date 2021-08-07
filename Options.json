@@ -73,6 +73,11 @@
             "NotTheBees"
         ]
     },
+    "Spooky": {
+        "Hidden": true,
+        "id": 104,
+        "Conflicts": []
+    },
     "StupidlyBigTemple": {
         "Hidden": true,
         "id": 104,

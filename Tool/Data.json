@@ -95,6 +95,13 @@
         "hidden": false,
         "internal_name": "SmallNotTheBees"
     },
+    "Spooky": {
+        "conflicts": {},
+        "description": "An halloween themed world.",
+        "displayed_name": "Spooky",
+        "hidden": true,
+        "internal_name": "Spooky"
+    },
     "StupidlyBigTemple": {
         "conflicts": {
             "BigTemple": "Having a temple size modifier twice doesn't do anything.",

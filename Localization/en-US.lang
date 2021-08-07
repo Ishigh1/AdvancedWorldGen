@@ -17,6 +17,7 @@ Painted=Painted
 Random=Random
 Santa=Santa
 SmallNotTheBees=Small Not The Bees
+Spooky=Spooky
 StupidlyBigTemple=Stupidly Big Temple
 StupidlyHugeTemple=Stupidly Huge Temple
 
@@ -32,6 +33,7 @@ Painted.description=A world where each block and wall type get a paint.
 Random.description=A world where each block and wall type is randomized.
 Santa.description=A christmas themed world.
 SmallNotTheBees.description=Like not the bees, but without the entire world being a jungle.
+Spooky.description=An halloween themed world.
 StupidlyBigTemple.description=Make the temple really big.
 StupidlyHugeTemple.description=Makes a temple that covers most of the jungle.
 

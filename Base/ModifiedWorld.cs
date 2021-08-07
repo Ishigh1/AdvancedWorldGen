@@ -6,6 +6,9 @@ using AdvancedWorldGen.UI;
 using MonoMod.Cil;
 using Terraria;
 using Terraria.GameContent.Events;
+using AdvancedWorldGen.SpecialOptions.Halloween;
+using MonoMod.Cil;
+using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
@@ -32,6 +35,13 @@ namespace AdvancedWorldGen.Base
 		public OptionHelper OptionHelper;
 		public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
 
+		public static List<int> NPCs = new()
+		{
+			Merchant, Nurse, ArmsDealer, Dryad, Guide, Demolitionist, Clothier, GoblinTinkerer, Wizard, Mechanic,
+			Truffle, Steampunker, DyeTrader, PartyGirl, Cyborg, Painter, WitchDoctor, Pirate, Stylist, Angler,
+			TaxCollector, DD2Bartender, Golfer, BestiaryGirl, Princess, TownBunny, TownDog
+		};
+
 		public override void OnModLoad()
 		{
 			OptionHelper = new OptionHelper();
@@ -54,6 +64,7 @@ namespace AdvancedWorldGen.Base
 			if (list != null)
 			{
 				OptionHelper.Options = new HashSet<string>(list);
+				Main.checkHalloween();
 				Main.checkXMas();
 			}
 		}
@@ -81,6 +92,7 @@ namespace AdvancedWorldGen.Base
 				if (list.Count == 0) break;
 			}
 
+			Main.checkHalloween();
 			Main.checkXMas();
 		}
 
@@ -123,10 +135,14 @@ namespace AdvancedWorldGen.Base
 				tasks.Insert(passIndex, new PassLegacy("NPCs", HandleNpcs));
 			}
 
+			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Micro Biomes");
+			if (passIndex != -1)
+				passIndex = HalloweenCommon.InsertTasks(tasks, passIndex);
+
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
 		}
 
-		public void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
+		public static void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
 		{
 			List<int> availableNPCs = NPCs.ToList();
 			if (OptionHelper.OptionsContains("Painted")) AddNpc(Painter, availableNPCs);

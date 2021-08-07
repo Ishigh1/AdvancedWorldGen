@@ -3,8 +3,9 @@ using System.IO;
 using System.Text;
 using AdvancedWorldGen.OptionUI;
 using AdvancedWorldGen.SpecialOptions;
-using AdvancedWorldGen.UI;
+using AdvancedWorldGen.SpecialOptions.Halloween;
 using Newtonsoft.Json;
+using Terraria;
 using Terraria.ModLoader;
 using OnWorldGen = On.Terraria.WorldGen;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
@@ -50,6 +51,8 @@ namespace AdvancedWorldGen.Base
 			ILProjectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
 
 			ILWorldGen.MakeDungeon += Crimruption.CrimruptionChest;
+
+			HalloweenCommon.Setup();
 		}
 
 		public override void Unload()
@@ -66,10 +69,11 @@ namespace AdvancedWorldGen.Base
 
 			OnMain.UpdateTime_StartDay -= ModifiedWorld.Instance.OnDawn;
 			OnMain.UpdateTime_StartNight -= ModifiedWorld.Instance.OnDusk;
-			OnMain.checkXMas -= SnowWorld.MainOnCheckXMas;
 			ILProjectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
 
 			ILWorldGen.MakeDungeon -= Crimruption.CrimruptionChest;
+
+			HalloweenCommon.UnSetup();
 			Crimruption.Unload();
 
 			OptionsSelector.OptionDict = null;
