@@ -25,13 +25,6 @@ namespace AdvancedWorldGen.Base
 	{
 		public CustomSizeUI CustomSizeUI;
 
-		public List<int> NPCs = new()
-		{
-			Merchant, Nurse, ArmsDealer, Dryad, Guide, Demolitionist, Clothier, GoblinTinkerer, Wizard, Mechanic,
-			Truffle, Steampunker, DyeTrader, PartyGirl, Cyborg, Painter, WitchDoctor, Pirate, Stylist, Angler,
-			TaxCollector, DD2Bartender, Golfer, BestiaryGirl, Princess, TownBunny, TownDog
-		};
-
 		public OptionHelper OptionHelper;
 		public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
 
@@ -142,7 +135,7 @@ namespace AdvancedWorldGen.Base
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
 		}
 
-		public static void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
+		public void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
 		{
 			List<int> availableNPCs = NPCs.ToList();
 			if (OptionHelper.OptionsContains("Painted")) AddNpc(Painter, availableNPCs);

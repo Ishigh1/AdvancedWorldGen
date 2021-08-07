@@ -1,7 +1,8 @@
+using AdvancedWorldGen.Base;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 
-namespace AdvancedWorldGen.Base
+namespace AdvancedWorldGen.Helper
 {
 	public class ILHelper
 	{

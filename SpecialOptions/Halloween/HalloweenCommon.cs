@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.Helper;
 using AdvancedWorldGen.SpecialOptions.Halloween.Worldgen;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;

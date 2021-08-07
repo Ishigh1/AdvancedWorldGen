@@ -2,7 +2,7 @@ using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
-namespace AdvancedWorldGen.Base
+namespace AdvancedWorldGen.Helper
 {
 	public class DifficultyHelper
 	{

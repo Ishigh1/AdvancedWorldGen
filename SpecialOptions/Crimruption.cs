@@ -1,5 +1,6 @@
 using System.Reflection;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.Helper;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;

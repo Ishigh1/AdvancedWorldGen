@@ -1,5 +1,6 @@
 using System;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.Helper;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;

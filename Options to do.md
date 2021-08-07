@@ -51,3 +51,5 @@ Main tiles are inverted :
 * The temple becomes just one room
 
 ### Bigger temple rooms
+
+### Make Custom sized work
