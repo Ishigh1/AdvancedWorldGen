@@ -37,14 +37,11 @@ Main tiles are inverted :
 * Worldgen must verified to avoid floating things and some things should be added
 
 ## Halloween :
-* Many tombstones
 * Sneaky (but avoidable) traps (wires, pressure plates and pumps are invisible unless spectre googles are worn)
 * Some graveyard
 * Few mausoleum
 * Dimmer light
-* Permanent "graveyard" background
 * Tombstone and ground below need at least 45%(silver) pickaxe power (cant be blown up) or gravedigger
-* Permanent Halloween
 * Bosses have a ghost attack
 
 ### Hollow temple (hidden) :
@@ -53,7 +50,3 @@ Main tiles are inverted :
 ### Bigger temple rooms
 
 ### Make custom sized tile framing work
-
-### Look at why ftw + drunk generate evil on one side
-
-### Verify snowball IL code

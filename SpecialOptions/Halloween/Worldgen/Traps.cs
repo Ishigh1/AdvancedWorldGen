@@ -79,7 +79,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 			}
 		}
 
-		private static void PlaceCloudTrap(int x, Action<int, int> trap)
+		public static void PlaceCloudTrap(int x, Action<int, int> trap)
 		{
 			int y;
 			int modifier = Main.rand.Next(2);
@@ -163,7 +163,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 			}
 		}
 
-		private static void PlaceCloudBlocks(int width, int cloudX, int cloudY, bool enlarging)
+		public static void PlaceCloudBlocks(int width, int cloudX, int cloudY, bool enlarging)
 		{
 			for (int i = 0; i < width; i++)
 			{
@@ -204,7 +204,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 			}
 		}
 
-		private static void PlaceGeyserTrap(int x)
+		public static void PlaceGeyserTrap(int x)
 		{
 			int y;
 			int direction = Main.rand.Next(2) * 2 - 1;

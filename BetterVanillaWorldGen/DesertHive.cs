@@ -18,7 +18,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			AddTileVariance(description);
 		}
 
-		private static void PlaceClusters(ClusterGroup clusters)
+		public static void PlaceClusters(ClusterGroup clusters)
 		{
 			Dictionary<(int, int), List<int>> hive = RegisterInterestingTiles(clusters);
 			PlaceClustersArea(clusters, hive);
@@ -70,7 +70,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						continue;
 
 					float distanceScore = cluster.Sum(item =>
-						1f / Vector2.DistanceSquared(new Vector2(item.x / clusterGroup.SpreadX, item.y / clusterGroup.SpreadY),
+						1f / Vector2.DistanceSquared(
+							new Vector2(item.x / clusterGroup.SpreadX, item.y / clusterGroup.SpreadY),
 							new Vector2(x / clusterGroup.SpreadX, y / clusterGroup.SpreadY)));
 
 					if (distanceScore > distanceToClosestCenter)
@@ -129,7 +130,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 		}
 
-		private static void AddTileVariance(DesertDescription description)
+		public static void AddTileVariance(DesertDescription description)
 		{
 			for (int i = -20; i < description.Hive.Width + 20; i++)
 			for (int j = -20; j < description.Hive.Height + 20; j++)
@@ -199,11 +200,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		public class ClusterGroup : List<Cluster>
 		{
 			public readonly int Height;
-			public readonly int Width;
 			public readonly float SpreadX;
 			public readonly float SpreadY;
+			public readonly int Width;
 
-			private ClusterGroup(int width, int height, DesertDescription description)
+			public ClusterGroup(int width, int height, DesertDescription description)
 			{
 				Width = width;
 				Height = height;
@@ -217,7 +218,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				return new(description.BlockColumnCount, description.BlockRowCount, description);
 			}
 
-			private static void SearchForCluster(bool[,] blockMap, List<Point> pointCluster, int x, int y,
+			public static void SearchForCluster(bool[,] blockMap, List<Point> pointCluster, int x, int y,
 				int level = 2)
 			{
 				pointCluster.Add(new Point(x, y));
@@ -239,7 +240,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 			}
 
-			private static void AttemptClaim(int x, int y, int[,] clusterIndexMap, List<List<Point>> pointClusters,
+			public static void AttemptClaim(int x, int y, int[,] clusterIndexMap, List<List<Point>> pointClusters,
 				int index)
 			{
 				int num = clusterIndexMap[x, y];
@@ -250,7 +251,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				foreach (Point item in pointClusters[num]) clusterIndexMap[item.X, item.Y] = num2;
 			}
 
-			private void Generate(DesertDescription description)
+			public void Generate(DesertDescription description)
 			{
 				Clear();
 				bool[,] array = new bool[Width, Height];

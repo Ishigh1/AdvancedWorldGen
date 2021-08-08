@@ -38,10 +38,10 @@ namespace AdvancedWorldGen.Base
 
 			OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
 			OnUIWorldListItem.ctor += UiChanger.CopySettingsButton;
-			
+
 			ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
 			OnWorldFile.CreateMetadata += DedServUi.DedServOptions;
-			
+
 			OnUIWorldLoad.ctor += UiChanger.AddCancel;
 			OnWorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
 
@@ -56,7 +56,7 @@ namespace AdvancedWorldGen.Base
 			ILProjectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
 
 			ILWorldGen.MakeDungeon += Crimruption.CrimruptionChest;
-			
+
 			Replacer.Replace();
 
 			HalloweenCommon.Setup();
@@ -79,7 +79,7 @@ namespace AdvancedWorldGen.Base
 			ILProjectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
 
 			ILWorldGen.MakeDungeon -= Crimruption.CrimruptionChest;
-			
+
 			Replacer.UnReplace();
 
 			HalloweenCommon.UnSetup();

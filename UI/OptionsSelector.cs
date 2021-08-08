@@ -87,27 +87,27 @@ namespace AdvancedWorldGen.UI
 
 			uiPanel.Recalculate();
 
-			UITextPanel<string> customSize = new("Custom Size")
-			{
-				Width = new StyleDimension(0f, 0.1f),
-				Top = new StyleDimension(0f, 0.75f),
-				HAlign = 0.40f
-			};
-			customSize.OnMouseDown += GoToCustomSize;
-			customSize.OnMouseOver += UiChanger.FadedMouseOver;
-			customSize.OnMouseOut += UiChanger.FadedMouseOut;
-			Append(customSize);
-
 			UITextPanel<string> goBack = new("Back")
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),
-				HAlign = 0.60f
+				HAlign = 0.4f
 			};
 			goBack.OnMouseDown += GoBack;
 			goBack.OnMouseOver += UiChanger.FadedMouseOver;
 			goBack.OnMouseOut += UiChanger.FadedMouseOut;
 			Append(goBack);
+
+			UITextPanel<string> customSize = new("Custom Size")
+			{
+				Width = new StyleDimension(0f, 0.1f),
+				Top = new StyleDimension(0f, 0.75f),
+				HAlign = 0.6f
+			};
+			customSize.OnMouseDown += GoToCustomSize;
+			customSize.OnMouseOver += UiChanger.FadedMouseOver;
+			customSize.OnMouseOut += UiChanger.FadedMouseOut;
+			Append(customSize);
 		}
 
 		public void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)

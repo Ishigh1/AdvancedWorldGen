@@ -3,14 +3,12 @@ using System.IO;
 using System.Linq;
 using AdvancedWorldGen.OptionUI;
 using AdvancedWorldGen.SpecialOptions;
-using AdvancedWorldGen.UI;
-using MonoMod.Cil;
-using Terraria;
-using Terraria.GameContent.Events;
 using AdvancedWorldGen.SpecialOptions.Halloween;
+using AdvancedWorldGen.UI;
 using MonoMod.Cil;
 using On.Terraria.UI;
 using Terraria;
+using Terraria.GameContent.Events;
 using Terraria.GameContent.Generation;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
@@ -27,17 +25,17 @@ namespace AdvancedWorldGen.Base
 {
 	public class ModifiedWorld : ModSystem
 	{
-		public CustomSizeUI CustomSizeUI;
-
-		public OptionHelper OptionHelper;
-		public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
-
 		public static List<int> NPCs = new()
 		{
 			Merchant, Nurse, ArmsDealer, Dryad, Guide, Demolitionist, Clothier, GoblinTinkerer, Wizard, Mechanic,
 			Truffle, Steampunker, DyeTrader, PartyGirl, Cyborg, Painter, WitchDoctor, Pirate, Stylist, Angler,
 			TaxCollector, DD2Bartender, Golfer, BestiaryGirl, Princess, TownBunny, TownDog
 		};
+
+		public CustomSizeUI CustomSizeUI;
+
+		public OptionHelper OptionHelper;
+		public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
 
 		public override void OnModLoad()
 		{
@@ -132,6 +130,7 @@ namespace AdvancedWorldGen.Base
 				passIndex++;
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption2", Crimruption.Crimruption2));
 			}
+
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Guide");
 			if (passIndex != -1)
 			{

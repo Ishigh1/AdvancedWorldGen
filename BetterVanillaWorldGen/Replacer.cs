@@ -10,12 +10,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 			OnDesertHive.Place += ReplaceDesertHive;
 		}
+
 		public static void UnReplace()
 		{
 			OnDesertHive.Place -= ReplaceDesertHive;
 		}
 
-		private static void ReplaceDesertHive(On.Terraria.GameContent.Biomes.Desert.DesertHive.orig_Place orig,
+		public static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
 			DesertDescription description)
 		{
 			bool revamped = ModContent.GetInstance<WorldgenSettings>().FasterWorldgen;

@@ -19,9 +19,10 @@ namespace AdvancedWorldGen.Base
 			OnUIWorldCreation.SetDefaultOptions += ResetSize;
 			OnUIWorldCreation.ClickSizeOption += SetSize;
 			OnWorldGen.setWorldSize += SetWorldSize;
+			OnWorldGen.clearWorld += SetWorldSize;
 		}
 
-		private void ResetSize(OnUIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)
+		public void ResetSize(OnUIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)
 		{
 			orig(self);
 			SetSizeTo(0);
@@ -58,23 +59,36 @@ namespace AdvancedWorldGen.Base
 			}
 		}
 
-		private void SetWorldSize(OnWorldGen.orig_setWorldSize orig)
+		public void SetWorldSize(OnWorldGen.orig_setWorldSize orig)
 		{
-			if (SizeX == 0)
+			SetWorldSize();
+
+			orig();
+		}
+
+		public void SetWorldSize(OnWorldGen.orig_clearWorld orig)
+		{
+			SetWorldSize();
+
+			orig();
+		}
+
+		public void SetWorldSize()
+		{
+			if (SizeX != 0)
 			{
-				orig();
-				return;
+				Main.maxTilesX = SizeX;
+				Main.maxTilesY = SizeY;
 			}
 
-			Main.maxTilesX = SizeX;
-			Main.maxTilesY = SizeY;
-			if (Main.Map.MaxWidth < SizeX || Main.Map.MaxHeight < SizeY) Main.Map = new WorldMap(SizeX, SizeY);
+			if (Main.Map.MaxWidth < Main.maxTilesX || Main.Map.MaxHeight < Main.maxTilesY)
+				Main.Map = new WorldMap(Main.maxTilesX, Main.maxTilesY);
 			int oldSizeX = Main.tile.GetLength(0);
 			int oldSizeY = Main.tile.GetLength(1);
-			if (oldSizeX < SizeX || oldSizeY < SizeY)
+			if (oldSizeX < Main.maxTilesX || oldSizeY < Main.maxTilesY)
 			{
-				int newSizeX = Math.Max(oldSizeX, SizeX);
-				int newSizeY = Math.Max(oldSizeY, SizeY);
+				int newSizeX = Math.Max(oldSizeX, Main.maxTilesX);
+				int newSizeY = Math.Max(oldSizeY, Main.maxTilesY);
 				Tile[,] oldTiles = Main.tile;
 				Main.tile = new Tile[newSizeX, newSizeY];
 				for (int x = 0; x < newSizeX; x++)
@@ -84,8 +98,6 @@ namespace AdvancedWorldGen.Base
 					else
 						Main.tile[x, y] = new Tile();
 			}
-
-			orig();
 		}
 	}
 }

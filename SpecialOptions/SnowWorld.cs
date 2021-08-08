@@ -113,14 +113,13 @@ namespace AdvancedWorldGen.SpecialOptions
 		{
 			ILCursor cursor = new(il);
 			for (int i = 0; i < 4; i++)
-				if (!cursor.TryGotoNext(instruction => instruction.MatchLdcI4(109)))
-					return; // Instruction not found
+				cursor.GotoNext(instruction => instruction.MatchLdcI4(109));
 
-			cursor.TryGotoNext(MoveType.After, instruction => instruction.OpCode == OpCodes.Brfalse);
+			cursor.GotoNext(MoveType.After, instruction => instruction.OpCode == OpCodes.Brfalse_S);
 			object label = cursor.Prev.Operand;
 
 			ILHelper.OptionContains(cursor, "Santa");
-			cursor.Emit(OpCodes.Brtrue, label);
+			cursor.Emit(OpCodes.Brtrue_S, label);
 		}
 	}
 }

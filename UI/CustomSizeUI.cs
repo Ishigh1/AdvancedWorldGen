@@ -64,7 +64,7 @@ namespace AdvancedWorldGen.UI
 			Append(goBack);
 		}
 
-		private ConfigElement MakeIntInputLine(string fieldName, int min)
+		public ConfigElement MakeIntInputLine(string fieldName, int min)
 		{
 			Type intInputElementType = Assembly.GetAssembly(typeof(Main))
 				.GetType("Terraria.ModLoader.Config.UI.IntInputElement");
