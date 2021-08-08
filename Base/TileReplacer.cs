@@ -56,6 +56,7 @@ namespace AdvancedWorldGen.Base
 				UpdateDictionary(dictionary, BorealWood, WoodBlock);
 				UpdateDictionary(dictionary, BreakableIce, Water);
 				UpdateDictionary(dictionary, Slush, Silt);
+				UpdateDictionary(dictionary, Trees, VanityTreeSakura, VanityTreeYellowWillow);
 				UpdateDictionary(dictionary, None, Plants, CorruptPlants, Sunflower, Vines, Plants2, CrimsonPlants,
 					CrimsonVines, VineFlowers, CorruptThorns, CrimsonThorns);
 				Dictionary<int, SpecialCase> specialCases = new()

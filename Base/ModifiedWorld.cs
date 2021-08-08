@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.OptionUI;
 using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
@@ -123,6 +124,8 @@ namespace AdvancedWorldGen.Base
 
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
+			Replacer.ReplaceGenPasses(tasks);
+			
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
 			if (passIndex != -1 && OptionsContains("Crimruption"))
 			{
