@@ -1,98 +1,45 @@
 using System.Reflection;
-using AdvancedWorldGen.Base;
 using AdvancedWorldGen.Helper;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour.HookGen;
-using MonoMod.Utils;
 using Terraria;
-using ILWorldGen = IL.Terraria.WorldGen;
+using Terraria.IO;
+using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.SpecialOptions
 {
 	public class Crimruption
 	{
-		public MethodBase CorruptionGen;
-		public FieldInfo Drunk;
-
-		public event ILContext.Manipulator OnIlCorruptionGeneration
-		{
-			add => HookEndpointManager.Modify(CorruptionGen, value);
-			remove => HookEndpointManager.Unmodify(CorruptionGen, value);
-		}
-
-		public void Load()
-		{
-			//Two options to IL edit a worldgen pass : 
-
-			//Option 1 : 
-			/*Assembly assembly = typeof(Main).Assembly;
-
-			Type type = assembly.GetType("Terraria.WorldGen+<>c__DisplayClass343_0");
-			CorruptionGen = type.GetMethod("<GenerateWorld>b__31", BindingFlags.Instance | BindingFlags.NonPublic);*/
-
-			//Option 2 : 
-			ILWorldGen.GenerateWorld += GetMethodInfo;
-			ILWorldGen.GenerateWorld -= GetMethodInfo;
-
-
-			Drunk = typeof(WorldGen).GetField("drunkWorldGen");
-
-			OnIlCorruptionGeneration += CrimruptionBiomes;
-		}
-
-		public void GetMethodInfo(ILContext il)
-		{
-			ILCursor cursor = new(il);
-			if (!cursor.TryGotoNext(MoveType.After, instruction => instruction.MatchLdstr("Corruption"))) return;
-			if (!cursor.TryGotoNext(instruction => instruction.OpCode == OpCodes.Ldftn)) return;
-			MethodReference methodReference = (MethodReference) cursor.Next.Operand;
-
-			CorruptionGen = methodReference.ResolveReflection();
-		}
-
-		public void Unload()
-		{
-			OnIlCorruptionGeneration -= CrimruptionBiomes;
-		}
-
-		//After IL_010b and IL_09f3 : || OptionContains("Crimruption")IL_19af
-		public void CrimruptionBiomes(ILContext il)
-		{
-			ILCursor cursor = new(il);
-
-
-			for (int i = 0; i < 3; i++)
-			{
-				if (!cursor.TryGotoNext(MoveType.After, instruction => instruction.MatchLdsfld(Drunk))) return;
-				if (i == 1) continue;
-
-				OrOptionContainsCrimruption(cursor);
-			}
-		}
+		public static bool WasDrunk;
 
 		//After IL_19af : || OptionContains("Crimruption")
 		public void CrimruptionChest(ILContext il)
 		{
+			FieldInfo drunk = typeof(WorldGen).GetField("drunkWorldGen");
+
 			ILCursor cursor = new(il);
 
 			for (int i = 0; i < 3; i++)
-				if (!cursor.TryGotoNext(MoveType.After, instruction => instruction.MatchLdsfld(Drunk)))
+				if (!cursor.TryGotoNext(MoveType.Before, instruction => instruction.MatchLdsfld(drunk)))
 					return;
 
 			OrOptionContainsCrimruption(cursor);
 		}
 
-		public static void OrOptionContainsCrimruption(ILCursor cursor)
+		public void OrOptionContainsCrimruption(ILCursor cursor)
 		{
-			ILLabel label = cursor.DefineLabel();
-			cursor.Emit(OpCodes.Brtrue_S, label);
-			ILHelper.OptionContains(cursor, "Crimruption");
+			cursor.Remove();
+			ILHelper.OptionContains(cursor, "Crimruption", "Drunk");
+		}
 
-			cursor.GotoNext();
-			cursor.GotoNext();
-			cursor.MarkLabel(label);
+		public static void Crimruption1(GenerationProgress progress, GameConfiguration configuration)
+		{
+			WasDrunk = WorldGen.drunkWorldGen;
+			WorldGen.drunkWorldGen = true;
+		}
+
+		public static void Crimruption2(GenerationProgress progress, GameConfiguration configuration)
+		{
+			WorldGen.drunkWorldGen = WasDrunk;
 		}
 	}
 }

@@ -35,7 +35,6 @@ namespace AdvancedWorldGen.Base
 			UiChanger = new UiChanger(this);
 
 			Crimruption = new Crimruption();
-			Crimruption.Load();
 
 			OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
 			OnUIWorldListItem.ctor += UiChanger.CopySettingsButton;
@@ -84,7 +83,6 @@ namespace AdvancedWorldGen.Base
 			Replacer.UnReplace();
 
 			HalloweenCommon.UnSetup();
-			Crimruption.Unload();
 
 			OptionsSelector.OptionDict = null;
 			TileReplacer.Unload();

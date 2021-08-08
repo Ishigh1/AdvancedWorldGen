@@ -186,7 +186,7 @@ namespace AdvancedWorldGen.UI
 					select (List<string>) tagCompound.GetCompound("data")?.GetList<string>("Options"))
 				.FirstOrDefault() ??
 				new List<string>();
-			return new List<string>();
+			return options;
 		}
 
 		public static List<string> SetupCopyButton(UIImageButton copyOptionButton, List<string> options, UIText uiText)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AdvancedWorldGen.OptionUI;
+using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.UI;
 using MonoMod.Cil;
 using Terraria;
@@ -124,7 +125,14 @@ namespace AdvancedWorldGen.Base
 
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
-			int passIndex = tasks.FindIndex(pass => pass.Name == "Guide");
+			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
+			if (passIndex != -1 && OptionsContains("Crimruption"))
+			{
+				tasks.Insert(passIndex++, new PassLegacy("Crimruption1", Crimruption.Crimruption1));
+				passIndex++;
+				tasks.Insert(passIndex++, new PassLegacy("Crimruption2", Crimruption.Crimruption2));
+			}
+			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Guide");
 			if (passIndex != -1)
 			{
 				tasks.RemoveAt(passIndex);
