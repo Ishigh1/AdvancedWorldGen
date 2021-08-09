@@ -19,7 +19,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = Language.GetText("LegacyWorldGen.13").Value;
-			int mushroomBiomes = Main.maxTilesX / 700;
+			int mushroomBiomes = Math.Max(1, Main.maxTilesX / 700);
 
 			List<Vector2> mushroomBiomesPosition = new();
 			int tries = 0;
@@ -43,12 +43,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						: WorldGen.genRand.Next(minTiles2, maxTiles2);
 
 					int y = WorldGen.genRand.Next((int) Main.rockLayer + 50, Main.maxTilesY - 300);
-					isValid = true;
 					const int distanceBetweenBiomes = 500;
 
 					Vector2 current = new(x, y);
-					isValid = mushroomBiomesPosition.Any(position =>
-						current.Distance(position) < distanceBetweenBiomes);
+					isValid = mushroomBiomesPosition.All(position =>
+						current.Distance(position) > distanceBetweenBiomes);
 
 					for (int x2 = x - spread; x2 < x + spread && isValid; x2 += 10)
 					for (int y2 = y - spread; y2 < y + spread && isValid; y2 += 10)

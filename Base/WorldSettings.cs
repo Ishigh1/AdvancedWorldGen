@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.States;
 using Terraria.Map;
@@ -97,6 +98,18 @@ namespace AdvancedWorldGen.Base
 						Main.tile[x, y] = oldTiles[x, y];
 					else
 						Main.tile[x, y] = new Tile();
+			}
+
+			int newWidth = (Main.maxTilesX - 1) / Main.textureMaxWidth + 1;
+			int newHeight = (Main.maxTilesY - 1) / Main.textureMaxHeight + 1;
+			if (newWidth > Main.mapTargetX ||
+			    newHeight > Main.mapTargetY)
+			{
+				Main.mapTargetX = Math.Max(newWidth, Main.textureMaxWidth);
+				Main.mapTargetY = Math.Max(newHeight, Main.textureMaxHeight);
+				Main.instance.mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
+				Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
+				Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
 			}
 		}
 	}
