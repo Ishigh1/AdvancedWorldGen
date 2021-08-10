@@ -97,15 +97,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				chestTileType = 467;
 				int num9 = -1;
 				int num10 = -1;
-				for (int num11 = (int) Main.worldSurface - 100; num11 < Main.maxTilesY - 200; num11++)
-				for (int num12 = 100; num12 < Main.maxTilesX - 100; num12++)
-					if (Main.tile[num12, num11].wall == 216 || Main.tile[num12, num11].wall == 187)
+				bool found = false;
+				for (int x = (int) Main.worldSurface - 100; x < Main.maxTilesY - 200 && !found; x++)
+				for (int y = 100; y < Main.maxTilesX - 100 && !found; y++)
+					if (Main.tile[y, x].wall == 216 || Main.tile[y, x].wall == 187)
 					{
 						if (num9 == -1)
-							num9 = num11;
+							num9 = x;
 
-						num10 = num11;
-						break;
+						num10 = x;
+						found = true;
 					}
 
 				contain = num6 <= (num9 * 3 + num10 * 4) / 7
