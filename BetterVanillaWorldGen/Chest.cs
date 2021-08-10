@@ -83,7 +83,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			flag9 = false;
 			flag10 = false;
 			num6 = k;
-			int num7 = -1;
 			num8 = 0;
 			if (num6 >= Main.worldSurface + 25.0 || contain > 0)
 				num8 = 1;
@@ -97,34 +96,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				flag2 = true;
 				num8 = 10;
 				chestTileType = 467;
-				int num9 = -1;
-				int num10 = -1;
-				bool found = false;
-				for (int x = (int) Main.worldSurface - 100; x < Main.maxTilesY - 200 && !found; x++)
-				for (int y = 100; y < Main.maxTilesX - 100 && !found; y++)
-					if (Main.tile[y, x].wall == 216 || Main.tile[y, x].wall == 187)
-					{
-						if (num9 == -1)
-							num9 = x;
 
-						num10 = x;
-						found = true;
-					}
-
-				contain = num6 <= (num9 * 3 + num10 * 4) / 7
-					? Utils.SelectRandom(WorldGen.genRand, new short[4]
-					{
-						4056,
-						4055,
-						4262,
-						4263
-					})
-					: Utils.SelectRandom(WorldGen.genRand, new short[3]
-					{
-						4061,
-						4062,
-						4276
-					});
+				Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
+					ItemID.MysticCoilSnake, ItemID.MagicConch, ItemID.ThunderSpear, ItemID.ThunderStaff,
+					ItemID.DripplerFlail);
 
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(maxValue) == 0)
 					contain = 52;
@@ -317,76 +292,56 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					else
 					{
 						int num15 = WorldGen.genRand.Next(12);
-						if (num15 == 0)
+						switch (num15)
 						{
-							chest.item[num13].SetDefaults(280);
-							chest.item[num13].Prefix(-1);
-						}
-
-						if (num15 == 1)
-						{
-							chest.item[num13].SetDefaults(281);
-							chest.item[num13].Prefix(-1);
-						}
-
-						if (num15 == 2)
-						{
-							chest.item[num13].SetDefaults(284);
-							chest.item[num13].Prefix(-1);
-						}
-
-						if (num15 == 3)
-						{
-							chest.item[num13].SetDefaults(282);
-							chest.item[num13].stack = WorldGen.genRand.Next(40, 75);
-						}
-
-						if (num15 == 4)
-						{
-							chest.item[num13].SetDefaults(279);
-							chest.item[num13].stack = WorldGen.genRand.Next(150, 300);
-						}
-
-						if (num15 == 5)
-						{
-							chest.item[num13].SetDefaults(285);
-							chest.item[num13].Prefix(-1);
-						}
-
-						if (num15 == 6)
-						{
-							chest.item[num13].SetDefaults(953);
-							chest.item[num13].Prefix(-1);
-						}
-
-						if (num15 == 7)
-						{
-							chest.item[num13].SetDefaults(946);
-							chest.item[num13].Prefix(-1);
-						}
-
-						if (num15 == 8)
-						{
-							chest.item[num13].SetDefaults(3068);
-							chest.item[num13].Prefix(-1);
-						}
-
-						if (num15 == 9)
-						{
-							chest.item[num13].SetDefaults(3069);
-							chest.item[num13].Prefix(-1);
-						}
-
-						if (num15 == 10)
-						{
-							chest.item[num13].SetDefaults(3084);
-							chest.item[num13].Prefix(-1);
-						}
-
-						if (num15 == 11)
-						{
-							chest.item[num13].SetDefaults(4341);
-							chest.item[num13].Prefix(-1);
+							case 0:
+								chest.item[num13].SetDefaults(280);
+								chest.item[num13].Prefix(-1);
+								break;
+							case 1:
+								chest.item[num13].SetDefaults(281);
+								chest.item[num13].Prefix(-1);
+								break;
+							case 2:
+								chest.item[num13].SetDefaults(284);
+								chest.item[num13].Prefix(-1);
+								break;
+							case 3:
+								chest.item[num13].SetDefaults(282);
+								chest.item[num13].stack = WorldGen.genRand.Next(40, 75);
+								break;
+							case 4:
+								chest.item[num13].SetDefaults(279);
+								chest.item[num13].stack = WorldGen.genRand.Next(150, 300);
+								break;
+							case 5:
+								chest.item[num13].SetDefaults(285);
+								chest.item[num13].Prefix(-1);
+								break;
+							case 6:
+								chest.item[num13].SetDefaults(953);
+								chest.item[num13].Prefix(-1);
+								break;
+							case 7:
+								chest.item[num13].SetDefaults(946);
+								chest.item[num13].Prefix(-1);
+								break;
+							case 8:
+								chest.item[num13].SetDefaults(3068);
+								chest.item[num13].Prefix(-1);
+								break;
+							case 9:
+								chest.item[num13].SetDefaults(3069);
+								chest.item[num13].Prefix(-1);
+								break;
+							case 10:
+								chest.item[num13].SetDefaults(3084);
+								chest.item[num13].Prefix(-1);
+								break;
+							case 11:
+								chest.item[num13].SetDefaults(4341);
+								chest.item[num13].Prefix(-1);
+								break;
 						}
 
 						num13++;
