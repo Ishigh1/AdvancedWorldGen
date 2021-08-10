@@ -1505,14 +1505,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public static float MakeDungeon_GroundFurniture(int wallType)
 		{
-			float num = 2000f * Main.maxTilesX / 4200f;
+			int num = 2000 * Main.maxTilesX / 4200;
 			int num2 = 1 + Main.maxTilesX / 4200;
 			int num3 = 1 + Main.maxTilesX / 4200;
-			for (int i = 0; (float) i < num; i++)
+			for (int i = 0; i < num; i++)
 			{
-				if (num2 > 0 || num3 > 0)
-					i--;
-
 				int num4 = WorldGen.genRand.Next(dMinX, dMaxX);
 				int j = WorldGen.genRand.Next((int) Main.worldSurface + 10, dMaxY);
 				while (!Main.wallDungeon[Main.tile[num4, j].wall] || Main.tile[num4, j].IsActive)
@@ -1624,82 +1621,60 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				int num19 = 0;
 				int num20 = 0;
-				if (num18 == 0)
+				switch (num18)
 				{
-					num19 = 5;
-					num20 = 4;
-				}
-
-				if (num18 == 1)
-				{
-					num19 = 4;
-					num20 = 3;
-				}
-
-				if (num18 == 2)
-				{
-					num19 = 3;
-					num20 = 5;
-				}
-
-				if (num18 == 3)
-				{
-					num19 = 4;
-					num20 = 6;
-				}
-
-				if (num18 == 4)
-				{
-					num19 = 3;
-					num20 = 3;
-				}
-
-				if (num18 == 5)
-				{
-					num19 = 5;
-					num20 = 3;
-				}
-
-				if (num18 == 6)
-				{
-					num19 = 5;
-					num20 = 4;
-				}
-
-				if (num18 == 7)
-				{
-					num19 = 5;
-					num20 = 4;
-				}
-
-				if (num18 == 8)
-				{
-					num19 = 5;
-					num20 = 4;
-				}
-
-				if (num18 == 9)
-				{
-					num19 = 5;
-					num20 = 3;
-				}
-
-				if (num18 == 10)
-				{
-					num19 = 2;
-					num20 = 4;
-				}
-
-				if (num18 == 11)
-				{
-					num19 = 3;
-					num20 = 3;
-				}
-
-				if (num18 == 12)
-				{
-					num19 = 2;
-					num20 = 5;
+					case 0:
+						num19 = 5;
+						num20 = 4;
+						break;
+					case 1:
+						num19 = 4;
+						num20 = 3;
+						break;
+					case 2:
+						num19 = 3;
+						num20 = 5;
+						break;
+					case 3:
+						num19 = 4;
+						num20 = 6;
+						break;
+					case 4:
+						num19 = 3;
+						num20 = 3;
+						break;
+					case 5:
+						num19 = 5;
+						num20 = 3;
+						break;
+					case 6:
+						num19 = 5;
+						num20 = 4;
+						break;
+					case 7:
+						num19 = 5;
+						num20 = 4;
+						break;
+					case 8:
+						num19 = 5;
+						num20 = 4;
+						break;
+					case 9:
+						num19 = 5;
+						num20 = 3;
+						break;
+					case 10:
+						num19 = 2;
+						num20 = 4;
+						break;
+					case 11:
+						num19 = 3;
+						num20 = 3;
+						break;
+					case 12:
+						num19 = 2;
+						num20 = 5;
+						break;
 				}
 
 				for (int l = num7 - num19; l <= num7 + num19; l++)
@@ -1713,21 +1688,18 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				if (num6 < num19 * 1.75)
 					num18 = -1;
 
-				if (num2 > 0 || num3 > 0)
+				if (num2 > 0)
 				{
-					if (num2 > 0)
-					{
-						WorldGen.PlaceTile(num7, j, 355, true);
-						if (Main.tile[num7, j].type == 355)
-							num2--;
-					}
-					else if (num3 > 0)
-					{
-						WorldGen.PlaceTile(num7, j, 354, true);
-						if (Main.tile[num7, j].type == 354)
-							num3--;
-					}
-
+					WorldGen.PlaceTile(num7, j, TileID.AlchemyTable, true);
+					if (Main.tile[num7, j].type == 355)
+						num2--;
+					continue;
+				}
+				else if (num3 > 0)
+				{
+					WorldGen.PlaceTile(num7, j, TileID.BewitchingTable, true);
+					if (Main.tile[num7, j].type == 354)
+						num3--;
 					continue;
 				}
 

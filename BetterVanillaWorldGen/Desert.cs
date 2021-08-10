@@ -4,7 +4,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class Desert
 	{
-		public static bool IsUndergroundDesert(int x, int y) {
+		public static bool IsUndergroundDesert(int x, int y)
+		{
 			if (y < Main.worldSurface)
 				return false;
 

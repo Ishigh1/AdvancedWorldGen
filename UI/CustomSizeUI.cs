@@ -44,11 +44,11 @@ namespace AdvancedWorldGen.UI
 				Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 			});
 
-			ConfigElement sizeXInput = MakeIntInputLine(nameof(WorldSettings.SizeX), 4200);
+			ConfigElement sizeXInput = MakeIntInputLine(nameof(WorldSettings.SizeX), 100);
 			sizeXInput.Top.Pixels = 50;
 			uiPanel.Append(sizeXInput);
 
-			ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 800);
+			ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 100);
 			sizeYInput.Top.Pixels = sizeXInput.Top.Pixels + sizeXInput.Height.Pixels + 4;
 			uiPanel.Append(sizeYInput);
 

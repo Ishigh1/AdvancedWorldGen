@@ -5,7 +5,7 @@ This mod also removes the vanilla way of triggering the secret seeds, so no seed
 
 I am working on a modifiable world size, it is still in progress, don't expect a bug-free world generation with it.
 
-Also check the options to make some parts of the generation faster in big worlds (even if it can change it imperceptibly).
+Also check the options to make some parts of the generation faster in big worlds (even if it can change it imperceptibly, or make it work sometimes).
 They can easily make some of the biggest parts of a large world generations 10 times faster, but the option is disabled by default as I don't want to make any change in-game without being explicitly allowed by the user.
 
 Link to github : https://github.com/Ishigh1/AdvancedWorldGen/tree/1.4

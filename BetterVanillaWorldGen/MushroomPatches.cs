@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -14,6 +15,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 	public class MushroomPatches : GenPass
 	{
 		public FastRandom FastRandom;
+
 		public MushroomPatches() : base("Mushroom Patches", 743.7686f) //Magic number from vanilla
 		{
 		}
@@ -28,12 +30,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int tries = 0;
 			const int spread = 100;
 			int minTiles1 = (int) Math.Max(spread, Main.maxTilesX * 0.2);
-			int maxTiles1 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.975); 
+			int maxTiles1 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.975);
 			int minTiles2 = (int) Math.Max(spread, Main.maxTilesX * 0.25);
 			int maxTiles2 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.8);
 			for (int numBiome = 0; numBiome < mushroomBiomes; numBiome++)
 			{
-				progress.Set(numBiome / (float) mushroomBiomes / 2f);
+				GenPassHelper.SetProgress(progress, numBiome, mushroomBiomes, 0.5f);
 				bool isValid = false;
 				while (!isValid)
 				{
@@ -80,7 +82,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			for (int x = 50; x < Main.maxTilesX - 50; x++)
 			{
-				progress.Set(x / (float) Main.maxTilesX / 2f + 0.5f);
+				GenPassHelper.SetProgress(progress, x - 50, Main.maxTilesX - 100, 0.5f, 0.5f);
 				for (int y = (int) Main.worldSurface; y < Main.maxTilesY - 50; y++)
 				{
 					if (!Main.tile[x, y].IsActive)
@@ -144,7 +146,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			num *= num3;
 			num2 *= num3;
 			float num4 = num2 - 1f;
-            Vector2 vector = default;
+			Vector2 vector = default;
 			vector.X = i;
 			vector.Y = j - num2 * 0.3f;
 			Vector2 vector2 = default;
@@ -170,8 +172,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				if (yMax > Main.maxTilesY)
 					yMax = Main.maxTilesY;
 
-                double num5 = num * FastRandom.Next(80, 120) * 0.01;
-                for (int x = xMin; x < xMax; x++)
+				double num5 = num * FastRandom.Next(80, 120) * 0.01;
+				for (int x = xMin; x < xMax; x++)
 				for (int y = yMin; y < yMax; y++)
 				{
 					float num10 = Math.Abs(x - vector.X);
@@ -239,8 +241,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 							x += xStep;
 							y += yStep;
 							if (Main.tile[x, y].IsActive)
+							{
 								break;
-							else if(--activeLength == 0)
+							}
+							else if (--activeLength == 0)
 							{
 								int tmp = xStep;
 								xStep = -yStep;

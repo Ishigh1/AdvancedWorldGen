@@ -43,7 +43,7 @@ namespace AdvancedWorldGen.SpecialOptions
 
 		public static int GetTempleRooms(ref int y, float worldSize)
 		{
-			int templeSize = 1;
+			int templeSize;
 			if (ModifiedWorld.OptionsContains("StupidlyHugeTemple"))
 				templeSize = 25;
 			else if (ModifiedWorld.OptionsContains("StupidlyBigTemple"))
@@ -53,6 +53,8 @@ namespace AdvancedWorldGen.SpecialOptions
 			else if (WorldGen.getGoodWorldGen && WorldGen.drunkWorldGen)
 				templeSize = 6;
 			else if (WorldGen.getGoodWorldGen || WorldGen.drunkWorldGen) templeSize = 3;
+			else
+				templeSize = 1;
 
 			if (templeSize > 10)
 			{
