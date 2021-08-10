@@ -48,6 +48,7 @@ namespace AdvancedWorldGen.Base
 				case 0:
 					SizeX = 4200;
 					SizeY = 1200;
+#endif
 					break;
 				case 1:
 					SizeX = 6400;
