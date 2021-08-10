@@ -225,10 +225,30 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				{
 					int x = (int) vector.X + FastRandom.Next(-20, 20);
 					int y = (int) vector.Y + FastRandom.Next(0, 20);
-					while (!Main.tile[x, y].IsActive)
+					if (!Main.tile[x, y].IsActive)
 					{
-						x += FastRandom.Next(-5, 5);
-						y += FastRandom.Next(-5, 5);
+						const int stepSize = 2;
+						int xStep = stepSize;
+						int yStep = 0;
+
+						int activeLength = 1;
+						float length = 1;
+
+						while (true)
+						{
+							x += xStep;
+							y += yStep;
+							if (Main.tile[x, y].IsActive)
+								break;
+							else if(--activeLength == 0)
+							{
+								int tmp = xStep;
+								xStep = -yStep;
+								yStep = tmp;
+								length += 0.5f;
+								activeLength = (int) length;
+							}
+						}
 					}
 
 					int strength = FastRandom.Next(10, 20);
