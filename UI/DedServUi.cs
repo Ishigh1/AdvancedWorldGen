@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdvancedWorldGen.Base;
-using AdvancedWorldGen.OptionUI;
 using Terraria;
 using Terraria.IO;
 using Terraria.Localization;

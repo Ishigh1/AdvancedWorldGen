@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AdvancedWorldGen.BetterVanillaWorldGen;
-using AdvancedWorldGen.OptionUI;
 using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
 using AdvancedWorldGen.UI;

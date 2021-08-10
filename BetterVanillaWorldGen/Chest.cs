@@ -30,8 +30,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		public static bool AddBuriedChest(int x, int y, int contain = 0, bool notNearOtherChests = false,
 			int style = -1, ushort chestTileType = 0)
 		{
-			for (; WorldGen.SolidTile(x - 1, y - 2) || WorldGen.SolidTile(x, y - 2) || 
-			       !WorldGen.SolidTile(x - 1, y) || !WorldGen.SolidTile(x, y); y++)
+			for (;
+				WorldGen.SolidTile(x - 1, y - 2) || WorldGen.SolidTile(x, y - 2) ||
+				!WorldGen.SolidTile(x - 1, y) || !WorldGen.SolidTile(x, y);
+				y++)
 				if (y >= Main.maxTilesY - 50)
 					return false;
 
@@ -43,7 +45,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			if (Main.tile[x - 1, y - 2].IsActive || Main.tile[x, y - 2].IsActive ||
 			    Main.tile[x - 1, y - 1].IsActive || Main.tile[x, y - 1].IsActive)
 				return false;
-			
+
 			Main.tile[x - 1, y].Slope = SlopeType.Solid;
 			Main.tile[x, y].Slope = SlopeType.Solid;
 
@@ -63,7 +65,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			return false;
 		}
 
-		private static void PreLoot(int i, ref int contain, int style, ref ushort chestTileType, int k, int maxValue,
+		public static void PreLoot(int i, ref int contain, int style, ref ushort chestTileType, int k, int maxValue,
 			out bool flag10, out int num6, out int num8, out bool flag2, out bool flag, out bool flag3, out bool flag7,
 			out bool flag4, out bool flag5, out bool flag6, out bool flag8, out bool flag9)
 		{
@@ -445,10 +447,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						int num17 = WorldGen.genRand.Next(2);
 
 						int stack3 = WorldGen.genRand.Next(26) + 25;
-						if (num17 == 0)
-							chest.item[num13].SetDefaults(40);
-						if (num17 == 1)
-							chest.item[num13].SetDefaults(42);
+						chest.item[num13].SetDefaults(num17 == 0 ? 40 : 42);
 						chest.item[num13].stack = stack3;
 						num13++;
 					}
@@ -473,18 +472,28 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						int num18 = WorldGen.genRand.Next(6);
 
 						int stack5 = WorldGen.genRand.Next(1, 3);
-						if (num18 == 0)
-							chest.item[num13].SetDefaults(292);
-						if (num18 == 1)
-							chest.item[num13].SetDefaults(298);
-						if (num18 == 2)
-							chest.item[num13].SetDefaults(299);
-						if (num18 == 3)
-							chest.item[num13].SetDefaults(290);
-						if (num18 == 4)
-							chest.item[num13].SetDefaults(2322);
-						if (num18 == 5)
-							chest.item[num13].SetDefaults(2325);
+						switch (num18)
+						{
+							case 0:
+								chest.item[num13].SetDefaults(292);
+								break;
+							case 1:
+								chest.item[num13].SetDefaults(298);
+								break;
+							case 2:
+								chest.item[num13].SetDefaults(299);
+								break;
+							case 3:
+								chest.item[num13].SetDefaults(290);
+								break;
+							case 4:
+								chest.item[num13].SetDefaults(2322);
+								break;
+							case 5:
+								chest.item[num13].SetDefaults(2325);
+								break;
+						}
+
 						chest.item[num13].stack = stack5;
 						num13++;
 					}
@@ -494,10 +503,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						int num19 = WorldGen.genRand.Next(2);
 
 						int stack6 = WorldGen.genRand.Next(11) + 10;
-						if (num19 == 0)
-							chest.item[num13].SetDefaults(8);
-						if (num19 == 1)
-							chest.item[num13].SetDefaults(31);
+						chest.item[num13].SetDefaults(num19 == 0 ? 8 : 31);
 						chest.item[num13].stack = stack6;
 						num13++;
 					}

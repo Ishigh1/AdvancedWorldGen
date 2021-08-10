@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AdvancedWorldGen.OptionUI
+namespace AdvancedWorldGen.Base
 {
 	public class Option
 	{
