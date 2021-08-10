@@ -15,11 +15,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 			OnDesertHive.Place += ReplaceDesertHive;
 			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
+			OnWorldGen.MakeDungeon += ReplaceDungeon;
 		}
 
 		public static void UnReplace()
 		{
 			OnDesertHive.Place -= ReplaceDesertHive;
+			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= ReplaceChest;
+			OnWorldGen.MakeDungeon -= ReplaceDungeon;
 		}
 
 		public static void ReplaceGenPasses(List<GenPass> genPasses)
@@ -44,12 +47,20 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				orig(description);
 		}
 
-		private static bool ReplaceChest(OnWorldGen.orig_AddBuriedChest_int_int_int_bool_int_bool_ushort orig, int i,
-			int j, int contain, bool notnearotherchests, int style, bool tryslope, ushort chesttiletype)
+		public static bool ReplaceChest(OnWorldGen.orig_AddBuriedChest_int_int_int_bool_int_bool_ushort orig, int i,
+			int j, int contain, bool notNearOtherChests, int style, bool trySlope, ushort chestTileType)
 		{
 			return Revamped
-				? Chest.AddBuriedChest(i, j, contain, notnearotherchests, style, chesttiletype)
-				: orig(i, j, contain, notnearotherchests, style, tryslope, chesttiletype);
+				? Chest.AddBuriedChest(i, j, contain, notNearOtherChests, style, chestTileType)
+				: orig(i, j, contain, notNearOtherChests, style, trySlope, chestTileType);
+		}
+
+		public static void ReplaceDungeon(OnWorldGen.orig_MakeDungeon orig, int x, int y)
+		{
+			if (Revamped)
+				Dungeon.MakeDungeon(x, y);
+			else
+				orig(x, y);
 		}
 	}
 }
