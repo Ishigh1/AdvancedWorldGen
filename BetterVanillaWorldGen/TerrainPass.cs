@@ -32,8 +32,19 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int num2 = 0;
 			double worldSurface = Main.maxTilesY * 0.3;
 			worldSurface *= _random.Next(90, 110) * 0.005;
-			double rockLayer = worldSurface + Main.maxTilesY * 0.2;
+			double rockLayer = Main.maxTilesY * 0.35;
 			rockLayer *= _random.Next(90, 110) * 0.01;
+			if(rockLayer < worldSurface + Main.maxTilesY * 0.05)
+			{
+				if (worldSurface - rockLayer > Main.maxTilesY * 0.05)
+					worldSurface -= 2 * (worldSurface - rockLayer);
+				else
+					worldSurface = rockLayer - Main.maxTilesY * 0.05;
+			}
+			
+			if(worldSurface < Main.maxTilesY * 0.07)
+				worldSurface = Main.maxTilesY * 0.07;
+			
 			double worldSurfaceLow = worldSurface;
 			double worldSurfaceHigh = worldSurface;
 			double rockLayerLow = rockLayer;
@@ -117,10 +128,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			if (rockLayer > Main.UnderworldLayer) throw new Exception("Not high enough world !");
 			while (lavaLine > Main.UnderworldLayer)
 			{
-				waterLine -= (int) (waterLine - rockLayer) / 2;
-				lavaLine -= (int) (lavaLine - rockLayer) / 2;
+				waterLine -= (int) (waterLine - rockLayer) / 8;
+				lavaLine -= (int) (lavaLine - rockLayer) / 8;
 			}
-			
+
 			const int num14 = 20;
 			if (rockLayerLow < worldSurfaceHigh + num14)
 			{

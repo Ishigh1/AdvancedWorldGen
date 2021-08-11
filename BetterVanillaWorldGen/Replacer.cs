@@ -42,6 +42,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				genPasses.RemoveAt(index);
 				genPasses.Insert(index, new TerrainPass((Terraria.GameContent.Biomes.TerrainPass) genPass));
 			}
+
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle");
 			JunglePass junglePass = null;
 			if (index != -1) junglePass = (JunglePass) genPasses[index];
@@ -71,6 +72,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			{
 				genPasses.RemoveAt(index);
 				genPasses.Insert(index, new SurfaceOreAndStone());
+			}
+			
+			index = genPasses.FindIndex(index, pass => pass.Name == "Micro Biomes");
+			if (index != -1)
+			{
+				genPasses.RemoveAt(index);
+				genPasses.Insert(index, new MicroBiomes());
 			}
 		}
 

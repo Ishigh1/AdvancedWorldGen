@@ -148,7 +148,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Main.tileSolid[137] = false;
 		}
 
-		static bool IsValid(int x, int y)
+		private static bool IsValid(int x, int y)
 		{
 			if (Main.tile[x, y].type == 60)
 			{
