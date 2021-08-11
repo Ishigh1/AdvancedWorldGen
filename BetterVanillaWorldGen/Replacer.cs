@@ -26,7 +26,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			OnDesertHive.Place -= ReplaceDesertHive;
 			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= ReplaceChest;
 			OnWorldGen.MakeDungeon -= ReplaceDungeon;
-			OnJunglePass.GenerateHolesInMudWalls += ReplaceJungleHoles;
+			OnJunglePass.GenerateHolesInMudWalls -= ReplaceJungleHoles;
 		}
 
 		public static void ReplaceGenPasses(List<GenPass> genPasses)

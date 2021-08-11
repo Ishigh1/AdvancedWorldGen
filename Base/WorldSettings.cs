@@ -46,6 +46,10 @@ namespace AdvancedWorldGen.Base
 					SizeX = 0;
 					break;
 				case 0:
+#if DEBUG
+					SizeX = 2100;
+					SizeY = 600;
+#else
 					SizeX = 4200;
 					SizeY = 1200;
 #endif
