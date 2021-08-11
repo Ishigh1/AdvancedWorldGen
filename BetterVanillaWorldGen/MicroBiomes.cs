@@ -46,7 +46,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				const int num34 = 1000;
 				int num35 = 0;
 				while (num35 < random2)
-					if (thinIceBiome.Place(RandomSurfaceWorldPoint((int) Main.worldSurface + 20, 50, 200, 50), WorldGen.structures))
+					if (thinIceBiome.Place(RandomSurfaceWorldPoint((int) Main.worldSurface + 20, 50, 200, 50),
+						WorldGen.structures))
 					{
 						num35++;
 						num33 = 0;
@@ -96,7 +97,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				int num39 = 0;
 				while (num39 < random4)
 					if (campsiteBiome.Place(
-						RandomSurfaceWorldPoint((int) Main.worldSurface, WorldGen.beachDistance, 200, WorldGen.beachDistance), WorldGen.structures))
+						RandomSurfaceWorldPoint((int) Main.worldSurface, WorldGen.beachDistance, 200,
+							WorldGen.beachDistance), WorldGen.structures))
 						num39++;
 			}
 
@@ -112,7 +114,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				int num41 = 0;
 				while (num41 < num40)
 					if (miningExplosivesBiome.Place(
-						WorldGen.RandomWorldPoint((int) WorldGen.rockLayer, WorldGen.beachDistance, 200, WorldGen.beachDistance), WorldGen.structures))
+						WorldGen.RandomWorldPoint((int) WorldGen.rockLayer, WorldGen.beachDistance, 200,
+							WorldGen.beachDistance), WorldGen.structures))
 						num41++;
 			}
 
@@ -125,7 +128,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int num43 = 0;
 			while (num42 < random5 && num43 < 20000)
 			{
-				if (mahoganyTreeBiome.Place(RandomSurfaceWorldPoint((int) Main.worldSurface + 50, 50, 500, 50), WorldGen.structures))
+				if (mahoganyTreeBiome.Place(RandomSurfaceWorldPoint((int) Main.worldSurface + 50, 50, 500, 50),
+					WorldGen.structures))
 					num42++;
 
 				num43++;
@@ -216,10 +220,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			{
 				top -= (int) (top - Main.worldSurface) / 2;
 				bottom -= (Main.UnderworldLayer - bottom) / 2;
-				return  RandomSurfaceWorldPoint(top, right, bottom, left);
+				return RandomSurfaceWorldPoint(top, right, bottom, left);
 			}
 
-			return new Point(WorldGen.genRand.Next(left, Main.maxTilesX - right), WorldGen.genRand.Next(top, Main.maxTilesY - bottom));
+			return new Point(WorldGen.genRand.Next(left, Main.maxTilesX - right),
+				WorldGen.genRand.Next(top, Main.maxTilesY - bottom));
 		}
 	}
 }

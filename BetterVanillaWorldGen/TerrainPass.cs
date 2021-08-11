@@ -34,17 +34,17 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			worldSurface *= _random.Next(90, 110) * 0.005;
 			double rockLayer = Main.maxTilesY * 0.35;
 			rockLayer *= _random.Next(90, 110) * 0.01;
-			if(rockLayer < worldSurface + Main.maxTilesY * 0.05)
+			if (rockLayer < worldSurface + Main.maxTilesY * 0.05)
 			{
 				if (worldSurface - rockLayer > Main.maxTilesY * 0.05)
 					worldSurface -= 2 * (worldSurface - rockLayer);
 				else
 					worldSurface = rockLayer - Main.maxTilesY * 0.05;
 			}
-			
-			if(worldSurface < Main.maxTilesY * 0.07)
+
+			if (worldSurface < Main.maxTilesY * 0.07)
 				worldSurface = Main.maxTilesY * 0.07;
-			
+
 			double worldSurfaceLow = worldSurface;
 			double worldSurfaceHigh = worldSurface;
 			double rockLayerLow = rockLayer;

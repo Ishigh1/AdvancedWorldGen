@@ -39,47 +39,26 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			if (index != -1)
 			{
 				GenPass genPass = genPasses[index];
-				genPasses.RemoveAt(index);
-				genPasses.Insert(index, new TerrainPass((Terraria.GameContent.Biomes.TerrainPass) genPass));
+				genPasses[index] = new TerrainPass((Terraria.GameContent.Biomes.TerrainPass) genPass);
 			}
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle");
 			JunglePass junglePass = null;
 			if (index != -1) junglePass = (JunglePass) genPasses[index];
 			index = genPasses.FindIndex(index, pass => pass.Name == "Mushroom Patches");
-			if (index != -1)
-			{
-				genPasses.RemoveAt(index);
-				genPasses.Insert(index, new MushroomPatches());
-			}
+			if (index != -1) genPasses[index] = new MushroomPatches();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Temple");
-			if (index != -1 && junglePass != null)
-			{
-				genPasses.RemoveAt(index);
-				genPasses.Insert(index, new JungleTemple(junglePass));
-			}
+			if (index != -1 && junglePass != null) genPasses[index] = new JungleTemple(junglePass);
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Chests");
-			if (index != -1 && junglePass != null)
-			{
-				genPasses.RemoveAt(index);
-				genPasses.Insert(index, new JungleChests(junglePass));
-			}
+			if (index != -1 && junglePass != null) genPasses[index] = new JungleChests(junglePass);
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Surface Ore and Stone");
-			if (index != -1)
-			{
-				genPasses.RemoveAt(index);
-				genPasses.Insert(index, new SurfaceOreAndStone());
-			}
-			
+			if (index != -1) genPasses[index] = new SurfaceOreAndStone();
+
 			index = genPasses.FindIndex(index, pass => pass.Name == "Micro Biomes");
-			if (index != -1)
-			{
-				genPasses.RemoveAt(index);
-				genPasses.Insert(index, new MicroBiomes());
-			}
+			if (index != -1) genPasses[index] = new MicroBiomes();
 		}
 
 		public static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
