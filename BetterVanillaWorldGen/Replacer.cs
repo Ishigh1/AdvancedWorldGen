@@ -51,6 +51,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				genPasses.RemoveAt(index);
 				genPasses.Insert(index, new JungleTemple(junglePass));
 			}
+
+			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Chests");
+			if (index != -1 && junglePass != null)
+			{
+				genPasses.RemoveAt(index);
+				genPasses.Insert(index, new JungleChests(junglePass));
+			}
 		}
 
 		public static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
