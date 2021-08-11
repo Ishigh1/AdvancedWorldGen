@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.Biomes;
@@ -36,6 +37,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int tries = 0;
 			for (int num538 = 0; (float) num538 < num536 && tries < Main.maxTilesX; num538++)
 			{
+				GenPassHelper.SetProgress(progress, num538, num536);
 				bool flag35 = true;
 				int minX = Math.Max(10, JunglePass.JungleX - Main.maxTilesX / 8);
 				int maxX = Math.Min(Main.maxTilesX - 10, JunglePass.JungleX + Main.maxTilesX / 8);

@@ -58,6 +58,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				genPasses.RemoveAt(index);
 				genPasses.Insert(index, new JungleChests(junglePass));
 			}
+
+			index = genPasses.FindIndex(index, pass => pass.Name == "Surface Ore and Stone");
+			if (index != -1)
+			{
+				genPasses.RemoveAt(index);
+				genPasses.Insert(index, new SurfaceOreAndStone());
+			}
 		}
 
 		public static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
