@@ -21,30 +21,28 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			JunglePass = junglePass;
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
 			progress.Message = Lang.gen[70].Value;
 			int minX = Math.Max(10, JunglePass.JungleX - Main.maxTilesX / 8);
 			int maxX = Math.Min(Main.maxTilesX - 10, JunglePass.JungleX + Main.maxTilesX / 8);
-			int x;
-			while (true)
-			{
-				x = WorldGen.genRand.Next(minX, maxX);
-				int y = WorldGen.genRand.Next((int) WorldGen.rockLayer, Main.UnderworldLayer);
-				Tile tile = Main.tile[x, y];
-				if (tile.IsActive && tile.type == TileID.Mud || tile.type == TileID.JungleGrass)
-					break;
-				else if (tile.wall == WallID.Jungle || tile.wall == WallID.JungleUnsafe ||
-				         tile.wall == WallID.JungleUnsafe1 || tile.wall == WallID.JungleUnsafe2 ||
-				         tile.wall == WallID.JungleUnsafe3 || tile.wall == WallID.JungleUnsafe4)
-					break;
-				else if (x < JunglePass.JungleX)
-					minX = x;
-				else
-					maxX = x;
-			}
+			int x = WorldGen.genRand.Next(minX, maxX);
+			int y = WorldGen.genRand.Next((int) WorldGen.rockLayer, Main.UnderworldLayer);
+			(x, y) = TileFinder.SpiralSearch(x, y, IsValid);
 
 			makeTemple(progress, x);
+		}
+
+		private static bool IsValid(int x, int y)
+		{
+			Tile tile = Main.tile[x, y];
+			if (tile.IsActive && tile.type == TileID.Mud || tile.type == TileID.JungleGrass)
+				return true;
+			else if (tile.wall == WallID.Jungle || tile.wall == WallID.JungleUnsafe ||
+			         tile.wall == WallID.JungleUnsafe1 || tile.wall == WallID.JungleUnsafe2 ||
+			         tile.wall == WallID.JungleUnsafe3 || tile.wall == WallID.JungleUnsafe4)
+				return true;
+			return false;
 		}
 
 		public static void makeTemple(GenerationProgress generationProgress, int x)

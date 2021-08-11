@@ -20,7 +20,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
 			progress.Message = Language.GetText("LegacyWorldGen.13").Value;
 			int mushroomBiomes = Math.Max(1, Main.maxTilesX / 700);
@@ -228,32 +228,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					int x = (int) vector.X + FastRandom.Next(-20, 20);
 					int y = (int) vector.Y + FastRandom.Next(0, 20);
 					if (!Main.tile[x, y].IsActive)
-					{
-						const int stepSize = 2;
-						int xStep = stepSize;
-						int yStep = 0;
-
-						int activeLength = 1;
-						float length = 1;
-
-						while (true)
-						{
-							x += xStep;
-							y += yStep;
-							if (Main.tile[x, y].IsActive)
-							{
-								break;
-							}
-							else if (--activeLength == 0)
-							{
-								int tmp = xStep;
-								xStep = -yStep;
-								yStep = tmp;
-								length += 0.5f;
-								activeLength = (int) length;
-							}
-						}
-					}
+						(x, y) = TileFinder.SpiralSearch(x, y, (i1, i2) => Main.tile[i1, i2].IsActive);
 
 					int strength = FastRandom.Next(10, 20);
 					int steps = FastRandom.Next(10, 20);

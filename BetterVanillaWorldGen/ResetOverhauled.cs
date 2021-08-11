@@ -9,7 +9,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
 			Chest.ShuffleChests();
 		}

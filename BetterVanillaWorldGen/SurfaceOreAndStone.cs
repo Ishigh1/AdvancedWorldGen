@@ -14,7 +14,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
 			int num360 = WorldGen.genRand.Next(Main.maxTilesX / (4200 / 5), Main.maxTilesX / (4200 / 10));
 			List<int> orePatchesX = new();
@@ -43,7 +43,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 			}
 
-			num360 = Main.maxTilesX > 2 * 4200 / 7 ? WorldGen.genRand.Next(1, Main.maxTilesX / (4200 / 7)) : 1;
+			int maxStonePatches = Main.maxTilesX / (4200 / 7);
+			num360 = maxStonePatches > 1 ? WorldGen.genRand.Next(1, maxStonePatches) : 1;
 			for (int num365 = 0; num365 < num360; num365++)
 			{
 				GenPassHelper.SetProgress(progress, num365, num360, 0.5f, 0.5f);

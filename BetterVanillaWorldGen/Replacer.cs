@@ -35,7 +35,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				return;
 			genPasses.Insert(0, new ResetOverhauled("Reset Overhauled", 0));
 
-			int index = genPasses.FindIndex(pass => pass.Name == "Jungle");
+			int index = genPasses.FindIndex(pass => pass.Name == "Terrain");
+			if (index != -1)
+			{
+				GenPass genPass = genPasses[index];
+				genPasses.RemoveAt(index);
+				genPasses.Insert(index, new TerrainPass((Terraria.GameContent.Biomes.TerrainPass) genPass));
+			}
+			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle");
 			JunglePass junglePass = null;
 			if (index != -1) junglePass = (JunglePass) genPasses[index];
 			index = genPasses.FindIndex(index, pass => pass.Name == "Mushroom Patches");
