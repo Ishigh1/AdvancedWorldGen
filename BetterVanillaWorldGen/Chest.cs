@@ -1,3 +1,4 @@
+using System;
 using Terraria;
 using Terraria.ID;
 
@@ -8,6 +9,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		public static int HellChest;
 		public static int[] HellChestItem = new int[7];
 		public static bool GeneratedShadowKey;
+		public static int SandstoneUp;
+		public static int SandstoneDown;
 
 		public static void ShuffleChests()
 		{
@@ -25,6 +28,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 							flag63 = true;
 				}
 			}
+
+			SandstoneUp = -1;
+			SandstoneDown = -1;
 		}
 
 		public static bool AddBuriedChest(int x, int y, int contain = 0, bool notNearOtherChests = false,
@@ -49,15 +55,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Main.tile[x - 1, y].Slope = SlopeType.Solid;
 			Main.tile[x, y].Slope = SlopeType.Solid;
 
-			PreLoot(x, ref contain, style, ref chestTileType, y, 15, out bool flag10, out int num6,
+			PreLoot(x, ref contain, style, ref chestTileType, y, 15, out bool flag10,
 				out int num8, out bool flag2, out bool flag, out bool flag3, out bool flag7, out bool flag4,
 				out bool flag5, out bool flag6, out bool flag8, out bool flag9);
 
-			int num7 = WorldGen.PlaceChest(x - 1, num6 - 1, chestTileType, notNearOtherChests, num8);
+			int num7 = WorldGen.PlaceChest(x - 1, y - 1, chestTileType, notNearOtherChests, num8);
 			if (num7 >= 0)
 			{
-				VanillaLoot(x, contain, chestTileType, flag10, num7, num8, num6, flag9, flag4, flag5, flag8,
-					flag6, flag2, flag, flag3, flag7, y);
+				VanillaLoot(x, contain, chestTileType, flag10, num7, num8, y, flag9, flag4, flag5, flag8,
+					flag6, flag2, flag, flag3, flag7);
 
 				return true;
 			}
@@ -65,8 +71,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			return false;
 		}
 
-		public static void PreLoot(int i, ref int contain, int style, ref ushort chestTileType, int k, int maxValue,
-			out bool flag10, out int num6, out int num8, out bool flag2, out bool flag, out bool flag3, out bool flag7,
+		public static void PreLoot(int i, ref int contain, int style, ref ushort chestTileType, int y, int maxValue,
+			out bool flag10, out int num8, out bool flag2, out bool flag, out bool flag3, out bool flag7,
 			out bool flag4, out bool flag5, out bool flag6, out bool flag8, out bool flag9)
 		{
 			if (chestTileType == 0)
@@ -82,20 +88,25 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			flag8 = false;
 			flag9 = false;
 			flag10 = false;
-			num6 = k;
+			y = y;
 			num8 = 0;
-			if (num6 >= Main.worldSurface + 25.0 || contain > 0)
+			if (y >= Main.worldSurface + 25.0 || contain > 0)
 				num8 = 1;
 
 			if (style >= 0)
 				num8 = style;
 
-			if (contain == 0 && num6 >= Main.worldSurface + 25.0 && num6 <= Main.maxTilesY - 205 &&
-			    Desert.IsUndergroundDesert(i, k))
+			if (contain == 0 && y >= Main.worldSurface + 25.0 && y <= Main.maxTilesY - 205 &&
+			    Desert.IsUndergroundDesert(i, y))
 			{
 				flag2 = true;
 				num8 = 10;
 				chestTileType = 467;
+				contain = y <= (SandstoneUp * 3 + SandstoneDown * 4) / 7
+					? Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
+						ItemID.MysticCoilSnake, ItemID.MagicConch)
+					: Utils.SelectRandom(WorldGen.genRand, ItemID.ThunderSpear, ItemID.ThunderStaff,
+						ItemID.DripplerFlail);
 
 				Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
 					ItemID.MysticCoilSnake, ItemID.MagicConch, ItemID.ThunderSpear, ItemID.ThunderStaff,
@@ -105,11 +116,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					contain = 52;
 			}
 
-			if (chestTileType == 21 && (num8 == 11 || contain == 0 && num6 >= Main.worldSurface + 25.0 &&
-				num6 <= Main.maxTilesY - 205 &&
-				(Main.tile[i, k].type == 147 ||
-				 Main.tile[i, k].type == 161 ||
-				 Main.tile[i, k].type == 162)))
+			if (chestTileType == 21 && (num8 == 11 || contain == 0 && y >= Main.worldSurface + 25.0 &&
+				y <= Main.maxTilesY - 205 &&
+				(Main.tile[i, y].type == 147 ||
+				 Main.tile[i, y].type == 161 ||
+				 Main.tile[i, y].type == 162)))
 			{
 				flag = true;
 				num8 = 11;
@@ -154,7 +165,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					contain = 52;
 			}
 
-			if (chestTileType == 21 && num6 > Main.maxTilesY - 205 && contain == 0)
+			if (chestTileType == 21 && y > Main.maxTilesY - 205 && contain == 0)
 			{
 				flag7 = true;
 				if (HellChest == HellChestItem[1])
@@ -219,7 +230,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					contain = 52;
 			}
 
-			if (chestTileType == 21 && num8 != 0 && Dungeon.IsDungeon(i, k))
+			if (chestTileType == 21 && num8 != 0 && Dungeon.IsDungeon(i, y))
 			{
 				flag8 = true;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(maxValue) == 0)
@@ -231,11 +242,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		}
 
 
-		public static void VanillaLoot(int i, int contain, ushort chestTileType, bool flag10, int num7, int num8,
-			int num6,
-			bool flag9, bool flag4, bool flag5, bool flag8, bool flag6, bool flag2, bool flag, bool flag3,
-			bool flag7, int k)
+		public static void VanillaLoot(int x, int contain, ushort chestTileType, bool flag10, int num7, int num8,
+			int y, bool flag9, bool flag4, bool flag5, bool flag8, bool flag6, bool flag2, bool flag, bool flag3,
+			bool flag7)
 		{
+			if (flag2)
+			{
+				SandstoneUp = SandstoneUp == 1 ? x - 1 : Math.Min(SandstoneUp, x - 1);
+				SandstoneDown = Math.Max(x, SandstoneDown);
+			}
+
 			if (flag10)
 			{
 				HellChest++;
@@ -247,7 +263,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int num13 = 0;
 			while (num13 == 0)
 			{
-				if (num8 == 0 && num6 < Main.worldSurface + 25.0 || flag9)
+				if (num8 == 0 && y < Main.worldSurface + 25.0 || flag9)
 				{
 					if (contain > 0)
 					{
@@ -478,7 +494,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 				}
 
-				else if (num6 < Main.rockLayer)
+				else if (y < Main.rockLayer)
 				{
 					if (contain > 0)
 					{
@@ -713,7 +729,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 				}
-				else if (num6 < Main.maxTilesY - 250)
+				else if (y < Main.maxTilesY - 250)
 				{
 					if (contain > 0)
 					{
@@ -766,7 +782,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					else
 					{
 						int num24 = WorldGen.genRand.Next(8);
-						if (WorldGen.genRand.Next(20) == 0 && num6 > WorldGen.lavaLine)
+						if (WorldGen.genRand.Next(20) == 0 && y > WorldGen.lavaLine)
 						{
 							chest.item[num13].SetDefaults(906);
 							chest.item[num13].Prefix(-1);
@@ -1214,7 +1230,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					num13++;
 				}
 
-				if (Main.wallDungeon[Main.tile[i, k].wall] && WorldGen.genRand.Next(8) == 0)
+				if (Main.wallDungeon[Main.tile[x, y].wall] && WorldGen.genRand.Next(8) == 0)
 				{
 					chest.item[num13].SetDefaults(2192);
 					num13++;
