@@ -22,7 +22,7 @@
         },
         "description": "Both Crimson and Corruption are in this world",
         "displayed_name": "Crimruption",
-        "hidden": true,
+        "hidden": false,
         "internal_name": "Crimruption"
     },
     "Drunk": {
