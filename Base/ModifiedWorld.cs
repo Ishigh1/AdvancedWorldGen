@@ -124,9 +124,8 @@ namespace AdvancedWorldGen.Base
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
 			Replacer.ReplaceGenPasses(tasks);
-
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
-			if (passIndex != -1 && OptionsContains("Crimruption"))
+			if (passIndex != -1 && !WorldgenSettings.Revamped && OptionsContains("Crimruption"))
 			{
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption1", Crimruption.Crimruption1));
 				passIndex++;
@@ -139,18 +138,18 @@ namespace AdvancedWorldGen.Base
 				tasks.RemoveAt(passIndex);
 				tasks.Insert(passIndex, new PassLegacy("NPCs", HandleNpcs));
 			}
-
-			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Micro Biomes");
-			if (passIndex != -1)
-				HalloweenCommon.InsertTasks(tasks, ref passIndex);
 			
-			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Corruption");
+			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Tile Cleanup");
 			if (passIndex != -1 && OptionsContains("Crimruption"))
 			{
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption3", Crimruption.Crimruption3));
 				passIndex++;
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption4", Crimruption.Crimruption4));
 			}
+
+			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Micro Biomes");
+			if (passIndex != -1)
+				HalloweenCommon.InsertTasks(tasks, ref passIndex);
 
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
 		}

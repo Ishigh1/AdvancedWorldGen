@@ -145,7 +145,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					.SetValue(null, numJChests + 1);
 			}
 
-			Main.tileSolid[137] = false;
+			Main.tileSolid[TileID.Traps] = false;
 		}
 
 		private static bool IsValid(int x, int y)

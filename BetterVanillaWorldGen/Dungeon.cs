@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using AdvancedWorldGen.Base;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -86,6 +87,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			Main.tileSolid[CrackedType] = false;
+			typeof(WorldGen).GetField("crackedType", BindingFlags.NonPublic | BindingFlags.Static)
+				.SetValue(null, CrackedType);
 			WorldGen.dungeonLake = true;
 			WorldGen.dungeonX = x;
 			WorldGen.dungeonY = y;

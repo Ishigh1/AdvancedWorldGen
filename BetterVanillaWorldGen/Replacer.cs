@@ -11,7 +11,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class Replacer
 	{
-		public static bool Revamped => ModContent.GetInstance<WorldgenSettings>().FasterWorldgen;
 
 		public static void Replace()
 		{
@@ -31,7 +30,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public static void ReplaceGenPasses(List<GenPass> genPasses)
 		{
-			if (!Revamped)
+			if (!WorldgenSettings.Revamped)
 				return;
 			genPasses.Insert(0, new ResetOverhauled("Reset Overhauled", 0));
 
@@ -64,7 +63,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		public static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
 			DesertDescription description)
 		{
-			if (Revamped)
+			if (WorldgenSettings.Revamped)
 				DesertHive.Place(description);
 			else
 				orig(description);
@@ -73,14 +72,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		public static bool ReplaceChest(OnWorldGen.orig_AddBuriedChest_int_int_int_bool_int_bool_ushort orig, int i,
 			int j, int contain, bool notNearOtherChests, int style, bool trySlope, ushort chestTileType)
 		{
-			return Revamped
+			return WorldgenSettings.Revamped
 				? Chest.AddBuriedChest(i, j, contain, notNearOtherChests, style, chestTileType)
 				: orig(i, j, contain, notNearOtherChests, style, trySlope, chestTileType);
 		}
 
 		public static void ReplaceDungeon(OnWorldGen.orig_MakeDungeon orig, int x, int y)
 		{
-			if (Revamped)
+			if (WorldgenSettings.Revamped)
 				Dungeon.MakeDungeon(x, y);
 			else
 				orig(x, y);
@@ -88,7 +87,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		private static void ReplaceJungleHoles(OnJunglePass.orig_GenerateHolesInMudWalls orig, JunglePass self)
 		{
-			if (Revamped)
+			if (WorldgenSettings.Revamped)
 				Jungle.GenerateHolesInMudWalls(self);
 			else
 				orig(self);
