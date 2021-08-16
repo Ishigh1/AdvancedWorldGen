@@ -41,5 +41,16 @@ namespace AdvancedWorldGen.SpecialOptions
 		{
 			WorldGen.drunkWorldGen = WasDrunk;
 		}
+
+		public static void Crimruption3(GenerationProgress progress, GameConfiguration configuration)
+		{
+			WasDrunk = WorldGen.drunkWorldGen;
+			WorldGen.drunkWorldGen = true;
+		}
+
+		public static void Crimruption4(GenerationProgress progress, GameConfiguration configuration)
+		{
+			WorldGen.drunkWorldGen = WasDrunk;
+		}
 	}
 }
