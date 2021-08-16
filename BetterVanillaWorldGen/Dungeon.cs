@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AdvancedWorldGen.Base;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -673,11 +674,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 			}
 
-			int num82 = 5;
-			if (WorldGen.drunkWorldGen)
-				num82 = 6;
+			int evilChests = 5;
+			if (WorldGen.drunkWorldGen || ModifiedWorld.OptionsContains("Crimruption"))
+				evilChests = 6;
 
-			for (int num83 = 0; num83 < num82; num83++)
+			for (int numChest = 0; numChest < evilChests; numChest++)
 			{
 				bool flag5 = false;
 				while (!flag5)
@@ -690,7 +691,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					ushort chestTileType = 21;
 					int contain = 0;
 					int style2 = 0;
-					switch (num83)
+					switch (numChest)
 					{
 						case 0:
 							style2 = 23;
