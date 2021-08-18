@@ -1,0 +1,116 @@
+{
+    "Mods": {
+        "AdvancedWorldGen": {
+            "BigTemple": {
+                "$parentVal": "Big Temple",
+                "Description": "Makes the temple bigger."
+            },
+            "Celebrationmk10": {
+                "$parentVal": "Celebration Mk 10",
+                "Description": "The classic tenth anniversary secret seed."
+            },
+            "Conflict": {
+                "BigTemple": {
+                    "StupidlyBigTemple": "Having a temple size modifier twice doesn't do anything.",
+                    "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
+                },
+                "Celebrationmk10": {},
+                "Crimruption": {
+                    "Drunk": "Drunk already contains Crimruption"
+                },
+                "Drunk": {
+                    "Crimruption": "Drunk already contains Crimruption"
+                },
+                "Entropy": {},
+                "ForTheWorthy": {},
+                "NotTheBees": {
+                    "Random": "Not the bees only leaves a few blocks to be randomized.",
+                    "Santa": "Santa will not have much effect on a not the bees world.",
+                    "SmallNotTheBees": "Having not the bees twice doesn't do anything"
+                },
+                "Painted": {},
+                "Random": {
+                    "NotTheBees": "Not the bees only leaves a few blocks to be randomized.",
+                    "Santa": "Santa only leaves a few blocks to be randomized."
+                },
+                "Santa": {
+                    "NotTheBees": "Santa will not have much effect on a not the bees world.",
+                    "Random": "Santa only leaves a few blocks to be randomized."
+                },
+                "SmallNotTheBees": {
+                    "NotTheBees": "Having not the bees twice doesn't do anything"
+                },
+                "Spooky": {},
+                "StupidlyBigTemple": {
+                    "BigTemple": "Having a temple size modifier twice doesn't do anything.",
+                    "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
+                },
+                "StupidlyHugeTemple": {
+                    "BigTemple": "Having a temple size modifier twice doesn't do anything.",
+                    "StupidlyBigTemple": "Having a temple size modifier twice doesn't do anything."
+                }
+            },
+            "Crimruption": {
+                "$parentVal": "Crimruption",
+                "Description": "Both Crimson and Corruption are in this world"
+            },
+            "Drunk": {
+                "$parentVal": "Drunk",
+                "Description": "The classic 5162020 settings."
+            },
+            "Entropy": {
+                "$parentVal": "Entropy",
+                "Description": "A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized."
+            },
+            "ForTheWorthy": {
+                "$parentVal": "For The Worthy",
+                "Description": "The classic for the worthy settings."
+            },
+            "HideHidden": {
+                "description": "Hide the minor and/or unstable features."
+            },
+            "Import": {
+                "$parentVal": "Import from clipboard",
+                "Description": "Import settings from clipboard."
+            },
+            "NoneSelected": {
+                "Description": "Please choose the options you want."
+            },
+            "NotTheBees": {
+                "$parentVal": "Not The Bees",
+                "Description": "The classic not the bees settings."
+            },
+            "Painted": {
+                "$parentVal": "Painted",
+                "Description": "A world where each block and wall type get a paint."
+            },
+            "Random": {
+                "$parentVal": "Random",
+                "Description": "A world where each block and wall type is randomized."
+            },
+            "Santa": {
+                "$parentVal": "Santa",
+                "Description": "A christmas themed world."
+            },
+            "ShowHidden": {
+                "description": "Show the minor and/or unstable features."
+            },
+            "SmallNotTheBees": {
+                "$parentVal": "Small Not The Bees",
+                "Description": "Like not the bees, but without the entire world being a jungle."
+            },
+            "Spooky": {
+                "$parentVal": "Spooky",
+                "Description": "An halloween themed world."
+            },
+            "StupidlyBigTemple": {
+                "$parentVal": "Stupidly Big Temple",
+                "Description": "Make the temple really big."
+            },
+            "StupidlyHugeTemple": {
+                "$parentVal": "Stupidly Huge Temple",
+                "Description": "Makes a temple that covers most of the jungle."
+            }
+        }
+    }
+}

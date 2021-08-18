@@ -59,30 +59,23 @@ while True:
         file = open("Data.json", "r")
         options = json.load(file)
         file.close()
-        file = open("en-US.lang", "w")
 
-        base = open("base_en-US.lang", "r")
-        for line in base:
-            file.write(line)
-        file.write("\n")
+        base = open("base_en-US.json", "r")
+        base_translation = json.load(base)
+        translation = base_translation["Mods"]["AdvancedWorldGen"]
+        base.close()
 
-        file.write("# Options\n")
+        conflicts = translation["Conflict"]
         for key in options:
             option = options[key]
-            file.write(option["internal_name"] + "=" + option["displayed_name"] + "\n")
-        file.write("\n")
+            option_translation = {}
+            translation[option["internal_name"]] = option_translation
+            option_translation["$parentVal"] = option["displayed_name"]
+            option_translation["Description"] = option["description"]
+            conflicts[option["internal_name"]] = option["conflicts"]
 
-        file.write("# Options description\n")
-        for key in options:
-            option = options[key]
-            file.write(option["internal_name"] + ".description=" + option["description"] + "\n")
-        file.write("\n")
-
-        file.write("# Conflicts description\n")
-        for key in options:
-            option = options[key]
-            for conflicting in option["conflicts"]:
-                file.write("conflict." + option["internal_name"] + "." + conflicting + "=" + option["conflicts"][conflicting] + "\n")
+        file = open("en-US.json", "w")
+        json.dump(base_translation, file, indent=4, sort_keys=True)
         file.close()
 
         jsonText = {}
@@ -107,7 +100,7 @@ while True:
         file.close()
 
     elif command == "setup":
-        shutil.copy("en-US.lang", "../Localization/en-US.lang")
+        shutil.copy("en-US.json", "../Localization/en-US.hjson")
         shutil.copy("Options.json", "../Options.json")
 
     elif command == "conflict":

@@ -1,6 +1,0 @@
-# UI text
-Import=Import from clipboard
-NoneSelected.description=Please choose the options you want.
-ShowHidden.description=Show the minor and/or unstable features.
-HideHidden.description=Hide the minor and/or unstable features.
-Import.description=Import settings from clipboard

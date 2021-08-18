@@ -50,7 +50,7 @@ namespace AdvancedWorldGen.UI
 
 		public static void DedServPrint(bool showHidden, ref string errorMessage)
 		{
-			Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.NoneSelected.description"));
+			Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.NoneSelected.Description"));
 			int id = 1;
 			bool hidden = showHidden;
 			foreach (KeyValuePair<string, Option> keyValuePair in from keyValuePair in OptionsSelector.OptionDict
@@ -89,9 +89,8 @@ namespace AdvancedWorldGen.UI
 					string option2 = options[j];
 					if (OptionsSelector.OptionDict[option].Conflicts?.Contains(option2) == true)
 					{
-						Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.conflict." +
-						                                        options[i] +
-						                                        "." + options[j]));
+						Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.Conflict." +
+						                                        options[i] + "." + options[j]));
 						conflict = true;
 					}
 				}

@@ -26,7 +26,7 @@ namespace AdvancedWorldGen.UI
 		public OptionsSelector(UIWorldCreation uiWorldCreation)
 		{
 			UiWorldCreation = uiWorldCreation;
-			Description = Language.GetText("Mods.AdvancedWorldGen.NoneSelected.description");
+			Description = Language.GetText("Mods.AdvancedWorldGen.NoneSelected.Description");
 
 			CreateOptionPanel();
 		}
@@ -135,8 +135,8 @@ namespace AdvancedWorldGen.UI
 			CreateOptionList(uiDescription, uiList, false);
 
 			bool showHidden = false;
-			LocalizedText showHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.ShowHidden.description");
-			LocalizedText hideHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.HideHidden.description");
+			LocalizedText showHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.ShowHidden.Description");
+			LocalizedText hideHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.HideHidden.Description");
 			UIImage uiImage = new(TextureAssets.InventoryTickOff)
 			{
 				HAlign = 1f
@@ -170,7 +170,7 @@ namespace AdvancedWorldGen.UI
 
 			GroupOptionButton<bool> importButton = new(true,
 				Language.GetText("Mods.AdvancedWorldGen.Import"),
-				Language.GetText("Mods.AdvancedWorldGen.Import.description"), Color.White, null)
+				Language.GetText("Mods.AdvancedWorldGen.Import.Description"), Color.White, null)
 			{
 				HAlign = 0.5f,
 				Width = new StyleDimension(0f, 1f),
@@ -207,7 +207,7 @@ namespace AdvancedWorldGen.UI
 				string option = keyValuePair.Key;
 				GroupOptionButton<bool> clickableText = new(true,
 					Language.GetText("Mods.AdvancedWorldGen." + option),
-					Language.GetText("Mods.AdvancedWorldGen." + option + ".description"), Color.White, null)
+					Language.GetText("Mods.AdvancedWorldGen." + option + ".Description"), Color.White, null)
 				{
 					HAlign = 0.5f,
 					Width = new StyleDimension(0f, 1f),
@@ -244,7 +244,7 @@ namespace AdvancedWorldGen.UI
 						if (ModifiedWorld.Instance.OptionHelper.OptionsContains(conflict))
 						{
 							LocalizedText conflictDescription =
-								Language.GetText("Mods.AdvancedWorldGen.conflict." + option + "." + conflict);
+								Language.GetText("Mods.AdvancedWorldGen.Conflict." + option + "." + conflict);
 							UIImage uiImage = new(UICommon.ButtonErrorTexture)
 							{
 								Left = new StyleDimension(-15, 0f),
