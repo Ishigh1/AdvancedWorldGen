@@ -1,7 +1,7 @@
 using Terraria;
 using Terraria.GameContent.Biomes;
 
-namespace AdvancedWorldGen.BetterVanillaWorldGen
+namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 {
 	public class Jungle
 	{

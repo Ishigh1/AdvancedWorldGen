@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.WorldBuilding;
 
-namespace AdvancedWorldGen.BetterVanillaWorldGen
+namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 {
 	public class JungleTemple : GenPass
 	{

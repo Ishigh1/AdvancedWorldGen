@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 using Terraria.GameContent.Biomes;
 using Terraria.GameContent.Biomes.Desert;
 using Terraria.ModLoader;
@@ -88,7 +89,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		private static void ReplaceJungleHoles(OnJunglePass.orig_GenerateHolesInMudWalls orig, JunglePass self)
 		{
 			if (WorldgenSettings.Revamped)
-				Jungle.GenerateHolesInMudWalls(self);
+				Jungle.Jungle.GenerateHolesInMudWalls(self);
 			else
 				orig(self);
 		}
