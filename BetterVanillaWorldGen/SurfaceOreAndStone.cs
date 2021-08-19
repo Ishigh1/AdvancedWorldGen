@@ -26,17 +26,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				while (num362 > 0)
 				{
 					num362--;
-					int num363 = WorldGen.genRand.Next(WorldGen.beachDistance, Main.maxTilesX - WorldGen.beachDistance);
-					while (num363 >= Main.maxTilesX * 0.48 &&
-					       num363 <= Main.maxTilesX * 0.52)
-						num363 = WorldGen.genRand.Next(WorldGen.beachDistance, Main.maxTilesX - WorldGen.beachDistance);
+					int x = WorldGen.genRand.Next(WorldGen.beachDistance, (int) (Main.maxTilesX * 0.48f));
+					if (WorldGen.genRand.Next(2) == 0)
+						x = Main.maxTilesX - x;
 
 					int y3 = WorldGen.genRand.Next((int) WorldGen.worldSurfaceLow, (int) WorldGen.worldSurface);
-					bool flag19 = orePatchesX.Any(x => Math.Abs(num363 - x) < 200);
+					bool flag19 = orePatchesX.Any(patchX => Math.Abs(patchX - x) < 200);
 
-					if (!flag19 && WorldGen.OrePatch(num363, y3))
+					if (!flag19 && WorldGen.OrePatch(x, y3))
 					{
-						orePatchesX.Add(num363);
+						orePatchesX.Add(x);
 
 						break;
 					}
@@ -52,15 +51,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				while (num366 > 0)
 				{
 					num366--;
-					int num367 = WorldGen.genRand.Next(WorldGen.beachDistance, Main.maxTilesX - WorldGen.beachDistance);
-					while (num367 >= Main.maxTilesX * 0.47 &&
-					       num367 <= Main.maxTilesX * 0.53)
-						num367 = WorldGen.genRand.Next(WorldGen.beachDistance, Main.maxTilesX - WorldGen.beachDistance);
+					int x = WorldGen.genRand.Next(WorldGen.beachDistance, (int) (Main.maxTilesX * 0.47f));
+					if (WorldGen.genRand.Next(2) == 0)
+						x = Main.maxTilesX - x;
 
 					int y4 = WorldGen.genRand.Next((int) WorldGen.worldSurfaceLow, (int) WorldGen.worldSurface);
-					bool flag20 = orePatchesX.Any(x => Math.Abs(num367 - x) < 100);
+					bool flag20 = orePatchesX.Any(patchX => Math.Abs(patchX - x) < 100);
 
-					if (!flag20 && WorldGen.StonePatch(num367, y4))
+					if (!flag20 && WorldGen.StonePatch(x, y4))
 						break;
 				}
 			}
