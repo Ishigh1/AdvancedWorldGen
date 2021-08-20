@@ -2126,138 +2126,111 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			return new Vector2(num, num2);
 		}
 
-		public static void DungeonStairs(int i, int j, ushort tileType, int wallType)
+		public static void DungeonStairs(int x, int y, ushort tileType, int wallType)
 		{
-			Vector2 zero = Vector2.Zero;
-			double num = WorldGen.genRand.Next(5, 9);
-			int num2 = 1;
-			Vector2 vector = default;
-			vector.X = i;
-			vector.Y = j;
-			int num3 = WorldGen.genRand.Next(10, 30);
-			num2 = i <= dEnteranceX ? 1 : -1;
-			if (i > Main.maxTilesX - 400)
-				num2 = -1;
-			else if (i < 400)
-				num2 = 1;
+			int step = WorldGen.genRand.Next(5, 9);
+			Vector2 currentPosition = new(x, y);
 
-			zero.Y = -1f;
-			zero.X = num2;
+			int direction;
+			if (x > Main.maxTilesX - 400)
+				direction = -1;
+			else if (x < 400)
+				direction = 1;
+			else if (x <= dEnteranceX)
+				direction = 1;
+			else
+				direction = -1;
+
+			Vector2 delta = new(-1, direction);
 			if (WorldGen.genRand.Next(3) != 0)
-				zero.X *= 1f + WorldGen.genRand.Next(0, 200) * 0.01f;
+				delta.X *= 1f + WorldGen.genRand.Next(0, 200) * 0.01f;
 			else if (WorldGen.genRand.Next(3) == 0)
-				zero.X *= WorldGen.genRand.Next(50, 76) * 0.01f;
+				delta.X *= WorldGen.genRand.Next(50, 76) * 0.01f;
 			else if (WorldGen.genRand.Next(6) == 0)
-				zero.Y *= 2f;
+				delta.Y *= 2f;
 
-			if (WorldGen.dungeonX < Main.maxTilesX / 2 && zero.X < 0f && zero.X < 0.5)
-				zero.X = -0.5f;
-
-			if (WorldGen.dungeonX > Main.maxTilesX / 2 && zero.X > 0f && zero.X > 0.5)
-				zero.X = -0.5f;
+			if (WorldGen.dungeonX < Main.maxTilesX / 2 && delta.X < 0f && delta.X < 0.5 ||
+			    WorldGen.dungeonX > Main.maxTilesX / 2 && delta.X > 0f && delta.X > 0.5)
+				delta.X = -0.5f;
 
 			if (WorldGen.drunkWorldGen)
 			{
-				num2 *= -1;
-				zero.X *= -1f;
+				direction *= -1;
+				delta.X *= -1f;
 			}
 
-			while (num3 > 0)
+			for (int num3 = WorldGen.genRand.Next(10, 30); num3 > 0; num3--)
 			{
-				num3--;
-				int num4 = (int) (vector.X - num - 4.0 - WorldGen.genRand.Next(6));
-				int num5 = (int) (vector.X + num + 4.0 + WorldGen.genRand.Next(6));
-				int num6 = (int) (vector.Y - num - 4.0);
-				int num7 = (int) (vector.Y + num + 4.0 + WorldGen.genRand.Next(6));
-				if (num4 < 0)
-					num4 = 0;
+				int xMin = (int) Math.Max(currentPosition.X - step - 4 - WorldGen.genRand.Next(6), 0);
+				int xMax = (int) Math.Min(currentPosition.X + step + 4 + WorldGen.genRand.Next(6), Main.maxTilesX);
+				int yMin = (int) Math.Max(currentPosition.Y - step - 4, 0);
+				int yMax = (int) Math.Min(currentPosition.Y + step + 4 + WorldGen.genRand.Next(6), Main.maxTilesY);
 
-				if (num5 > Main.maxTilesX)
-					num5 = Main.maxTilesX;
+				int num8 = currentPosition.X > Main.maxTilesX / 2f ? -1 : 1;
 
-				if (num6 < 0)
-					num6 = 0;
-
-				if (num7 > Main.maxTilesY)
-					num7 = Main.maxTilesY;
-
-				int num8 = 1;
-				if (vector.X > Main.maxTilesX / 2)
-					num8 = -1;
-
-				int num9 = (int) (vector.X + (float) dxStrength1 * 0.6f * num8 +
+				int num9 = (int) (currentPosition.X + (float) dxStrength1 * 0.6f * num8 +
 				                  (float) dxStrength2 * num8);
 				int num10 = (int) (dyStrength2 * 0.5);
-				if (vector.Y < Main.worldSurface - 5.0 &&
-				    Main.tile[num9, (int) (vector.Y - num - 6.0 + num10)].wall == 0 &&
-				    Main.tile[num9, (int) (vector.Y - num - 7.0 + num10)].wall == 0 &&
-				    Main.tile[num9, (int) (vector.Y - num - 8.0 + num10)].wall == 0)
+				if (currentPosition.Y < Main.worldSurface - 5.0 &&
+				    Main.tile[num9, (int) (currentPosition.Y - step - 6.0 + num10)].wall == 0 &&
+				    Main.tile[num9, (int) (currentPosition.Y - step - 7.0 + num10)].wall == 0 &&
+				    Main.tile[num9, (int) (currentPosition.Y - step - 8.0 + num10)].wall == 0)
 				{
 					dSurface = true;
-					WorldGen.TileRunner(num9, (int) (vector.Y - num - 6.0 + num10), WorldGen.genRand.Next(25, 35),
+					WorldGen.TileRunner(num9, (int) (currentPosition.Y - step - 6.0 + num10),
+						WorldGen.genRand.Next(25, 35),
 						WorldGen.genRand.Next(10, 20), -1, false, 0f, -1f);
 				}
 
-				for (int k = num4; k < num5; k++)
-				for (int l = num6; l < num7; l++)
+				for (int x1 = xMin; x1 < xMax; x1++)
+				for (int y1 = yMin; y1 < yMax; y1++)
 				{
-					Main.tile[k, l].LiquidAmount = 0;
-					if (!Main.wallDungeon[Main.tile[k, l].wall])
+					Main.tile[x1, y1].LiquidAmount = 0;
+					if (!Main.wallDungeon[Main.tile[x1, y1].wall])
 					{
-						Main.tile[k, l].wall = 0;
-						Main.tile[k, l].IsActive = true;
-						Main.tile[k, l].type = tileType;
+						Main.tile[x1, y1].wall = 0;
+						Main.tile[x1, y1].IsActive = true;
+						Main.tile[x1, y1].type = tileType;
 					}
 				}
 
-				for (int m = num4 + 1; m < num5 - 1; m++)
-				for (int n = num6 + 1; n < num7 - 1; n++)
-					Main.tile[m, n].wall = (ushort) wallType;
+				for (int x1 = xMin + 1; x1 < xMax - 1; x1++)
+				for (int y1 = yMin + 1; y1 < yMax - 1; y1++)
+					Main.tile[x1, y1].wall = (ushort) wallType;
 
 				int num11 = 0;
-				if (WorldGen.genRand.Next((int) num) == 0)
+				if (WorldGen.genRand.Next(step) == 0)
 					num11 = WorldGen.genRand.Next(1, 3);
 
-				num4 = (int) (vector.X - num * 0.5 - num11);
-				num5 = (int) (vector.X + num * 0.5 + num11);
-				num6 = (int) (vector.Y - num * 0.5 - num11);
-				num7 = (int) (vector.Y + num * 0.5 + num11);
-				if (num4 < 0)
-					num4 = 0;
+				xMin = (int) Math.Max(currentPosition.X - step * 0.5f - num11, 0);
+				xMax = (int) Math.Min(currentPosition.X + step * 0.5f + num11, Main.maxTilesX);
+				yMin = (int) Math.Max(currentPosition.Y - step * 0.5f - num11, 0);
+				yMax = (int) Math.Min(currentPosition.Y + step * 0.5f + num11, Main.maxTilesY);
 
-				if (num5 > Main.maxTilesX)
-					num5 = Main.maxTilesX;
-
-				if (num6 < 0)
-					num6 = 0;
-
-				if (num7 > Main.maxTilesY)
-					num7 = Main.maxTilesY;
-
-				for (int num12 = num4; num12 < num5; num12++)
-				for (int num13 = num6; num13 < num7; num13++)
+				for (int x1 = xMin; x1 < xMax; x1++)
+				for (int y1 = yMin; y1 < yMax; y1++)
 				{
-					Main.tile[num12, num13].IsActive = false;
-					WorldGen.PlaceWall(num12, num13, wallType, true);
+					Main.tile[x1, y1].IsActive = false;
+					WorldGen.PlaceWall(x1, y1, wallType, true);
 				}
 
-				if (dSurface)
-					num3 = 0;
+				currentPosition += delta;
+				if (currentPosition.Y < Main.worldSurface)
+					delta.Y *= 0.98f;
 
-				vector += zero;
-				if (vector.Y < Main.worldSurface)
-					zero.Y *= 0.98f;
+				if (dSurface)
+					break;
 			}
 
-			WorldGen.dungeonX = (int) vector.X;
-			WorldGen.dungeonY = (int) vector.Y;
+			WorldGen.dungeonX = (int) currentPosition.X;
+			WorldGen.dungeonY = (int) currentPosition.Y;
 		}
 
 		public static bool PlaceSandTrap(int i, int j)
 		{
-			int num = 6;
-			int num2 = 4;
-			int num3 = 25;
+			const int num = 6;
+			const int num2 = 4;
+			const int num3 = 25;
 			int k;
 			for (k = j; !Main.tile[i, k].IsActive && k < Main.UnderworldLayer; k++)
 			{
@@ -2351,9 +2324,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			for (int num14 = i - num5 - 1; num14 <= i + num5 + 1; num14++)
 			for (int num15 = num4 - num6; num15 <= num4; num15++)
 			{
-				bool flag = false;
-				if (Main.tile[num14, num15].IsActive && Main.tileSolid[Main.tile[num14, num15].type])
-					flag = true;
+				bool flag = Main.tile[num14, num15].IsActive && Main.tileSolid[Main.tile[num14, num15].type];
 
 				if (num15 == num4)
 				{
@@ -2527,10 +2498,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			if (!Main.wallDungeon[Main.tile[i - num4, num2].wall] || !Main.wallDungeon[Main.tile[i + num4, num2].wall])
 				return false;
 
-			bool flag = true;
 			for (int l = num2; l < num2 + num; l++)
 			{
-				flag = true;
+				bool flag = true;
 				for (int m = i - num4; m <= i + num4; m++)
 				{
 					Tile tile = Main.tile[m, l];
@@ -2635,10 +2605,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			bool flag2 = false;
 			bool flag3 = false;
 			bool flag4 = true;
-			bool flag5 = false;
 			while (!flag2)
 			{
-				flag5 = false;
+				bool flag5 = false;
 				if (flag4 && !forceX)
 				{
 					bool flag6 = true;
@@ -2870,7 +2839,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 							zero.X = WorldGen.genRand.Next(20, 50) * 0.01f;
 					}
 				}
-				else if (vector.X < Main.maxTilesX / 2 && vector.X > Main.maxTilesX * 0.25)
+				else if (vector.X < Main.maxTilesX / 2f && vector.X > Main.maxTilesX * 0.25)
 				{
 					num3 = -1;
 					zero2.Y = 0f;
