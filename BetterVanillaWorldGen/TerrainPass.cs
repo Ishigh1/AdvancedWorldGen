@@ -154,7 +154,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			WorldGen.lavaLine = lavaLine;
 		}
 
-		private static void FillColumn(int x, double worldSurface, double rockLayer)
+		public static void FillColumn(int x, double worldSurface, double rockLayer)
 		{
 			for (int i = 0; (double) i < worldSurface; i++)
 			{
@@ -180,7 +180,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 		}
 
-		private static void RetargetColumn(int x, double worldSurface)
+		public static void RetargetColumn(int x, double worldSurface)
 		{
 			for (int i = 0; (double) i < worldSurface; i++)
 			{
@@ -199,7 +199,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 		}
 
-		private static double GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
+		public static double GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
 		{
 			double num = 0.0;
 			if ((WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen) && WorldGen.genRand.Next(2) == 0)
@@ -252,7 +252,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			return num;
 		}
 
-		private static void RetargetSurfaceHistory(SurfaceHistory history, int targetX, double targetHeight)
+		public static void RetargetSurfaceHistory(SurfaceHistory history, int targetX, double targetHeight)
 		{
 			for (int i = 0; i < history.Length / 2; i++)
 			{
@@ -276,7 +276,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 		}
 
-		private enum TerrainFeatureType
+		public enum TerrainFeatureType
 		{
 			Plateau,
 			Hill,
@@ -285,10 +285,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Valley
 		}
 
-		private class SurfaceHistory
+		public class SurfaceHistory
 		{
-			private readonly double[] _heights;
-			private int _index;
+			public readonly double[] _heights;
+			public int _index;
 
 			public SurfaceHistory(int size)
 			{

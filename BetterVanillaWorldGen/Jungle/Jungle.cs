@@ -1,11 +1,11 @@
 using Terraria;
-using Terraria.GameContent.Biomes;
+using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 {
 	public class Jungle
 	{
-		public static void GenerateHolesInMudWalls(JunglePass self)
+		public static void GenerateHolesInMudWalls(VanillaJunglePass self)
 		{
 			const int smallSize = 4200;
 			int holes = Main.maxTilesX * Main.maxTilesX / (2 * smallSize);

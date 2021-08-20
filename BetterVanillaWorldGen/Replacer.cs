@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
-using Terraria.GameContent.Biomes;
 using Terraria.GameContent.Biomes.Desert;
 using Terraria.WorldBuilding;
+using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
 using OnJunglePass = On.Terraria.GameContent.Biomes.JunglePass;
 using OnDesertHive = On.Terraria.GameContent.Biomes.Desert.DesertHive;
 using OnWorldGen = On.Terraria.WorldGen;
@@ -40,17 +40,26 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				genPasses[index] = new TerrainPass((Terraria.GameContent.Biomes.TerrainPass) genPass);
 			}
 
+			bool replacedJungle;
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle");
-			JunglePass junglePass = null;
-			if (index != -1) junglePass = (JunglePass) genPasses[index];
+			if (index != -1)
+			{
+				VanillaJunglePass junglePass = (VanillaJunglePass) genPasses[index];
+				genPasses[index] = new JunglePass(junglePass);
+				replacedJungle = true;
+			}
+			else
+			{
+				replacedJungle = false;
+			}
 			index = genPasses.FindIndex(index, pass => pass.Name == "Mushroom Patches");
 			if (index != -1) genPasses[index] = new MushroomPatches();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Temple");
-			if (index != -1 && junglePass != null) genPasses[index] = new JungleTemple(junglePass);
+			if (index != -1 && replacedJungle) genPasses[index] = new JungleTemple();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Chests");
-			if (index != -1 && junglePass != null) genPasses[index] = new JungleChests(junglePass);
+			if (index != -1 && replacedJungle) genPasses[index] = new JungleChests();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Surface Ore and Stone");
 			if (index != -1) genPasses[index] = new SurfaceOreAndStone();
@@ -84,7 +93,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				orig(x, y);
 		}
 
-		private static void ReplaceJungleHoles(OnJunglePass.orig_GenerateHolesInMudWalls orig, JunglePass self)
+		public static void ReplaceJungleHoles(OnJunglePass.orig_GenerateHolesInMudWalls orig, VanillaJunglePass self)
 		{
 			if (WorldgenSettings.Revamped)
 				Jungle.Jungle.GenerateHolesInMudWalls(self);
