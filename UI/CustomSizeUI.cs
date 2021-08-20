@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.CustomSized;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;

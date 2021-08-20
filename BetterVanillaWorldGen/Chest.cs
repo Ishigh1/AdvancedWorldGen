@@ -88,7 +88,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			flag8 = false;
 			flag9 = false;
 			flag10 = false;
-			y = y;
 			num8 = 0;
 			if (y >= Main.worldSurface + 25.0 || contain > 0)
 				num8 = 1;

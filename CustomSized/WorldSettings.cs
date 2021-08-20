@@ -8,7 +8,7 @@ using Terraria.UI;
 using OnWorldGen = On.Terraria.WorldGen;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
 
-namespace AdvancedWorldGen.Base
+namespace AdvancedWorldGen.CustomSized
 {
 	public class WorldSettings
 	{
@@ -21,6 +21,8 @@ namespace AdvancedWorldGen.Base
 			OnUIWorldCreation.ClickSizeOption += SetSize;
 			OnWorldGen.setWorldSize += SetWorldSize;
 			OnWorldGen.clearWorld += SetWorldSize;
+			
+			OnWorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
 		}
 
 		public void ResetSize(OnUIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)

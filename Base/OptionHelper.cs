@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AdvancedWorldGen.CustomSized;
 using AdvancedWorldGen.SpecialOptions;
 using Microsoft.Xna.Framework;
 using Terraria;
