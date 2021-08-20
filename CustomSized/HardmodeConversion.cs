@@ -3,7 +3,6 @@ using AdvancedWorldGen.BetterVanillaWorldGen;
 using Microsoft.Xna.Framework;
 using Terraria;
 using OnWorldGen = On.Terraria.WorldGen;
-using static Terraria.WorldGen;
 
 namespace AdvancedWorldGen.CustomSized
 {
@@ -15,13 +14,13 @@ namespace AdvancedWorldGen.CustomSized
 			if (!WorldgenSettings.Revamped) orig(x, y, speedX, speedY, good);
 
 			float worldSize = Main.maxTilesX / 4200f;
-			float num2 = genRand.Next(200, 250) * worldSize;
+			float num2 = WorldGen.genRand.Next(200, 250) * worldSize;
 			Vector2 vector = default;
 			vector.X = x;
 			vector.Y = y;
 			Vector2 vector2 = default;
-			vector2.X = genRand.Next(-10, 11) * 0.1f;
-			vector2.Y = genRand.Next(-10, 11) * 0.1f;
+			vector2.X = WorldGen.genRand.Next(-10, 11) * 0.1f;
+			vector2.Y = WorldGen.genRand.Next(-10, 11) * 0.1f;
 			if (speedX != 0f || speedY != 0f)
 			{
 				vector2.X = speedX;
@@ -51,7 +50,7 @@ namespace AdvancedWorldGen.CustomSized
 				for (int n = num7; n < num8; n++)
 				{
 					if (!(Math.Abs(m - vector.X) + Math.Abs(n - vector.Y) <
-					      num2 * 0.5 * (1.0 + genRand.Next(-10, 11) * 0.015)))
+					      num2 * 0.5 * (1.0 + WorldGen.genRand.Next(-10, 11) * 0.015)))
 						continue;
 
 					if (good)
@@ -79,59 +78,59 @@ namespace AdvancedWorldGen.CustomSized
 
 						switch (Main.tile[m, n].type)
 						{
-							case 225 when notTheBees:
+							case 225 when WorldGen.notTheBees:
 								Main.tile[m, n].type = 117;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
-							case 230 when notTheBees:
+							case 230 when WorldGen.notTheBees:
 								Main.tile[m, n].type = 402;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 2:
 								Main.tile[m, n].type = 109;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 1:
 								Main.tile[m, n].type = 117;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 53:
 							case 123:
 								Main.tile[m, n].type = 116;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 23:
 							case 199:
 								Main.tile[m, n].type = 109;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 25:
 							case 203:
 								Main.tile[m, n].type = 117;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 112:
 							case 234:
 								Main.tile[m, n].type = 116;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 161:
 							case 163:
 							case 200:
 								Main.tile[m, n].type = 164;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 396:
 								Main.tile[m, n].type = 403;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 397:
 								Main.tile[m, n].type = 402;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 						}
 					}
-					else if (crimson)
+					else if (WorldGen.crimson)
 					{
 						switch (Main.tile[m, n].wall)
 						{
@@ -151,51 +150,51 @@ namespace AdvancedWorldGen.CustomSized
 
 						switch (Main.tile[m, n].type)
 						{
-							case 225 when notTheBees:
+							case 225 when WorldGen.notTheBees:
 								Main.tile[m, n].type = 203;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
-							case 230 when notTheBees:
+							case 230 when WorldGen.notTheBees:
 								Main.tile[m, n].type = 399;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 2:
 								Main.tile[m, n].type = 199;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 1:
 								Main.tile[m, n].type = 203;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 53:
 							case 123:
 								Main.tile[m, n].type = 234;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 109:
 								Main.tile[m, n].type = 199;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 117:
 								Main.tile[m, n].type = 203;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 116:
 								Main.tile[m, n].type = 234;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 161:
 							case 164:
 								Main.tile[m, n].type = 200;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 396:
 								Main.tile[m, n].type = 401;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 397:
 								Main.tile[m, n].type = 399;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 						}
 					}
@@ -219,58 +218,58 @@ namespace AdvancedWorldGen.CustomSized
 
 						switch (Main.tile[m, n].type)
 						{
-							case 225 when notTheBees:
+							case 225 when WorldGen.notTheBees:
 								Main.tile[m, n].type = 25;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
-							case 230 when notTheBees:
+							case 230 when WorldGen.notTheBees:
 								Main.tile[m, n].type = 398;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 2:
 								Main.tile[m, n].type = 23;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 1:
 								Main.tile[m, n].type = 25;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 53:
 							case 123:
 								Main.tile[m, n].type = 112;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 109:
 								Main.tile[m, n].type = 23;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 117:
 								Main.tile[m, n].type = 25;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 116:
 								Main.tile[m, n].type = 112;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 161:
 							case 164:
 								Main.tile[m, n].type = 163;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 396:
 								Main.tile[m, n].type = 400;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 							case 397:
 								Main.tile[m, n].type = 398;
-								SquareTileFrame(m, n);
+								WorldGen.SquareTileFrame(m, n);
 								break;
 						}
 					}
 				}
 
 				vector += vector2;
-				vector2.X += genRand.Next(-10, 11) * 0.05f;
+				vector2.X += WorldGen.genRand.Next(-10, 11) * 0.05f;
 				if (vector2.X > speedX + 1f)
 					vector2.X = speedX + 1f;
 
