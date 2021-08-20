@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 using Terraria.GameContent.Biomes;
 using Terraria.GameContent.Biomes.Desert;
-using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using OnJunglePass = On.Terraria.GameContent.Biomes.JunglePass;
 using OnDesertHive = On.Terraria.GameContent.Biomes.Desert.DesertHive;
@@ -12,7 +11,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class Replacer
 	{
-
 		public static void Replace()
 		{
 			OnDesertHive.Place += ReplaceDesertHive;

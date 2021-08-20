@@ -138,7 +138,7 @@ namespace AdvancedWorldGen.Base
 				tasks.RemoveAt(passIndex);
 				tasks.Insert(passIndex, new PassLegacy("NPCs", HandleNpcs));
 			}
-			
+
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Tile Cleanup");
 			if (passIndex != -1 && OptionsContains("Crimruption"))
 			{
