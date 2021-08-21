@@ -20,8 +20,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
 			progress.Message = Lang.gen[70].Value;
-			int minX = Math.Max(10, JunglePass.JungleX - Main.maxTilesX / 8);
-			int maxX = Math.Min(Main.maxTilesX - 10, JunglePass.JungleX + Main.maxTilesX / 8);
+			int jungleX = Replacer.VanillaInterface.JungleOriginX.Get();
+			int minX = Math.Max(10, jungleX - Main.maxTilesX / 8);
+			int maxX = Math.Min(Main.maxTilesX - 10, jungleX + Main.maxTilesX / 8);
 			int x = _random.Next(minX, maxX);
 			int y = _random.Next((int) WorldGen.rockLayer, Main.UnderworldLayer);
 			(x, y) = TileFinder.SpiralSearch(x, y, IsValid);

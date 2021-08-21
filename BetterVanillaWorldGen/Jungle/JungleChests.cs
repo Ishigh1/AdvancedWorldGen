@@ -28,11 +28,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 			float num536 = _random.Next(7, 12);
 			num536 *= Main.maxTilesX / 4200f;
+			int jungleX = Replacer.VanillaInterface.JungleOriginX.Get();
 			for (int num538 = 0; (float) num538 < num536; num538++)
 			{
 				GenPassHelper.SetProgress(progress, num538, num536);
-				int minX = Math.Max(10, JunglePass.JungleX - Main.maxTilesX / 8);
-				int maxX = Math.Min(Main.maxTilesX - 10, JunglePass.JungleX + Main.maxTilesX / 8);
+				int minX = Math.Max(10, jungleX - Main.maxTilesX / 8);
+				int maxX = Math.Min(Main.maxTilesX - 10, jungleX + Main.maxTilesX / 8);
 				int x = _random.Next(minX, maxX);
 
 				int y;

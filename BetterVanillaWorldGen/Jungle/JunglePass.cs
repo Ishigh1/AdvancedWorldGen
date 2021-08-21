@@ -10,34 +10,27 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 {
 	public class JunglePass : GenPass
 	{
-		public static int JungleOriginX;
-		public static int DungeonSide;
-		public static double WorldSurface;
-		public static int LeftBeachEnd;
-		public static int RightBeachStart;
-		public static int JungleX;
-		public static float WorldScale;
-		public VanillaJunglePass VanillaJunglePass;
-		
-		public JunglePass(VanillaJunglePass vanillaJunglePass)
-			: base("Jungle", 10154.652f)
+		public int JungleOriginX;
+		public int DungeonSide;
+		public double WorldSurface;
+		public int LeftBeachEnd;
+		public int RightBeachStart;
+		public float WorldScale;
+
+		public JunglePass() : base("Jungle", 10154.652f)
 		{
-			VanillaJunglePass = vanillaJunglePass;
 		}
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 		{
-			Action<GenPass> onBegin =
-				(Action<GenPass>) typeof(GenPass).GetField("_onBegin", BindingFlags.Instance | BindingFlags.NonPublic)
-					.GetValue(VanillaJunglePass);
-			onBegin.Invoke(VanillaJunglePass);
-			JungleOriginX = VanillaJunglePass.JungleOriginX;
-			DungeonSide = VanillaJunglePass.DungeonSide;
-			WorldSurface = VanillaJunglePass.WorldSurface;
-			LeftBeachEnd = VanillaJunglePass.LeftBeachEnd;
-			RightBeachStart = VanillaJunglePass.RightBeachStart;
-			JungleX = VanillaJunglePass.JungleX;
 			progress.Message = Lang.gen[11].Value;
+
+			JungleOriginX = Replacer.VanillaInterface.JungleOriginX.Get();
+			DungeonSide = Replacer.VanillaInterface.DungeonSide.Get();
+			WorldSurface = WorldGen.worldSurface;
+			LeftBeachEnd = Replacer.VanillaInterface.LeftBeachEnd.Get();
+			RightBeachStart = Replacer.VanillaInterface.RightBeachStart.Get();
+
 			WorldScale = Main.maxTilesX / (4200 / 1.5f);
 			Point point = CreateStartPoint();
 			int x = point.X;
@@ -74,7 +67,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			WorldGen.mudWall = false;
 			progress.Set(0.6f);
 			GenerateHolesInMudWalls();
-            GenerateFinishingTouches(progress, oldX, oldY);
+			GenerateFinishingTouches(progress, oldX, oldY);
 		}
 
 		public void PlaceGemsAt(int x, int y, ushort baseGem, int gemVariants)
@@ -93,12 +86,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			WorldGen.mudWall = false;
 		}
 
-		public static Point CreateStartPoint()
+		public Point CreateStartPoint()
 		{
 			return new(JungleOriginX, (int) (Main.maxTilesY + Main.rockLayer) / 2);
 		}
 
-		public static void ApplyRandomMovement(ref int x, ref int y, int xRange, int yRange)
+		public void ApplyRandomMovement(ref int x, ref int y, int xRange, int yRange)
 		{
 			x += _random.Next((int) (-xRange * WorldScale), 1 + (int) (xRange * WorldScale));
 			y += _random.Next((int) (-yRange * WorldScale), 1 + (int) (yRange * WorldScale));
@@ -139,7 +132,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 						flag = false;
 				}
 
-				JungleX = (int) vector.X;
 				num += _random.Next(-20, 21) * 0.1f;
 				if (num < 5.0)
 					num = 5.0;
@@ -196,7 +188,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			}
 		}
 
-		public static void GenerateHolesInMudWalls()
+		public void GenerateHolesInMudWalls()
 		{
 			for (int i = 0; i < Main.maxTilesX / 4; i++)
 			{
@@ -212,7 +204,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			}
 		}
 
-		public static void GenerateFinishingTouches(GenerationProgress progress, int oldX, int oldY)
+		public void GenerateFinishingTouches(GenerationProgress progress, int oldX, int oldY)
 		{
 			int num = oldX;
 			int num2 = oldY;

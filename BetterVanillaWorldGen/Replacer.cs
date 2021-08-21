@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 using Terraria.GameContent.Biomes.Desert;
 using Terraria.WorldBuilding;
@@ -11,6 +12,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class Replacer
 	{
+		public static VanillaInterface VanillaInterface;
+		
 		public static void Replace()
 		{
 			OnDesertHive.Place += ReplaceDesertHive;
@@ -21,6 +24,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public static void UnReplace()
 		{
+			VanillaInterface = null;
+			
 			OnDesertHive.Place -= ReplaceDesertHive;
 			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= ReplaceChest;
 			OnWorldGen.MakeDungeon -= ReplaceDungeon;
@@ -31,35 +36,31 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 			if (!WorldgenSettings.Revamped)
 				return;
-			genPasses.Insert(0, new ResetOverhauled("Reset Overhauled", 0));
-
-			int index = genPasses.FindIndex(pass => pass.Name == "Terrain");
+			int index = genPasses.FindIndex(pass => pass.Name == "Reset");
 			if (index != -1)
 			{
-				GenPass genPass = genPasses[index];
-				genPasses[index] = new TerrainPass((Terraria.GameContent.Biomes.TerrainPass) genPass);
-			}
-
-			bool replacedJungle;
-			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle");
-			if (index != -1)
-			{
-				VanillaJunglePass junglePass = (VanillaJunglePass) genPasses[index];
-				genPasses[index] = new JunglePass(junglePass);
-				replacedJungle = true;
+				VanillaInterface = new VanillaInterface(genPasses[index]);
+				genPasses[index] = new Reset();
 			}
 			else
 			{
-				replacedJungle = false;
+				return;
 			}
+
+			index = genPasses.FindIndex(pass => pass.Name == "Terrain");
+			if (index != -1) genPasses[index] = new TerrainPass();
+
+			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle");
+			if (index != -1) genPasses[index] = new JunglePass();
+			
 			index = genPasses.FindIndex(index, pass => pass.Name == "Mushroom Patches");
 			if (index != -1) genPasses[index] = new MushroomPatches();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Temple");
-			if (index != -1 && replacedJungle) genPasses[index] = new JungleTemple();
+			if (index != -1) genPasses[index] = new JungleTemple();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Chests");
-			if (index != -1 && replacedJungle) genPasses[index] = new JungleChests();
+			if (index != -1) genPasses[index] = new JungleChests();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Surface Ore and Stone");
 			if (index != -1) genPasses[index] = new SurfaceOreAndStone();

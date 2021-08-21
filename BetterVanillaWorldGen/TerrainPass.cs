@@ -3,28 +3,20 @@ using System.Reflection;
 using Terraria;
 using Terraria.IO;
 using Terraria.WorldBuilding;
-using OldTerrainPass = Terraria.GameContent.Biomes.TerrainPass;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class TerrainPass : GenPass
 	{
-		public OldTerrainPass OldPass;
 
-		public TerrainPass(OldTerrainPass oldPass) : base("Terrain", 449.3722f)
+		public TerrainPass() : base("Terrain", 449.3722f)
 		{
-			OldPass = oldPass;
 		}
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
-			Action<GenPass> onBegin =
-				(Action<GenPass>) typeof(GenPass).GetField("_onBegin", BindingFlags.Instance | BindingFlags.NonPublic)
-					.GetValue(OldPass);
-			onBegin.Invoke(OldPass);
-
-			int leftBeachSize = OldPass.LeftBeachSize;
-			int rightBeachSize = Main.maxTilesX - OldPass.RightBeachSize;
+			int leftBeachSize = Replacer.VanillaInterface.LeftBeachEnd.Get();
+			int rightBeachSize = Main.maxTilesX - Replacer.VanillaInterface.RightBeachStart.Get();
 
 			int num = passConfig.Get<int>("FlatBeachPadding");
 			progress.Message = Lang.gen[0].Value;
