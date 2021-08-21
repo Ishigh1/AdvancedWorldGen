@@ -107,12 +107,14 @@ namespace AdvancedWorldGen.CustomSized
 			if (newWidth > Main.mapTargetX ||
 			    newHeight > Main.mapTargetY)
 			{
-				Main.mapTargetX = Math.Max(newWidth, Main.textureMaxWidth);
-				Main.mapTargetY = Math.Max(newHeight, Main.textureMaxHeight);
+				Main.mapTargetX = Math.Max(newWidth, Main.mapTargetX);
+				Main.mapTargetY = Math.Max(newHeight, Main.mapTargetY);
 				Main.instance.mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
 				Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
 				Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
 			}
+			
+			OverhauledInit.Init();
 		}
 	}
 }
