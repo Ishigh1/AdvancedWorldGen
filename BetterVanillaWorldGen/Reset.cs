@@ -16,7 +16,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
-			Replacer.VanillaInterface.numOceanCaveTreasure.Set(0);
+			Replacer.VanillaInterface.NumOceanCaveTreasure.Set(0);
 			skipDesertTileCheck = false;
 			gen = true;
 			Liquid.ReInit();
@@ -27,7 +27,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Main.cloudAlpha = 0f;
 			Main.maxRaining = 0f;
 			Main.raining = false;
-			Replacer.VanillaInterface.heartCount.Set(0);
+			Replacer.VanillaInterface.HeartCount.Set(0);
 			Main.checkXMas();
 			Main.checkHalloween();
 			typeof(WorldGen).GetMethod("ResetGenerator", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, null);
@@ -39,7 +39,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			const int num917 = 86400;
 			Main.slimeRainTime = -genRand.Next(num917 * 2, num917 * 3);
 			Main.cloudBGActive = -genRand.Next(8640, num917);
-			Replacer.VanillaInterface.skipFramingDuringGen.Set(false);
+			Replacer.VanillaInterface.SkipFramingDuringGen.Set(false);
 			if (genRand.Next(2) == 0)
 			{
 				Replacer.VanillaInterface.Copper.Set(166);
