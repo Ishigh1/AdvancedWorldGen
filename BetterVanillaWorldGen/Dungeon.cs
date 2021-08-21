@@ -2141,7 +2141,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			else
 				direction = -1;
 
-			Vector2 delta = new(-1, direction);
+			Vector2 delta = new(direction, -1);
 			if (WorldGen.genRand.Next(3) != 0)
 				delta.X *= 1f + WorldGen.genRand.Next(0, 200) * 0.01f;
 			else if (WorldGen.genRand.Next(3) == 0)
