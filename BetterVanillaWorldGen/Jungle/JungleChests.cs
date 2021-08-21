@@ -28,7 +28,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 			float num536 = _random.Next(7, 12);
 			num536 *= Main.maxTilesX / 4200f;
-			int jungleX = Replacer.VanillaInterface.JungleOriginX.Get();
+			int jungleX = Replacer.VanillaInterface.JungleX;
 			for (int num538 = 0; (float) num538 < num536; num538++)
 			{
 				GenPassHelper.SetProgress(progress, num538, num536);

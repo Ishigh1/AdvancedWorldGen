@@ -20,7 +20,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
 			progress.Message = Lang.gen[70].Value;
-			int jungleX = Replacer.VanillaInterface.JungleOriginX.Get();
+			int jungleX = Replacer.VanillaInterface.JungleX;
 			int minX = Math.Max(10, jungleX - Main.maxTilesX / 8);
 			int maxX = Math.Min(Main.maxTilesX - 10, jungleX + Main.maxTilesX / 8);
 			int x = _random.Next(minX, maxX);

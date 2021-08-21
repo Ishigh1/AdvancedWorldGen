@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.IO;
@@ -186,6 +187,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				if (vector2.X < -1.5)
 					vector2.X = -1.5f;
 			}
+
+			Replacer.VanillaInterface.JungleX = (int) vector.X;
 		}
 
 		public void GenerateHolesInMudWalls()

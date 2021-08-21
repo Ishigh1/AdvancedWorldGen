@@ -19,7 +19,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			OnDesertHive.Place += ReplaceDesertHive;
 			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
 			OnWorldGen.MakeDungeon += ReplaceDungeon;
-			OnJunglePass.GenerateHolesInMudWalls += ReplaceJungleHoles;
 		}
 
 		public static void UnReplace()
@@ -29,7 +28,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			OnDesertHive.Place -= ReplaceDesertHive;
 			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= ReplaceChest;
 			OnWorldGen.MakeDungeon -= ReplaceDungeon;
-			OnJunglePass.GenerateHolesInMudWalls -= ReplaceJungleHoles;
 		}
 
 		public static void ReplaceGenPasses(List<GenPass> genPasses)
@@ -92,14 +90,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				Dungeon.MakeDungeon(x, y);
 			else
 				orig(x, y);
-		}
-
-		public static void ReplaceJungleHoles(OnJunglePass.orig_GenerateHolesInMudWalls orig, VanillaJunglePass self)
-		{
-			if (WorldgenSettings.Revamped)
-				Jungle.Jungle.GenerateHolesInMudWalls(self);
-			else
-				orig(self);
 		}
 	}
 }

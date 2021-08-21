@@ -30,7 +30,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Replacer.VanillaInterface.HeartCount.Set(0);
 			Main.checkXMas();
 			Main.checkHalloween();
-			typeof(WorldGen).GetMethod("ResetGenerator", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, null);
+			typeof(WorldGen).GetMethod("ResetGenerator", BindingFlags.Static | BindingFlags.NonPublic)
+				.Invoke(null, null);
 			UndergroundDesertLocation = Rectangle.Empty;
 			UndergroundDesertHiveLocation = Rectangle.Empty;
 			numLarva = 0;
@@ -134,26 +135,21 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Replacer.VanillaInterface.SnowOriginLeft.Set(snowOriginLeft);
 			Replacer.VanillaInterface.SnowOriginRight.Set(snowOriginRight);
 
-			const int beachSandRandomWidthRange = 20;
+			float worldSize = Main.maxTilesX / 4200f;
 			const int beachSandDungeonExtraWidth = 40;
 			const int beachSandJungleExtraWidth = 20;
-			const int beachBordersWidth = 275;
-			const int beachSandRandomCenter = beachBordersWidth + 5 + 40;
-			int leftBeachEnd = genRand.Next(beachSandRandomCenter - beachSandRandomWidthRange,
-				beachSandRandomCenter + beachSandRandomWidthRange);
-
-			if (dungeonSide == 1)
-				leftBeachEnd += beachSandDungeonExtraWidth;
-			else
-				leftBeachEnd += beachSandJungleExtraWidth;
+			int beachBordersWidth = (int) (275 * worldSize);
+			int beachSandRandomWidthRange = (int) (20 * worldSize);
+			int beachSandRandomCenter = beachBordersWidth + 5 + 2 * beachSandRandomWidthRange;
+			
+			int leftBeachEnd = beachSandRandomCenter +
+			                   genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
+			leftBeachEnd += dungeonSide == 1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
 			Replacer.VanillaInterface.LeftBeachEnd.Set(leftBeachEnd);
 
-			int rightBeachStart = Main.maxTilesX - genRand.Next(beachSandRandomCenter - beachSandRandomWidthRange,
-				beachSandRandomCenter + beachSandRandomWidthRange);
-			if (dungeonSide == -1)
-				rightBeachStart -= beachSandDungeonExtraWidth;
-			else
-				rightBeachStart -= beachSandJungleExtraWidth;
+			int rightBeachStart = Main.maxTilesX - beachSandRandomCenter +
+			                      genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
+			rightBeachStart -= dungeonSide == -1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
 			Replacer.VanillaInterface.RightBeachStart.Set(rightBeachStart);
 
 			const int num925 = 50;
