@@ -941,7 +941,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			if (DungeonMaxY > Main.maxTilesY) DungeonMaxY = Main.maxTilesY;
 
-			MakeDungeon_Lights(num2, 0, 1000, 0, array);
+			MakeDungeon_Lights(num2, array);
 			MakeDungeon_Traps();
 			MakeDungeon_GroundFurniture(num3);
 			MakeDungeon_Pictures(array);

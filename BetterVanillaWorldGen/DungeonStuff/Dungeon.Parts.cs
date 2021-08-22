@@ -31,9 +31,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 		}
 
-		public static void MakeDungeon_Lights(ushort tileType, int failCount, int failMax, int numAdd, int[] roomWall)
+		public static void MakeDungeon_Lights(ushort tileType, int[] roomWall)
 		{
-			int[] array = {
+			int failCount = 0;
+			int failMax = 1000;
+			int numAdd = 0;
+			int[] array =
+			{
 				WorldGen.genRand.Next(7), WorldGen.genRand.Next(6), WorldGen.genRand.Next(5)
 			};
 
