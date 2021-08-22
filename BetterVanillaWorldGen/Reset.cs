@@ -109,7 +109,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Replacer.VanillaInterface.JungleOriginX.Set(dungeonSide == 1 ? shift : Main.maxTilesX - shift);
 
 			int snowCenter = WorldGen.genRand.Next((int) (Main.maxTilesX * 0.85f));
-			if (dungeonSide == 1 && !WorldGen.drunkWorldGen)
+			if (dungeonSide == 1 && !WorldGen.drunkWorldGen || dungeonSide == -1 && WorldGen.drunkWorldGen)
 			{
 				if (snowCenter > Main.maxTilesX * 0.6f)
 					snowCenter += (int) (Main.maxTilesX * 0.15f);
