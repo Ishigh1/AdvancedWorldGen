@@ -8,16 +8,19 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 {
 	public partial class Dungeon
 	{
-		public static void MakeDungeon_Traps(int failCount, int failMax, int numAdd)
+		public static void MakeDungeon_Traps()
 		{
+			int failCount = 0;
+			const int failMax = 1000;
+			int numAdd = 0;
+			int yMin = (int) Math.Max(DungeonMinY, Main.worldSurface);
 			while (numAdd < Main.maxTilesX / 500)
 			{
 				failCount++;
-				int num = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				int num2 = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
-				while (num2 < Main.worldSurface) num2 = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
+				int x = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
+				int y = WorldGen.genRand.Next(yMin, DungeonMaxY);
 
-				if (Main.wallDungeon[Main.tile[num, num2].wall] && WorldGen.placeTrap(num, num2, 0))
+				if (Main.wallDungeon[Main.tile[x, y].wall] && WorldGen.placeTrap(x, y, 0))
 					failCount = failMax;
 
 				if (failCount > failMax)
@@ -30,16 +33,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 		public static void MakeDungeon_Lights(ushort tileType, int failCount, int failMax, int numAdd, int[] roomWall)
 		{
-			int[] array = new int[3]
-			{
-				WorldGen.genRand.Next(7), WorldGen.genRand.Next(7),
-				0
+			int[] array = {
+				WorldGen.genRand.Next(7), WorldGen.genRand.Next(6), WorldGen.genRand.Next(5)
 			};
 
-			while (array[1] == array[0]) array[1] = WorldGen.genRand.Next(7);
-
-			array[2] = WorldGen.genRand.Next(7);
-			while (array[2] == array[0] || array[2] == array[1]) array[2] = WorldGen.genRand.Next(7);
+			if (array[1] >= array[0]) array[1]++;
+			if (array[2] >= array[0]) array[2]++;
+			if (array[2] >= array[1]) array[2]++;
 
 			while (numAdd < Main.maxTilesX / 150)
 			{
@@ -157,11 +157,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 							if (flag2)
 								break;
 
-							int style2 = array[0];
+							int style2;
 							if (Main.tile[num, num3].wall == roomWall[1])
+								style2 = array[0];
+							else if (Main.tile[num, num3].wall == roomWall[2])
 								style2 = array[1];
-
-							if (Main.tile[num, num3].wall == roomWall[2])
+							else
 								style2 = array[2];
 
 							WorldGen.Place1x2Top(num, num3, 42, style2);
