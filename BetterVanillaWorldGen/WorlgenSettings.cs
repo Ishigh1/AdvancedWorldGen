@@ -6,9 +6,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class WorldgenSettings : ModConfig
 	{
-		[Label("Faster Worldgen")]
-		[Tooltip("Make the worldgen a lot faster, especially the large ones. \n" +
-		         "It also extends the generation of larger worlds.")]
+		[Label("Overhauled Worldgen")]
+		[Tooltip("Tweaks the worldgen so it is faster and more adapted to custom sized worlds. \n" + 
+				"Worlds smaller than 2600 x ... can't be generated without it")]
 		[DefaultValue(false)]
 		public bool FasterWorldgen;
 
