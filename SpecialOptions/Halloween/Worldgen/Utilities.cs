@@ -6,7 +6,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 {
 	public class Utilities
 	{
-		public static int WorldSize => Main.maxTilesX / 4200;
+		public static float WorldSize => Main.maxTilesX / 4200f;
 
 		public static (int x, int y) FindSuitableSpotForSurfacePressurePlate(int direction, int x)
 		{

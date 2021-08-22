@@ -553,7 +553,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 		public static float MakeDungeon_GroundFurniture(int wallType)
 		{
-			int num = 2000 * Main.maxTilesX / 4200;
+			int num = (int) (2000 * Main.maxTilesX / 4200f);
 			int num2 = 1 + Main.maxTilesX / 4200;
 			int num3 = 1 + Main.maxTilesX / 4200;
 			for (int i = 0; i < num; i++)

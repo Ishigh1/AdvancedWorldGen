@@ -18,7 +18,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 
 		public static void PlaceSimpleGraveyard()
 		{
-			int size = Main.rand.Next(10, 30) * Utilities.WorldSize;
+			int size = (int) (Main.rand.Next(10, 30) * Utilities.WorldSize);
 			int x = Main.rand.Next(WorldGen.beachDistance, Main.maxTilesX - WorldGen.beachDistance);
 			int y;
 			int prevTerrainY = -1;
