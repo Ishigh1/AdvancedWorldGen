@@ -21,7 +21,7 @@ namespace AdvancedWorldGen.CustomSized
 			OnUIWorldCreation.ClickSizeOption += SetSize;
 			OnWorldGen.setWorldSize += SetWorldSize;
 			OnWorldGen.clearWorld += SetWorldSize;
-			
+
 			OnWorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
 		}
 
@@ -94,12 +94,12 @@ namespace AdvancedWorldGen.CustomSized
 				int newSizeY = Math.Max(oldSizeY, Main.maxTilesY);
 				Tile[,] oldTiles = Main.tile;
 				Main.tile = new Tile[newSizeX, newSizeY];
-				for (int x = 0; x < newSizeX; x++)
 				for (int y = 0; y < newSizeY; y++)
-					if (x < oldSizeX && y < oldSizeY)
-						Main.tile[x, y] = oldTiles[x, y];
-					else
+				{
+					Array.Copy(oldTiles, Main.tile, oldSizeX);
+					for (int x = oldSizeX; x < newSizeX; x++)
 						Main.tile[x, y] = new Tile();
+				}
 			}
 
 			int newWidth = (Main.maxTilesX - 1) / Main.textureMaxWidth + 1;
@@ -113,7 +113,7 @@ namespace AdvancedWorldGen.CustomSized
 				Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
 				Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
 			}
-			
+
 			OverhauledInit.Init();
 		}
 	}
