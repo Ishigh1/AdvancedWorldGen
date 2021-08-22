@@ -76,7 +76,7 @@ namespace AdvancedWorldGen.UI
 			intInputElementType.GetField("min", BindingFlags.Public | BindingFlags.Instance)
 				.SetValue(intInputElement, min);
 			intInputElementType.GetField("max", BindingFlags.Public | BindingFlags.Instance)
-				.SetValue(intInputElement, 30000);
+				.SetValue(intInputElement, 500000);
 			intInputElementType.GetField("increment", BindingFlags.Public | BindingFlags.Instance)
 				.SetValue(intInputElement, 100);
 
@@ -85,6 +85,24 @@ namespace AdvancedWorldGen.UI
 					BindingFlags.Instance | BindingFlags.Public)), WorldSettings, null, -1);
 			intInputElement.OnBind();
 			intInputElement.Recalculate();
+			
+			/*UIImage warning = new(UICommon.ButtonErrorTexture)
+			{
+				Left = new StyleDimension(-15, 0f),
+				HAlign = 1f,
+				VAlign = 0.5f
+			};
+			warning.OnMouseOver += delegate
+			{
+				SoundEngine.PlaySound(SoundID.MenuTick);
+				
+			};
+			warning.OnMouseOut += delegate
+			{
+				SoundEngine.PlaySound(SoundID.MenuTick);
+				uiDescription.SetText(clickableText.Description);
+				isLookingAtConflict = false;
+			};*/
 			return intInputElement;
 		}
 
