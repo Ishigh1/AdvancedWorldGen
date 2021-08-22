@@ -8,7 +8,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 {
 	public partial class Dungeon
 	{
-		public static void MakeDungeon_Traps(ref int failCount, int failMax, ref int numAdd)
+		public static void MakeDungeon_Traps(int failCount, int failMax, int numAdd)
 		{
 			while (numAdd < Main.maxTilesX / 500)
 			{
@@ -28,8 +28,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 		}
 
-		public static void MakeDungeon_Lights(ushort tileType, ref int failCount, int failMax, ref int numAdd,
-			int[] roomWall)
+		public static void MakeDungeon_Lights(ushort tileType, int failCount, int failMax, int numAdd, int[] roomWall)
 		{
 			int[] array = new int[3]
 			{

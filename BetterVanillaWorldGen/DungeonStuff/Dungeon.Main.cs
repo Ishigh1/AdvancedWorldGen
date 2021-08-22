@@ -942,17 +942,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			if (DungeonMaxY > Main.maxTilesY) DungeonMaxY = Main.maxTilesY;
 
-			num17 = 0;
-			num18 = 1000;
-			num19 = 0;
-			MakeDungeon_Lights(num2, ref num17, num18, ref num19, array);
-			num17 = 0;
-			num18 = 1000;
-			num19 = 0;
-			MakeDungeon_Traps(ref num17, num18, ref num19);
+			MakeDungeon_Lights(num2, 0, 1000, 0, array);
+			MakeDungeon_Traps(0, 1000, 0);
 			float count = MakeDungeon_GroundFurniture(num3);
 			count = MakeDungeon_Pictures(array, count);
-			count = MakeDungeon_Banners(array, count);
+			MakeDungeon_Banners(array, count);
 		}
 	}
 }
