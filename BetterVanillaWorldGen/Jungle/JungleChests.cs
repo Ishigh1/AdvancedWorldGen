@@ -149,9 +149,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			if (Main.tile[x, y].type == 60)
 			{
 				const int spread = 30;
-				int xMin = Math.Min(x - spread, 10);
+				int xMin = Math.Max(x - spread, 10);
 				int xMax = Math.Min(x + spread, Main.maxTilesX - 10);
-				int yMin = Math.Min(y - spread, 10);
+				int yMin = Math.Max(y - spread, 10);
 				int yMax = Math.Min(y + spread, Main.maxTilesY - 10);
 				for (int x1 = xMin; x1 < xMax; x1 += 3)
 				for (int y1 = yMin; y1 < yMax; y1 += 3)
