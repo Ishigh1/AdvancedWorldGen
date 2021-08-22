@@ -913,81 +913,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			return new Vector2(num, num2);
 		}
 
-		public static Vector2 randHellPicture()
-		{
-			int num = WorldGen.genRand.Next(4);
-			int num2 = 0;
-			if (num == 1)
-				num = WorldGen.genRand.Next(4);
-
-			switch (num)
-			{
-				case 0:
-					num = 240;
-					num2 = WorldGen.genRand.Next(5);
-					switch (num2)
-					{
-						case 0:
-							num2 = 27;
-							break;
-						case 1:
-							num2 = 29;
-							break;
-						case 2:
-							num2 = 30;
-							break;
-						case 3:
-							num2 = 31;
-							break;
-						case 4:
-							num2 = 32;
-							break;
-					}
-
-					break;
-				case 1:
-					num = 242;
-					num2 = 14;
-					break;
-				case 2:
-					num = 245;
-					num2 = WorldGen.genRand.Next(3);
-					switch (num2)
-					{
-						case 0:
-							num2 = 1;
-							break;
-						case 1:
-							num2 = 2;
-							break;
-						case 2:
-							num2 = 4;
-							break;
-					}
-
-					break;
-				default:
-					num = 246;
-					num2 = WorldGen.genRand.Next(3);
-					switch (num2)
-					{
-						case 0:
-							num2 = 0;
-							break;
-						case 1:
-							num2 = 16;
-							break;
-						case 2:
-							num2 = 17;
-							break;
-					}
-
-					break;
-			}
-
-			return new Vector2(num, num2);
-		}
-
 		public static Vector2 RandHousePictureDesert()
 		{
 			int num = WorldGen.genRand.Next(4);
@@ -1009,103 +934,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				num = 242;
 				int maxValue3 = 6;
 				num2 = 37 + WorldGen.genRand.Next(maxValue3);
-			}
-
-			return new Vector2(num, num2);
-		}
-
-		public static Vector2 randHousePicture()
-		{
-			int num = WorldGen.genRand.Next(4);
-			int num2 = 0;
-			if (num >= 3 && WorldGen.genRand.Next(10) != 0)
-				num = WorldGen.genRand.Next(3);
-
-			if (num <= 1)
-			{
-				num = 240;
-				int maxValue = 10;
-				num2 = WorldGen.genRand.Next(maxValue);
-				if (num2 == 9)
-					num2 = WorldGen.genRand.Next(maxValue);
-
-				if (num2 == 5)
-					num2 = WorldGen.genRand.Next(maxValue);
-
-				if (num2 == 6)
-					num2 = WorldGen.genRand.Next(maxValue);
-
-				switch (num2)
-				{
-					case 0:
-						num2 = 26;
-						break;
-					case 1:
-						num2 = 28;
-						break;
-					case 2:
-						num2 = 20;
-						break;
-					case 3:
-						num2 = 21;
-						break;
-					case 4:
-						num2 = 22;
-						break;
-					case 5:
-						num2 = 24;
-						break;
-					case 6:
-						num2 = 25;
-						break;
-					case 7:
-						num2 = 33;
-						break;
-					case 8:
-						num2 = 34;
-						break;
-					case 9:
-						num2 = 35;
-						break;
-				}
-			}
-			else if (num == 2)
-			{
-				int maxValue2 = 4;
-				num = 245;
-				num2 = WorldGen.genRand.Next(maxValue2);
-				if (num2 == 2)
-					num2 = WorldGen.genRand.Next(maxValue2);
-
-				if (num2 == 0)
-					num2 = WorldGen.genRand.Next(maxValue2);
-
-				if (num2 == 0)
-					num2 = WorldGen.genRand.Next(maxValue2);
-
-				if (num2 == 0)
-					num2 = WorldGen.genRand.Next(maxValue2);
-
-				switch (num2)
-				{
-					case 0:
-						num2 = 0;
-						break;
-					case 1:
-						num2 = 3;
-						break;
-					case 2:
-						num2 = 5;
-						break;
-					case 3:
-						num2 = 6;
-						break;
-				}
-			}
-			else
-			{
-				num = 246;
-				num2 = 1;
 			}
 
 			return new Vector2(num, num2);
@@ -1390,9 +1218,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			Vector2 zero2 = Vector2.Zero;
 			Vector2 zero3 = Vector2.Zero;
 			int num3 = 1;
-			Vector2 vector = default;
-			vector.X = i;
-			vector.Y = j;
+			Vector2 vector = new(i, j);
 			int num4 = WorldGen.genRand.Next(35, 80);
 			bool flag = WorldGen.genRand.Next(5) == 0;
 
@@ -1698,42 +1524,25 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					num4 = 0;
 
 				num4--;
-				int num10 = (int) (vector.X - num - 4.0 - WorldGen.genRand.Next(6));
-				int num11 = (int) (vector.X + num + 4.0 + WorldGen.genRand.Next(6));
-				int num12 = (int) (vector.Y - num - 4.0 - WorldGen.genRand.Next(6));
-				int num13 = (int) (vector.Y + num + 4.0 + WorldGen.genRand.Next(6));
-				if (num10 < 0)
-					num10 = 0;
+				int xMin = (int) Math.Max(vector.X - num - 4.0 - WorldGen.genRand.Next(6), DungeonMinX);
+				int xMax = (int) Math.Min(vector.X + num + 4.0 + WorldGen.genRand.Next(6), DungeonMaxX);
+				int yMin = (int) Math.Max(vector.Y - num - 4.0 - WorldGen.genRand.Next(6), 0);
+				int yMax = (int) Math.Min(vector.Y + num + 4.0 + WorldGen.genRand.Next(6), DungeonMaxY);
 
-				if (num11 > Main.maxTilesX)
-					num11 = Main.maxTilesX;
-
-				if (num12 < 0)
-					num12 = 0;
-
-				if (num13 > Main.maxTilesY)
-					num13 = Main.maxTilesY;
-
-				for (int m = num10; m < num11; m++)
-				for (int n = num12; n < num13; n++)
+				for (int x = xMin; x < xMax; x++)
+				for (int y = yMin; y < yMax; y++)
 				{
-					if (m < DungeonMinX) DungeonMinX = m;
-
-					if (m > DungeonMaxX) DungeonMaxX = m;
-
-					if (n > DungeonMaxY) DungeonMaxY = n;
-
-					Main.tile[m, n].LiquidAmount = 0;
-					if (!Main.wallDungeon[Main.tile[m, n].wall])
+					Main.tile[x, y].LiquidAmount = 0;
+					if (!Main.wallDungeon[Main.tile[x, y].wall])
 					{
-						Main.tile[m, n].IsActive = true;
-						Main.tile[m, n].type = tileType;
-						Main.tile[m, n].Clear(TileDataType.Slope);
+						Main.tile[x, y].IsActive = true;
+						Main.tile[x, y].type = tileType;
+						Main.tile[x, y].Clear(TileDataType.Slope);
 					}
 				}
 
-				for (int num14 = num10 + 1; num14 < num11 - 1; num14++)
-				for (int num15 = num12 + 1; num15 < num13 - 1; num15++)
+				for (int num14 = xMin + 1; num14 < xMax - 1; num14++)
+				for (int num15 = yMin + 1; num15 < yMax - 1; num15++)
 					Main.tile[num14, num15].wall = (ushort) wallType;
 
 				int num16 = 0;
@@ -1744,24 +1553,24 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				else if (WorldGen.genRand.Next((int) num * 3) == 0)
 					num16 = WorldGen.genRand.Next(1, 3);
 
-				num10 = (int) (vector.X - num * 0.5 - num16);
-				num11 = (int) (vector.X + num * 0.5 + num16);
-				num12 = (int) (vector.Y - num * 0.5 - num16);
-				num13 = (int) (vector.Y + num * 0.5 + num16);
-				if (num10 < 0)
-					num10 = 0;
+				xMin = (int) (vector.X - num * 0.5 - num16);
+				xMax = (int) (vector.X + num * 0.5 + num16);
+				yMin = (int) (vector.Y - num * 0.5 - num16);
+				yMax = (int) (vector.Y + num * 0.5 + num16);
+				if (xMin < 0)
+					xMin = 0;
 
-				if (num11 > Main.maxTilesX)
-					num11 = Main.maxTilesX;
+				if (xMax > Main.maxTilesX)
+					xMax = Main.maxTilesX;
 
-				if (num12 < 0)
-					num12 = 0;
+				if (yMin < 0)
+					yMin = 0;
 
-				if (num13 > Main.maxTilesY)
-					num13 = Main.maxTilesY;
+				if (yMax > Main.maxTilesY)
+					yMax = Main.maxTilesY;
 
-				for (int num17 = num10; num17 < num11; num17++)
-				for (int num18 = num12; num18 < num13; num18++)
+				for (int num17 = xMin; num17 < xMax; num17++)
+				for (int num18 = yMin; num18 < yMax; num18++)
 				{
 					Main.tile[num17, num18].Clear(TileDataType.Slope);
 					if (flag)
