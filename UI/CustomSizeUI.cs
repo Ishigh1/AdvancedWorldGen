@@ -3,6 +3,7 @@ using System.Reflection;
 using AdvancedWorldGen.Base;
 using AdvancedWorldGen.CustomSized;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -85,28 +86,10 @@ namespace AdvancedWorldGen.UI
 					BindingFlags.Instance | BindingFlags.Public)), WorldSettings, null, -1);
 			intInputElement.OnBind();
 			intInputElement.Recalculate();
-			
-			/*UIImage warning = new(UICommon.ButtonErrorTexture)
-			{
-				Left = new StyleDimension(-15, 0f),
-				HAlign = 1f,
-				VAlign = 0.5f
-			};
-			warning.OnMouseOver += delegate
-			{
-				SoundEngine.PlaySound(SoundID.MenuTick);
-				
-			};
-			warning.OnMouseOut += delegate
-			{
-				SoundEngine.PlaySound(SoundID.MenuTick);
-				uiDescription.SetText(clickableText.Description);
-				isLookingAtConflict = false;
-			};*/
 			return intInputElement;
 		}
 
-		public void GoBack(UIMouseEvent evt, UIElement listeningElement)
+		public static void GoBack(UIMouseEvent evt, UIElement listeningElement)
 		{
 			SoundEngine.PlaySound(SoundID.MenuClose);
 			Main.MenuUI.SetState(Base.AdvancedWorldGen.Instance.UiChanger.OptionsSelector);

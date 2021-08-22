@@ -132,36 +132,30 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public static void AddTileVariance(DesertDescription description)
 		{
-			for (int i = -20; i < description.Hive.Width + 20; i++)
-			for (int j = -20; j < description.Hive.Height + 20; j++)
+			int xMin = Math.Max(description.Hive.X - 20, 5);
+			int xMax = Math.Max(description.Hive.X + description.Hive.Width + 20, Main.maxTilesX - 5);
+			int yMin = Math.Max(description.Hive.Y - 20, 5);
+			int yMax = Math.Max(description.Hive.Y + description.Hive.Height + 20, Main.maxTilesY - 5);
+			for (int x = xMin; x < xMax; x++)
+			for (int y = yMin; y < yMax; y++)
 			{
-				int num = i + description.Hive.X;
-				int num2 = j + description.Hive.Y;
-				if (WorldGen.InWorld(num, num2, 1))
-				{
-					Tile tile = Main.tile[num, num2];
-					Tile testTile = Main.tile[num, num2 + 1];
-					Tile testTile2 = Main.tile[num, num2 + 2];
-					if (tile.type == 53 && (!WorldGen.SolidTile(testTile) || !WorldGen.SolidTile(testTile2)))
-						tile.type = 397;
-				}
+				Tile tile = Main.tile[x, y];
+				Tile testTile = Main.tile[x, y + 1];
+				Tile testTile2 = Main.tile[x, y + 2];
+				if (tile.type == 53 && (!WorldGen.SolidTile(testTile) || !WorldGen.SolidTile(testTile2)))
+					tile.type = 397;
 			}
 
-			for (int k = -20; k < description.Hive.Width + 20; k++)
-			for (int l = -20; l < description.Hive.Height + 20; l++)
+			for (int x = xMin; x < xMax; x++)
+			for (int y = yMin; y < yMax; y++)
 			{
-				int num3 = k + description.Hive.X;
-				int num4 = l + description.Hive.Y;
-				if (!WorldGen.InWorld(num3, num4, 1))
-					continue;
-
-				Tile tile2 = Main.tile[num3, num4];
+				Tile tile2 = Main.tile[x, y];
 				if (!tile2.IsActive || tile2.type != 396)
 					continue;
 
 				bool flag = true;
 				for (int num5 = -1; num5 >= -3; num5--)
-					if (Main.tile[num3, num4 + num5].IsActive)
+					if (Main.tile[x, y + num5].IsActive)
 					{
 						flag = false;
 						break;
@@ -169,7 +163,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				bool flag2 = true;
 				for (int m = 1; m <= 3; m++)
-					if (Main.tile[num3, num4 + m].IsActive)
+					if (Main.tile[x, y + m].IsActive)
 					{
 						flag2 = false;
 						break;
@@ -177,18 +171,18 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				if (flag && WorldGen.genRand.Next(20) == 0)
 				{
-					WorldGen.PlaceTile(num3, num4 - 1, 485, true, true, -1, WorldGen.genRand.Next(4));
+					WorldGen.PlaceTile(x, y - 1, 485, true, true, -1, WorldGen.genRand.Next(4));
 				}
 				else if (flag && WorldGen.genRand.Next(5) == 0)
 				{
-					WorldGen.PlaceTile(num3, num4 - 1, 484, true, true);
+					WorldGen.PlaceTile(x, y - 1, 484, true, true);
 				}
 				else
 				{
 					if (flag ^ flag2 && WorldGen.genRand.Next(5) == 0)
-						WorldGen.PlaceTile(num3, num4 + (!flag ? 1 : -1), 165, true, true);
+						WorldGen.PlaceTile(x, y + (!flag ? 1 : -1), 165, true, true);
 					else if (flag && WorldGen.genRand.Next(5) == 0)
-						WorldGen.PlaceTile(num3, num4 - 1, 187, true, true, -1, 29 + WorldGen.genRand.Next(6));
+						WorldGen.PlaceTile(x, y - 1, 187, true, true, -1, 29 + WorldGen.genRand.Next(6));
 				}
 			}
 		}
