@@ -59,24 +59,23 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 		{
 			DungeonInit();
 
-			int num = WorldGen.genRand.Next(3);
-			ushort num2;
-			int num3;
-			switch (num)
+			ushort tileType;
+			int wallType;
+			switch (WorldGen.genRand.Next(3))
 			{
 				case 0:
-					num2 = 41;
-					num3 = 7;
+					tileType = 41;
+					wallType = 7;
 					CrackedType = 481;
 					break;
 				case 1:
-					num2 = 43;
-					num3 = 8;
+					tileType = 43;
+					wallType = 8;
 					CrackedType = 482;
 					break;
 				default:
-					num2 = 44;
-					num3 = 9;
+					tileType = 44;
+					wallType = 9;
 					CrackedType = 483;
 					break;
 			}
@@ -97,7 +96,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			int maxRooms = Main.maxTilesX / 60;
 			maxRooms += WorldGen.genRand.Next(maxRooms / 3);
 			int num6 = 5;
-			DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+			DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 			for (int room = 0; room < maxRooms; room++)
 			{
 				if (WorldGen.dungeonX < DungeonMinX) DungeonMinX = WorldGen.dungeonX;
@@ -106,36 +105,33 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 				if (WorldGen.dungeonY > DungeonMaxY) DungeonMaxY = WorldGen.dungeonY;
 
-				if (num6 > 0)
-					num6--;
-
-				if ((num6 == 0) & (WorldGen.genRand.Next(3) == 0))
+				if ((--num6 == 0) & (WorldGen.genRand.Next(3) == 0))
 				{
 					num6 = 5;
 					if (WorldGen.genRand.Next(2) == 0)
 					{
 						int num7 = WorldGen.dungeonX;
 						int num8 = WorldGen.dungeonY;
-						DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+						DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 						if (WorldGen.genRand.Next(2) == 0)
-							DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+							DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 
-						DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+						DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 						WorldGen.dungeonX = num7;
 						WorldGen.dungeonY = num8;
 					}
 					else
 					{
-						DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+						DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 					}
 				}
 				else
 				{
-					DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+					DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 				}
 			}
 
-			DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+			DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 			(int dungeonX, int dungeonY) = DungeonRoomPos[0];
 			for (int i = 0; i < DungeonRoomPos.Count; i++)
 				if (DungeonRoomPos[i].y < dungeonY)
@@ -160,28 +156,23 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					num6 = 10;
 					int num11 = WorldGen.dungeonX;
 					int num12 = WorldGen.dungeonY;
-					DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3, true);
-					DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+					DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType, true);
+					DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 					WorldGen.dungeonX = num11;
 					WorldGen.dungeonY = num12;
 				}
 
-				DungeonStairs(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+				DungeonStairs(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 			}
 
-			DungeonEntrance(WorldGen.dungeonX, WorldGen.dungeonY, num2, num3);
+			DungeonEntrance(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 			Main.statusText = Lang.gen[58].Value + " 65%";
 			int num13 = Main.maxTilesX * 2;
-			int num14;
-			for (num14 = 0; num14 < num13; num14++)
+			for (int num14 = 0; num14 < num13; num14++)
 			{
-				int i2 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				int num15 = DungeonMinY;
-				if (num15 < Main.worldSurface)
-					num15 = (int) Main.worldSurface;
-
-				int j = WorldGen.genRand.Next(num15, DungeonMaxY);
-				num14 = !DungeonPitTrap(i2, j, num2, num3) ? num14 + 1 : num14 + 1500;
+				int x1 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
+				int y1 = WorldGen.genRand.Next((int) Math.Max(DungeonMinY, Main.worldSurface), DungeonMaxY);
+				num14 = !DungeonPitTrap(x1, y1, tileType, wallType) ? num14 + 1 : num14 + 1500;
 			}
 
 			for (int k = 0; k < DungeonRoomPos.Count; k++)
@@ -232,7 +223,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					num22 = WorldGen.genRand.Next(WorldGen.dungeonY + 25, DungeonMaxY);
 
 				int num23 = num21;
-				if (Main.tile[num21, num22].wall == num3 && !Main.tile[num21, num22].IsActive)
+				if (Main.tile[num21, num22].wall == wallType && !Main.tile[num21, num22].IsActive)
 				{
 					int num24 = 1;
 					if (WorldGen.genRand.Next(2) == 0)
@@ -311,7 +302,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				int num26 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
 				int num27 = WorldGen.genRand.Next((int) Main.worldSurface + 25, DungeonMaxY);
 				int num28 = num27;
-				if (Main.tile[num26, num27].wall == num3 && !Main.tile[num26, num27].IsActive)
+				if (Main.tile[num26, num27].wall == wallType && !Main.tile[num26, num27].IsActive)
 				{
 					int num29 = 1;
 					if (WorldGen.genRand.Next(2) == 0)
@@ -456,12 +447,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				{
 					Main.tile[num48, num51].Clear(TileDataType.Slope);
 					Main.tile[num48, num51].IsActive = true;
-					Main.tile[num48, num51].type = num2;
+					Main.tile[num48, num51].type = tileType;
 				}
 
 				int style = 13;
 				if (WorldGen.genRand.Next(3) == 0)
-					switch (num3)
+					switch (wallType)
 					{
 						case 7:
 							style = 16;
@@ -484,7 +475,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					{
 						Main.tile[num48, num53].Clear(TileDataType.Slope);
 						Main.tile[num48, num53].IsActive = true;
-						Main.tile[num48, num53].type = num2;
+						Main.tile[num48, num53].type = tileType;
 					}
 
 				num48 += 2;
@@ -496,21 +487,21 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					{
 						Main.tile[num48, num54].IsActive = true;
 						Main.tile[num48, num54].Clear(TileDataType.Slope);
-						Main.tile[num48, num54].type = num2;
+						Main.tile[num48, num54].type = tileType;
 					}
 
 				num49++;
 				num48--;
 				Main.tile[num48 - 1, num49].IsActive = true;
-				Main.tile[num48 - 1, num49].type = num2;
+				Main.tile[num48 - 1, num49].type = tileType;
 				Main.tile[num48 - 1, num49].Clear(TileDataType.Slope);
 				Main.tile[num48 + 1, num49].IsActive = true;
-				Main.tile[num48 + 1, num49].type = num2;
+				Main.tile[num48 + 1, num49].type = tileType;
 				Main.tile[num48 + 1, num49].Clear(TileDataType.Slope);
 			}
 
 			int[] array = new int[3];
-			switch (num3)
+			switch (wallType)
 			{
 				case 7:
 					array[0] = 7;
@@ -628,7 +619,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					Main.tile[num79, num80].IsActive = true;
 					Main.tile[num79, num80].type = 19;
 					Main.tile[num79, num80].Clear(TileDataType.Slope);
-					switch (num3)
+					switch (wallType)
 					{
 						case 7:
 							Main.tile[num79, num80].frameY = 108;
@@ -650,7 +641,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					Main.tile[num81, num80].IsActive = true;
 					Main.tile[num81, num80].type = 19;
 					Main.tile[num81, num80].Clear(TileDataType.Slope);
-					switch (num3)
+					switch (wallType)
 					{
 						case 7:
 							Main.tile[num81, num80].frameY = 108;
@@ -865,7 +856,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					num19++;
 				}
 			}
-			
+
 			Main.statusText = Lang.gen[58].Value + " 95%";
 			int num95 = 1;
 			for (int num96 = 0; num96 < DungeonRoomPos.Count; num96++)
@@ -940,9 +931,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			if (DungeonMaxY > Main.maxTilesY) DungeonMaxY = Main.maxTilesY;
 
-			MakeDungeon_Lights(num2, array);
+			MakeDungeon_Lights(tileType, array);
 			MakeDungeon_Traps();
-			MakeDungeon_GroundFurniture(num3);
+			MakeDungeon_GroundFurniture(wallType);
 			MakeDungeon_Pictures(array);
 			MakeDungeon_Banners(array);
 		}

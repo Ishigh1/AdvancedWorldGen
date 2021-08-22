@@ -17,10 +17,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			while (numAdd < Main.maxTilesX / 500)
 			{
 				failCount++;
-				int x = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				int y = WorldGen.genRand.Next(yMin, DungeonMaxY);
+				int x1 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
+				int y1 = WorldGen.genRand.Next(yMin, DungeonMaxY);
 
-				if (Main.wallDungeon[Main.tile[x, y].wall] && WorldGen.placeTrap(x, y, 0))
+				if (Main.wallDungeon[Main.tile[x1, y1].wall] && WorldGen.placeTrap(x1, y1, 0))
 					failCount = failMax;
 
 				if (failCount > failMax)
@@ -1671,66 +1671,55 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			DungeonRoomB.Add((int) num6);
 		}
 
-		public static void DungeonEntrance(int i, int j, ushort tileType, int wallType)
+		public static void DungeonEntrance(int x, int y, ushort tileType, int wallType)
 		{
-			const int num = 60;
-			for (int k = i - num; k < i + num; k++)
-			for (int l = j - num; l < j + num; l++)
+			const int spread = 60;
+			for (int x1 = x - spread; x1 < x + spread; x1++)
+			for (int y1 = y - spread; y1 < y + spread; y1++)
 			{
-				Main.tile[k, l].LiquidAmount = 0;
-				Main.tile[k, l].LiquidType = LiquidID.Water;
-				Main.tile[k, l].Clear(TileDataType.Slope);
+				Main.tile[x1, y1].LiquidAmount = 0;
+				Main.tile[x1, y1].LiquidType = LiquidID.Water;
+				Main.tile[x1, y1].Clear(TileDataType.Slope);
 			}
 
-			double num2 = DungeonXStrength1;
-			double num3 = DungeonYStrength1;
-			Vector2 vector = default;
-			vector.X = i;
-			vector.Y = j - (float) num3 / 2f;
-			DungeonMinY = (int) vector.Y;
-			int num4 = 1;
-			if (i > Main.maxTilesX / 2)
+			double dungeonXStrength1 = DungeonXStrength1;
+			double dungeonYStrength1 = DungeonYStrength1;
+			DungeonMinY = (int) (y - (float) dungeonYStrength1 / 2f);
+			Vector2 vector = new(x, DungeonMinY);
+			int num4;
+			if (x > Main.maxTilesX / 2)
 				num4 = -1;
+			else
+				num4 = 1;
 
 			if (WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen)
 				num4 *= -1;
 
-			int num5 = (int) (vector.X - num2 * 0.6 - WorldGen.genRand.Next(2, 5));
-			int num6 = (int) (vector.X + num2 * 0.6 + WorldGen.genRand.Next(2, 5));
-			int num7 = (int) (vector.Y - num3 * 0.6 - WorldGen.genRand.Next(2, 5));
-			int num8 = (int) (vector.Y + num3 * 0.6 + WorldGen.genRand.Next(8, 16));
-			if (num5 < 0)
-				num5 = 0;
+			int xMin = (int) Math.Max(vector.X - dungeonXStrength1 * 0.6 - WorldGen.genRand.Next(2, 5), 0);
+			int xMax = (int) Math.Min(vector.X + dungeonXStrength1 * 0.6 + WorldGen.genRand.Next(2, 5), Main.maxTilesX);
+			int yMin = (int) Math.Max(vector.Y - dungeonYStrength1 * 0.6 - WorldGen.genRand.Next(2, 5), 0);
+			int yMax = (int) Math.Min(vector.Y + dungeonYStrength1 * 0.6 + WorldGen.genRand.Next(8, 16), Main.maxTilesY);
 
-			if (num6 > Main.maxTilesX)
-				num6 = Main.maxTilesX;
-
-			if (num7 < 0)
-				num7 = 0;
-
-			if (num8 > Main.maxTilesY)
-				num8 = Main.maxTilesY;
-
-			for (int m = num5; m < num6; m++)
-			for (int n = num7; n < num8; n++)
+			for (int x1 = xMin; x1 < xMax; x1++)
+			for (int y1 = yMin; y1 < yMax; y1++)
 			{
-				Main.tile[m, n].LiquidAmount = 0;
-				if (Main.tile[m, n].wall != wallType)
+				Main.tile[x1, y1].LiquidAmount = 0;
+				if (Main.tile[x1, y1].wall != wallType)
 				{
-					Main.tile[m, n].wall = 0;
-					if (m > num5 + 1 && m < num6 - 2 && n > num7 + 1 && n < num8 - 2)
-						Main.tile[m, n].wall = (ushort) wallType;
+					Main.tile[x1, y1].wall = 0;
+					if (x1 > xMin + 1 && x1 < xMax - 2 && y1 > yMin + 1 && y1 < yMax - 2)
+						Main.tile[x1, y1].wall = (ushort) wallType;
 
-					Main.tile[m, n].IsActive = true;
-					Main.tile[m, n].type = tileType;
-					Main.tile[m, n].Clear(TileDataType.Slope);
+					Main.tile[x1, y1].IsActive = true;
+					Main.tile[x1, y1].type = tileType;
+					Main.tile[x1, y1].Clear(TileDataType.Slope);
 				}
 			}
 
-			int num9 = num5;
-			int num10 = num5 + 5 + WorldGen.genRand.Next(4);
-			int num11 = num7 - 3 - WorldGen.genRand.Next(3);
-			int num12 = num7;
+			int num9 = xMin;
+			int num10 = xMin + 5 + WorldGen.genRand.Next(4);
+			int num11 = yMin - 3 - WorldGen.genRand.Next(3);
+			int num12 = yMin;
 			for (int num13 = num9; num13 < num10; num13++)
 			for (int num14 = num11; num14 < num12; num14++)
 			{
@@ -1743,10 +1732,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			num9 = num6 - 5 - WorldGen.genRand.Next(4);
-			num10 = num6;
-			num11 = num7 - 3 - WorldGen.genRand.Next(3);
-			num12 = num7;
+			num9 = xMax - 5 - WorldGen.genRand.Next(4);
+			num10 = xMax;
+			num11 = yMin - 3 - WorldGen.genRand.Next(3);
+			num12 = yMin;
 			for (int num15 = num9; num15 < num10; num15++)
 			for (int num16 = num11; num16 < num12; num16++)
 			{
@@ -1762,9 +1751,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			int num17 = 1 + WorldGen.genRand.Next(2);
 			int num18 = 2 + WorldGen.genRand.Next(4);
 			int num19 = 0;
-			for (int num20 = num5; num20 < num6; num20++)
+			for (int num20 = xMin; num20 < xMax; num20++)
 			{
-				for (int num21 = num7 - num17; num21 < num7; num21++)
+				for (int num21 = yMin - num17; num21 < yMin; num21++)
 				{
 					Main.tile[num20, num21].LiquidAmount = 0;
 					if (Main.tile[num20, num21].wall != wallType)
@@ -1783,8 +1772,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			for (int num22 = num5; num22 < num6; num22++)
-			for (int num23 = num8; (double) num23 < Main.worldSurface; num23++)
+			for (int num22 = xMin; num22 < xMax; num22++)
+			for (int num23 = yMax; (double) num23 < Main.worldSurface; num23++)
 			{
 				Main.tile[num22, num23].LiquidAmount = 0;
 				if (!Main.wallDungeon[Main.tile[num22, num23].wall])
@@ -1793,81 +1782,81 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					Main.tile[num22, num23].type = tileType;
 				}
 
-				if (num22 > num5 && num22 < num6 - 1)
+				if (num22 > xMin && num22 < xMax - 1)
 					Main.tile[num22, num23].wall = (ushort) wallType;
 
 				Main.tile[num22, num23].Clear(TileDataType.Slope);
 			}
 
-			num5 = (int) (vector.X - num2 * 0.6);
-			num6 = (int) (vector.X + num2 * 0.6);
-			num7 = (int) (vector.Y - num3 * 0.6);
-			num8 = (int) (vector.Y + num3 * 0.6);
-			if (num5 < 0)
-				num5 = 0;
+			xMin = (int) (vector.X - dungeonXStrength1 * 0.6);
+			xMax = (int) (vector.X + dungeonXStrength1 * 0.6);
+			yMin = (int) (vector.Y - dungeonYStrength1 * 0.6);
+			yMax = (int) (vector.Y + dungeonYStrength1 * 0.6);
+			if (xMin < 0)
+				xMin = 0;
 
-			if (num6 > Main.maxTilesX)
-				num6 = Main.maxTilesX;
+			if (xMax > Main.maxTilesX)
+				xMax = Main.maxTilesX;
 
-			if (num7 < 0)
-				num7 = 0;
+			if (yMin < 0)
+				yMin = 0;
 
-			if (num8 > Main.maxTilesY)
-				num8 = Main.maxTilesY;
+			if (yMax > Main.maxTilesY)
+				yMax = Main.maxTilesY;
 
-			for (int num24 = num5; num24 < num6; num24++)
-			for (int num25 = num7; num25 < num8; num25++)
+			for (int num24 = xMin; num24 < xMax; num24++)
+			for (int num25 = yMin; num25 < yMax; num25++)
 			{
 				Main.tile[num24, num25].LiquidAmount = 0;
 				Main.tile[num24, num25].wall = (ushort) wallType;
 				Main.tile[num24, num25].Clear(TileDataType.Slope);
 			}
 
-			num5 = (int) (vector.X - num2 * 0.6 - 1.0);
-			num6 = (int) (vector.X + num2 * 0.6 + 1.0);
-			num7 = (int) (vector.Y - num3 * 0.6 - 1.0);
-			num8 = (int) (vector.Y + num3 * 0.6 + 1.0);
-			if (num5 < 0)
-				num5 = 0;
+			xMin = (int) (vector.X - dungeonXStrength1 * 0.6 - 1.0);
+			xMax = (int) (vector.X + dungeonXStrength1 * 0.6 + 1.0);
+			yMin = (int) (vector.Y - dungeonYStrength1 * 0.6 - 1.0);
+			yMax = (int) (vector.Y + dungeonYStrength1 * 0.6 + 1.0);
+			if (xMin < 0)
+				xMin = 0;
 
-			if (num6 > Main.maxTilesX)
-				num6 = Main.maxTilesX;
+			if (xMax > Main.maxTilesX)
+				xMax = Main.maxTilesX;
 
-			if (num7 < 0)
-				num7 = 0;
+			if (yMin < 0)
+				yMin = 0;
 
-			if (num8 > Main.maxTilesY)
-				num8 = Main.maxTilesY;
+			if (yMax > Main.maxTilesY)
+				yMax = Main.maxTilesY;
 
 			if (WorldGen.drunkWorldGen)
-				num5 -= 4;
+				xMin -= 4;
 
-			for (int num26 = num5; num26 < num6; num26++)
-			for (int num27 = num7; num27 < num8; num27++)
+			for (int num26 = xMin; num26 < xMax; num26++)
+			for (int num27 = yMin; num27 < yMax; num27++)
 			{
 				Main.tile[num26, num27].LiquidAmount = 0;
 				Main.tile[num26, num27].wall = (ushort) wallType;
 				Main.tile[num26, num27].Clear(TileDataType.Slope);
 			}
 
-			num5 = (int) (vector.X - num2 * 0.5);
-			num6 = (int) (vector.X + num2 * 0.5);
-			num7 = (int) (vector.Y - num3 * 0.5);
-			num8 = (int) (vector.Y + num3 * 0.5);
-			if (num5 < 0)
-				num5 = 0;
+			xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
+			xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
+			yMin = (int) (vector.Y - dungeonYStrength1 * 0.5);
+			yMax = (int) (vector.Y + dungeonYStrength1 * 0.5);
+			if (xMin < 0)
+				xMin = 0;
 
-			if (num6 > Main.maxTilesX)
-				num6 = Main.maxTilesX;
+			if (xMax > Main.maxTilesX)
+				xMax = Main.maxTilesX;
 
-			if (num7 < 0)
-				num7 = 0;
+			if (yMin < 0)
+				yMin = 0;
 
-			if (num8 > Main.maxTilesY)
-				num8 = Main.maxTilesY;
+			if (yMax > Main.maxTilesY)
+				yMax = Main.maxTilesY;
 
-			for (int num28 = num5; num28 < num6; num28++)
-			for (int num29 = num7; num29 < num8; num29++)
+			for (int num28 = xMin; num28 < xMax; num28++)
+			for (int num29 = yMin; num29 < yMax; num29++)
 			{
 				Main.tile[num28, num29].LiquidAmount = 0;
 				Main.tile[num28, num29].IsActive = false;
@@ -1875,7 +1864,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 
 			int num30 = (int) vector.X;
-			int num31 = num8;
+			int num31 = yMax;
 			for (int num32 = 0; num32 < 20; num32++)
 			{
 				num30 = (int) vector.X - num32;
@@ -1893,30 +1882,30 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			vector.X += (float) num2 * 0.6f * num4;
-			vector.Y += (float) num3 * 0.5f;
-			num2 = DungeonXStrength2;
-			num3 = DungeonYStrength2;
-			vector.X += (float) num2 * 0.55f * num4;
-			vector.Y -= (float) num3 * 0.5f;
-			num5 = (int) (vector.X - num2 * 0.6 - WorldGen.genRand.Next(1, 3));
-			num6 = (int) (vector.X + num2 * 0.6 + WorldGen.genRand.Next(1, 3));
-			num7 = (int) (vector.Y - num3 * 0.6 - WorldGen.genRand.Next(1, 3));
-			num8 = (int) (vector.Y + num3 * 0.6 + WorldGen.genRand.Next(6, 16));
-			if (num5 < 0)
-				num5 = 0;
+			vector.X += (float) dungeonXStrength1 * 0.6f * num4;
+			vector.Y += (float) dungeonYStrength1 * 0.5f;
+			dungeonXStrength1 = DungeonXStrength2;
+			dungeonYStrength1 = DungeonYStrength2;
+			vector.X += (float) dungeonXStrength1 * 0.55f * num4;
+			vector.Y -= (float) dungeonYStrength1 * 0.5f;
+			xMin = (int) (vector.X - dungeonXStrength1 * 0.6 - WorldGen.genRand.Next(1, 3));
+			xMax = (int) (vector.X + dungeonXStrength1 * 0.6 + WorldGen.genRand.Next(1, 3));
+			yMin = (int) (vector.Y - dungeonYStrength1 * 0.6 - WorldGen.genRand.Next(1, 3));
+			yMax = (int) (vector.Y + dungeonYStrength1 * 0.6 + WorldGen.genRand.Next(6, 16));
+			if (xMin < 0)
+				xMin = 0;
 
-			if (num6 > Main.maxTilesX)
-				num6 = Main.maxTilesX;
+			if (xMax > Main.maxTilesX)
+				xMax = Main.maxTilesX;
 
-			if (num7 < 0)
-				num7 = 0;
+			if (yMin < 0)
+				yMin = 0;
 
-			if (num8 > Main.maxTilesY)
-				num8 = Main.maxTilesY;
+			if (yMax > Main.maxTilesY)
+				yMax = Main.maxTilesY;
 
-			for (int num33 = num5; num33 < num6; num33++)
-			for (int num34 = num7; num34 < num8; num34++)
+			for (int num33 = xMin; num33 < xMax; num33++)
+			for (int num34 = yMin; num34 < yMax; num34++)
 			{
 				Main.tile[num33, num34].LiquidAmount = 0;
 				if (Main.tile[num33, num34].wall == wallType)
@@ -1925,10 +1914,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				bool flag = true;
 				if (num4 < 0)
 				{
-					if (num33 < vector.X - num2 * 0.5)
+					if (num33 < vector.X - dungeonXStrength1 * 0.5)
 						flag = false;
 				}
-				else if (num33 > vector.X + num2 * 0.5 - 1.0)
+				else if (num33 > vector.X + dungeonXStrength1 * 0.5 - 1.0)
 				{
 					flag = false;
 				}
@@ -1942,8 +1931,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			for (int num35 = num5; num35 < num6; num35++)
-			for (int num36 = num8; (double) num36 < Main.worldSurface; num36++)
+			for (int num35 = xMin; num35 < xMax; num35++)
+			for (int num36 = yMax; (double) num36 < Main.worldSurface; num36++)
 			{
 				Main.tile[num35, num36].LiquidAmount = 0;
 				if (!Main.wallDungeon[Main.tile[num35, num36].wall])
@@ -1956,15 +1945,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				Main.tile[num35, num36].Clear(TileDataType.Slope);
 			}
 
-			num5 = (int) (vector.X - num2 * 0.5);
-			num6 = (int) (vector.X + num2 * 0.5);
-			num9 = num5;
+			xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
+			xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
+			num9 = xMin;
 			if (num4 < 0)
 				num9++;
 
 			num10 = num9 + 5 + WorldGen.genRand.Next(4);
-			num11 = num7 - 3 - WorldGen.genRand.Next(3);
-			num12 = num7;
+			num11 = yMin - 3 - WorldGen.genRand.Next(3);
+			num12 = yMin;
 			for (int num37 = num9; num37 < num10; num37++)
 			for (int num38 = num11; num38 < num12; num38++)
 			{
@@ -1977,10 +1966,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			num9 = num6 - 5 - WorldGen.genRand.Next(4);
-			num10 = num6;
-			num11 = num7 - 3 - WorldGen.genRand.Next(3);
-			num12 = num7;
+			num9 = xMax - 5 - WorldGen.genRand.Next(4);
+			num10 = xMax;
+			num11 = yMin - 3 - WorldGen.genRand.Next(3);
+			num12 = yMin;
 			for (int num39 = num9; num39 < num10; num39++)
 			for (int num40 = num11; num40 < num12; num40++)
 			{
@@ -1997,11 +1986,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			num18 = 2 + WorldGen.genRand.Next(4);
 			num19 = 0;
 			if (num4 < 0)
-				num6++;
+				xMax++;
 
-			for (int num41 = num5 + 1; num41 < num6 - 1; num41++)
+			for (int num41 = xMin + 1; num41 < xMax - 1; num41++)
 			{
-				for (int num42 = num7 - num17; num42 < num7; num42++)
+				for (int num42 = yMin - num17; num42 < yMin; num42++)
 				{
 					Main.tile[num41, num42].LiquidAmount = 0;
 					if (Main.tile[num41, num42].wall != wallType)
@@ -2022,48 +2011,48 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			if (!WorldGen.drunkWorldGen)
 			{
-				num5 = (int) (vector.X - num2 * 0.6);
-				num6 = (int) (vector.X + num2 * 0.6);
-				num7 = (int) (vector.Y - num3 * 0.6);
-				num8 = (int) (vector.Y + num3 * 0.6);
-				if (num5 < 0)
-					num5 = 0;
+				xMin = (int) (vector.X - dungeonXStrength1 * 0.6);
+				xMax = (int) (vector.X + dungeonXStrength1 * 0.6);
+				yMin = (int) (vector.Y - dungeonYStrength1 * 0.6);
+				yMax = (int) (vector.Y + dungeonYStrength1 * 0.6);
+				if (xMin < 0)
+					xMin = 0;
 
-				if (num6 > Main.maxTilesX)
-					num6 = Main.maxTilesX;
+				if (xMax > Main.maxTilesX)
+					xMax = Main.maxTilesX;
 
-				if (num7 < 0)
-					num7 = 0;
+				if (yMin < 0)
+					yMin = 0;
 
-				if (num8 > Main.maxTilesY)
-					num8 = Main.maxTilesY;
+				if (yMax > Main.maxTilesY)
+					yMax = Main.maxTilesY;
 
-				for (int num43 = num5; num43 < num6; num43++)
-				for (int num44 = num7; num44 < num8; num44++)
+				for (int num43 = xMin; num43 < xMax; num43++)
+				for (int num44 = yMin; num44 < yMax; num44++)
 				{
 					Main.tile[num43, num44].LiquidAmount = 0;
 					Main.tile[num43, num44].wall = 0;
 				}
 			}
 
-			num5 = (int) (vector.X - num2 * 0.5);
-			num6 = (int) (vector.X + num2 * 0.5);
-			num7 = (int) (vector.Y - num3 * 0.5);
-			num8 = (int) (vector.Y + num3 * 0.5);
-			if (num5 < 0)
-				num5 = 0;
+			xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
+			xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
+			yMin = (int) (vector.Y - dungeonYStrength1 * 0.5);
+			yMax = (int) (vector.Y + dungeonYStrength1 * 0.5);
+			if (xMin < 0)
+				xMin = 0;
 
-			if (num6 > Main.maxTilesX)
-				num6 = Main.maxTilesX;
+			if (xMax > Main.maxTilesX)
+				xMax = Main.maxTilesX;
 
-			if (num7 < 0)
-				num7 = 0;
+			if (yMin < 0)
+				yMin = 0;
 
-			if (num8 > Main.maxTilesY)
-				num8 = Main.maxTilesY;
+			if (yMax > Main.maxTilesY)
+				yMax = Main.maxTilesY;
 
-			for (int num45 = num5; num45 < num6; num45++)
-			for (int num46 = num7; num46 < num8; num46++)
+			for (int num45 = xMin; num45 < xMax; num45++)
+			for (int num46 = yMin; num46 < yMax; num46++)
 			{
 				Main.tile[num45, num46].LiquidAmount = 0;
 				Main.tile[num45, num46].IsActive = false;
@@ -2071,7 +2060,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 
 			Main.dungeonX = (int) vector.X;
-			Main.dungeonY = num8;
+			Main.dungeonY = yMax;
 			int num47 = NPC.NewNPC(Main.dungeonX * 16 + 8, Main.dungeonY * 16, 37);
 			Main.npc[num47].homeless = false;
 			Main.npc[num47].homeTileX = Main.dungeonX;
@@ -2103,10 +2092,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				if (num4 == 1)
 				{
 					int num50 = 0;
-					for (int num51 = num6; num51 < num6 + num49; num51++)
+					for (int num51 = xMax; num51 < xMax + num49; num51++)
 					{
 						num50++;
-						for (int num52 = num8 + num50; num52 < num8 + num49; num52++)
+						for (int num52 = yMax + num50; num52 < yMax + num49; num52++)
 						{
 							Main.tile[num51, num52].LiquidAmount = 0;
 							Main.tile[num51, num52 - 1].LiquidAmount = 0;
@@ -2125,10 +2114,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				else
 				{
 					int num53 = 0;
-					for (int num54 = num5; num54 > num5 - num49; num54--)
+					for (int num54 = xMin; num54 > xMin - num49; num54--)
 					{
 						num53++;
-						for (int num55 = num8 + num53; num55 < num8 + num49; num55++)
+						for (int num55 = yMax + num53; num55 < yMax + num49; num55++)
 						{
 							Main.tile[num54, num55].LiquidAmount = 0;
 							Main.tile[num54, num55 - 1].LiquidAmount = 0;
@@ -2149,30 +2138,30 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			num17 = 1 + WorldGen.genRand.Next(2);
 			num18 = 2 + WorldGen.genRand.Next(4);
 			num19 = 0;
-			num5 = (int) (vector.X - num2 * 0.5);
-			num6 = (int) (vector.X + num2 * 0.5);
+			xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
+			xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
 			if (WorldGen.drunkWorldGen)
 			{
 				if (num4 == 1)
 				{
-					num6--;
-					num5--;
+					xMax--;
+					xMin--;
 				}
 				else
 				{
-					num5++;
-					num6++;
+					xMin++;
+					xMax++;
 				}
 			}
 			else
 			{
-				num5 += 2;
-				num6 -= 2;
+				xMin += 2;
+				xMax -= 2;
 			}
 
-			for (int num56 = num5; num56 < num6; num56++)
+			for (int num56 = xMin; num56 < xMax; num56++)
 			{
-				for (int num57 = num7; num57 < num8 + 1; num57++) WorldGen.PlaceWall(num56, num57, wallType, true);
+				for (int num57 = yMin; num57 < yMax + 1; num57++) WorldGen.PlaceWall(num56, num57, wallType, true);
 
 				if (!WorldGen.drunkWorldGen)
 				{
@@ -2187,15 +2176,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			if (WorldGen.drunkWorldGen)
 			{
-				num5 = (int) (vector.X - num2 * 0.5);
-				num6 = (int) (vector.X + num2 * 0.5);
+				xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
+				xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
 				if (num4 == 1)
-					num5 = num6 - 3;
+					xMin = xMax - 3;
 				else
-					num6 = num5 + 3;
+					xMax = xMin + 3;
 
-				for (int num58 = num5; num58 < num6; num58++)
-				for (int num59 = num7; num59 < num8 + 1; num59++)
+				for (int num58 = xMin; num58 < xMax; num58++)
+				for (int num59 = yMin; num59 < yMax + 1; num59++)
 				{
 					Main.tile[num58, num59].IsActive = true;
 					Main.tile[num58, num59].type = tileType;
@@ -2203,29 +2192,18 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			vector.X -= (float) num2 * 0.6f * num4;
-			vector.Y += (float) num3 * 0.5f;
-			num2 = 15.0;
-			num3 = 3.0;
-			vector.Y -= (float) num3 * 0.5f;
-			num5 = (int) (vector.X - num2 * 0.5);
-			num6 = (int) (vector.X + num2 * 0.5);
-			num7 = (int) (vector.Y - num3 * 0.5);
-			num8 = (int) (vector.Y + num3 * 0.5);
-			if (num5 < 0)
-				num5 = 0;
+			vector.X -= (float) dungeonXStrength1 * 0.6f * num4;
+			vector.Y += (float) dungeonYStrength1 * 0.5f;
+			dungeonXStrength1 = 15.0;
+			dungeonYStrength1 = 3.0;
+			vector.Y -= (float) dungeonYStrength1 * 0.5f;
+			xMin = (int) Math.Max(vector.X - dungeonXStrength1 * 0.5, 0);
+			xMax = (int) Math.Min(vector.X + dungeonXStrength1 * 0.5, Main.maxTilesX);
+			yMin = (int) Math.Max(vector.Y - dungeonYStrength1 * 0.5, 0);
+			yMax = (int) Math.Min(vector.Y + dungeonYStrength1 * 0.5, Main.maxTilesY);
 
-			if (num6 > Main.maxTilesX)
-				num6 = Main.maxTilesX;
-
-			if (num7 < 0)
-				num7 = 0;
-
-			if (num8 > Main.maxTilesY)
-				num8 = Main.maxTilesY;
-
-			for (int num60 = num5; num60 < num6; num60++)
-			for (int num61 = num7; num61 < num8; num61++)
+			for (int num60 = xMin; num60 < xMax; num60++)
+			for (int num61 = yMin; num61 < yMax; num61++)
 				Main.tile[num60, num61].IsActive = false;
 
 			if (num4 < 0)
