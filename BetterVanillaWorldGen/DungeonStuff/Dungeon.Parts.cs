@@ -1814,77 +1814,36 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			while (num2 > 0)
 			{
 				num2--;
-				int num7 = (int) (vector2.X - num * 0.8 - 5.0);
-				int num8 = (int) (vector2.X + num * 0.8 + 5.0);
-				int num9 = (int) (vector2.Y - num * 0.8 - 5.0);
-				int num10 = (int) (vector2.Y + num * 0.8 + 5.0);
-				if (num7 < 0)
-					num7 = 0;
+				int xMin = (int) Math.Max(vector2.X - num * 0.8 - 5.0, DungeonMinX);
+				int xMax = (int) Math.Min(vector2.X + num * 0.8 + 5.0, DungeonMaxX);
+				int yMin = (int) Math.Max(vector2.Y - num * 0.8 - 5.0, 0);
+				int yMax = (int) Math.Min(vector2.Y + num * 0.8 + 5.0, DungeonMaxX);
 
-				if (num8 > Main.maxTilesX)
-					num8 = Main.maxTilesX;
-
-				if (num9 < 0)
-					num9 = 0;
-
-				if (num10 > Main.maxTilesY)
-					num10 = Main.maxTilesY;
-
-				for (int k = num7; k < num8; k++)
-				for (int l = num9; l < num10; l++)
+				for (int x = xMin; x < xMax; x++)
+				for (int y = yMin; y < yMax; y++)
 				{
-					if (k < DungeonMinX) DungeonMinX = k;
-
-					if (k > DungeonMaxX) DungeonMaxX = k;
-
-					if (l > DungeonMaxY) DungeonMaxY = l;
-
-					Main.tile[k, l].LiquidAmount = 0;
-					if (!Main.wallDungeon[Main.tile[k, l].wall])
+					Main.tile[x, y].LiquidAmount = 0;
+					if (!Main.wallDungeon[Main.tile[x, y].wall])
 					{
-						Main.tile[k, l].Clear(TileDataType.Slope);
-						Main.tile[k, l].IsActive = true;
-						Main.tile[k, l].type = tileType;
+						Main.tile[x, y].Clear(TileDataType.Slope);
+						Main.tile[x, y].IsActive = true;
+						Main.tile[x, y].type = tileType;
 					}
 				}
 
-				for (int m = num7 + 1; m < num8 - 1; m++)
-				for (int n = num9 + 1; n < num10 - 1; n++)
+				for (int m = xMin + 1; m < xMax - 1; m++)
+				for (int n = yMin + 1; n < yMax - 1; n++)
 					Main.tile[m, n].wall = (ushort) wallType;
 
-				num7 = (int) (vector2.X - num * 0.5);
-				num8 = (int) (vector2.X + num * 0.5);
-				num9 = (int) (vector2.Y - num * 0.5);
-				num10 = (int) (vector2.Y + num * 0.5);
-				if (num7 < 0)
-					num7 = 0;
-
-				if (num8 > Main.maxTilesX)
-					num8 = Main.maxTilesX;
-
-				if (num9 < 0)
-					num9 = 0;
-
-				if (num10 > Main.maxTilesY)
-					num10 = Main.maxTilesY;
-
-				if (num7 < num3)
-					num3 = num7;
-
-				if (num8 > num4)
-					num4 = num8;
-
-				if (num9 < num5)
-					num5 = num9;
-
-				if (num10 > num6)
-					num6 = num10;
-
-				for (int num11 = num7; num11 < num8; num11++)
-				for (int num12 = num9; num12 < num10; num12++)
+				xMin = (int) Math.Max(vector2.X - num * 0.5, xMin);
+				xMax = (int) Math.Min(vector2.X + num * 0.5, xMax);
+				yMin = (int) Math.Max(vector2.Y - num * 0.5, yMin);
+				yMax = (int) Math.Min(vector2.Y + num * 0.5, yMax);
+				for (int x = xMin; x < xMax; x++)
+				for (int y = yMin; y < yMax; y++)
 				{
-					Main.tile[num11, num12].IsActive = false;
-					Main.tile[num11, num12].wall = (ushort) wallType;
+					Main.tile[x, y].IsActive = false;
+					Main.tile[x, y].wall = (ushort) wallType;
 				}
 
 				vector2 += vector;
