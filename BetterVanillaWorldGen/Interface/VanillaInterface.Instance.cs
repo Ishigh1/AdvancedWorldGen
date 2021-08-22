@@ -18,9 +18,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 		public VanillaAccessor<int> SnowOriginLeft;
 		public VanillaAccessor<int> SnowOriginRight;
+		public VanillaAccessor<int[]> SnowMinX;
+		public VanillaAccessor<int[]> SnowMaxX;
+		public VanillaAccessor<int> SnowTop;
+		public VanillaAccessor<int> SnowBottom;
 
 		public VanillaAccessor<int> LeftBeachEnd;
 		public VanillaAccessor<int> RightBeachStart;
+
 
 		public VanillaInterface(GenPass vanillaReset)
 		{
@@ -42,6 +47,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 			SnowOriginLeft = new VanillaAccessor<int>(fieldInfos, "snowOriginLeft", vanillaData);
 			SnowOriginRight = new VanillaAccessor<int>(fieldInfos, "snowOriginRight", vanillaData);
+			SnowMinX = new VanillaAccessor<int[]>(fieldInfos, "snowMinX", vanillaData);
+			SnowMaxX = new VanillaAccessor<int[]>(fieldInfos, "snowMaxX", vanillaData);
+			SnowTop = new VanillaAccessor<int>(fieldInfos, "snowTop", vanillaData);
+			SnowBottom = new VanillaAccessor<int>(fieldInfos, "snowBottom", vanillaData);
 
 			LeftBeachEnd = new VanillaAccessor<int>(fieldInfos, "leftBeachEnd", vanillaData);
 			RightBeachStart = new VanillaAccessor<int>(fieldInfos, "rightBeachStart", vanillaData);

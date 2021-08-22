@@ -48,6 +48,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			index = genPasses.FindIndex(pass => pass.Name == "Terrain");
 			if (index != -1) genPasses[index] = new TerrainPass();
+			
+			index = genPasses.FindIndex(index, pass => pass.Name == "Generate Ice Biome");
+			if (index != -1) genPasses[index] = new GenerateIceBiome();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle");
 			if (index != -1) genPasses[index] = new JunglePass();
