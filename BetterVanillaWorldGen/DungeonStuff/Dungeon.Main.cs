@@ -732,14 +732,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 							break;
 					}
 
-					flag5 = WorldGen.AddBuriedChest(num84, num85, contain, false, style2, false, chestTileType);
+					flag5 = Chest.AddBuriedChest(num84, num85, contain, false, style2, chestTileType);
 				}
 			}
 
 			int[] array2 = new int[3]
 			{
-				WorldGen.genRand.Next(9, 13), WorldGen.genRand.Next(9, 13),
-				0
+				WorldGen.genRand.Next(9, 13), WorldGen.genRand.Next(9, 13), 0
 			};
 
 			while (array2[1] == array2[0]) array2[1] = WorldGen.genRand.Next(9, 13);
@@ -920,7 +919,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						style3 = 0;
 					}
 
-					if (WorldGen.AddBuriedChest(i3, num99, num100, false, style3))
+					if (Chest.AddBuriedChest(i3, num99, num100, false, style3))
 					{
 						num97 += 1000;
 						num95++;
@@ -943,10 +942,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			if (DungeonMaxY > Main.maxTilesY) DungeonMaxY = Main.maxTilesY;
 
 			MakeDungeon_Lights(num2, 0, 1000, 0, array);
-			MakeDungeon_Traps(0, 1000, 0);
-			float count = MakeDungeon_GroundFurniture(num3);
-			count = MakeDungeon_Pictures(array, count);
-			MakeDungeon_Banners(array, count);
+			MakeDungeon_Traps();
+			MakeDungeon_GroundFurniture(num3);
+			MakeDungeon_Pictures(array);
+			MakeDungeon_Banners(array);
 		}
 	}
 }

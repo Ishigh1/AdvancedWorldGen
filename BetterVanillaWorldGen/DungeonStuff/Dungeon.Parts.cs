@@ -222,9 +222,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 		}
 
-		public static float MakeDungeon_Banners(int[] roomWall, float count)
+		public static void MakeDungeon_Banners(int[] roomWall)
 		{
-			count = 840000f / Main.maxTilesX;
+			float count = 840000f / Main.maxTilesX;
 			for (int i = 0; (float) i < count; i++)
 			{
 				int num = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
@@ -263,13 +263,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					WorldGen.PlaceTile(num, num2, 91, true, false, -1, num3);
 				}
 			}
-
-			return count;
 		}
 
-		public static float MakeDungeon_Pictures(int[] roomWall, float count)
+		public static void MakeDungeon_Pictures(int[] roomWall)
 		{
-			count = 420000f / Main.maxTilesX;
+			float count = 420000f / Main.maxTilesX;
 			for (int i = 0; (float) i < count; i++)
 			{
 				int num = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
@@ -541,11 +539,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					}
 				}
 			}
-
-			return count;
 		}
 
-		public static float MakeDungeon_GroundFurniture(int wallType)
+		public static void MakeDungeon_GroundFurniture(int wallType)
 		{
 			int num = (int) (2000 * Main.maxTilesX / 4200f);
 			int num2 = 1 + Main.maxTilesX / 4200;
@@ -874,8 +870,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						break;
 				}
 			}
-
-			return num;
 		}
 
 		public static Vector2 randBoneTile()
