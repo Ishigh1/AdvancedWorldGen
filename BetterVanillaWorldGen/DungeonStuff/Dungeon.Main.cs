@@ -153,8 +153,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			while (!DungeonSurface)
 			{
-				if (num6 > 0)
-					num6--;
+				num6--;
 
 				if (num6 == 0 && WorldGen.genRand.Next(5) == 0 && WorldGen.dungeonY > Main.worldSurface + 100.0)
 				{
@@ -866,7 +865,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					num19++;
 				}
 			}
-
+			
 			Main.statusText = Lang.gen[58].Value + " 95%";
 			int num95 = 1;
 			for (int num96 = 0; num96 < DungeonRoomPos.Count; num96++)
