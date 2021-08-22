@@ -7,14 +7,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 		
 		public VanillaAccessor<bool> SkipFramingDuringGen;
 		
-		public VanillaAccessor<int> CrackedType;
+		public VanillaAccessor<uint> CrackedType;
 
 		public void InitializeStatics()
 		{
 			NumOceanCaveTreasure = new VanillaAccessor<int>("numOceanCaveTreasure");
 			HeartCount = new VanillaAccessor<int>("heartCount");
 			SkipFramingDuringGen = new VanillaAccessor<bool>("skipFramingDuringGen");
-			CrackedType = new VanillaAccessor<int>("crackedType");
+			CrackedType = new VanillaAccessor<uint>("crackedType");
 		}
 	}
 }
