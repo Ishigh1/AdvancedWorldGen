@@ -48,7 +48,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 
 		public static void PlaceSurfaceTraps()
 		{
-			int numTraps = Main.rand.Next(10, 21) * Utilities.WorldSize;
+			int numTraps = (int) (Main.rand.Next(10, 21) * Utilities.WorldSize);
 			for (int i = 0; i < numTraps; i++)
 			{
 				int x = Main.rand.Next(WorldGen.beachDistance, Main.maxTilesX * 2 / 5);
