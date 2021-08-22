@@ -69,21 +69,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 								break;
 
 							bool flag2 = false;
-							if (!flag2 && WorldGen.genRand.Next(7) == 0)
+							if (WorldGen.genRand.Next(7) == 0)
 							{
-								int style = 27;
-								switch (roomWall[0])
+								int style = roomWall[0] switch
 								{
-									case 7:
-										style = 27;
-										break;
-									case 8:
-										style = 28;
-										break;
-									case 9:
-										style = 29;
-										break;
-								}
+									7 => 27,
+									8 => 28,
+									9 => 29,
+									_ => 27
+								};
 
 								bool flag3 = false;
 								for (int k = 0; k < 15; k++)
