@@ -1,4 +1,5 @@
 using System;
+using AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff;
 using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 using Terraria;
 using Terraria.ID;

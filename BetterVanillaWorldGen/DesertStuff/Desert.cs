@@ -1,6 +1,6 @@
 using Terraria;
 
-namespace AdvancedWorldGen.BetterVanillaWorldGen
+namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 {
 	public class Desert
 	{

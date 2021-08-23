@@ -4,6 +4,7 @@ using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 using Terraria.GameContent.Biomes.Desert;
 using Terraria.WorldBuilding;
 using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
+using DesertHive = AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff.DesertHive;
 using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
 using OnJunglePass = On.Terraria.GameContent.Biomes.JunglePass;
 using OnDesertHive = On.Terraria.GameContent.Biomes.Desert.DesertHive;

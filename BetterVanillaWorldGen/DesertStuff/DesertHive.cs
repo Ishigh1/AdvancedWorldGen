@@ -7,7 +7,7 @@ using Terraria.GameContent.Biomes.Desert;
 using Terraria.ID;
 using Terraria.Utilities;
 
-namespace AdvancedWorldGen.BetterVanillaWorldGen
+namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 {
 	public static class DesertHive
 	{
