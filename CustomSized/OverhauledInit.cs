@@ -6,7 +6,6 @@ namespace AdvancedWorldGen.CustomSized
 	{
 		public static void Init()
 		{
-			
 			float worldSize = Main.maxTilesX / 4200f;
 			const int beachSandDungeonExtraWidth = 40;
 			const int beachSandJungleExtraWidth = 20;

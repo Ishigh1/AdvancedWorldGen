@@ -32,9 +32,9 @@ namespace AdvancedWorldGen.CustomSized
 		}
 
 		public void SetSize(OnUIWorldCreation.orig_ClickSizeOption orig, UIWorldCreation self, UIMouseEvent evt,
-			UIElement listeningelement)
+			UIElement listeningElement)
 		{
-			orig(self, evt, listeningelement);
+			orig(self, evt, listeningElement);
 			int newSize = (int) typeof(UIWorldCreation)
 				.GetField("_optionSize", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
 			SetSizeTo(newSize);
@@ -84,28 +84,29 @@ namespace AdvancedWorldGen.CustomSized
 				Main.maxTilesY = SizeY;
 			}
 
-			if (Main.Map.MaxWidth < Main.maxTilesX || Main.Map.MaxHeight < Main.maxTilesY)
-				Main.Map = new WorldMap(Main.maxTilesX, Main.maxTilesY);
 			int oldSizeX = Main.tile.GetLength(0);
 			int oldSizeY = Main.tile.GetLength(1);
 			if (oldSizeX < Main.maxTilesX || oldSizeY < Main.maxTilesY)
 			{
-				int newSizeX = Math.Max(oldSizeX, Main.maxTilesX);
-				int newSizeY = Math.Max(oldSizeY, Main.maxTilesY);
-				Tile[,] oldTiles = Main.tile;
-				Main.tile = new Tile[newSizeX, newSizeY];
-				for (int y = 0; y < newSizeY; y++)
+				int newSizeX = Math.Max(Main.maxTilesX, oldSizeX);
+				int newSizeY = Math.Max(Main.maxTilesY, oldSizeY);
+
+				if ((long) newSizeX * newSizeY * 44 > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)
 				{
-					Array.Copy(oldTiles, Main.tile, oldSizeX);
-					for (int x = oldSizeX; x < newSizeX; x++)
-						Main.tile[x, y] = new Tile();
+					string message = "A world with a size of " + newSizeX + " x " + newSizeY +
+					                 " is too big for this computer.";
+					Utils.ShowFancyErrorMessage(message, 0);
+					throw new Exception(message);
 				}
+				
+				Main.Map = new WorldMap(newSizeX, newSizeY);
+			
+				Main.tile = new Tile[newSizeX, newSizeY];
 			}
 
 			int newWidth = (Main.maxTilesX - 1) / Main.textureMaxWidth + 1;
 			int newHeight = (Main.maxTilesY - 1) / Main.textureMaxHeight + 1;
-			if (newWidth > Main.mapTargetX ||
-			    newHeight > Main.mapTargetY)
+			if (newWidth > Main.mapTargetX || newHeight > Main.mapTargetY)
 			{
 				Main.mapTargetX = Math.Max(newWidth, Main.mapTargetX);
 				Main.mapTargetY = Math.Max(newHeight, Main.mapTargetY);

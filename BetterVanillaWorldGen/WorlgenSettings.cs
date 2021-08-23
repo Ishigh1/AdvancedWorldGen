@@ -8,7 +8,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 	{
 		[Label("Overhauled Worldgen")]
 		[Tooltip("Tweaks the worldgen so it is faster and more adapted to custom sized worlds. \n" + 
-				"Worlds smaller than 2600 x ... can't be generated without it")]
+				"Worlds smaller than 4200 x ... can't be generated without it")]
 		[DefaultValue(false)]
 		public bool FasterWorldgen;
 
