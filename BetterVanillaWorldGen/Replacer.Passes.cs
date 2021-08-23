@@ -1,37 +1,15 @@
 using System.Collections.Generic;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
-using Terraria.GameContent.Biomes.Desert;
 using Terraria.WorldBuilding;
-using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
-using DesertHive = AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff.DesertHive;
 using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
-using OnJunglePass = On.Terraria.GameContent.Biomes.JunglePass;
-using OnDesertHive = On.Terraria.GameContent.Biomes.Desert.DesertHive;
-using OnWorldGen = On.Terraria.WorldGen;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
-	public class Replacer
+	public partial class Replacer
 	{
 		public static VanillaInterface VanillaInterface;
 		
-		public static void Replace()
-		{
-			OnDesertHive.Place += ReplaceDesertHive;
-			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
-			OnWorldGen.MakeDungeon += ReplaceDungeon;
-		}
-
-		public static void UnReplace()
-		{
-			VanillaInterface = null;
-			
-			OnDesertHive.Place -= ReplaceDesertHive;
-			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= ReplaceChest;
-			OnWorldGen.MakeDungeon -= ReplaceDungeon;
-		}
-
 		public static void ReplaceGenPasses(List<GenPass> genPasses)
 		{
 			if (!WorldgenSettings.Revamped)
@@ -70,31 +48,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Micro Biomes");
 			if (index != -1) genPasses[index] = new MicroBiomes();
-		}
-
-		public static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
-			DesertDescription description)
-		{
-			if (WorldgenSettings.Revamped)
-				DesertHive.Place(description);
-			else
-				orig(description);
-		}
-
-		public static bool ReplaceChest(OnWorldGen.orig_AddBuriedChest_int_int_int_bool_int_bool_ushort orig, int i,
-			int j, int contain, bool notNearOtherChests, int style, bool trySlope, ushort chestTileType)
-		{
-			return WorldgenSettings.Revamped
-				? Chest.AddBuriedChest(i, j, contain, notNearOtherChests, style, chestTileType)
-				: orig(i, j, contain, notNearOtherChests, style, trySlope, chestTileType);
-		}
-
-		public static void ReplaceDungeon(OnWorldGen.orig_MakeDungeon orig, int x, int y)
-		{
-			if (WorldgenSettings.Revamped)
-				Dungeon.MakeDungeon(x, y);
-			else
-				orig(x, y);
 		}
 	}
 }

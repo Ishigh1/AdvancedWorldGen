@@ -33,7 +33,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		public static bool IsValid(int x, int y)
 		{
 			Tile tile = Main.tile[x, y];
-			if (tile.IsActive && tile.type == TileID.Mud || tile.type == TileID.JungleGrass)
+			if (tile.IsActive && tile.type == TileID.JungleGrass)
 				return true;
 			else if (tile.wall == WallID.Jungle || tile.wall == WallID.JungleUnsafe ||
 			         tile.wall == WallID.JungleUnsafe1 || tile.wall == WallID.JungleUnsafe2 ||

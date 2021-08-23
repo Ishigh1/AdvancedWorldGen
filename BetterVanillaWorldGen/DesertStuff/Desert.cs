@@ -1,9 +1,17 @@
+#nullable enable
+using System;
+using System.Reflection;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Biomes.Desert;
+using Terraria.ID;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 {
 	public class Desert
 	{
+		public static readonly Vector2 DefaultBlockScale = new Vector2(4f, 2f);
+
 		public static bool IsUndergroundDesert(int x, int y)
 		{
 			if (y < Main.worldSurface)
@@ -17,6 +25,74 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 			for (int j = y - spread; j <= y + spread; j += 10)
 				if (Main.tile[i, j].wall == 187 || Main.tile[i, j].wall == 216)
 					return true;
+
+			return false;
+		}
+
+		public static DesertDescription CreateFromPlacement(Point origin)
+		{
+			Vector2 defaultBlockScale = DefaultBlockScale;
+			float worldSize = Main.maxTilesX / 4200f;
+			float worldSizeY = Main.maxTilesY / 1200f;
+			int width = (int) (80f * worldSize);
+			int height = (int) ((WorldGen.genRand.NextFloat() + 1f) * 170f * worldSizeY);
+			int scaledWidth = (int) (defaultBlockScale.X * width);
+			int scaledHeight = (int) (defaultBlockScale.Y * height);
+			origin.X -= scaledWidth / 2;
+			SurfaceMap surfaceMap = SurfaceMap.FromArea(origin.X - 5, scaledWidth + 10);
+			if (RowHasInvalidTiles(origin.X, surfaceMap.Bottom, scaledWidth))
+				return DesertDescription.Invalid;
+
+			int surfaceBottomStart = (int) (surfaceMap.Average + surfaceMap.Bottom) / 2;
+			origin.Y = surfaceBottomStart + WorldGen.genRand.Next(40, 60);
+			int specialSeedModifier = Main.tenthAnniversaryWorld ? (int) (20f * worldSizeY) : 0;
+
+			Type type = typeof(DesertDescription);
+			ConstructorInfo constructorInfo =
+				type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Array.Empty<Type>(), null);
+
+			DesertDescription placement = (DesertDescription) constructorInfo.Invoke(Array.Empty<object>());
+			foreach (PropertyInfo propertyInfo in typeof(DesertDescription).GetProperties())
+			{
+				object value = propertyInfo.Name switch
+				{
+					"CombinedArea" => new Rectangle(origin.X, surfaceBottomStart, scaledWidth,
+						origin.Y + scaledHeight - surfaceBottomStart),
+					"Hive" => new Rectangle(origin.X, origin.Y + specialSeedModifier, scaledWidth,
+						scaledHeight - specialSeedModifier),
+					"Desert" => new Rectangle(origin.X, surfaceBottomStart, scaledWidth,
+						origin.Y + scaledHeight / 2 - surfaceBottomStart + specialSeedModifier),
+					"BlockScale" => defaultBlockScale,
+					"BlockColumnCount" => width,
+					"BlockRowCount" => height,
+					"Surface" => surfaceMap,
+					"IsValid" => true,
+					_ => null
+				};
+
+				if (value != null)
+					propertyInfo.SetValue(placement, value);
+			}
+
+			return placement;
+		}
+
+		public static bool RowHasInvalidTiles(int startX, int startY, int width)
+		{
+			if (WorldGen.skipDesertTileCheck)
+				return false;
+
+			int xMin = Math.Max(startX, 0);
+			int xMax = Math.Min(startX + width, Main.maxTilesX);
+			for (int x = xMin; x < xMax; x += 3)
+				switch (Main.tile[x, startY].type)
+				{
+					case TileID.Mud:
+					case TileID.JungleGrass:
+					case TileID.SnowBlock:
+					case TileID.IceBlock:
+						return true;
+				}
 
 			return false;
 		}
