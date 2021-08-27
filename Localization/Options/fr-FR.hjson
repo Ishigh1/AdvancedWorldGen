@@ -1,0 +1,103 @@
+{
+    "Mods": {
+        "AdvancedWorldGen": {
+            "BigTemple": {
+                "$parentVal": "Grand Temple",
+                "Description": "Rend le temple plus grand."
+            },
+            "Celebrationmk10": {
+                "$parentVal": "Celebration Mk 10",
+                "Description": "La graine secr\u00c3\u00a8te du dixi\u00e8me anniversaire."
+            },
+            "Conflict": {
+                "BigTemple": {
+                    "StupidlyBigTemple": "Avoir deux modificateur de taille de temple ne fait rien.",
+                    "StupidlyHugeTemple": "Avoir deux modificateur de taille de temple ne fait rien."
+                },
+                "Celebrationmk10": {},
+                "Crimruption": {
+                    "Drunk": "Ivre contient d\u00e9j\u00e0 Carmruption."
+                },
+                "Drunk": {
+                    "Crimruption": "Ivre contient d\u00e9j\u00e0 Carmruption."
+                },
+                "Entropy": {},
+                "ForTheWorthy": {},
+                "NotTheBees": {
+                    "Random": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser.",
+                    "Santa": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees.",
+                    "SmallNotTheBees": "Avoir Not The Bees deux fois ne fait rien."
+                },
+                "Painted": {},
+                "Random": {
+                    "NotTheBees": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser.",
+                    "Santa": "No\u00ebl ne laisse que peu de blocs \u00c3\u00a0 randomiser."
+                },
+                "Santa": {
+                    "NotTheBees": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees.",
+                    "Random": "No\u00ebl ne laisse que peu de blocs \u00c3\u00a0 randomiser."
+                },
+                "SmallNotTheBees": {
+                    "NotTheBees": "Avoir Not The Bees deux fois ne fait rien."
+                },
+                "Spooky": {},
+                "StupidlyBigTemple": {
+                    "BigTemple": "Avoir deux modificateur de taille de temple ne fait rien.",
+                    "StupidlyHugeTemple": "Avoir deux modificateur de taille de temple ne fait rien."
+                },
+                "StupidlyHugeTemple": {
+                    "BigTemple": "Avoir deux modificateur de taille de temple ne fait rien.",
+                    "StupidlyBigTemple": "Avoir deux modificateur de taille de temple ne fait rien."
+                }
+            },
+            "Crimruption": {
+                "$parentVal": "Carmruption",
+                "Description": "Le Carmin et la Corruption sont tous eux g\u00e9n\u00e9r\u00e9s."
+            },
+            "Drunk": {
+                "$parentVal": "Ivre",
+                "Description": "La graine secr\u00e8te du neuvi\u00e8me anniversaire."
+            },
+            "Entropy": {
+                "$parentVal": "Entropie",
+                "Description": "A monde o\u00f9 chaque aube et cr\u00e9puscule, une partie du monde a un type de blocs et murs randomis\u00e9."
+            },
+            "ForTheWorthy": {
+                "$parentVal": "For The Worthy",
+                "Description": "La graine secr\u00e8te \"for the worthy\"."
+            },
+            "NotTheBees": {
+                "$parentVal": "Not The Bees",
+                "Description": "La graine secr\u00e8te \"not the bees\"."
+            },
+            "Painted": {
+                "$parentVal": "Peint",
+                "Description": "A monde o\u00f9 chaque type de bloc et mur est peint."
+            },
+            "Random": {
+                "$parentVal": "Al\u00e9atoire",
+                "Description": "Un monde o\u00f9 chaque type de bloc et mur est randomis\u00e9."
+            },
+            "Santa": {
+                "$parentVal": "No\u00ebl",
+                "Description": "Un monde sur le th\u00e8me de No\u00ebl."
+            },
+            "SmallNotTheBees": {
+                "$parentVal": "Petit Not The Bees",
+                "Description": "Comme Not The Bees, mais sans transformer le monde entier en jungle."
+            },
+            "Spooky": {
+                "$parentVal": "Sinistre",
+                "Description": "Un monde sur le th\u00e8me d'Halloween."
+            },
+            "StupidlyBigTemple": {
+                "$parentVal": "Temple Stupidement Grand",
+                "Description": "Rend le temple vraiment grand."
+            },
+            "StupidlyHugeTemple": {
+                "$parentVal": "Temple Stupidement Gigantesque",
+                "Description": "Rend le temple aussi grand que la jungle."
+            }
+        }
+    }
+}

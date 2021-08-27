@@ -1,0 +1,33 @@
+{
+    "Mods": {
+        "AdvancedWorldGen": {
+            "Import": {
+                "$parentVal": "Importer",
+                "Description": "Importe les options depuis le presse-papier."
+            },
+            "NoneSelected": {
+                "Description": "Choisissez vos options."
+            },
+            "ShowHidden": {
+                "description": "Montre les options mineures et/ou instables."
+            },
+            "HideHidden": {
+                "description": "Cache les options mineures et/ou instables."
+            },
+            "DedServ": {
+                "Selected": "(selectioné)",
+                "ShowHidden": "h : Montre les options cachées",
+                "Import": "i <options> : Importe les options",
+                "Validate": "y : Valider",
+                "InvalidId": "Nombre invalide",
+                "InvalidImport": "Import invalide",
+                "InvalidInput": "Commande invalide"
+            },
+            "Warning": "Attention",
+            "CustomSize": "Choisir la taille",
+            "Abort": "Avorter",
+            "NoOption": "Monde sans options",
+            "OptionButton": "Choisissez vos options pour générer le monde"
+        }
+    }
+}

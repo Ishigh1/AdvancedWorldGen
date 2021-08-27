@@ -1,0 +1,25 @@
+{
+    "Mods": {
+        "AdvancedWorldGen": {
+            "Exceptions": {
+                "RockUnderHell": "Monde pas assez haut !"
+            },
+            "Config": {
+                "FasterWorldgen": {
+                    "Label": "Génération du monde révisée",
+                    "Tooltip": "Rend la génération u monde plus rapide et adaptée aux mondes de taille non standard.\nLes mondes plus petits que 4200 x ... ne peuvent pas être générés sans."
+                }
+            },
+            "WorldGenMessage": {
+                "Random": "Randomisation du monde"
+            },
+            "InvalidSizes": {
+                "TooBigFromRAM": "Un monde de taille {0} x {1} est trop gros pour cet ordinateur.",
+                "OverhauledMinX": "Il est connu qu'un monde ne peut pas être généré en dessous de x={0}.",
+                "OverhauledMinY": "Il est connu qu'un monde ne peut pas être généré en dessous de y={0}.",
+                "NormalMinX": "Vous avez besoin d'activer la génération du monde révisée dans les paramètres du Mod\npour permettre de créer un monde en dessous de x=4200.",
+                "ComfortNormalMaxX": "La génération du monde va être lente,\nVous devriez activer la génération du monde révisée dans les paramètres du Mod."
+            }
+        }
+    }
+}

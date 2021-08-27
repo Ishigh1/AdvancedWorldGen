@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
@@ -6,11 +7,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class WorldgenSettings : ModConfig
 	{
-		[Label("Overhauled Worldgen")]
-		[Tooltip("Tweaks the worldgen so it is faster and more adapted to custom sized worlds. \n" + 
-				"Worlds smaller than 4200 x ... can't be generated without it")]
-		[DefaultValue(false)]
-		public bool FasterWorldgen;
+		[DefaultValue(false)] public bool FasterWorldgen;
 
 		public static bool Revamped => ModContent.GetInstance<WorldgenSettings>().FasterWorldgen;
 

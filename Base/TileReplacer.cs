@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using static Terraria.ID.TileID;
@@ -187,7 +188,7 @@ namespace AdvancedWorldGen.Base
 
 			float step = 1 / (float) Main.maxTilesY;
 			float prog = 0;
-			progress.Message = "Randomizing tiles";
+			progress.Message = Language.GetTextValue("Mods.AdvancedWorldGen.WorldGenMessage.Random");
 			for (int i = 0; i < Main.maxTilesX; i++)
 			{
 				progress.Set(prog += step);

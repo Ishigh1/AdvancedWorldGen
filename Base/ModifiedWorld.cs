@@ -40,7 +40,8 @@ namespace AdvancedWorldGen.Base
 		public override void OnModLoad()
 		{
 			OptionHelper = new OptionHelper();
-			CustomSizeUI = new CustomSizeUI(OptionHelper.WorldSettings);
+			if (!Main.dedServ)
+				CustomSizeUI = new CustomSizeUI(OptionHelper.WorldSettings);
 		}
 
 		public override void Unload()

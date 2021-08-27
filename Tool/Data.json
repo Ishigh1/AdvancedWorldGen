@@ -1,124 +1,256 @@
 {
     "BigTemple": {
         "conflicts": {
-            "StupidlyBigTemple": "Having a temple size modifier twice doesn't do anything.",
-            "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
+            "StupidlyBigTemple": {
+                "en-US": "Having a temple size modifier twice doesn't do anything.",
+                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
+            },
+            "StupidlyHugeTemple": {
+                "en-US": "Having a temple size modifier twice doesn't do anything.",
+                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
+            }
         },
-        "description": "Makes the temple bigger.",
-        "displayed_name": "Big Temple",
+        "description": {
+            "en-US": "Makes the temple bigger.",
+            "fr-FR": "Rend le temple plus grand."
+        },
+        "displayed_name": {
+            "en-US": "Big Temple",
+            "fr-FR": "Grand Temple"
+        },
         "hidden": true,
         "internal_name": "BigTemple"
     },
     "Celebrationmk10": {
         "conflicts": {},
-        "description": "The classic tenth anniversary secret seed.",
-        "displayed_name": "Celebration Mk 10",
+        "description": {
+            "en-US": "The tenth anniversary secret seed.",
+            "fr-FR": "La graine secr\u00c3\u00a8te du dixi\u00e8me anniversaire."
+        },
+        "displayed_name": {
+            "en-US": "Celebration Mk 10",
+            "fr-FR": "Celebration Mk 10"
+        },
         "hidden": false,
         "internal_name": "Celebrationmk10"
     },
     "Crimruption": {
         "conflicts": {
-            "Drunk": "Drunk already contains Crimruption"
+            "Drunk": {
+                "en-US": "Drunk already contains Crimruption",
+                "fr-FR": "Ivre contient d\u00e9j\u00e0 Carmruption."
+            }
         },
-        "description": "Both Crimson and Corruption are in this world",
-        "displayed_name": "Crimruption",
+        "description": {
+            "en-US": "Both Crimson and Corruption are in this world",
+            "fr-FR": "Le Carmin et la Corruption sont tous eux g\u00e9n\u00e9r\u00e9s."
+        },
+        "displayed_name": {
+            "en-US": "Crimruption",
+            "fr-FR": "Carmruption"
+        },
         "hidden": false,
         "internal_name": "Crimruption"
     },
     "Drunk": {
         "conflicts": {
-            "Crimruption": "Drunk already contains Crimruption"
+            "Crimruption": {
+                "en-US": "Drunk already contains Crimruption",
+                "fr-FR": "Ivre contient d\u00e9j\u00e0 Carmruption."
+            }
         },
-        "description": "The classic 5162020 settings.",
-        "displayed_name": "Drunk",
+        "description": {
+            "en-US": "The ninth anniversary secret seed.",
+            "fr-FR": "La graine secr\u00e8te du neuvi\u00e8me anniversaire."
+        },
+        "displayed_name": {
+            "en-US": "Drunk",
+            "fr-FR": "Ivre"
+        },
         "hidden": false,
         "internal_name": "Drunk"
     },
     "Entropy": {
         "conflicts": {},
-        "description": "A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.",
-        "displayed_name": "Entropy",
+        "description": {
+            "en-US": "A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.",
+            "fr-FR": "A monde o\u00f9 chaque aube et cr\u00e9puscule, une partie du monde a un type de blocs et murs randomis\u00e9."
+        },
+        "displayed_name": {
+            "en-US": "Entropy",
+            "fr-FR": "Entropie"
+        },
         "hidden": true,
         "internal_name": "Entropy"
     },
     "ForTheWorthy": {
         "conflicts": {},
-        "description": "The classic for the worthy settings.",
-        "displayed_name": "For The Worthy",
+        "description": {
+            "en-US": "The \"for the worthy\" secret seed.",
+            "fr-FR": "La graine secr\u00e8te \"for the worthy\"."
+        },
+        "displayed_name": {
+            "en-US": "For The Worthy",
+            "fr-FR": "For The Worthy"
+        },
         "hidden": false,
         "internal_name": "ForTheWorthy"
     },
     "NotTheBees": {
         "conflicts": {
-            "Random": "Not the bees only leaves a few blocks to be randomized.",
-            "Santa": "Santa will not have much effect on a not the bees world.",
-            "SmallNotTheBees": "Having not the bees twice doesn't do anything"
+            "Random": {
+                "en-US": "Not the bees only leaves a few blocks to be randomized.",
+                "fr-FR": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser."
+            },
+            "Santa": {
+                "en-US": "Santa will not have much effect on a not the bees world.",
+                "fr-FR": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees."
+            },
+            "SmallNotTheBees": {
+                "en-US": "Having not the bees twice doesn't do anything",
+                "fr-FR": "Avoir Not The Bees deux fois ne fait rien."
+            }
         },
-        "description": "The classic not the bees settings.",
-        "displayed_name": "Not The Bees",
+        "description": {
+            "en-US": "The not the bees secret seed.",
+            "fr-FR": "La graine secr\u00e8te \"not the bees\"."
+        },
+        "displayed_name": {
+            "en-US": "Not The Bees",
+            "fr-FR": "Not The Bees"
+        },
         "hidden": false,
         "internal_name": "NotTheBees"
     },
     "Painted": {
         "conflicts": {},
-        "description": "A world where each block and wall type get a paint.",
-        "displayed_name": "Painted",
+        "description": {
+            "en-US": "A world where each block and wall type get a paint.",
+            "fr-FR": "A monde o\u00f9 chaque type de bloc et mur est peint."
+        },
+        "displayed_name": {
+            "en-US": "Painted",
+            "fr-FR": "Peint"
+        },
         "hidden": false,
         "internal_name": "Painted"
     },
     "Random": {
         "conflicts": {
-            "NotTheBees": "Not the bees only leaves a few blocks to be randomized.",
-            "Santa": "Santa only leaves a few blocks to be randomized."
+            "NotTheBees": {
+                "en-US": "Not the bees only leaves a few blocks to be randomized.",
+                "fr-FR": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser."
+            },
+            "Santa": {
+                "en-US": "Santa only leaves a few blocks to be randomized.",
+                "fr-FR": "No\u00ebl ne laisse que peu de blocs \u00c3\u00a0 randomiser."
+            }
         },
-        "description": "A world where each block and wall type is randomized.",
-        "displayed_name": "Random",
+        "description": {
+            "en-US": "A world where each block and wall type is randomized.",
+            "fr-FR": "Un monde o\u00f9 chaque type de bloc et mur est randomis\u00e9."
+        },
+        "displayed_name": {
+            "en-US": "Random",
+            "fr-FR": "Al\u00e9atoire"
+        },
         "hidden": false,
         "internal_name": "Random"
     },
     "Santa": {
         "conflicts": {
-            "NotTheBees": "Santa will not have much effect on a not the bees world.",
-            "Random": "Santa only leaves a few blocks to be randomized."
+            "NotTheBees": {
+                "en-US": "Santa will not have much effect on a not the bees world.",
+                "fr-FR": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees."
+            },
+            "Random": {
+                "en-US": "Santa only leaves a few blocks to be randomized.",
+                "fr-FR": "No\u00ebl ne laisse que peu de blocs \u00c3\u00a0 randomiser."
+            }
         },
-        "description": "A christmas themed world.",
-        "displayed_name": "Santa",
+        "description": {
+            "en-US": "A christmas themed world.",
+            "fr-FR": "Un monde sur le th\u00e8me de No\u00ebl."
+        },
+        "displayed_name": {
+            "en-US": "Santa",
+            "fr-FR": "No\u00ebl"
+        },
         "hidden": false,
         "internal_name": "Santa"
     },
     "SmallNotTheBees": {
         "conflicts": {
-            "NotTheBees": "Having not the bees twice doesn't do anything"
+            "NotTheBees": {
+                "en-US": "Having not the bees twice doesn't do anything",
+                "fr-FR": "Avoir Not The Bees deux fois ne fait rien."
+            }
         },
-        "description": "Like not the bees, but without the entire world being a jungle.",
-        "displayed_name": "Small Not The Bees",
+        "description": {
+            "en-US": "Like not the bees, but without the entire world being a jungle.",
+            "fr-FR": "Comme Not The Bees, mais sans transformer le monde entier en jungle."
+        },
+        "displayed_name": {
+            "en-US": "Small Not The Bees",
+            "fr-FR": "Petit Not The Bees"
+        },
         "hidden": false,
         "internal_name": "SmallNotTheBees"
     },
     "Spooky": {
         "conflicts": {},
-        "description": "An halloween themed world.",
-        "displayed_name": "Spooky",
+        "description": {
+            "en-US": "An halloween themed world.",
+            "fr-FR": "Un monde sur le th\u00e8me d'Halloween."
+        },
+        "displayed_name": {
+            "en-US": "Spooky",
+            "fr-FR": "Sinistre"
+        },
         "hidden": true,
         "internal_name": "Spooky"
     },
     "StupidlyBigTemple": {
         "conflicts": {
-            "BigTemple": "Having a temple size modifier twice doesn't do anything.",
-            "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
+            "BigTemple": {
+                "en-US": "Having a temple size modifier twice doesn't do anything.",
+                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
+            },
+            "StupidlyHugeTemple": {
+                "en-US": "Having a temple size modifier twice doesn't do anything.",
+                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
+            }
         },
-        "description": "Make the temple really big.",
-        "displayed_name": "Stupidly Big Temple",
+        "description": {
+            "en-US": "Make the temple really big.",
+            "fr-FR": "Rend le temple vraiment grand."
+        },
+        "displayed_name": {
+            "en-US": "Stupidly Big Temple",
+            "fr-FR": "Temple Stupidement Grand"
+        },
         "hidden": true,
         "internal_name": "StupidlyBigTemple"
     },
     "StupidlyHugeTemple": {
         "conflicts": {
-            "BigTemple": "Having a temple size modifier twice doesn't do anything.",
-            "StupidlyBigTemple": "Having a temple size modifier twice doesn't do anything."
+            "BigTemple": {
+                "en-US": "Having a temple size modifier twice doesn't do anything.",
+                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
+            },
+            "StupidlyBigTemple": {
+                "en-US": "Having a temple size modifier twice doesn't do anything.",
+                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
+            }
         },
-        "description": "Makes a temple that covers most of the jungle.",
-        "displayed_name": "Stupidly Huge Temple",
+        "description": {
+            "en-US": "Makes a temple that covers most of the jungle.",
+            "fr-FR": "Rend le temple aussi grand que la jungle."
+        },
+        "displayed_name": {
+            "en-US": "Stupidly Huge Temple",
+            "fr-FR": "Temple Stupidement Gigantesque"
+        },
         "hidden": true,
         "internal_name": "StupidlyHugeTemple"
     }

@@ -19,9 +19,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			WorldGenConfiguration configuration =
 				WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
 			progress.Message = Lang.gen[76].Value + "..Dead Man's Chests";
-			float num30 = 10f;
-			if (WorldGen.getGoodWorldGen)
-				num30 *= 10f;
+			const float totalSteps = 10f;
 
 			DeadMansChestBiome deadMansChestBiome = configuration.CreateBiome<DeadMansChestBiome>();
 			List<int> possibleChestsToTrapify = deadMansChestBiome.GetPossibleChestsToTrapify(WorldGen.structures);
@@ -37,7 +35,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			progress.Message = Lang.gen[76].Value + "..Thin Ice";
-			progress.Set(1f / num30);
+			progress.Set(1f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				ThinIceBiome thinIceBiome = configuration.CreateBiome<ThinIceBiome>();
@@ -65,7 +63,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			progress.Message = Lang.gen[76].Value + "..Sword Shrines";
 			progress.Set(0.1f);
-			progress.Set(2f / num30);
+			progress.Set(2f / totalSteps);
 			EnchantedSwordBiome enchantedSwordBiome = configuration.CreateBiome<EnchantedSwordBiome>();
 			int random3 = passConfig.Get<WorldGenRange>("SwordShrineAttempts").GetRandom(WorldGen.genRand);
 			float num36 = passConfig.Get<float>("SwordShrinePlacementChance");
@@ -89,7 +87,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			progress.Message = Lang.gen[76].Value + "..Campsites";
 			progress.Set(0.2f);
-			progress.Set(3f / num30);
+			progress.Set(3f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				CampsiteBiome campsiteBiome = configuration.CreateBiome<CampsiteBiome>();
@@ -103,7 +101,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			progress.Message = Lang.gen[76].Value + "..Explosive Traps";
-			progress.Set(4f / num30);
+			progress.Set(4f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				MiningExplosivesBiome miningExplosivesBiome = configuration.CreateBiome<MiningExplosivesBiome>();
@@ -121,7 +119,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			progress.Message = Lang.gen[76].Value + "..Living Trees";
 			progress.Set(0.3f);
-			progress.Set(5f / num30);
+			progress.Set(5f / totalSteps);
 			MahoganyTreeBiome mahoganyTreeBiome = configuration.CreateBiome<MahoganyTreeBiome>();
 			int random5 = passConfig.Get<WorldGenRange>("LivingTreeCount").GetRandom(WorldGen.genRand);
 			int num42 = 0;
@@ -137,8 +135,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			progress.Message = Lang.gen[76].Value + "..Long Minecart Tracks";
 			progress.Set(0.4f);
-			progress.Set(6f / num30);
-			progress.Set(7f / num30);
+			progress.Set(6f / totalSteps);
+			progress.Set(7f / totalSteps);
 			// Extra patch context.
 			TrackGenerator trackGenerator = new();
 			int random6 = passConfig.Get<WorldGenRange>("LongTrackCount").GetRandom(WorldGen.genRand);
@@ -164,7 +162,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 
 			progress.Message = Lang.gen[76].Value + "..Standard Minecart Tracks";
-			progress.Set(8f / num30);
+			progress.Set(8f / totalSteps);
 			random6 = passConfig.Get<WorldGenRange>("StandardTrackCount").GetRandom(WorldGen.genRand);
 			worldGenRange = passConfig.Get<WorldGenRange>("StandardTrackLength");
 			num45 = 0;
@@ -187,12 +185,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 
 			progress.Message = Lang.gen[76].Value + "..Lava Traps";
-			progress.Set(9f / num30);
+			progress.Set(9f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				double num48 = Main.maxTilesX * 0.02;
-				if (WorldGen.getGoodWorldGen)
-					num30 *= 2f;
 
 				for (int num49 = 0; (double) num49 < num48; num49++)
 				for (int num50 = 0; num50 < 10150; num50++)

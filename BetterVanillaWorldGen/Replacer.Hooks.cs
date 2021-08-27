@@ -2,6 +2,7 @@ using AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff;
 using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Biomes.Desert;
+using DesertHive = AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff.DesertHive;
 using OnJunglePass = On.Terraria.GameContent.Biomes.JunglePass;
 using OnDesertHive = On.Terraria.GameContent.Biomes.Desert.DesertHive;
 using OnDesertDescription = On.Terraria.GameContent.Biomes.Desert.DesertDescription;
@@ -33,7 +34,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			DesertDescription description)
 		{
 			if (WorldgenSettings.Revamped)
-				DesertStuff.DesertHive.Place(description);
+				DesertHive.Place(description);
 			else
 				orig(description);
 		}
@@ -54,7 +55,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				orig(x, y);
 		}
 
-		public static DesertDescription ReplaceDesertDescriptionCreation(OnDesertDescription.orig_CreateFromPlacement orig, Point origin)
+		public static DesertDescription ReplaceDesertDescriptionCreation(
+			OnDesertDescription.orig_CreateFromPlacement orig, Point origin)
 		{
 			return WorldgenSettings.Revamped ? Desert.CreateFromPlacement(origin) : orig(origin);
 		}

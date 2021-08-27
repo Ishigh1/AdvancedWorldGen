@@ -22,7 +22,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
-			progress.Message = Language.GetText("LegacyWorldGen.13").Value;
+			progress.Message = Language.GetTextValue("LegacyWorldGen.13");
 			int mushroomBiomes = Math.Max(1, Main.maxTilesX / 700);
 			FastRandom = new FastRandom(WorldGen.genRand.Next());
 

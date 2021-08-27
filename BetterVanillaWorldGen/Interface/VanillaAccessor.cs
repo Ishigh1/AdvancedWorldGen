@@ -9,12 +9,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 	{
 		public FieldInfo FieldInfo;
 		public object VanillaData;
+
 		public VanillaAccessor(IEnumerable<FieldInfo> fieldInfos, string name, object vanillaData)
 		{
 			FieldInfo = fieldInfos.First(info => info.Name == name);
 			VanillaData = vanillaData;
 		}
-		
+
 		public VanillaAccessor(string name)
 		{
 			FieldInfo = typeof(WorldGen).GetField(name, BindingFlags.Static | BindingFlags.NonPublic);

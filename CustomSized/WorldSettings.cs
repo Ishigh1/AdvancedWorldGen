@@ -3,6 +3,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.States;
+using Terraria.Localization;
 using Terraria.Map;
 using Terraria.UI;
 using OnWorldGen = On.Terraria.WorldGen;
@@ -93,14 +94,14 @@ namespace AdvancedWorldGen.CustomSized
 
 				if ((long) newSizeX * newSizeY * 44 > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)
 				{
-					string message = "A world with a size of " + newSizeX + " x " + newSizeY +
-					                 " is too big for this computer.";
+					string message = Language.GetTextValue("Mods.AdvancedWorldGen.InvalidSizes.TooBigFromRAM", newSizeX,
+						newSizeY);
 					Utils.ShowFancyErrorMessage(message, 0);
 					throw new Exception(message);
 				}
-				
+
 				Main.Map = new WorldMap(newSizeX, newSizeY);
-			
+
 				Main.tile = new Tile[newSizeX, newSizeY];
 			}
 

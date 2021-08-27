@@ -63,7 +63,7 @@ namespace AdvancedWorldGen.Base
 			{
 				if (Main.netMode == NetmodeID.SinglePlayer)
 				{
-					Main.NewText(Language.GetText("LegacyMisc.34").Value, 50, 255, 130);
+					Main.NewText(Language.GetTextValue("LegacyMisc.34"), 50, 255, 130);
 					Main.startSnowMoon();
 				}
 				else

@@ -1,13 +1,21 @@
 using System;
-using System.Reflection;
 using Terraria;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class TerrainPass : GenPass
 	{
+		public enum TerrainFeatureType
+		{
+			Plateau,
+			Hill,
+			Dale,
+			Mountain,
+			Valley
+		}
 
 		public TerrainPass() : base("Terrain", 449.3722f)
 		{
@@ -117,7 +125,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int waterLine = (int) (Main.rockLayer + Main.maxTilesY) / 2;
 			waterLine += _random.Next(-100, 20);
 			int lavaLine = waterLine + _random.Next(50, 80);
-			if (rockLayer > Main.UnderworldLayer) throw new Exception("Not high enough world !");
+			if (rockLayer > Main.UnderworldLayer)
+				throw new Exception(Language.GetTextValue("Mods.AdvancedWorldGen.Exceptions.RockUnderHell"));
 			while (lavaLine > Main.UnderworldLayer)
 			{
 				waterLine -= (int) (waterLine - rockLayer) / 8;
@@ -266,15 +275,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				double worldSurface = history[history.Length - k - 1];
 				RetargetColumn(targetX - k, worldSurface);
 			}
-		}
-
-		public enum TerrainFeatureType
-		{
-			Plateau,
-			Hill,
-			Dale,
-			Mountain,
-			Valley
 		}
 
 		public class SurfaceHistory

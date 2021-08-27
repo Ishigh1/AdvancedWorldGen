@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -53,7 +54,7 @@ namespace AdvancedWorldGen.UI
 			sizeYInput.Top.Pixels = sizeXInput.Top.Pixels + sizeXInput.Height.Pixels + 4;
 			uiPanel.Append(sizeYInput);
 
-			UITextPanel<string> goBack = new("Back")
+			UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),
@@ -102,8 +103,8 @@ namespace AdvancedWorldGen.UI
 
 				if ((long) newSizeX * newSizeY * 44 > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)
 				{
-					Main.MenuUI.SetState(new ErrorUI("A world with a size of " + newSizeX + " x " + newSizeY +
-					                                 " is too big for this computer."));
+					Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
+						"Mods.AdvancedWorldGen.InvalidSizes.TooBigFromRAM", newSizeX, newSizeY)));
 					return;
 				}
 			}
@@ -112,15 +113,15 @@ namespace AdvancedWorldGen.UI
 			{
 				if (WorldSettings.SizeX < KnownLimits.OverhauledMinX)
 				{
-					Main.MenuUI.SetState(new ErrorUI("The world is known to not be able to generate under x=" +
-					                                 WorldSettings.SizeX));
+					Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
+						"Mods.AdvancedWorldGen.InvalidSizes.OverhauledMinX", KnownLimits.OverhauledMinX)));
 					return;
 				}
 
 				if (WorldSettings.SizeY < KnownLimits.OverhauledMinY)
 				{
-					Main.MenuUI.SetState(new ErrorUI("The world is known to not be able to generate under y=" +
-					                                 WorldSettings.SizeY));
+					Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
+						"Mods.AdvancedWorldGen.InvalidSizes.OverhauledMinY", KnownLimits.OverhauledMinY)));
 					return;
 				}
 			}
@@ -128,17 +129,15 @@ namespace AdvancedWorldGen.UI
 			{
 				if (WorldSettings.SizeX < KnownLimits.NormalMinX)
 				{
-					Main.MenuUI.SetState(new ErrorUI(
-						"You need to enable the overhauled worldgen in the mod settings" +
-						"\nto be able to generate a world under x=" +
-						WorldSettings.SizeX));
+					Main.MenuUI.SetState(
+						new ErrorUI(Language.GetTextValue("Mods.AdvancedWorldGen.InvalidSizes.NormalMinX")));
 					return;
 				}
 
 				if (WorldSettings.SizeY > KnownLimits.ComfortNormalMaxX)
 				{
-					Main.MenuUI.SetState(new ErrorUI("The worldgen will be slow to generate a big world," +
-					                                 "\nyou should maybe enable the overhauled worldgen in the mod settings"));
+					Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
+						"Mods.AdvancedWorldGen.InvalidSizes.ComfortNormalMaxX")));
 					return;
 				}
 			}

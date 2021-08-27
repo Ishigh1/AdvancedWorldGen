@@ -53,18 +53,18 @@ namespace AdvancedWorldGen.UI
 			Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.NoneSelected.Description"));
 			int id = 1;
 			bool hidden = showHidden;
-			foreach (KeyValuePair<string, Option> keyValuePair in from keyValuePair in OptionsSelector.OptionDict
+			foreach ((string key, _) in from keyValuePair in OptionsSelector.OptionDict
 				where !keyValuePair.Value.Hidden || hidden
 				select keyValuePair)
-				Console.WriteLine(id++ + " : " + Language.GetTextValue("Mods.AdvancedWorldGen." + keyValuePair.Key) +
-				                  (ModifiedWorld.Instance.OptionHelper.OptionsContains(keyValuePair.Key)
-					                  ? "(chosen)"
+				Console.WriteLine(id++ + " : " + Language.GetTextValue("Mods.AdvancedWorldGen." + key) +
+				                  (ModifiedWorld.Instance.OptionHelper.OptionsContains(key)
+					                  ? Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.Selected")
 					                  : ""));
 
-			if (!showHidden) Console.WriteLine("h : Show hidden options");
+			if (!showHidden) Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.ShowHidden"));
 
-			Console.WriteLine("i <options> : Import options\n");
-			Console.WriteLine("y : Validate\n");
+			Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.Import"));
+			Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.Validate"));
 
 			if (errorMessage != "")
 			{
@@ -101,10 +101,10 @@ namespace AdvancedWorldGen.UI
 
 		public static void HandleDedServId(string s, ref string errorMessage, bool showHidden)
 		{
-			if (!int.TryParse(s, out int id) || id <= 0 ||
-			    !ConvertIdToOption(showHidden, ref id))
+			if (int.TryParse(s, out int id) && (id <= 0 ||
+			                                    !ConvertIdToOption(showHidden, ref id)))
 			{
-				errorMessage = "Input not recognized";
+				errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidId");
 			}
 			else
 			{
@@ -113,9 +113,13 @@ namespace AdvancedWorldGen.UI
 				{
 					HashSet<string> options = OptionsSelector.TextToOptions(strings[1]);
 					if (options == null)
-						errorMessage = "Input not recognized";
+						errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidImport");
 					else
 						ModifiedWorld.Instance.OptionHelper.Options = options;
+				}
+				else
+				{
+					errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidInput");
 				}
 			}
 		}
@@ -124,13 +128,13 @@ namespace AdvancedWorldGen.UI
 		{
 			for (int i = 0; i < OptionsSelector.OptionDict.Count; i++)
 			{
-				KeyValuePair<string, Option> pair = OptionsSelector.OptionDict.ElementAt(i);
-				if ((!pair.Value.Hidden || showHidden) && --id == 0)
+				(string key, Option option) = OptionsSelector.OptionDict.ElementAt(i);
+				if ((!option.Hidden || showHidden) && --id == 0)
 				{
-					if (ModifiedWorld.Instance.OptionHelper.OptionsContains(pair.Key))
-						ModifiedWorld.Instance.OptionHelper.Options.Remove(pair.Key);
+					if (ModifiedWorld.Instance.OptionHelper.OptionsContains(key))
+						ModifiedWorld.Instance.OptionHelper.Options.Remove(key);
 					else
-						ModifiedWorld.Instance.OptionHelper.Options.Add(pair.Key);
+						ModifiedWorld.Instance.OptionHelper.Options.Add(key);
 
 					return true;
 				}

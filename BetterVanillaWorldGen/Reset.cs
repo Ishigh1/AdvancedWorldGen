@@ -142,12 +142,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int beachSandRandomCenter = beachBordersWidth + 5 + 2 * beachSandRandomWidthRange;
 			WorldGen.oceanDistance = beachBordersWidth - 25;
 			WorldGen.beachDistance = beachSandRandomCenter + beachSandDungeonExtraWidth + beachSandJungleExtraWidth;
-			
-			int leftBeachEnd = beachSandRandomCenter + WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
+
+			int leftBeachEnd = beachSandRandomCenter +
+			                   WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
 			leftBeachEnd += dungeonSide == 1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
 			Replacer.VanillaInterface.LeftBeachEnd.Set(leftBeachEnd);
 
-			int rightBeachStart = Main.maxTilesX - beachSandRandomCenter + WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
+			int rightBeachStart = Main.maxTilesX - beachSandRandomCenter +
+			                      WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
 			rightBeachStart -= dungeonSide == -1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
 			Replacer.VanillaInterface.RightBeachStart.Set(rightBeachStart);
 

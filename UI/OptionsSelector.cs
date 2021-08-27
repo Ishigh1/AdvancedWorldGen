@@ -86,7 +86,7 @@ namespace AdvancedWorldGen.UI
 
 			uiPanel.Recalculate();
 
-			UITextPanel<string> goBack = new("Back")
+			UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),
@@ -97,7 +97,7 @@ namespace AdvancedWorldGen.UI
 			goBack.OnMouseOut += UiChanger.FadedMouseOut;
 			Append(goBack);
 
-			UITextPanel<string> customSize = new("Custom Size")
+			UITextPanel<string> customSize = new(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSize"))
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),

@@ -7,7 +7,7 @@
             },
             "Celebrationmk10": {
                 "$parentVal": "Celebration Mk 10",
-                "Description": "The classic tenth anniversary secret seed."
+                "Description": "The tenth anniversary secret seed."
             },
             "Conflict": {
                 "BigTemple": {
@@ -56,7 +56,7 @@
             },
             "Drunk": {
                 "$parentVal": "Drunk",
-                "Description": "The classic 5162020 settings."
+                "Description": "The ninth anniversary secret seed."
             },
             "Entropy": {
                 "$parentVal": "Entropy",
@@ -64,21 +64,11 @@
             },
             "ForTheWorthy": {
                 "$parentVal": "For The Worthy",
-                "Description": "The classic for the worthy settings."
-            },
-            "HideHidden": {
-                "description": "Hide the minor and/or unstable features."
-            },
-            "Import": {
-                "$parentVal": "Import from clipboard",
-                "Description": "Import settings from clipboard."
-            },
-            "NoneSelected": {
-                "Description": "Please choose the options you want."
+                "Description": "The \"for the worthy\" secret seed."
             },
             "NotTheBees": {
                 "$parentVal": "Not The Bees",
-                "Description": "The classic not the bees settings."
+                "Description": "The not the bees secret seed."
             },
             "Painted": {
                 "$parentVal": "Painted",
@@ -91,9 +81,6 @@
             "Santa": {
                 "$parentVal": "Santa",
                 "Description": "A christmas themed world."
-            },
-            "ShowHidden": {
-                "description": "Show the minor and/or unstable features."
             },
             "SmallNotTheBees": {
                 "$parentVal": "Small Not The Bees",

@@ -7,24 +7,24 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 	public partial class VanillaInterface
 	{
 		public VanillaAccessor<int> Copper;
-		public VanillaAccessor<int> Iron;
-		public VanillaAccessor<int> Silver;
-		public VanillaAccessor<int> Gold;
+		public VanillaAccessor<int> DungeonLocation;
 
 		public VanillaAccessor<int> DungeonSide;
-		public VanillaAccessor<int> DungeonLocation;
+		public VanillaAccessor<int> Gold;
+		public VanillaAccessor<int> Iron;
 
 		public VanillaAccessor<int> JungleOriginX;
 
-		public VanillaAccessor<int> SnowOriginLeft;
-		public VanillaAccessor<int> SnowOriginRight;
-		public VanillaAccessor<int[]> SnowMinX;
-		public VanillaAccessor<int[]> SnowMaxX;
-		public VanillaAccessor<int> SnowTop;
-		public VanillaAccessor<int> SnowBottom;
-
 		public VanillaAccessor<int> LeftBeachEnd;
 		public VanillaAccessor<int> RightBeachStart;
+		public VanillaAccessor<int> Silver;
+		public VanillaAccessor<int> SnowBottom;
+		public VanillaAccessor<int[]> SnowMaxX;
+		public VanillaAccessor<int[]> SnowMinX;
+
+		public VanillaAccessor<int> SnowOriginLeft;
+		public VanillaAccessor<int> SnowOriginRight;
+		public VanillaAccessor<int> SnowTop;
 
 
 		public VanillaInterface(GenPass vanillaReset)

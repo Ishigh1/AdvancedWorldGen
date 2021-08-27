@@ -2,12 +2,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 {
 	public partial class VanillaInterface
 	{
-		public VanillaAccessor<int> NumOceanCaveTreasure;
-		public VanillaAccessor<int> HeartCount;
-		
-		public VanillaAccessor<bool> SkipFramingDuringGen;
-		
 		public VanillaAccessor<ushort> CrackedType;
+		public VanillaAccessor<int> HeartCount;
+		public VanillaAccessor<int> NumOceanCaveTreasure;
+
+		public VanillaAccessor<bool> SkipFramingDuringGen;
 
 		public void InitializeStatics()
 		{

@@ -259,23 +259,21 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 					string key = Language.RandomFromCategory("DeathText").Key;
 					return key == "DeathText.Default"
 						? GenerateSignText()
-						: NetworkText.FromKey(key, deadName, Main.worldName).ToString();
+						: Language.GetTextValue(key, deadName, Main.worldName);
 				case 2: //Projectile death
 					projectileName = Language.RandomFromCategory("ProjectileName").Value;
-					return NetworkText.FromKey("DeathSource.Projectile", baseText, projectileName).ToString();
+					return Language.GetTextValue("DeathSource.Projectile", baseText, projectileName);
 				case 3: //NPC death
 					string npcName = Language.RandomFromCategory("NPCName").Value;
-					return NetworkText.FromKey("DeathSource.NPC", baseText, npcName).ToString();
+					return Language.GetTextValue("DeathSource.NPC", baseText, npcName);
 				case 4: //Player death by projectile
 					playerKillerName = GetRandomName();
 					projectileName = Language.RandomFromCategory("ProjectileName").Value;
-					return NetworkText.FromKey("DeathSource.Player", baseText, playerKillerName, projectileName)
-						.ToString();
+					return Language.GetTextValue("DeathSource.Player", baseText, playerKillerName, projectileName);
 				default: //Player death by direct weapon
 					playerKillerName = GetRandomName();
 					string itemName = Language.RandomFromCategory("ItemName").Value;
-					return NetworkText.FromKey("DeathSource.Player", baseText, playerKillerName, itemName)
-						.ToString();
+					return Language.GetTextValue("DeathSource.Player", baseText, playerKillerName, itemName);
 			}
 		}
 
@@ -285,7 +283,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 			{
 				case 0: //From credits
 
-					bool Filter(string key, LocalizedText text)
+					static bool Filter(string key, LocalizedText text)
 					{
 						return key.StartsWith("CreditsRollCategory") && !key.EndsWith(".1");
 					}

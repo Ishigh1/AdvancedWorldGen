@@ -1,24 +1,33 @@
-import collections
-import json
 import shutil
 import string
+
+from commands import *
 
 file = open("Data.json", "r")
 options = json.load(file)
 file.close()
 
 while True:
-    command = input("command : ")
+    output = input("command : ")
+    data = output.split(" ")
+    command = data[0]
+    if data.__len__() > 1:
+        data = data[1]
+    else:
+        data = ""
+
     if command == "exit":
         break
 
     elif command == "add":
         option = {}
-        option["displayed_name"] = input("displayed name : ")
-        option["displayed_name"] = string.capwords(option["displayed_name"])
+        displayed_name = input("displayed name : ")
+        option["displayed_name"] = string.capwords(displayed_name)
+
         option["internal_name"] = input("internal name(empty for default) : ")
         if option["internal_name"] == "":
             option["internal_name"] = option["displayed_name"].replace(" ", "")
+
         option["description"] = input("description : ")
         option["conflicts"] = {}
         conflict = input("conflict : ")
@@ -31,6 +40,7 @@ while True:
 
         if option["internal_name"] in options:
             print("option already exists")
+            break
         conflicts_not_found = option["conflicts"].copy()
         for o in options:
             if o == "None":
@@ -55,53 +65,34 @@ while True:
         json.dump(options, file, indent=4, sort_keys=True)
         file.close()
 
-    elif command == "make":
+    elif command == "translate":
+        if data == "fr":
+            language = "fr-FR"
+        else:
+            continue
+
         file = open("Data.json", "r")
         options = json.load(file)
         file.close()
-
-        base = open("base_en-US.json", "r")
-        base_translation = json.load(base)
-        translation = base_translation["Mods"]["AdvancedWorldGen"]
-        base.close()
-
-        conflicts = translation["Conflict"]
         for key in options:
             option = options[key]
-            option_translation = {}
-            translation[option["internal_name"]] = option_translation
-            option_translation["$parentVal"] = option["displayed_name"]
-            option_translation["Description"] = option["description"]
-            conflicts[option["internal_name"]] = option["conflicts"]
+            option["displayed_name"] = translate(option["displayed_name"], language)
+            option["description"] = translate(option["description"], language)
+            for conflict_key in option["conflicts"]:
+                option["conflicts"][conflict_key] = translate(option["conflicts"][conflict_key], language)
+                options[conflict_key]["conflicts"][key] = option["conflicts"][conflict_key]
+            file = open("Data.json", "w")
+            json.dump(options, file, indent=4, sort_keys=True)
+            file.close()
 
-        file = open("en-US.json", "w")
-        json.dump(base_translation, file, indent=4, sort_keys=True)
-        file.close()
-
-        jsonText = {}
-        current_id = 1
-        current_hidden_id = 101
-        for key in options:
-            option = options[key]
-            o = {}
-            if option["hidden"]:
-                o["Hidden"] = True
-                o["id"] = current_hidden_id
-                current_hidden_id += 1
-            else:
-                o["Hidden"] = False
-                o["id"] = current_id
-                current_id += 1
-            o["Conflicts"] = list(option["conflicts"].keys())
-            jsonText[key] = o
-
-        file = open("Options.json", "w")
-        json.dump(jsonText, file, indent=4)
-        file.close()
+    elif command == "make":
+        make("en-US")
+        make("fr-FR")
 
     elif command == "setup":
-        shutil.copy("en-US.json", "../Localization/en-US.hjson")
         shutil.copy("Options.json", "../Options.json")
+        shutil.copy("en-US.json", "../Localization/Options/en-US.hjson")
+        shutil.copy("fr-FR.json", "../Localization/Options/fr-FR.hjson")
 
     elif command == "conflict":
         option1 = input("option 1 : ")

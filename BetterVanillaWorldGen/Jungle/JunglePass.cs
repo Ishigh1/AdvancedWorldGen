@@ -1,6 +1,4 @@
 using System;
-using System.Reflection;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.IO;
@@ -11,12 +9,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 {
 	public class JunglePass : GenPass
 	{
-		public int JungleOriginX;
 		public int DungeonSide;
-		public double WorldSurface;
+		public int JungleOriginX;
 		public int LeftBeachEnd;
 		public int RightBeachStart;
 		public float WorldScale;
+		public double WorldSurface;
 
 		public JunglePass() : base("Jungle", 10154.652f)
 		{

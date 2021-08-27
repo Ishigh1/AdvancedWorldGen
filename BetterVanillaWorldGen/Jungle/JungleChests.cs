@@ -157,10 +157,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				for (int y1 = yMin; y1 < yMax; y1 += 3)
 				{
 					if (Main.tile[x1, y1].IsActive && (Main.tile[x1, y1].type == 225 ||
-					                                           Main.tile[x1, y1].type == 229 ||
-					                                           Main.tile[x1, y1].type == 226 ||
-					                                           Main.tile[x1, y1].type == 119 ||
-					                                           Main.tile[x1, y1].type == 120))
+					                                   Main.tile[x1, y1].type == 229 ||
+					                                   Main.tile[x1, y1].type == 226 ||
+					                                   Main.tile[x1, y1].type == 119 ||
+					                                   Main.tile[x1, y1].type == 120))
 						return true;
 
 					if (Main.tile[x1, y1].wall == 86 || Main.tile[x1, y1].wall == 87)

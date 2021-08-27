@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -66,7 +65,7 @@ namespace AdvancedWorldGen.UI
 				self.Append(uiTextPanel);
 				uiTextPanel.VAlign = 0.75f;
 				uiTextPanel.HAlign = 0.5f;
-				uiTextPanel.SetText("Abort");
+				uiTextPanel.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.Abort"));
 				uiTextPanel.Recalculate();
 				uiTextPanel.OnMouseOver += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
 				uiTextPanel.OnMouseOut += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
@@ -130,7 +129,7 @@ namespace AdvancedWorldGen.UI
 
 		public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Description.SetText("Choose your world generation settings");
+			Description.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.OptionButton"));
 		}
 
 		public static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
@@ -196,25 +195,25 @@ namespace AdvancedWorldGen.UI
 			{
 				if (options.Count == 0)
 				{
-					uiText.SetText("World without options");
+					uiText.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.NoOptions"));
 					return;
 				}
 
-				string text = "";
+				string text = Language.GetTextValue("Mods.AdvancedWorldGen.CopySettings") + " \"";
 				foreach (string optionText in options.Select(option =>
 					Language.GetTextValue("Mods.AdvancedWorldGen." + option)))
 				{
 					if (text != "") text += ", ";
 
 					text += optionText;
-					if (text.Length > 40)
+					if (text.Length > 55)
 					{
-						text = text.Substring(0, 35) + "[...]";
+						text = text.Substring(0, 50) + "[...]";
 						break;
 					}
 				}
 
-				uiText.SetText("Copy settings \"" + text + "\"");
+				uiText.SetText(text + "\"");
 			};
 			copyOptionButton.OnMouseDown += delegate
 			{
@@ -228,7 +227,7 @@ namespace AdvancedWorldGen.UI
 				}
 
 				Platform.Get<IClipboard>().Value = text;
-				uiText.SetText("Settings copied to clipboard");
+				uiText.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.CopiedSettings"));
 			};
 			copyOptionButton.OnMouseOut += delegate { uiText.SetText(""); };
 			return options;

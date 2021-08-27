@@ -1,0 +1,33 @@
+{
+    "Mods": {
+        "AdvancedWorldGen": {
+            "Import": {
+                "$parentVal": "Import from clipboard",
+                "Description": "Import settings from clipboard."
+            },
+            "NoneSelected": {
+                "Description": "Please choose the options you want."
+            },
+            "ShowHidden": {
+                "description": "Show the minor and/or unstable features."
+            },
+            "HideHidden": {
+                "description": "Hide the minor and/or unstable features."
+            },
+            "DedServ": {
+                "Selected": "(selected)",
+                "ShowHidden": "h : Show hidden options",
+                "Import": "i <options> : Import options",
+                "Validate": "y : Validate",
+                "InvalidId": "Not a valid number",
+                "InvalidImport": "Not a valid import",
+                "InvalidInput": "Input not recognized"
+            },
+            "Warning": "Warning",
+            "CustomSize": "Custom Size",
+            "Abort": "Abort",
+            "NoOption": "World without options",
+            "OptionButton": "Choose your world generation settings"
+        }
+    }
+}

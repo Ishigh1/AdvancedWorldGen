@@ -9,7 +9,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 	public partial class Replacer
 	{
 		public static VanillaInterface VanillaInterface;
-		
+
 		public static void ReplaceGenPasses(List<GenPass> genPasses)
 		{
 			if (!WorldgenSettings.Revamped)
@@ -27,13 +27,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			index = genPasses.FindIndex(pass => pass.Name == "Terrain");
 			if (index != -1) genPasses[index] = new TerrainPass();
-			
+
 			index = genPasses.FindIndex(index, pass => pass.Name == "Generate Ice Biome");
 			if (index != -1) genPasses[index] = new GenerateIceBiome();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle");
 			if (index != -1) genPasses[index] = new JunglePass();
-			
+
 			index = genPasses.FindIndex(index, pass => pass.Name == "Mushroom Patches");
 			if (index != -1) genPasses[index] = new MushroomPatches();
 

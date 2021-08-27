@@ -10,7 +10,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 {
 	public class Desert
 	{
-		public static readonly Vector2 DefaultBlockScale = new Vector2(4f, 2f);
+		public static readonly Vector2 DefaultBlockScale = new(4f, 2f);
 
 		public static bool IsUndergroundDesert(int x, int y)
 		{

@@ -1698,7 +1698,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			int xMin = (int) Math.Max(vector.X - dungeonXStrength1 * 0.6 - WorldGen.genRand.Next(2, 5), 0);
 			int xMax = (int) Math.Min(vector.X + dungeonXStrength1 * 0.6 + WorldGen.genRand.Next(2, 5), Main.maxTilesX);
 			int yMin = (int) Math.Max(vector.Y - dungeonYStrength1 * 0.6 - WorldGen.genRand.Next(2, 5), 0);
-			int yMax = (int) Math.Min(vector.Y + dungeonYStrength1 * 0.6 + WorldGen.genRand.Next(8, 16), Main.maxTilesY);
+			int yMax = (int) Math.Min(vector.Y + dungeonYStrength1 * 0.6 + WorldGen.genRand.Next(8, 16),
+				Main.maxTilesY);
 
 			for (int x1 = xMin; x1 < xMax; x1++)
 			for (int y1 = yMin; y1 < yMax; y1++)
