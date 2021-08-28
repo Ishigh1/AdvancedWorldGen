@@ -218,9 +218,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			{
 				num17++;
 				int num21 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				int num22 = WorldGen.genRand.Next((int) Main.worldSurface + 25, DungeonMaxY);
+				int num22;
 				if (WorldGen.drunkWorldGen)
-					num22 = WorldGen.genRand.Next(WorldGen.dungeonY + 25, DungeonMaxY);
+				{
+					if (WorldGen.dungeonY + 25 >= DungeonMaxY)
+						num22 = DungeonMaxY;
+					else
+						num22 = WorldGen.genRand.Next(WorldGen.dungeonY + 25, DungeonMaxY);
+				}
+				else
+					num22 = WorldGen.genRand.Next((int)Main.worldSurface + 25, DungeonMaxY);
 
 				int num23 = num21;
 				if (Main.tile[num21, num22].wall == wallType && !Main.tile[num21, num22].IsActive)

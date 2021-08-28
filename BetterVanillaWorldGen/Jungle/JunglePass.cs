@@ -191,17 +191,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 		public void GenerateHolesInMudWalls()
 		{
+			int minX = Math.Max(10, JungleOriginX - Main.maxTilesX / 8);
+			int maxX = Math.Min(Main.maxTilesX - 10, JungleOriginX + Main.maxTilesX / 8);
 			for (int i = 0; i < Main.maxTilesX / 4; i++)
 			{
-				int num = _random.Next(20, Main.maxTilesX - 20);
-				int num2 = _random.Next((int) WorldSurface + 10, Main.UnderworldLayer);
-				while (Main.tile[num, num2].wall != 64 && Main.tile[num, num2].wall != 15)
-				{
-					num = _random.Next(20, Main.maxTilesX - 20);
-					num2 = _random.Next((int) WorldSurface + 10, Main.UnderworldLayer);
-				}
-
-				WorldGen.MudWallRunner(num, num2);
+				int x = _random.Next(minX, maxX);
+				int y = _random.Next((int) WorldSurface + 10, Main.UnderworldLayer);
+				if (Main.tile[x, y].wall == 64 || Main.tile[x, y].wall == 15)
+					WorldGen.MudWallRunner(x, y);
 			}
 		}
 
