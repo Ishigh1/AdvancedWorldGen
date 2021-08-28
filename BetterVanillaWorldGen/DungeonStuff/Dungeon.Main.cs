@@ -227,7 +227,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						num22 = WorldGen.genRand.Next(WorldGen.dungeonY + 25, DungeonMaxY);
 				}
 				else
-					num22 = WorldGen.genRand.Next((int)Main.worldSurface + 25, DungeonMaxY);
+				{
+					num22 = WorldGen.genRand.Next((int) Main.worldSurface + 25, DungeonMaxY);
+				}
 
 				int num23 = num21;
 				if (Main.tile[num21, num22].wall == wallType && !Main.tile[num21, num22].IsActive)

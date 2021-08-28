@@ -200,10 +200,14 @@ namespace AdvancedWorldGen.UI
 				}
 
 				string text = Language.GetTextValue("Mods.AdvancedWorldGen.CopySettings") + " \"";
+				bool first = true;
 				foreach (string optionText in options.Select(option =>
 					Language.GetTextValue("Mods.AdvancedWorldGen." + option)))
 				{
-					if (text != "") text += ", ";
+					if (first)
+						first = false;
+					else
+						text += ", ";
 
 					text += optionText;
 					if (text.Length > 55)

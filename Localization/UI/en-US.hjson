@@ -26,7 +26,8 @@
             "Warning": "Warning",
             "CustomSize": "Custom Size",
             "Abort": "Abort",
-            "NoOption": "World without options",
+            "NoOptions": "World without options",
+            "CopySettings": "Copy settings",
             "OptionButton": "Choose your world generation settings"
         }
     }

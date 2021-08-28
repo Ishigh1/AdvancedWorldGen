@@ -26,7 +26,8 @@
             "Warning": "Attention",
             "CustomSize": "Choisir la taille",
             "Abort": "Avorter",
-            "NoOption": "Monde sans options",
+            "NoOptions": "Monde sans options",
+            "CopySettings": "Copier les options",
             "OptionButton": "Choisissez vos options pour générer le monde"
         }
     }

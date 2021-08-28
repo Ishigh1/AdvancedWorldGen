@@ -35,7 +35,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 			float worldSize = Main.maxTilesX / 4200f;
 			float worldSizeY = Main.maxTilesY / 1200f;
 			int width = (int) (80f * worldSize);
-			int height = (int) ((WorldGen.genRand.NextFloat() + 1f) * 170f * worldSizeY);
+			int height = (int) Math.Min((WorldGen.genRand.NextFloat() + 1f) * 170f * worldSizeY, Main.UnderworldLayer - origin.Y);
 			int scaledWidth = (int) (defaultBlockScale.X * width);
 			int scaledHeight = (int) (defaultBlockScale.Y * height);
 			origin.X -= scaledWidth / 2;
