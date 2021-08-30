@@ -92,7 +92,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			{
 				0 => false,
 				1 => true,
-				_ => Random.Next(2) == 0
+				_ => Main.rand.Next(2) == 0 //Using Main.rand to not affect the worldgen
 			};
 
 			Main.worldID = Random.Next(int.MaxValue);
