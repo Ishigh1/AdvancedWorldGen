@@ -108,33 +108,30 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int shift = (int) (Main.maxTilesX * Random.Next(15, 30) * 0.01f);
 			Replacer.VanillaInterface.JungleOriginX.Set(dungeonSide == 1 ? shift : Main.maxTilesX - shift);
 
-			int snowCenter = Random.Next((int) (Main.maxTilesX * 0.85f));
+			int snowCenter;
 			if (dungeonSide == 1 && !WorldGen.drunkWorldGen || dungeonSide == -1 && WorldGen.drunkWorldGen)
 			{
-				if (snowCenter > Main.maxTilesX * 0.6f)
-					snowCenter += (int) (Main.maxTilesX * 0.15f);
+				snowCenter = (int) (Main.maxTilesX * 0.6f + Main.maxTilesX * 0.15f);
 			}
 			else
 			{
-				if (snowCenter > Main.maxTilesX * 0.25f)
-					snowCenter += (int) (Main.maxTilesX * 0.15f);
+				snowCenter = (int) (Main.maxTilesX * 0.25f + Main.maxTilesX * 0.15f);
 			}
 
 			int num921 = Random.Next(50, 90);
-			float num922 = Main.maxTilesX / 4200f;
-			num921 += (int) (Random.Next(20, 40) * num922);
-			num921 += (int) (Random.Next(20, 40) * num922);
+			float worldSize = Main.maxTilesX / 4200f;
+			num921 += (int) (Random.Next(20, 40) * worldSize);
+			num921 += (int) (Random.Next(20, 40) * worldSize);
 			int snowOriginLeft = Math.Max(0, snowCenter - num921);
 
 			num921 = Random.Next(50, 90);
-			num921 += (int) (Random.Next(20, 40) * num922);
-			num921 += (int) (Random.Next(20, 40) * num922);
+			num921 += (int) (Random.Next(20, 40) * worldSize);
+			num921 += (int) (Random.Next(20, 40) * worldSize);
 			int snowOriginRight = Math.Min(Main.maxTilesX, snowCenter + num921);
 
 			Replacer.VanillaInterface.SnowOriginLeft.Set(snowOriginLeft);
 			Replacer.VanillaInterface.SnowOriginRight.Set(snowOriginRight);
 
-			float worldSize = Main.maxTilesX / 4200f;
 			const int beachSandDungeonExtraWidth = 40;
 			const int beachSandJungleExtraWidth = 20;
 			int beachBordersWidth = (int) (275 * worldSize);
