@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Terraria;
 
-namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
+namespace AdvancedWorldGen.Helper
 {
 	public class VanillaAccessor<T>
 	{
@@ -16,9 +17,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 			VanillaData = vanillaData;
 		}
 
-		public VanillaAccessor(string name)
+		public VanillaAccessor(IReflect type, string name, object vanillaData)
 		{
-			FieldInfo = typeof(WorldGen).GetField(name, BindingFlags.Static | BindingFlags.NonPublic);
+			FieldInfo = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic);
+			VanillaData = vanillaData;
+		}
+
+		public VanillaAccessor(IReflect type, string name)
+		{
+			FieldInfo = type.GetField(name, BindingFlags.Static | BindingFlags.NonPublic);
 			VanillaData = null;
 		}
 

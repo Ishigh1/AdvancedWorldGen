@@ -2,10 +2,12 @@ using System;
 using System.Reflection;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.CustomSized;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
@@ -92,6 +94,18 @@ namespace AdvancedWorldGen.UI
 		public void GoBack(UIMouseEvent evt, UIElement listeningElement)
 		{
 			SoundEngine.PlaySound(SoundID.MenuClose);
+			int size = WorldSettings.SizeX switch
+			{
+				4200 when WorldSettings.SizeY == 1200 => 0,
+				6400 when WorldSettings.SizeY == 1800 => 1,
+				8400 when WorldSettings.SizeY == 2400 => 2,
+				_ => -1
+			};
+			new VanillaAccessor<int>(typeof(UIWorldCreation), "_optionSize", WorldSettings.UIWorldCreation).Set(size);
+			foreach (object groupOptionButton in new VanillaAccessor<object[]>(
+				typeof(UIWorldCreation), "_sizeButtons", WorldSettings.UIWorldCreation).Get())
+				groupOptionButton.GetType().GetMethod("SetCurrentOption", BindingFlags.Instance | BindingFlags.Public)
+					.Invoke(groupOptionButton, new object[] {size});
 
 #if !WARNINGLESS
 			int oldSizeX = Main.tile.GetLength(0);

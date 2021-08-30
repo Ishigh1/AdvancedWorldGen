@@ -13,6 +13,8 @@ namespace AdvancedWorldGen.CustomSized
 {
 	public class WorldSettings
 	{
+		public UIWorldCreation UIWorldCreation;
+		
 		public int SizeX;
 		public int SizeY;
 
@@ -30,6 +32,7 @@ namespace AdvancedWorldGen.CustomSized
 		public void ResetSize(OnUIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)
 		{
 			orig(self);
+			UIWorldCreation = self;
 			SetSizeTo(0);
 		}
 

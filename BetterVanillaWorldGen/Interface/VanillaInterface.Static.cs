@@ -1,3 +1,6 @@
+using AdvancedWorldGen.Helper;
+using Terraria;
+
 namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 {
 	public partial class VanillaInterface
@@ -10,10 +13,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 		public void InitializeStatics()
 		{
-			NumOceanCaveTreasure = new VanillaAccessor<int>("numOceanCaveTreasure");
-			HeartCount = new VanillaAccessor<int>("heartCount");
-			SkipFramingDuringGen = new VanillaAccessor<bool>("skipFramingDuringGen");
-			CrackedType = new VanillaAccessor<ushort>("crackedType");
+			NumOceanCaveTreasure = new VanillaAccessor<int>(typeof(WorldGen), "numOceanCaveTreasure");
+			HeartCount = new VanillaAccessor<int>(typeof(WorldGen), "heartCount");
+			SkipFramingDuringGen = new VanillaAccessor<bool>(typeof(WorldGen), "skipFramingDuringGen");
+			CrackedType = new VanillaAccessor<ushort>(typeof(WorldGen), "crackedType");
 		}
 	}
 }

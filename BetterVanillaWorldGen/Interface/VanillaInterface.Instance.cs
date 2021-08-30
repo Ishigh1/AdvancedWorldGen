@@ -1,4 +1,5 @@
 using System.Reflection;
+using AdvancedWorldGen.Helper;
 using Terraria.GameContent.Generation;
 using Terraria.WorldBuilding;
 
