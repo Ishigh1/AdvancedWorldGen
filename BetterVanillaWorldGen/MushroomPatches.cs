@@ -7,16 +7,13 @@ using Terraria;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
-using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
-	public class MushroomPatches : GenPass
+	public class MushroomPatches : ControlledWorldGenPass
 	{
-		public FastRandom FastRandom;
-
-		public MushroomPatches() : base("Mushroom Patches", 743.7686f) //Magic number from vanilla
+		public MushroomPatches() : base("Mushroom Patches", 743.7686f)
 		{
 		}
 
@@ -24,7 +21,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 			progress.Message = Language.GetTextValue("LegacyWorldGen.13");
 			int mushroomBiomes = Math.Max(1, Main.maxTilesX / 700);
-			FastRandom = new FastRandom(WorldGen.genRand.Next());
 
 			List<Vector2> mushroomBiomesPosition = new();
 			int tries = 0;
@@ -44,10 +40,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						break;
 
 					int x = tries < Main.maxTilesX / 4
-						? FastRandom.Next(minTiles1, maxTiles1)
-						: FastRandom.Next(minTiles2, maxTiles2);
+						? Random.Next(minTiles1, maxTiles1)
+						: Random.Next(minTiles2, maxTiles2);
 
-					int y = FastRandom.Next((int) Main.rockLayer + 50, Main.maxTilesY - 300);
+					int y = Random.Next((int) Main.rockLayer + 50, Main.maxTilesY - 300);
 					const int distanceBetweenBiomes = 500;
 
 					Vector2 current = new(x, y);
@@ -68,8 +64,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					ShroomPatch(x, y);
 					for (int it = 0; it < 5; it++)
 					{
-						int x2 = x + FastRandom.Next(-40, 41);
-						int y2 = y + FastRandom.Next(-40, 41);
+						int x2 = x + Random.Next(-40, 41);
+						int y2 = y + Random.Next(-40, 41);
 						ShroomPatch(x2, y2);
 					}
 
@@ -123,10 +119,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 									Main.tile[x2, y + 1].type = 59;
 							}
 
-						if (FastRandom.Next(4) == 0)
+						if (Random.Next(4) == 0)
 						{
-							int num814 = x + FastRandom.Next(-20, 21);
-							int num815 = y + FastRandom.Next(-20, 21);
+							int num814 = x + Random.Next(-20, 21);
+							int num815 = y + Random.Next(-20, 21);
 							if (Main.tile[num814, num815].type == 59)
 								Main.tile[num814, num815].type = 70;
 						}
@@ -137,8 +133,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public void ShroomPatch(int i, int j)
 		{
-			double num = FastRandom.Next(80, 100);
-			float num2 = FastRandom.Next(20, 26);
+			double num = Random.Next(80, 100);
+			float num2 = Random.Next(20, 26);
 			float num3 = Main.maxTilesX / 4200f;
 			if (WorldGen.getGoodWorldGen)
 				num3 *= 2f;
@@ -150,11 +146,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			vector.X = i;
 			vector.Y = j - num2 * 0.3f;
 			Vector2 vector2 = default;
-			vector2.X = FastRandom.Next(-100, 101) * 0.005f;
-			vector2.Y = FastRandom.Next(-200, -100) * 0.005f;
+			vector2.X = Random.Next(-100, 101) * 0.005f;
+			vector2.Y = Random.Next(-200, -100) * 0.005f;
 			while (num > 0.0 && num2 > 0f)
 			{
-				num -= FastRandom.Next(3);
+				num -= Random.Next(3);
 				num2 -= 1f;
 				int xMin = (int) (vector.X - num * 0.5);
 				int xMax = (int) (vector.X + num * 0.5);
@@ -172,7 +168,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				if (yMax > Main.maxTilesY)
 					yMax = Main.maxTilesY;
 
-				double num5 = num * FastRandom.Next(80, 120) * 0.01;
+				double num5 = num * Random.Next(80, 120) * 0.01;
 				for (int x = xMin; x < xMax; x++)
 				for (int y = yMin; y < yMax; y++)
 				{
@@ -188,7 +184,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						if (Main.tile[x, y].wall > 0)
 							Main.tile[x, y].wall = 80;
 					}
-					else if (num12 < num5 * 0.4 * (0.95 + FastRandom.NextFloat() * 0.1))
+					else if (num12 < num5 * 0.4 * (0.95 + Random.NextFloat() * 0.1))
 					{
 						Main.tile[x, y].type = 59;
 						if (num2 == num4 && y > vector.Y)
@@ -201,8 +197,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				vector += vector2;
 				vector.X += vector2.X;
-				vector2.X += FastRandom.Next(-100, 110) * 0.005f;
-				vector2.Y -= FastRandom.Next(110) * 0.005f;
+				vector2.X += Random.Next(-100, 110) * 0.005f;
+				vector2.Y -= Random.Next(110) * 0.005f;
 				if (vector2.X > -0.5 && vector2.X < 0.5)
 				{
 					if (vector2.X < 0f)
@@ -225,13 +221,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				for (int m = 0; m < 2; m++)
 				{
-					int x = (int) vector.X + FastRandom.Next(-20, 20);
-					int y = (int) vector.Y + FastRandom.Next(0, 20);
+					int x = (int) vector.X + Random.Next(-20, 20);
+					int y = (int) vector.Y + Random.Next(0, 20);
 					if (!Main.tile[x, y].IsActive)
 						(x, y) = TileFinder.SpiralSearch(x, y, (i1, i2) => Main.tile[i1, i2].IsActive);
 
-					int strength = FastRandom.Next(10, 20);
-					int steps = FastRandom.Next(10, 20);
+					int strength = Random.Next(10, 20);
+					int steps = Random.Next(10, 20);
 					WorldGen.TileRunner(x, y, strength, steps, TileID.Mud, false, 0f, 2f, true);
 				}
 			}

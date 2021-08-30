@@ -11,7 +11,11 @@ namespace AdvancedWorldGen.CustomSized
 		public static void ReplaceHardmodeConversion(OnWorldGen.orig_GERunner orig, int x, int y, float speedX,
 			float speedY, bool good)
 		{
-			if (!WorldgenSettings.Revamped) orig(x, y, speedX, speedY, good);
+			if (!WorldgenSettings.Revamped)
+			{
+				orig(x, y, speedX, speedY, good);
+				return;
+			}
 
 			float worldSize = Main.maxTilesX / 4200f;
 			float num2 = WorldGen.genRand.Next(200, 250) * worldSize;

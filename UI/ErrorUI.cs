@@ -17,7 +17,7 @@ namespace AdvancedWorldGen.UI
 			BasicSetup(message);
 		}
 
-		private void BasicSetup(string message)
+		public void BasicSetup(string message)
 		{
 			UIPanel uiPanel = new()
 			{

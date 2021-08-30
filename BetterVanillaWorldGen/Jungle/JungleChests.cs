@@ -9,7 +9,7 @@ using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 {
-	public class JungleChests : GenPass
+	public class JungleChests : ControlledWorldGenPass
 	{
 		public JungleChests() : base("Jungle Chests", 0.5896f)
 		{
@@ -17,7 +17,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
-			ushort jungleHut = _random.Next(5) switch
+			ushort jungleHut = Random.Next(5) switch
 			{
 				0 => 119,
 				1 => 120,
@@ -26,7 +26,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				4 => 45
 			};
 
-			float num536 = _random.Next(7, 12);
+			float num536 = Random.Next(7, 12);
 			num536 *= Main.maxTilesX / 4200f;
 			int jungleX = Replacer.VanillaInterface.JungleX;
 			for (int num538 = 0; (float) num538 < num536; num538++)
@@ -34,22 +34,22 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				GenPassHelper.SetProgress(progress, num538, num536);
 				int minX = Math.Max(10, jungleX - Main.maxTilesX / 8);
 				int maxX = Math.Min(Main.maxTilesX - 10, jungleX + Main.maxTilesX / 8);
-				int x = _random.Next(minX, maxX);
+				int x = Random.Next(minX, maxX);
 
 				int y;
 				if (Main.maxTilesY - 400 - (Main.worldSurface + Main.rockLayer) / 2 > 100)
-					y = _random.Next((int) (Main.worldSurface + Main.rockLayer) / 2, Main.maxTilesY - 400);
+					y = Random.Next((int) (Main.worldSurface + Main.rockLayer) / 2, Main.maxTilesY - 400);
 				else if ((Main.worldSurface + Main.rockLayer) / 2 - Main.worldSurface > 100)
-					y = _random.Next((int) (Main.worldSurface + Main.rockLayer) / 2 - 100,
+					y = Random.Next((int) (Main.worldSurface + Main.rockLayer) / 2 - 100,
 						Main.maxTilesY - 400);
 				else
-					y = _random.Next((int) Main.worldSurface, Main.UnderworldLayer);
+					y = Random.Next((int) Main.worldSurface, Main.UnderworldLayer);
 
 
 				(x, y) = TileFinder.SpiralSearch(x, y, IsValid);
 
-				int num542 = _random.Next(2, 4);
-				int num543 = _random.Next(2, 4);
+				int num542 = Random.Next(2, 4);
+				int num543 = Random.Next(2, 4);
 				Rectangle area = new(x - num542 - 1, y - num543 - 1, num542 + 1,
 					num543 + 1);
 				ushort wall2 = jungleHut switch
@@ -82,8 +82,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				while (!flag36 && num548 < 100)
 				{
 					num548++;
-					int num549 = _random.Next(x - num542, x + num542 + 1);
-					int num550 = _random.Next(y - num543, y + num543 - 2);
+					int num549 = Random.Next(x - num542, x + num542 + 1);
+					int num550 = Random.Next(y - num543, y + num543 - 2);
 					WorldGen.PlaceTile(num549, num550, 4, true, false, -1, 3);
 					if (TileID.Sets.Torch[Main.tile[num549, num550].type])
 						flag36 = true;
@@ -110,7 +110,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 					}
 				}
 
-				num542 -= _random.Next(1, 3);
+				num542 -= Random.Next(1, 3);
 				int num558 = y - num543 - 2;
 				while (num542 > -1)
 				{
@@ -120,7 +120,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 						Main.tile[num559, num558].type = jungleHut;
 					}
 
-					num542 -= _random.Next(1, 3);
+					num542 -= Random.Next(1, 3);
 					num558--;
 				}
 

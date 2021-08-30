@@ -6,7 +6,7 @@ using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
-	public class TerrainPass : GenPass
+	public class TerrainPass : ControlledWorldGenPass
 	{
 		public enum TerrainFeatureType
 		{
@@ -31,9 +31,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
 			int num2 = 0;
 			double worldSurface = Main.maxTilesY * 0.3;
-			worldSurface *= _random.Next(90, 110) * 0.005;
+			worldSurface *= Random.Next(90, 110) * 0.005;
 			double rockLayer = Main.maxTilesY * 0.35;
-			rockLayer *= _random.Next(90, 110) * 0.01;
+			rockLayer *= Random.Next(90, 110) * 0.01;
 			if (rockLayer < worldSurface + Main.maxTilesY * 0.05)
 			{
 				if (worldSurface - rockLayer > Main.maxTilesY * 0.05)
@@ -61,17 +61,17 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				rockLayerHigh = Math.Max(rockLayer, rockLayerHigh);
 				if (num2 <= 0)
 				{
-					terrainFeatureType = (TerrainFeatureType) _random.Next(0, 5);
-					num2 = _random.Next(5, 40);
+					terrainFeatureType = (TerrainFeatureType) Random.Next(0, 5);
+					num2 = Random.Next(5, 40);
 					if (terrainFeatureType == TerrainFeatureType.Plateau)
-						num2 *= (int) (_random.Next(5, 30) * 0.2);
+						num2 *= (int) (Random.Next(5, 30) * 0.2);
 				}
 
 				num2--;
 				if (i > Main.maxTilesX * 0.45 && i < Main.maxTilesX * 0.55 &&
 				    (terrainFeatureType == TerrainFeatureType.Mountain ||
 				     terrainFeatureType == TerrainFeatureType.Valley))
-					terrainFeatureType = (TerrainFeatureType) _random.Next(3);
+					terrainFeatureType = (TerrainFeatureType) Random.Next(3);
 
 				if (i > Main.maxTilesX * 0.48 && i < Main.maxTilesX * 0.52)
 					terrainFeatureType = TerrainFeatureType.Plateau;
@@ -100,7 +100,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					num2 = 0;
 				}
 
-				while (_random.Next(0, 3) == 0) rockLayer += _random.Next(-2, 3);
+				while (Random.Next(0, 3) == 0) rockLayer += Random.Next(-2, 3);
 
 				if (rockLayer < worldSurface + Main.maxTilesY * 0.06)
 					rockLayer += 1.0;
@@ -123,8 +123,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Main.worldSurface = (int) (worldSurfaceHigh + 25.0);
 			Main.rockLayer = rockLayerHigh;
 			int waterLine = (int) (Main.rockLayer + Main.maxTilesY) / 2;
-			waterLine += _random.Next(-100, 20);
-			int lavaLine = waterLine + _random.Next(50, 80);
+			waterLine += Random.Next(-100, 20);
+			int lavaLine = waterLine + Random.Next(50, 80);
 			if (rockLayer > Main.UnderworldLayer)
 				throw new Exception(Language.GetTextValue("Mods.AdvancedWorldGen.Exceptions.RockUnderHell"));
 			while (lavaLine > Main.UnderworldLayer)
@@ -200,54 +200,58 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 		}
 
-		public static double GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
+		public double GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
 		{
 			double num = 0.0;
 			if ((WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen) && WorldGen.genRand.Next(2) == 0)
 				switch (featureType)
 				{
 					case TerrainFeatureType.Plateau:
-						while (_random.Next(0, 6) == 0) num += _random.Next(-1, 2);
+						while (Random.Next(0, 6) == 0) num += Random.Next(-1, 2);
 						break;
 					case TerrainFeatureType.Hill:
-						while (_random.Next(0, 3) == 0) num -= 1.0;
-						while (_random.Next(0, 10) == 0) num += 1.0;
+						while (Random.Next(0, 3) == 0) num -= 1.0;
+						while (Random.Next(0, 10) == 0) num += 1.0;
 						break;
 					case TerrainFeatureType.Dale:
-						while (_random.Next(0, 3) == 0) num += 1.0;
-						while (_random.Next(0, 10) == 0) num -= 1.0;
+						while (Random.Next(0, 3) == 0) num += 1.0;
+						while (Random.Next(0, 10) == 0) num -= 1.0;
 						break;
 					case TerrainFeatureType.Mountain:
-						while (_random.Next(0, 3) != 0) num -= 1.0;
-						while (_random.Next(0, 6) == 0) num += 1.0;
+						while (Random.Next(0, 3) != 0) num -= 1.0;
+						while (Random.Next(0, 6) == 0) num += 1.0;
 						break;
 					case TerrainFeatureType.Valley:
-						while (_random.Next(0, 3) != 0) num += 1.0;
-						while (_random.Next(0, 5) == 0) num -= 1.0;
+						while (Random.Next(0, 3) != 0) num += 1.0;
+						while (Random.Next(0, 5) == 0) num -= 1.0;
 						break;
+					default:
+						throw new ArgumentOutOfRangeException(nameof(featureType), featureType, null);
 				}
 			else
 				switch (featureType)
 				{
 					case TerrainFeatureType.Plateau:
-						while (_random.Next(0, 7) == 0) num += _random.Next(-1, 2);
+						while (Random.Next(0, 7) == 0) num += Random.Next(-1, 2);
 						break;
 					case TerrainFeatureType.Hill:
-						while (_random.Next(0, 4) == 0) num -= 1.0;
-						while (_random.Next(0, 10) == 0) num += 1.0;
+						while (Random.Next(0, 4) == 0) num -= 1.0;
+						while (Random.Next(0, 10) == 0) num += 1.0;
 						break;
 					case TerrainFeatureType.Dale:
-						while (_random.Next(0, 4) == 0) num += 1.0;
-						while (_random.Next(0, 10) == 0) num -= 1.0;
+						while (Random.Next(0, 4) == 0) num += 1.0;
+						while (Random.Next(0, 10) == 0) num -= 1.0;
 						break;
 					case TerrainFeatureType.Mountain:
-						while (_random.Next(0, 2) == 0) num -= 1.0;
-						while (_random.Next(0, 6) == 0) num += 1.0;
+						while (Random.Next(0, 2) == 0) num -= 1.0;
+						while (Random.Next(0, 6) == 0) num += 1.0;
 						break;
 					case TerrainFeatureType.Valley:
-						while (_random.Next(0, 2) == 0) num += 1.0;
-						while (_random.Next(0, 5) == 0) num -= 1.0;
+						while (Random.Next(0, 2) == 0) num += 1.0;
+						while (Random.Next(0, 5) == 0) num -= 1.0;
 						break;
+					default:
+						throw new ArgumentOutOfRangeException(nameof(featureType), featureType, null);
 				}
 
 			return num;
@@ -279,26 +283,26 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public class SurfaceHistory
 		{
-			public readonly double[] _heights;
-			public int _index;
+			public readonly double[] Heights;
+			public int Index;
 
 			public SurfaceHistory(int size)
 			{
-				_heights = new double[size];
+				Heights = new double[size];
 			}
 
 			public double this[int index]
 			{
-				get => _heights[(index + _index) % _heights.Length];
-				set => _heights[(index + _index) % _heights.Length] = value;
+				get => Heights[(index + Index) % Heights.Length];
+				set => Heights[(index + Index) % Heights.Length] = value;
 			}
 
-			public int Length => _heights.Length;
+			public int Length => Heights.Length;
 
 			public void Record(double height)
 			{
-				_heights[_index] = height;
-				_index = (_index + 1) % _heights.Length;
+				Heights[Index] = height;
+				Index = (Index + 1) % Heights.Length;
 			}
 		}
 	}

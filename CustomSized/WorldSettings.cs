@@ -23,6 +23,7 @@ namespace AdvancedWorldGen.CustomSized
 			OnWorldGen.setWorldSize += SetWorldSize;
 			OnWorldGen.clearWorld += SetWorldSize;
 
+			OnWorldGen.SmashAltar += AltarSmash.SmashAltar;
 			OnWorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
 		}
 

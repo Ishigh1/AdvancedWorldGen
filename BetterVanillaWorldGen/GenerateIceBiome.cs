@@ -1,11 +1,10 @@
 using Terraria;
 using Terraria.IO;
 using Terraria.WorldBuilding;
-using static Terraria.WorldGen;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
-	public class GenerateIceBiome : GenPass
+	public class GenerateIceBiome : ControlledWorldGenPass
 	{
 		public GenerateIceBiome() : base("Generate Ice Biome", 100.005f)
 		{
@@ -15,7 +14,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 			progress.Message = Lang.gen[56].Value;
 			Replacer.VanillaInterface.SnowTop.Set((int) Main.worldSurface);
-			int num840 = lavaLine - genRand.Next(160, 200);
+			int num840 = WorldGen.lavaLine - Random.Next(160, 200);
 			int snowLeft = Replacer.VanillaInterface.SnowOriginLeft.Get();
 			int snowRight = Replacer.VanillaInterface.SnowOriginRight.Get();
 			int num843 = 10;
@@ -23,11 +22,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			int[] snowMinX = Replacer.VanillaInterface.SnowMinX.Get();
 			int[] snowMaxX = Replacer.VanillaInterface.SnowMaxX.Get();
-			for (int num844 = 0; num844 <= lavaLine - 140; num844++)
+			for (int num844 = 0; num844 <= WorldGen.lavaLine - 140; num844++)
 			{
-				progress.Set(num844 / (float) (lavaLine - 140));
-				snowLeft += genRand.Next(-4, 4);
-				snowRight += genRand.Next(-3, 5);
+				progress.Set(num844 / (float) (WorldGen.lavaLine - 140));
+				snowLeft += Random.Next(-4, 4);
+				snowRight += Random.Next(-3, 5);
 				if (num844 > 0)
 				{
 					snowLeft = (snowLeft + snowMinX[num844 - 1]) / 2;
@@ -36,13 +35,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				if (dungeonRight)
 				{
-					if (genRand.Next(4) == 0)
+					if (Random.Next(4) == 0)
 					{
 						snowLeft++;
 						snowRight++;
 					}
 				}
-				else if (genRand.Next(4) == 0)
+				else if (Random.Next(4) == 0)
 				{
 					snowLeft--;
 					snowRight--;
@@ -87,18 +86,18 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 					else
 					{
-						num843 += genRand.Next(-3, 4);
-						if (genRand.Next(3) == 0)
+						num843 += Random.Next(-3, 4);
+						if (Random.Next(3) == 0)
 						{
-							num843 += genRand.Next(-4, 5);
-							if (genRand.Next(3) == 0)
-								num843 += genRand.Next(-6, 7);
+							num843 += Random.Next(-4, 5);
+							if (Random.Next(3) == 0)
+								num843 += Random.Next(-6, 7);
 						}
 
 						if (num843 < 0)
-							num843 = genRand.Next(3);
+							num843 = Random.Next(3);
 						else if (num843 > 50)
-							num843 = 50 - genRand.Next(3);
+							num843 = 50 - Random.Next(3);
 
 						for (int num846 = num844; num846 < num844 + num843; num846++)
 						{
