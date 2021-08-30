@@ -1159,27 +1159,27 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				flag2 = true;
 			}
 
-			for (int num9 = i - num4; num9 <= i + num4; num9++)
-			for (int num10 = num3; num10 <= num2 + num5; num10++)
-				if (Main.tileDungeon[Main.tile[num9, num10].type])
+			for (int x = i - num4; x <= i + num4; x++)
+			for (int y = num3; y <= num2 + num5; y++)
+				if (Main.tileDungeon[Main.tile[x, y].type])
 				{
-					Main.tile[num9, num10].type = CrackedType;
-					Main.tile[num9, num10].wall = (ushort) wallType;
+					Main.tile[x, y].type = CrackedType;
+					Main.tile[x, y].wall = (ushort) wallType;
 				}
 
-			for (int num11 = i - num6; num11 <= i + num6; num11++)
-			for (int num12 = num3; num12 <= num2 + num7; num12++)
+			for (int x = i - num6; x <= i + num6; x++)
+			for (int y = num3; y <= num2 + num7; y++)
 			{
-				Main.tile[num11, num12].LiquidType = LiquidID.Water;
-				Main.tile[num11, num12].LiquidAmount = 0;
-				if (!Main.wallDungeon[Main.tile[num11, num12].wall] &&
-				    Main.tile[num11, num12].type != CrackedType)
+				Main.tile[x, y].LiquidType = LiquidID.Water;
+				Main.tile[x, y].LiquidAmount = 0;
+				if (!Main.wallDungeon[Main.tile[x, y].wall] &&
+				    Main.tile[x, y].type != CrackedType)
 				{
-					Main.tile[num11, num12].Clear(TileDataType.Slope);
-					Main.tile[num11, num12].type = tileType;
-					Main.tile[num11, num12].IsActive = true;
-					if (num11 > i - num6 && num11 < i + num6 && num12 < num2 + num7)
-						Main.tile[num11, num12].wall = (ushort) wallType;
+					Main.tile[x, y].Clear(TileDataType.Slope);
+					Main.tile[x, y].type = tileType;
+					Main.tile[x, y].IsActive = true;
+					if (x > i - num6 && x < i + num6 && y < num2 + num7)
+						Main.tile[x, y].wall = (ushort) wallType;
 				}
 			}
 
@@ -1516,11 +1516,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					num4 = 0;
 
 				num4--;
-				int xMin = (int) Math.Max(vector.X - num - 4.0 - WorldGen.genRand.Next(6), DungeonMinX);
-				int xMax = (int) Math.Min(vector.X + num + 4.0 + WorldGen.genRand.Next(6), DungeonMaxX);
+				int xMin = (int) Math.Max(vector.X - num - 4.0 - WorldGen.genRand.Next(6), 0);
+				int xMax = (int) Math.Min(vector.X + num + 4.0 + WorldGen.genRand.Next(6), Main.maxTilesX);
 				int yMin = (int) Math.Max(vector.Y - num - 4.0 - WorldGen.genRand.Next(6), 0);
-				int yMax = (int) Math.Min(vector.Y + num + 4.0 + WorldGen.genRand.Next(6), DungeonMaxY);
+				int yMax = (int) Math.Min(vector.Y + num + 4.0 + WorldGen.genRand.Next(6), Main.maxTilesY);
 
+				DungeonMinX = Math.Min(xMin, DungeonMinX);
+				DungeonMaxX = Math.Max(xMax, DungeonMaxX);
+				DungeonMaxY = Math.Max(yMax, DungeonMaxY);
 				for (int x = xMin; x < xMax; x++)
 				for (int y = yMin; y < yMax; y++)
 				{
@@ -1533,9 +1536,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					}
 				}
 
-				for (int num14 = xMin + 1; num14 < xMax - 1; num14++)
-				for (int num15 = yMin + 1; num15 < yMax - 1; num15++)
-					Main.tile[num14, num15].wall = (ushort) wallType;
+				for (int x = xMin + 1; x < xMax - 1; x++)
+				for (int y = yMin + 1; y < yMax - 1; y++)
+					Main.tile[x, y].wall = (ushort) wallType;
 
 				int num16 = 0;
 				if (zero.Y == 0f && WorldGen.genRand.Next((int) num + 1) == 0)
@@ -1545,41 +1548,30 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				else if (WorldGen.genRand.Next((int) num * 3) == 0)
 					num16 = WorldGen.genRand.Next(1, 3);
 
-				xMin = (int) (vector.X - num * 0.5 - num16);
-				xMax = (int) (vector.X + num * 0.5 + num16);
-				yMin = (int) (vector.Y - num * 0.5 - num16);
-				yMax = (int) (vector.Y + num * 0.5 + num16);
-				if (xMin < 0)
-					xMin = 0;
+				xMin = (int) Math.Max(0, vector.X - num * 0.5 - num16);
+				xMax = (int) Math.Min(Main.maxTilesX, vector.X + num * 0.5 + num16);
+				yMin = (int) Math.Max(0, vector.Y - num * 0.5 - num16);
+				yMax = (int) Math.Min(Main.maxTilesY, vector.Y + num * 0.5 + num16);
 
-				if (xMax > Main.maxTilesX)
-					xMax = Main.maxTilesX;
-
-				if (yMin < 0)
-					yMin = 0;
-
-				if (yMax > Main.maxTilesY)
-					yMax = Main.maxTilesY;
-
-				for (int num17 = xMin; num17 < xMax; num17++)
-				for (int num18 = yMin; num18 < yMax; num18++)
+				for (int x = xMin; x < xMax; x++)
+				for (int y = yMin; y < yMax; y++)
 				{
-					Main.tile[num17, num18].Clear(TileDataType.Slope);
+					Main.tile[x, y].Clear(TileDataType.Slope);
 					if (flag)
 					{
-						if (Main.tile[num17, num18].IsActive || Main.tile[num17, num18].wall != wallType)
+						if (Main.tile[x, y].IsActive || Main.tile[x, y].wall != wallType)
 						{
-							Main.tile[num17, num18].IsActive = true;
-							Main.tile[num17, num18].type = CrackedType;
+							Main.tile[x, y].IsActive = true;
+							Main.tile[x, y].type = CrackedType;
 						}
 					}
 					else
 					{
-						Main.tile[num17, num18].IsActive = false;
+						Main.tile[x, y].IsActive = false;
 					}
 
-					Main.tile[num17, num18].Clear(TileDataType.Slope);
-					Main.tile[num17, num18].wall = (ushort) wallType;
+					Main.tile[x, y].Clear(TileDataType.Slope);
+					Main.tile[x, y].wall = (ushort) wallType;
 				}
 
 				vector += zero;
