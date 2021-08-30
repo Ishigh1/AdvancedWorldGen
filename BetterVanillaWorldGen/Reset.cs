@@ -110,13 +110,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			int snowCenter;
 			if (dungeonSide == 1 && !WorldGen.drunkWorldGen || dungeonSide == -1 && WorldGen.drunkWorldGen)
-			{
 				snowCenter = (int) (Main.maxTilesX * 0.6f + Main.maxTilesX * 0.15f);
-			}
 			else
-			{
 				snowCenter = (int) (Main.maxTilesX * 0.25f + Main.maxTilesX * 0.15f);
-			}
 
 			int num921 = Random.Next(50, 90);
 			float worldSize = Main.maxTilesX / 4200f;
@@ -132,8 +128,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Replacer.VanillaInterface.SnowOriginLeft.Set(snowOriginLeft);
 			Replacer.VanillaInterface.SnowOriginRight.Set(snowOriginRight);
 
-			const int beachSandDungeonExtraWidth = 40;
-			const int beachSandJungleExtraWidth = 20;
+			int beachSandDungeonExtraWidth = (int) (40 * worldSize);
+			int beachSandJungleExtraWidth = (int) (20 * worldSize);
 			int beachBordersWidth = (int) (275 * worldSize);
 			int beachSandRandomWidthRange = (int) (20 * worldSize);
 			int beachSandRandomCenter = beachBordersWidth + 5 + 2 * beachSandRandomWidthRange;
@@ -150,10 +146,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			rightBeachStart -= dungeonSide == -1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
 			Replacer.VanillaInterface.RightBeachStart.Set(rightBeachStart);
 
-			const int num925 = 50;
+			int dungeonShift = (int) (50 * worldSize);
 			Replacer.VanillaInterface.DungeonLocation.Set(dungeonSide == -1
-				? Random.Next(leftBeachEnd + num925, (int) (Main.maxTilesX * 0.2))
-				: Random.Next((int) (Main.maxTilesX * 0.8), rightBeachStart - num925));
+				? Random.Next(leftBeachEnd + dungeonShift, (int) (Main.maxTilesX * 0.2))
+				: Random.Next((int) (Main.maxTilesX * 0.8), rightBeachStart - dungeonShift));
 		}
 	}
 }
