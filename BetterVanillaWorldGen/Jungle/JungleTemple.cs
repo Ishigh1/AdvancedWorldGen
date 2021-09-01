@@ -14,9 +14,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 {
 	public class JungleTemple : ControlledWorldGenPass
 	{
-		private static readonly FieldInfo LAltarXField = typeof(WorldGen).GetField("lAltarX", BindingFlags.NonPublic | BindingFlags.Static)!;
-		private static readonly FieldInfo LAltarYField = typeof(WorldGen).GetField("lAltarY", BindingFlags.NonPublic | BindingFlags.Static)!;
-
 		public JungleTemple() : base("Jungle Temple", 595.8422f)
 		{
 		}
@@ -576,8 +573,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				{
 					int lAltarX = x - Main.tile[x, y].frameX / 18;
 					int lAltarY = y - Main.tile[x, y].frameY / 18;
-					LAltarXField.SetValue(null, lAltarX);
-					LAltarYField.SetValue(null, lAltarY);
+					Replacer.VanillaInterface.LAltarX.Value = lAltarX;
+					Replacer.VanillaInterface.LAltarY.Value = lAltarY;
 					break;
 				}
 
@@ -615,8 +612,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 				int lAltarX2 = x;
 				int lAltarY2 = y;
-				LAltarXField.SetValue(null, lAltarX2);
-				LAltarYField.SetValue(null, lAltarY2);
+				Replacer.VanillaInterface.LAltarX.Value = lAltarX2;
+				Replacer.VanillaInterface.LAltarY.Value = lAltarY2;
 				for (int num94 = 0; num94 <= 2; num94++)
 				for (int num95 = 0; num95 <= 1; num95++)
 				{

@@ -14,11 +14,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 		public VanillaAccessor<int[]> JChestY;
 		public VanillaAccessor<int> NumJChests;
 
+		public VanillaAccessor<int> LAltarX;
+		public VanillaAccessor<int> LAltarY;
+
 		public VanillaAccessor<bool> SkipFramingDuringGen;
 
 		[MemberNotNull(nameof(NumOceanCaveTreasure), nameof(HeartCount), nameof(SkipFramingDuringGen), nameof(CrackedType),
-			nameof(JChestX), nameof(JChestY), nameof(NumJChests))]
-		public void InitializeStatics()
+			nameof(JChestX), nameof(JChestY), nameof(NumJChests), nameof(LAltarX), nameof(LAltarY))]
+		private void InitializeStatics()
 		{
 			NumOceanCaveTreasure = new VanillaAccessor<int>(typeof(WorldGen), "numOceanCaveTreasure");
 			HeartCount = new VanillaAccessor<int>(typeof(WorldGen), "heartCount");
@@ -27,6 +30,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 			JChestX = new VanillaAccessor<int[]>(typeof(WorldGen), "JChestX");
 			JChestY = new VanillaAccessor<int[]>(typeof(WorldGen), "JChestY");
+			NumJChests = new VanillaAccessor<int>(typeof(WorldGen), "numJChests");
+			
+			LAltarX = new VanillaAccessor<int>(typeof(WorldGen), "lAltarX");
+			LAltarY = new VanillaAccessor<int>(typeof(WorldGen), "lAltarY");
+			NumJChests = new VanillaAccessor<int>(typeof(WorldGen), "numJChests");
 			NumJChests = new VanillaAccessor<int>(typeof(WorldGen), "numJChests");
 		}
 	}
