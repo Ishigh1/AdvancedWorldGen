@@ -166,8 +166,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 							WorldGen.Place1x2Top(num, num3, 42, style2);
 							if (Main.tile[num, num3].type != 42)
 								break;
-
-							//flag2 = true;
+							
 							failCount = 0;
 							numAdd++;
 							for (int m = 0; m < 1000; m++)
@@ -982,10 +981,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				delta.X = -0.5f;
 
 			if (WorldGen.drunkWorldGen)
-			{
-				//direction *= -1;
 				delta.X *= -1f;
-			}
 
 			for (int num3 = WorldGen.genRand.Next(10, 30); num3 > 0; num3--)
 			{
@@ -2089,8 +2085,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					}
 				}
 			}
-
-			//num17 = 1 + WorldGen.genRand.Next(2);
+			
 			num18 = 2 + WorldGen.genRand.Next(4);
 			num19 = 0;
 			xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
