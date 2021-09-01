@@ -111,7 +111,10 @@ namespace AdvancedWorldGen.UI
 				if (strings.Length == 2 && strings[0] == "i")
 				{
 					HashSet<string> options = OptionsSelector.TextToOptions(strings[1]);
-					ModifiedWorld.Instance.OptionHelper.Options = options;
+					if(options.Count == 0)
+						errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidImport");
+					else
+						ModifiedWorld.Instance.OptionHelper.Options = options;
 				}
 				else
 				{
