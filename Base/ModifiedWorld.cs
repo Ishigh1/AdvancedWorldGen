@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using AdvancedWorldGen.BetterVanillaWorldGen;
@@ -6,7 +7,6 @@ using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
 using AdvancedWorldGen.UI;
 using MonoMod.Cil;
-using On.Terraria.UI;
 using Terraria;
 using Terraria.GameContent.Events;
 using Terraria.GameContent.Generation;
@@ -16,10 +16,11 @@ using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.UI;
 using Terraria.WorldBuilding;
 using static Terraria.ID.NPCID;
 using OnMain = On.Terraria.Main;
-using UIState = Terraria.UI.UIState;
+using OnUserInterface = On.Terraria.UI.UserInterface;
 
 namespace AdvancedWorldGen.Base
 {
@@ -35,6 +36,7 @@ namespace AdvancedWorldGen.Base
 		public CustomSizeUI CustomSizeUI = null!;
 
 		public OptionHelper OptionHelper = null!;
+
 		public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
 
 		public override void OnModLoad()
@@ -65,13 +67,7 @@ namespace AdvancedWorldGen.Base
 			}
 		}
 
-		public override TagCompound SaveWorldData()
-		{
-			return new()
-			{
-				{"Options", OptionHelper.Options.ToList()}
-			};
-		}
+		public override TagCompound SaveWorldData() => new() {["Options"] = OptionHelper.Options.ToList()};
 
 		public override void NetReceive(BinaryReader reader)
 		{
@@ -135,9 +131,7 @@ namespace AdvancedWorldGen.Base
 
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Guide");
 			if (passIndex != -1)
-			{
 				tasks[passIndex] = new PassLegacy("NPCs", HandleNpcs);
-			}
 
 			GenPass liquidSettle = tasks.Find(pass => pass.Name == "Settle Liquids Again")!;
 
@@ -163,62 +157,72 @@ namespace AdvancedWorldGen.Base
 		public void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
 		{
 			List<int> availableNPCs = NPCs.ToList();
-			if (OptionHelper.OptionsContains("Painted")) AddNpc(Painter, availableNPCs);
+			if (OptionHelper.OptionsContains("Painted")) TryAddNpc(Painter, availableNPCs, out _);
 
-			if (WorldGen.notTheBees) AddNpc(Merchant, availableNPCs);
+			if (WorldGen.notTheBees) TryAddNpc(Merchant, availableNPCs, out _);
 
-			if (WorldGen.getGoodWorldGen) AddNpc(Demolitionist, availableNPCs);
+			if (WorldGen.getGoodWorldGen) TryAddNpc(Demolitionist, availableNPCs, out _);
 
-			if (WorldGen.drunkWorldGen) AddNpc(PartyGirl, availableNPCs);
+			if (WorldGen.drunkWorldGen) TryAddNpc(PartyGirl, availableNPCs, out _);
 
 			if (Main.tenthAnniversaryWorld)
 			{
 				BirthdayParty.GenuineParty = true;
 				BirthdayParty.PartyDaysOnCooldown = 5;
 
-				NPC princess = AddNpc(Princess, availableNPCs);
-				princess.GivenName = Language.GetTextValue("PrincessNames.Yorai");
-				BirthdayParty.CelebratingNPCs.Add(princess.whoAmI);
+				if (TryAddNpc(Princess, availableNPCs, out NPC? princess))
+				{
+					princess.GivenName = Language.GetTextValue("PrincessNames.Yorai");
+					BirthdayParty.CelebratingNPCs.Add(princess.whoAmI);
+				}
 
-				NPC steampunker = AddNpc(Steampunker, availableNPCs);
-				steampunker.GivenName = Language.GetTextValue("SteampunkerNames.Whitney");
-				BirthdayParty.CelebratingNPCs.Add(steampunker.whoAmI);
+				if (TryAddNpc(Steampunker, availableNPCs, out NPC? steampunker))
+				{
+					steampunker.GivenName = Language.GetTextValue("SteampunkerNames.Whitney");
+					BirthdayParty.CelebratingNPCs.Add(steampunker.whoAmI);
+				}
 
-				NPC guide = AddNpc(Guide, availableNPCs);
-				guide.GivenName = Language.GetTextValue("GuideNames.Andrew");
-				BirthdayParty.CelebratingNPCs.Add(guide.whoAmI);
+				if (TryAddNpc(Guide, availableNPCs, out NPC? guide))
+				{
+					guide.GivenName = Language.GetTextValue("GuideNames.Andrew");
+					BirthdayParty.CelebratingNPCs.Add(guide.whoAmI);
+				}
 
-				AddNpc(PartyGirl, availableNPCs);
+				TryAddNpc(PartyGirl, availableNPCs, out _);
 
-				NPC bnnuy = AddNpc(TownBunny, availableNPCs);
-				bnnuy.townNpcVariationIndex = 1;
-				NPC.boughtBunny = true;
+				if (TryAddNpc(TownBunny, availableNPCs, out NPC? bunny))
+				{
+					bunny.townNpcVariationIndex = 1;
+					NPC.boughtBunny = true;
+				}
 			}
 
-			if (OptionHelper.OptionsContains("Santa")) AddNpc(SantaClaus, availableNPCs);
+			if (OptionHelper.OptionsContains("Santa")) TryAddNpc(SantaClaus, availableNPCs, out _);
 
-			if (OptionHelper.OptionsContains("Random")) AddNpc(RandomNpc(availableNPCs), availableNPCs);
+			if (OptionHelper.OptionsContains("Random")) TryAddNpc(RandomNpc(availableNPCs), availableNPCs, out _);
 
-			if (availableNPCs.Count == NPCs.Count) AddNpc(Guide, availableNPCs);
+			if (availableNPCs.Count == NPCs.Count) TryAddNpc(Guide, availableNPCs, out _);
 		}
 
-		public static NPC AddNpc(int npcType, List<int> availableNPCs)
+		public static bool TryAddNpc(int npcType, List<int> availableNPCs, [NotNullWhen(true)] out NPC? npc)
 		{
-			if (!availableNPCs.Contains(npcType)) return Main.npc.FirstOrDefault(npc => npc.type == npcType);
+			if (!availableNPCs.Contains(npcType))
+			{
+				npc = Main.npc.FirstOrDefault(n => n.type == npcType);
+				return npc != null;
+			}
 
-			NPC newNPC = Main.npc[NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, npcType)];
-			newNPC.homeTileX = Main.spawnTileX;
-			newNPC.homeTileY = Main.spawnTileY;
-			newNPC.direction = WorldGen._genRand.NextBool(2) ? 1 : -1;
-			newNPC.homeless = true;
+			npc = Main.npc[NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, npcType)];
+			npc.homeTileX = Main.spawnTileX;
+			npc.homeTileY = Main.spawnTileY;
+			npc.direction = WorldGen._genRand.NextBool(2) ? 1 : -1;
+			npc.homeless = true;
 			availableNPCs.RemoveAll(i => i == npcType);
-			return newNPC;
+
+			return true;
 		}
 
-		public static int RandomNpc(List<int> availableNPCs)
-		{
-			return Utils.SelectRandom(WorldGen._genRand, availableNPCs.ToArray());
-		}
+		public static int RandomNpc(List<int> availableNPCs) => WorldGen._genRand.NextFromList(availableNPCs.ToArray());
 
 		public void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -245,12 +249,9 @@ namespace AdvancedWorldGen.Base
 			OptionHelper.OnDusk();
 		}
 
-		public static bool OptionsContains(params string[] s)
-		{
-			return Instance.OptionHelper.OptionsContains(s);
-		}
+		public static bool OptionsContains(params string[] s) => Instance.OptionHelper.OptionsContains(s);
 
-		public void ResetSettings(UserInterface.orig_SetState orig, Terraria.UI.UserInterface self, UIState state)
+		public void ResetSettings(OnUserInterface.orig_SetState orig, UserInterface self, UIState state)
 		{
 			orig(self, state);
 			if (state is UIWorldSelect)
