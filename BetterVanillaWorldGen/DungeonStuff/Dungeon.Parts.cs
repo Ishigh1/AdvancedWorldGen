@@ -6,7 +6,7 @@ using Terraria.ID;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 {
-	public partial class Dungeon
+	public static partial class Dungeon
 	{
 		public static void MakeDungeon_Traps()
 		{
@@ -634,7 +634,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						break;
 				}
 
-				if (Main.tile[num7, j].wall >= 94 && Main.tile[num7, j].wall <= 105)
+				if (Main.tile[num7, j].wall is >= 94 and <= 105)
 				{
 					style = 17;
 					style2 = 14;
@@ -943,30 +943,17 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				if (num2 == 6)
 					num2 = WorldGen.genRand.Next(maxValue);
 
-				switch (num2)
+				num2 = num2 switch
 				{
-					case 0:
-						num2 = 12;
-						break;
-					case 1:
-						num2 = 13;
-						break;
-					case 2:
-						num2 = 14;
-						break;
-					case 3:
-						num2 = 15;
-						break;
-					case 4:
-						num2 = 18;
-						break;
-					case 5:
-						num2 = 19;
-						break;
-					case 6:
-						num2 = 23;
-						break;
-				}
+					0 => 12,
+					1 => 13,
+					2 => 14,
+					3 => 15,
+					4 => 18,
+					5 => 19,
+					6 => 23,
+					_ => num2
+				};
 			}
 			else if (num == 2)
 			{
@@ -1191,10 +1178,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						Main.tile[num13, num14].LiquidAmount = byte.MaxValue;
 
 					if (num13 == i - num4 || num13 == i + num4 || num14 == num2 + num5)
-						Main.tile[num13, num14].type = 48;
+						Main.tile[num13, num14].type = TileID.Spikes;
 					else if (num13 == i - num4 + 1 && num14 % 2 == 0 || num13 == i + num4 - 1 && num14 % 2 == 0 ||
 					         num14 == num2 + num5 - 1 && num13 % 2 == 0)
-						Main.tile[num13, num14].type = 48;
+						Main.tile[num13, num14].type = TileID.Spikes;
 					else
 						Main.tile[num13, num14].IsActive = false;
 				}
@@ -1590,15 +1577,19 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				DungeonPlatforms.Add(((int x, int y)) (vector.X, vector.Y));
 		}
 
-		public static void DungeonRoom(int i, int j, ushort tileType, int wallType)
+		public static void DungeonRoom(int i, int j, ushort tileType, ushort wallType)
 		{
-			double num = WorldGen.genRand.Next(15, 30);
-			Vector2 vector = default;
-			vector.X = WorldGen.genRand.Next(-10, 11) * 0.1f;
-			vector.Y = WorldGen.genRand.Next(-10, 11) * 0.1f;
-			Vector2 vector2 = default;
-			vector2.X = i;
-			vector2.Y = j - (float) num / 2f;
+			int num = WorldGen.genRand.Next(15, 30);
+			Vector2 vector = new()
+			{
+				X = WorldGen.genRand.Next(-10, 11) * 0.1f,
+				Y = WorldGen.genRand.Next(-10, 11) * 0.1f
+			};
+			Vector2 vector2 = new()
+			{
+				X = i,
+				Y = j - num / 2f
+			};
 			int num2 = WorldGen.genRand.Next(10, 20);
 			double num3 = vector2.X;
 			double num4 = vector2.X;
@@ -1626,7 +1617,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 				for (int m = xMin + 1; m < xMax - 1; m++)
 				for (int n = yMin + 1; n < yMax - 1; n++)
-					Main.tile[m, n].wall = (ushort) wallType;
+					Main.tile[m, n].wall = wallType;
 
 				xMin = (int) Math.Max(vector2.X - num * 0.5, xMin);
 				xMax = (int) Math.Min(vector2.X + num * 0.5, xMax);
@@ -1636,7 +1627,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				for (int y = yMin; y < yMax; y++)
 				{
 					Main.tile[x, y].IsActive = false;
-					Main.tile[x, y].wall = (ushort) wallType;
+					Main.tile[x, y].wall = wallType;
 				}
 
 				vector2 += vector;
@@ -1656,7 +1647,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 
 			DungeonRoomPos.Add(((int x, int y)) (vector2.X, vector2.Y));
-			DungeonRoomSize.Add((int) num);
+			DungeonRoomSize.Add(num);
 			DungeonRoomL.Add((int) num3);
 			DungeonRoomR.Add((int) num4);
 			DungeonRoomT.Add((int) num5);
