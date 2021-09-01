@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.CustomSized;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -17,17 +18,25 @@ namespace AdvancedWorldGen.UI
 {
 	public class CustomSizeUI : UIState
 	{
-		public WorldSettings WorldSettings;
-
 		public static readonly FieldInfo SizeButtonsField =
 			typeof(UIWorldCreation).GetField("_sizeButtons", BindingFlags.Instance | BindingFlags.NonPublic)!;
 
-		private static readonly Type IntInputElementType = typeof(Main).Assembly.GetType("Terraria.ModLoader.Config.UI.IntInputElement")!;
+		private static readonly Type IntInputElementType =
+			typeof(Main).Assembly.GetType("Terraria.ModLoader.Config.UI.IntInputElement")!;
 
-		private static readonly ConstructorInfo IntInputElementConstructorInfo = IntInputElementType.GetConstructor(Array.Empty<Type>())!;
-		private static readonly FieldInfo IntInputElementMinField = IntInputElementType.GetField("min", BindingFlags.Public | BindingFlags.Instance)!;
-		private static readonly FieldInfo IntInputElementMaxField = IntInputElementType.GetField("max", BindingFlags.Public | BindingFlags.Instance)!;
-		private static readonly FieldInfo IntInputElementIncrementField = IntInputElementType.GetField("increment", BindingFlags.Public | BindingFlags.Instance)!;
+		private static readonly ConstructorInfo IntInputElementConstructorInfo =
+			IntInputElementType.GetConstructor(Array.Empty<Type>())!;
+
+		private static readonly FieldInfo IntInputElementMinField =
+			IntInputElementType.GetField("min", BindingFlags.Public | BindingFlags.Instance)!;
+
+		private static readonly FieldInfo IntInputElementMaxField =
+			IntInputElementType.GetField("max", BindingFlags.Public | BindingFlags.Instance)!;
+
+		private static readonly FieldInfo IntInputElementIncrementField =
+			IntInputElementType.GetField("increment", BindingFlags.Public | BindingFlags.Instance)!;
+
+		public WorldSettings WorldSettings;
 
 		public CustomSizeUI(WorldSettings worldSettings)
 		{
@@ -102,7 +111,10 @@ namespace AdvancedWorldGen.UI
 				8400 when WorldSettings.SizeY == 2400 => 2,
 				_ => -1
 			};
-			WorldSettings.OptionSizeField.SetValue(WorldSettings.UIWorldCreation, size);
+
+			// TODO store in VanillaInterface with null Data and assign data on every use
+			var optionSize = new VanillaAccessor<int>(typeof(UIWorldCreation), "_optionSize", WorldSettings.UIWorldCreation);
+			optionSize.Value = size;
 
 			object[] sizeButtons = (object[]) SizeButtonsField.GetValue(WorldSettings.UIWorldCreation)!;
 

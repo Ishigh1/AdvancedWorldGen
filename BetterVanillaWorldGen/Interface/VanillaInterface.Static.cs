@@ -31,7 +31,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 			JChestX = new VanillaAccessor<int[]>(typeof(WorldGen), "JChestX");
 			JChestY = new VanillaAccessor<int[]>(typeof(WorldGen), "JChestY");
 			NumJChests = new VanillaAccessor<int>(typeof(WorldGen), "numJChests");
-			
+
 			LAltarX = new VanillaAccessor<int>(typeof(WorldGen), "lAltarX");
 			LAltarY = new VanillaAccessor<int>(typeof(WorldGen), "lAltarY");
 		}

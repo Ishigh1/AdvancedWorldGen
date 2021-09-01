@@ -1,5 +1,5 @@
 using System;
-using System.Reflection;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.States;
@@ -17,9 +17,6 @@ namespace AdvancedWorldGen.CustomSized
 
 		public int SizeX;
 		public int SizeY;
-
-		public static readonly FieldInfo OptionSizeField =
-			typeof(UIWorldCreation).GetField("_optionSize", BindingFlags.Instance | BindingFlags.NonPublic)!;
 
 		public WorldSettings()
 		{
@@ -43,7 +40,10 @@ namespace AdvancedWorldGen.CustomSized
 			UIElement listeningElement)
 		{
 			orig(self, evt, listeningElement);
-			int newSize = (int) OptionSizeField.GetValue(self)!;
+
+			// TODO: maybe store in VanillaInterface with null VanillaData and assign data on every use
+			var optionSize = new VanillaAccessor<int>(typeof(UIWorldCreation), "_optionSize", self);
+			int newSize = optionSize.Value;
 			SetSizeTo(newSize);
 		}
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -22,7 +23,7 @@ using Terraria.Utilities;
 using OnUIWorldLoad = On.Terraria.GameContent.UI.States.UIWorldLoad;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
 using OnWorldGen = On.Terraria.WorldGen;
-using UIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
+using OnUIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
 
 namespace AdvancedWorldGen.UI
 {
@@ -89,8 +90,9 @@ namespace AdvancedWorldGen.UI
 			UIWorldCreation self, UIElement container, float accumulatedHeight, string tagGroup)
 		{
 			origAddDescriptionPanel(self, container, accumulatedHeight, tagGroup);
-			FieldInfo fieldInfo = typeof(UIWorldCreation).GetField("_seedPlate", BindingFlags.NonPublic | BindingFlags.Instance)!;
-			UICharacterNameButton characterNameButton = (UICharacterNameButton) fieldInfo.GetValue(self)!;
+
+			VanillaAccessor<UICharacterNameButton> seedPlate = new(typeof(UIWorldCreation), "_seedPlate", self);
+			UICharacterNameButton characterNameButton = seedPlate.Value;
 			characterNameButton.Width.Pixels -= 48;
 
 			GroupOptionButton<bool> groupOptionButton = new(true, null, null, Color.White, null)
@@ -104,11 +106,12 @@ namespace AdvancedWorldGen.UI
 				PaddingLeft = 4f
 			};
 
-			fieldInfo = typeof(GroupOptionButton<bool>).GetField("_iconTexture", BindingFlags.NonPublic | BindingFlags.Instance)!;
-			fieldInfo.SetValue(groupOptionButton, OptionsTexture);
+			VanillaAccessor<Asset<Texture2D>> iconTexture =
+				new(typeof(GroupOptionButton<bool>), "_iconTexture", groupOptionButton);
+			iconTexture.Value = OptionsTexture;
 
-			fieldInfo = typeof(UIWorldCreation).GetField("_descriptionText", BindingFlags.NonPublic | BindingFlags.Instance)!;
-			Description = (UIText) fieldInfo.GetValue(self)!;
+			VanillaAccessor<UIText> descriptionText = new(typeof(UIWorldCreation), "_descriptionText", self);
+			Description = descriptionText.Value;
 
 			groupOptionButton.OnMouseDown += ToOptionsMenu;
 			groupOptionButton.OnMouseOver += ShowOptionDescription;
@@ -134,23 +137,25 @@ namespace AdvancedWorldGen.UI
 		public static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
 		{
 			SoundEngine.PlaySound(SoundID.MenuTick);
-			((UIPanel) evt.Target).BackgroundColor = new Color(73, 94, 171);
-			((UIPanel) evt.Target).BorderColor = Colors.FancyUIFatButtonMouseOver;
+			UIPanel panel = (UIPanel) evt.Target;
+			panel.BackgroundColor = new Color(73, 94, 171);
+			panel.BorderColor = Colors.FancyUIFatButtonMouseOver;
 		}
 
 		public static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
 		{
-			((UIPanel) evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
-			((UIPanel) evt.Target).BorderColor = Color.Black;
+			UIPanel panel = (UIPanel) evt.Target;
+			panel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
+			panel.BorderColor = Color.Black;
 		}
 
-		public void CopySettingsButton(UIWorldListItem.orig_ctor orig,
-			Terraria.GameContent.UI.Elements.UIWorldListItem self, WorldFileData data, int orderInList,
+		public void CopySettingsButton(OnUIWorldListItem.orig_ctor orig,
+			UIWorldListItem self, WorldFileData data, int orderInList,
 			bool canBePlayed)
 		{
 			orig(self, data, orderInList, canBePlayed);
 
-			FieldInfo fieldInfo = typeof(Terraria.GameContent.UI.Elements.UIWorldListItem).GetField("_buttonLabel",
+			FieldInfo fieldInfo = typeof(UIWorldListItem).GetField("_buttonLabel",
 				BindingFlags.NonPublic | BindingFlags.Instance)!;
 			UIText uiText = (UIText) fieldInfo.GetValue(self)!;
 			UIImageButton copyOptionButton = new(CopyOptionsTexture)

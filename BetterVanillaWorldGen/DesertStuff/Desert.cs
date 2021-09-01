@@ -10,7 +10,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 {
 	public static class Desert
 	{
-		private static readonly ConstructorInfo ConstructorInfo = typeof(DesertDescription).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Array.Empty<Type>(), null)!;
+		private static readonly ConstructorInfo ConstructorInfo =
+			typeof(DesertDescription).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance,
+				null, Array.Empty<Type>(), null)!;
+
 		public static readonly Vector2 DefaultBlockScale = new(4f, 2f);
 
 		public static bool IsUndergroundDesert(int x, int y)

@@ -15,13 +15,13 @@ namespace AdvancedWorldGen.Helper
 			set => FieldInfo.SetValue(VanillaData, value);
 		}
 
-		public VanillaAccessor(IEnumerable<FieldInfo> fieldInfos, string name, object vanillaData)
+		public VanillaAccessor(IEnumerable<FieldInfo> fieldInfos, string name, object? vanillaData)
 		{
 			FieldInfo = fieldInfos.First(info => info.Name == name);
 			VanillaData = vanillaData;
 		}
 
-		public VanillaAccessor(IReflect type, string name, object vanillaData)
+		public VanillaAccessor(IReflect type, string name, object? vanillaData)
 		{
 			FieldInfo = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!;
 			VanillaData = vanillaData;

@@ -27,11 +27,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 		public VanillaAccessor<int> SnowOriginRight;
 		public VanillaAccessor<int> SnowTop;
 
+		//public VanillaAccessor<int> OptionSize;
+
 
 		public VanillaInterface(GenPass vanillaReset)
 		{
 			WorldGenLegacyMethod method = (WorldGenLegacyMethod) typeof(PassLegacy).GetField("_method", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(vanillaReset)!;
-			object vanillaData = method.GetType().GetField("_target", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(method)!;
+			FieldInfo targetField = method.GetType().GetField("_target", BindingFlags.NonPublic | BindingFlags.Instance)!;
+			object vanillaData = targetField.GetValue(method)!;
 			FieldInfo[] fieldInfos = vanillaData.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
 
 			Copper = new VanillaAccessor<int>(fieldInfos, "copper", vanillaData);
@@ -53,6 +56,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 			LeftBeachEnd = new VanillaAccessor<int>(fieldInfos, "leftBeachEnd", vanillaData);
 			RightBeachStart = new VanillaAccessor<int>(fieldInfos, "rightBeachStart", vanillaData);
+
+			//OptionSize = new VanillaAccessor<int>(typeof(UIWorldCreation),"_optionSize", null);
 
 			InitializeStatics();
 		}
