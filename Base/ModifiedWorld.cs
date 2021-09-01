@@ -139,7 +139,7 @@ namespace AdvancedWorldGen.Base
 				tasks[passIndex] = new PassLegacy("NPCs", HandleNpcs);
 			}
 
-			GenPass liquidSettle = tasks.Find(pass => pass.Name == "Settle Liquids Again");
+			GenPass liquidSettle = tasks.Find(pass => pass.Name == "Settle Liquids Again")!;
 
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Tile Cleanup");
 			if (passIndex != -1 && OptionsContains("Crimruption"))

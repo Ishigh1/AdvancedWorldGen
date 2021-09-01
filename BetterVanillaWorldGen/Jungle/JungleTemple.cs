@@ -29,7 +29,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			int maxX = Math.Min(Main.maxTilesX - 10, jungleX + Main.maxTilesX / 8);
 			int x = Random.Next(minX, maxX);
 			int y = Random.Next((int) WorldGen.rockLayer, Main.UnderworldLayer);
-			(x, y) = TileFinder.SpiralSearch(x, y, IsValid);
+			(x, _) = TileFinder.SpiralSearch(x, y, IsValid);
 
 			MakeTemple(progress, x);
 		}
