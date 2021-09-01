@@ -6,6 +6,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class WorldgenSettings : ModConfig
 	{
+		[Label("$Mods.AdvancedWorldGen.Config.FasterWorldgen.Label")]
+		[Tooltip("$Mods.AdvancedWorldGen.Config.FasterWorldgen.Tooltip")]
 		[DefaultValue(false)] public bool FasterWorldgen;
 
 		public static bool Revamped => ModContent.GetInstance<WorldgenSettings>().FasterWorldgen;
