@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -71,13 +72,15 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.NPCs
 			float y = npc.position.Y + npc.height - 59f - Main.player[npc.target].position.Y -
 			          Main.player[npc.target].height / 2f;
 			float rotation = (float) Math.Atan2(x, -y);
-			if (rotation < 3.1415f)
-				rotation += 6.283f;
-			else if (rotation > 3.1415f)
-				rotation -= 6.283f;
-			SoundEngine.PlaySound(36, (int) npc.position.X, (int) npc.position.Y, -1);
+
+			if (rotation < MathHelper.Pi)
+				rotation += MathHelper.TwoPi;
+			else if (rotation > MathHelper.Pi)
+				rotation -= MathHelper.TwoPi;
+
+			SoundEngine.PlaySound(SoundID.ForceRoar, (int) npc.position.X, (int) npc.position.Y, -1);
 			npc.rotation = rotation;
-			npc.velocity = (rotation + 1.5708f).ToRotationVector2() * EyeSpeed.GetCurrentValue();
+			npc.velocity = (rotation + MathHelper.PiOver2).ToRotationVector2() * EyeSpeed.GetCurrentValue();
 			npc.dontTakeDamage = true;
 			npc.SpawnedFromStatue = true;
 			npc.dontCountMe = true;

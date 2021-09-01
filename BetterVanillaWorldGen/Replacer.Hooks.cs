@@ -22,7 +22,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public static void UnReplace()
 		{
-			VanillaInterface = null;
+			VanillaInterface = null!;
 
 			OnDesertHive.Place -= ReplaceDesertHive;
 			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= ReplaceChest;

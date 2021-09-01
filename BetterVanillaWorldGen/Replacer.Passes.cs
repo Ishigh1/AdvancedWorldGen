@@ -8,7 +8,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public static partial class Replacer
 	{
-		public static VanillaInterface VanillaInterface;
+		public static VanillaInterface VanillaInterface = null!;
 
 		public static void ReplaceGenPasses(List<GenPass> genPasses)
 		{

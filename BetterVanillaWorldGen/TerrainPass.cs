@@ -29,7 +29,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int num = passConfig.Get<int>("FlatBeachPadding");
 			progress.Message = Language.GetTextValue("LegacyWorldGen.0");
 			TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
-			int num2 = 0;
 			double worldSurface = Main.maxTilesY * 0.3;
 			worldSurface *= Random.Next(90, 110) * 0.005;
 			double rockLayer = Main.maxTilesY * 0.35;
@@ -51,7 +50,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			double rockLayerHigh = rockLayer;
 			double num9 = Main.maxTilesY * 0.23;
 			SurfaceHistory surfaceHistory = new(500);
-			num2 = leftBeachSize + num;
+			int num2 = leftBeachSize + num;
 			for (int i = 0; i < Main.maxTilesX; i++)
 			{
 				progress.Set(i / (float) Main.maxTilesX);
@@ -157,7 +156,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public static void FillColumn(int x, double worldSurface, double rockLayer)
 		{
-			for (int i = 0; (double) i < worldSurface; i++)
+			for (int i = 0; i < worldSurface; i++)
 			{
 				Main.tile[x, i].IsActive = false;
 				Main.tile[x, i].frameX = -1;
@@ -183,7 +182,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public static void RetargetColumn(int x, double worldSurface)
 		{
-			for (int i = 0; (double) i < worldSurface; i++)
+			for (int i = 0; i < worldSurface; i++)
 			{
 				Main.tile[x, i].IsActive = false;
 				Main.tile[x, i].frameX = -1;

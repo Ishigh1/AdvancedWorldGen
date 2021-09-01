@@ -1,4 +1,3 @@
-using System.Reflection;
 using AdvancedWorldGen.Helper;
 using MonoMod.Cil;
 using Terraria;
@@ -14,12 +13,10 @@ namespace AdvancedWorldGen.SpecialOptions
 		//After IL_19af : || OptionContains("Crimruption")
 		public void CrimruptionChest(ILContext il)
 		{
-			FieldInfo drunk = typeof(WorldGen).GetField("drunkWorldGen");
-
 			ILCursor cursor = new(il);
 
 			for (int i = 0; i < 3; i++)
-				if (!cursor.TryGotoNext(MoveType.Before, instruction => instruction.MatchLdsfld(drunk)))
+				if (!cursor.TryGotoNext(MoveType.Before, instruction => instruction.MatchLdsfld<WorldGen>("drunkWorldGen")))
 					return;
 
 			OrOptionContainsCrimruption(cursor);
