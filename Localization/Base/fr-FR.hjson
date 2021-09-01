@@ -11,7 +11,8 @@
                 }
             },
             "WorldGenMessage": {
-                "Random": "Randomisation du monde"
+                "Random": "Randomisation du monde",
+                "SnowReplace": "Grande glaciation"
             },
             "InvalidSizes": {
                 "TooBigFromRAM": "Un monde de taille {0} x {1} est trop gros pour cet ordinateur.",

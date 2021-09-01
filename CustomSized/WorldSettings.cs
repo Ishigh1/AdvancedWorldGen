@@ -111,8 +111,8 @@ namespace AdvancedWorldGen.CustomSized
 				Main.tile = new Tile[newSizeX, newSizeY];
 			}
 
-			int newWidth = (Main.maxTilesX - 1) / Main.textureMaxWidth + 1;
-			int newHeight = (Main.maxTilesY - 1) / Main.textureMaxHeight + 1;
+			int newWidth = Main.maxTilesX / Main.textureMaxWidth + 1;
+			int newHeight = Main.maxTilesY / Main.textureMaxHeight + 1;
 			if (newWidth > Main.mapTargetX || newHeight > Main.mapTargetY)
 			{
 				Main.mapTargetX = Math.Max(newWidth, Main.mapTargetX);
