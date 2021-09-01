@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace AdvancedWorldGen.Helper
 {
-	public class ILHelper
+	public static class ILHelper
 	{
 		public static void OptionContains(ILCursor cursor, string option)
 		{

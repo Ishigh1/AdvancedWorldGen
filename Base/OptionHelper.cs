@@ -42,8 +42,8 @@ namespace AdvancedWorldGen.Base
 		{
 			Entropy.StartEntropy(this);
 			if (OptionsContains("Santa") &&
-			    Main.hardMode && Main.invasionType == 0 && (!NPC.downedFrost && Main.rand.Next(20) == 0 ||
-			                                                NPC.downedFrost && Main.rand.Next(60) == 0))
+			    Main.hardMode && Main.invasionType == 0 && (!NPC.downedFrost && Main.rand.NextBool(20) ||
+			                                                NPC.downedFrost && Main.rand.NextBool(60)))
 			{
 				Main.invasionDelay = 0;
 				Main.StartInvasion(InvasionID.SnowLegion);
@@ -58,8 +58,8 @@ namespace AdvancedWorldGen.Base
 		{
 			Entropy.StartEntropy(this);
 			if (OptionsContains("Santa") && NPC.downedFishron &&
-			    (!NPC.downedChristmasIceQueen && Main.rand.Next(20) == 0 ||
-			     NPC.downedChristmasIceQueen && Main.rand.Next(60) == 0))
+			    (!NPC.downedChristmasIceQueen && Main.rand.NextBool(20) ||
+			     NPC.downedChristmasIceQueen && Main.rand.NextBool(60)))
 			{
 				if (Main.netMode == NetmodeID.SinglePlayer)
 				{
@@ -95,7 +95,7 @@ namespace AdvancedWorldGen.Base
 					new Entropy(500, reader).TreatTiles();
 					break;
 				default:
-					throw new ArgumentOutOfRangeException();
+					throw new ArgumentOutOfRangeException(nameof(packetId));
 			}
 		}
 	}

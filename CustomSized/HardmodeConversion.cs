@@ -6,7 +6,7 @@ using OnWorldGen = On.Terraria.WorldGen;
 
 namespace AdvancedWorldGen.CustomSized
 {
-	public class HardmodeConversion
+	public static class HardmodeConversion
 	{
 		public static void ReplaceHardmodeConversion(OnWorldGen.orig_GERunner orig, int x, int y, float speedX,
 			float speedY, bool good)
@@ -77,7 +77,7 @@ namespace AdvancedWorldGen.CustomSized
 								break;
 						}
 
-						if (Main.tile[m, n].wall == 3 || Main.tile[m, n].wall == 83)
+						if (Main.tile[m, n].wall is 3 or 83)
 							Main.tile[m, n].wall = 28;
 
 						switch (Main.tile[m, n].type)

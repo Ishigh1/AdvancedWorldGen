@@ -13,10 +13,13 @@ namespace AdvancedWorldGen.CustomSized
 {
 	public class WorldSettings
 	{
-		public UIWorldCreation UIWorldCreation;
-		
+		public UIWorldCreation UIWorldCreation = null!;
+
 		public int SizeX;
 		public int SizeY;
+
+		public static readonly FieldInfo OptionSizeField =
+			typeof(UIWorldCreation).GetField("_optionSize", BindingFlags.Instance | BindingFlags.NonPublic)!;
 
 		public WorldSettings()
 		{
@@ -40,8 +43,7 @@ namespace AdvancedWorldGen.CustomSized
 			UIElement listeningElement)
 		{
 			orig(self, evt, listeningElement);
-			int newSize = (int) typeof(UIWorldCreation)
-				.GetField("_optionSize", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+			int newSize = (int) OptionSizeField.GetValue(self)!;
 			SetSizeTo(newSize);
 		}
 
@@ -98,8 +100,8 @@ namespace AdvancedWorldGen.CustomSized
 
 				if ((long) newSizeX * newSizeY * 44 > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)
 				{
-					string message = Language.GetTextValue("Mods.AdvancedWorldGen.InvalidSizes.TooBigFromRAM", newSizeX,
-						newSizeY);
+					string message =
+						Language.GetTextValue("Mods.AdvancedWorldGen.InvalidSizes.TooBigFromRAM", newSizeX, newSizeY);
 					Utils.ShowFancyErrorMessage(message, 0);
 					throw new Exception(message);
 				}

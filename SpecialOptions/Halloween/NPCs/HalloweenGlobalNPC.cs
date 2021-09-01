@@ -30,7 +30,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.NPCs
 			if (!ModifiedWorld.OptionsContains("Spooky")) return;
 			if (Main.netMode == NetmodeID.MultiplayerClient && (npc.friendly ||
 			                                                    npc.type != Ghost && npc.type != Wraith &&
-			                                                    Main.rand.Next(20) == 0))
+			                                                    Main.rand.NextBool(20)))
 			{
 				NPC newNPC = Main.npc[NPC.NewNPC(0, 0, Ghost)];
 				newNPC.position.X = npc.position.X;

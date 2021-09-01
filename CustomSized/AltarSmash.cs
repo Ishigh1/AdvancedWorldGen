@@ -1,4 +1,3 @@
-using System;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -9,7 +8,7 @@ using Terraria.ID;
 
 namespace AdvancedWorldGen.CustomSized
 {
-	public class AltarSmash
+	public static class AltarSmash
 	{
 		public static void SmashAltar(On.Terraria.WorldGen.orig_SmashAltar orig, int x, int y)
 		{
@@ -34,12 +33,13 @@ namespace AdvancedWorldGen.CustomSized
 			{
 				WorldGen.SavedOreTiers.Adamantite = WorldGen.SavedOreTiers.Adamantite switch
 				{
-					111 => 223,
-					223 => 111,
+					TileID.Adamantite => TileID.Titanium,
+					TileID.Titanium => TileID.Adamantite,
 					_ => WorldGen.SavedOreTiers.Adamantite
 				};
 			}
 
+			Color color = new(50, 255, 130);
 			switch (num)
 			{
 				case 0:
@@ -47,22 +47,21 @@ namespace AdvancedWorldGen.CustomSized
 					if (WorldGen.SavedOreTiers.Cobalt == -1)
 					{
 						flag = true;
-						WorldGen.SavedOreTiers.Cobalt = 107;
-						if (WorldGen.genRand.Next(2) == 0) WorldGen.SavedOreTiers.Cobalt = 221;
+						WorldGen.SavedOreTiers.Cobalt = TileID.Cobalt;
+						if (WorldGen.genRand.NextBool(2)) WorldGen.SavedOreTiers.Cobalt = TileID.Palladium;
 					}
 
 					int num6 = 12;
-					if (WorldGen.SavedOreTiers.Cobalt == 221)
+					if (WorldGen.SavedOreTiers.Cobalt == TileID.Palladium)
 					{
 						num6 += 9;
 						num3 *= 0.9f;
 					}
 
-					if (Main.netMode == 0)
-						Main.NewText(Lang.misc[num6].Value, 50, byte.MaxValue, 130);
-					else if (Main.netMode == 2)
-						ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num6].Key),
-							new Color(50, 255, 130));
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						Main.NewText(Language.GetTextValue($"LegacyMisc.{num6}"), color);
+					else if (Main.netMode == NetmodeID.Server)
+						ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Language.GetText($"LegacyMisc.{num6}").Key), color);
 
 					num = WorldGen.SavedOreTiers.Cobalt;
 					num3 *= 1.05f;
@@ -74,8 +73,8 @@ namespace AdvancedWorldGen.CustomSized
 					{
 						WorldGen.SavedOreTiers.Mythril = WorldGen.SavedOreTiers.Mythril switch
 						{
-							108 => 222,
-							222 => 108,
+							TileID.Mythril => TileID.Orichalcum,
+							TileID.Orichalcum => TileID.Mythril,
 							_ => WorldGen.SavedOreTiers.Mythril
 						};
 					}
@@ -83,12 +82,12 @@ namespace AdvancedWorldGen.CustomSized
 					if (WorldGen.SavedOreTiers.Mythril == -1)
 					{
 						flag = true;
-						WorldGen.SavedOreTiers.Mythril = 108;
-						if (WorldGen.genRand.Next(2) == 0) WorldGen.SavedOreTiers.Mythril = 222;
+						WorldGen.SavedOreTiers.Mythril = TileID.Mythril;
+						if (WorldGen.genRand.NextBool(2)) WorldGen.SavedOreTiers.Mythril = TileID.Orichalcum;
 					}
 
 					int num7 = 13;
-					if (WorldGen.SavedOreTiers.Mythril == 222)
+					if (WorldGen.SavedOreTiers.Mythril == TileID.Orichalcum)
 					{
 						num7 += 9;
 						num3 *= 0.9f;
@@ -97,11 +96,10 @@ namespace AdvancedWorldGen.CustomSized
 					switch (Main.netMode)
 					{
 						case NetmodeID.SinglePlayer:
-							Main.NewText(Lang.misc[num7].Value, 50, byte.MaxValue, 130);
+							Main.NewText(Language.GetTextValue($"LegacyMisc.{num7}"), color);
 							break;
 						case NetmodeID.Server:
-							ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num7].Key),
-								new Color(50, 255, 130));
+							ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Language.GetText($"LegacyMisc.{num7}").Key), color);
 							break;
 					}
 
@@ -114,8 +112,8 @@ namespace AdvancedWorldGen.CustomSized
 					{
 						WorldGen.SavedOreTiers.Cobalt = WorldGen.SavedOreTiers.Cobalt switch
 						{
-							107 => 221,
-							221 => 107,
+							TileID.Cobalt => TileID.Palladium,
+							TileID.Palladium => TileID.Cobalt,
 							_ => WorldGen.SavedOreTiers.Cobalt
 						};
 					}
@@ -123,22 +121,21 @@ namespace AdvancedWorldGen.CustomSized
 					if (WorldGen.SavedOreTiers.Adamantite == -1)
 					{
 						flag = true;
-						WorldGen.SavedOreTiers.Adamantite = 111;
-						if (WorldGen.genRand.Next(2) == 0) WorldGen.SavedOreTiers.Adamantite = 223;
+						WorldGen.SavedOreTiers.Adamantite = TileID.Adamantite;
+						if (WorldGen.genRand.NextBool(2)) WorldGen.SavedOreTiers.Adamantite = TileID.Titanium;
 					}
 
 					int num5 = 14;
-					if (WorldGen.SavedOreTiers.Adamantite == 223)
+					if (WorldGen.SavedOreTiers.Adamantite == TileID.Titanium)
 					{
 						num5 += 9;
 						num3 *= 0.9f;
 					}
 
-					if (Main.netMode == 0)
-						Main.NewText(Lang.misc[num5].Value, 50, byte.MaxValue, 130);
-					else if (Main.netMode == 2)
-						ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num5].Key),
-							new Color(50, 255, 130));
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						Main.NewText(Language.GetTextValue($"LegacyMisc.{num5}"), color);
+					else if (Main.netMode == NetmodeID.Server)
+						ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Language.GetText($"LegacyMisc.{num5}").Key), color);
 
 					num = WorldGen.SavedOreTiers.Adamantite;
 					break;
@@ -146,65 +143,62 @@ namespace AdvancedWorldGen.CustomSized
 			}
 
 			if (flag)
-				NetMessage.SendData(7);
+				NetMessage.SendData(MessageID.WorldData);
 
-			for (int k = 0; (float) k < num3; k++)
+			for (int k = 0; k < num3; k++)
 			{
-				int i2 = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
-				double num8 = Main.worldSurface;
+				double minY = Main.worldSurface;
 				switch (num)
 				{
-					case 108:
-					case 222:
-						num8 = Main.rockLayer;
+					case TileID.Mythril:
+					case TileID.Orichalcum:
+						minY = Main.rockLayer;
 						break;
-					case 111:
-					case 223:
-						num8 = (Main.rockLayer + Main.rockLayer + Main.maxTilesY) / 3.0;
+					case TileID.Adamantite:
+					case TileID.Titanium:
+						minY = (Main.rockLayer + Main.rockLayer + Main.maxTilesY) / 3.0;
 						break;
 				}
 
-				int j2 = WorldGen.genRand.Next((int) num8, Main.maxTilesY - 150);
-				WorldGen.OreRunner(i2, j2, WorldGen.genRand.Next(5, 9 + num4), WorldGen.genRand.Next(5, 9 + num4),
-					(ushort) num);
+				int xx = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+				int yy = WorldGen.genRand.Next((int) minY, Main.maxTilesY - 150);
+				WorldGen.OreRunner(xx, yy, WorldGen.genRand.Next(5, 9 + num4), WorldGen.genRand.Next(5, 9 + num4), (ushort) num);
 			}
 
 			int num9 = WorldGen.genRand.Next(3);
-			int num10 = 0;
-			while (num9 != 2 && num10++ < 1000)
+			int tries = 0;
+			while (num9 != 2 && tries++ < 1000)
 			{
-				int num11 = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
-				int num12 = WorldGen.genRand.Next((int) Main.rockLayer + 50, Main.maxTilesY - 300);
-				if (!Main.tile[num11, num12].IsActive || Main.tile[num11, num12].type != 1)
+				int xx = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+				int yy = WorldGen.genRand.Next((int) Main.rockLayer + 50, Main.maxTilesY - 300);
+				Tile tile = Main.tile[xx, yy];
+				if (!tile.IsActive || tile.type != TileID.Stone)
 					continue;
 
 				if (num9 == 0)
 				{
-					if (WorldGen.crimson)
-						Main.tile[num11, num12].type = 203;
-					else
-						Main.tile[num11, num12].type = 25;
+					tile.type = WorldGen.crimson ? TileID.Crimstone : TileID.Ebonstone;
 				}
 				else
 				{
-					Main.tile[num11, num12].type = 117;
+					tile.type = TileID.Pearlstone;
 				}
 
-				if (Main.netMode == 2)
-					NetMessage.SendTileSquare(-1, num11, num12);
+				if (Main.netMode == NetmodeID.Server)
+					NetMessage.SendTileSquare(-1, xx, yy);
 
 				break;
 			}
 
-			if (Main.netMode != 1)
+			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
-				int num13 = Main.rand.Next(2) + 1;
-				for (int l = 0; l < num13; l++)
-					NPC.SpawnOnPlayer(Player.FindClosest(new Vector2(x * 16, x * 16), 16, 16), 82);
+				int count = Main.rand.Next(2) + 1;
+				for (int _ = 0; _ < count; _++)
+					NPC.SpawnOnPlayer(Player.FindClosest(new Vector2(x * 16, x * 16), 16, 16), NPCID.Wraith);
 			}
 
 			WorldGen.altarCount++;
-			AchievementsHelper.NotifyProgressionEvent(6);
+			AchievementsHelper.NotifyProgressionEvent(AchievementHelperID.Events.SmashDemonAltar);
 		}
 	}
 }

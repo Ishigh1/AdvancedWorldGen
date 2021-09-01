@@ -5,44 +5,44 @@ using AdvancedWorldGen.Base;
 using Terraria;
 using Terraria.IO;
 using Terraria.Localization;
-using WorldFile = On.Terraria.IO.WorldFile;
+using OnWorldFile = On.Terraria.IO.WorldFile;
 
 namespace AdvancedWorldGen.UI
 {
-	public class DedServUi
+	public static class DedServUi
 	{
-		public static WorldFileData DedServOptions(WorldFile.orig_CreateMetadata orig, string name, bool cloudSave,
+		public static WorldFileData DedServOptions(OnWorldFile.orig_CreateMetadata orig, string name, bool cloudSave,
 			int gamemode)
 		{
-			if (Main.dedServ)
+			if (!Main.dedServ)
+				return orig(name, cloudSave, gamemode);
+
+			bool finished = false;
+			bool showHidden = false;
+			string errorMessage = "";
+
+			ModifiedWorld.Instance.OptionHelper.Options.Clear();
+
+			while (!finished)
 			{
-				bool finished = false;
-				bool showHidden = false;
-				string errorMessage = "";
+				DedServPrint(showHidden, ref errorMessage);
 
-				ModifiedWorld.Instance.OptionHelper.Options.Clear();
-
-				while (!finished)
+				string s = Console.ReadLine()!;
+				switch (s)
 				{
-					DedServPrint(showHidden, ref errorMessage);
-
-					string s = Console.ReadLine();
-					switch (s)
-					{
-						case "h":
-							showHidden = !showHidden;
-							break;
-						case "y":
-						case "":
-							finished = true;
-							break;
-						default:
-							HandleDedServId(s, ref errorMessage, showHidden);
-							break;
-					}
-
-					Console.Clear();
+					case "h":
+						showHidden = !showHidden;
+						break;
+					case "y":
+					case "":
+						finished = true;
+						break;
+					default:
+						HandleDedServId(s, ref errorMessage, showHidden);
+						break;
 				}
+
+				Console.Clear();
 			}
 
 			return orig(name, cloudSave, gamemode);
@@ -54,8 +54,8 @@ namespace AdvancedWorldGen.UI
 			int id = 1;
 			bool hidden = showHidden;
 			foreach ((string key, _) in from keyValuePair in OptionsSelector.OptionDict
-				where !keyValuePair.Value.Hidden || hidden
-				select keyValuePair)
+			                            where !keyValuePair.Value.Hidden || hidden
+			                            select keyValuePair)
 				Console.WriteLine(id++ + " : " + Language.GetTextValue("Mods.AdvancedWorldGen." + key) +
 				                  (ModifiedWorld.Instance.OptionHelper.OptionsContains(key)
 					                  ? Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.Selected")
@@ -87,10 +87,10 @@ namespace AdvancedWorldGen.UI
 				for (int j = i; j < options.Count; j++)
 				{
 					string option2 = options[j];
-					if (OptionsSelector.OptionDict[option].Conflicts?.Contains(option2) == true)
+					if (OptionsSelector.OptionDict[option].Conflicts.Contains(option2))
 					{
-						Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.Conflict." +
-						                                        options[i] + "." + options[j]));
+						Console.WriteLine(
+							Language.GetTextValue("Mods.AdvancedWorldGen.Conflict." + options[i] + "." + options[j]));
 						conflict = true;
 					}
 				}
@@ -101,8 +101,7 @@ namespace AdvancedWorldGen.UI
 
 		public static void HandleDedServId(string s, ref string errorMessage, bool showHidden)
 		{
-			if (int.TryParse(s, out int id) && (id <= 0 ||
-			                                    !ConvertIdToOption(showHidden, ref id)))
+			if (int.TryParse(s, out int id) && (id <= 0 || !ConvertIdToOption(showHidden, ref id)))
 			{
 				errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidId");
 			}
@@ -112,7 +111,7 @@ namespace AdvancedWorldGen.UI
 				if (strings.Length == 2 && strings[0] == "i")
 				{
 					HashSet<string> options = OptionsSelector.TextToOptions(strings[1]);
-					if (options == null)
+					if(options.Count == 0)
 						errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidImport");
 					else
 						ModifiedWorld.Instance.OptionHelper.Options = options;

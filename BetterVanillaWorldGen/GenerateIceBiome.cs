@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
@@ -12,16 +13,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 		{
-			progress.Message = Lang.gen[56].Value;
-			Replacer.VanillaInterface.SnowTop.Set((int) Main.worldSurface);
+			progress.Message = Language.GetTextValue("LegacyWorldGen.56");
+			Replacer.VanillaInterface.SnowTop.Value = (int) Main.worldSurface;
 			int num840 = WorldGen.lavaLine - Random.Next(160, 200);
-			int snowLeft = Replacer.VanillaInterface.SnowOriginLeft.Get();
-			int snowRight = Replacer.VanillaInterface.SnowOriginRight.Get();
+			int snowLeft = Replacer.VanillaInterface.SnowOriginLeft.Value;
+			int snowRight = Replacer.VanillaInterface.SnowOriginRight.Value;
 			int num843 = 10;
-			bool dungeonRight = Replacer.VanillaInterface.DungeonSide.Get() > 0;
+			bool dungeonRight = Replacer.VanillaInterface.DungeonSide.Value > 0;
 
-			int[] snowMinX = Replacer.VanillaInterface.SnowMinX.Get();
-			int[] snowMaxX = Replacer.VanillaInterface.SnowMaxX.Get();
+			int[] snowMinX = Replacer.VanillaInterface.SnowMinX.Value;
+			int[] snowMaxX = Replacer.VanillaInterface.SnowMaxX.Value;
 			for (int num844 = 0; num844 <= WorldGen.lavaLine - 140; num844++)
 			{
 				progress.Set(num844 / (float) (WorldGen.lavaLine - 140));
@@ -35,13 +36,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				if (dungeonRight)
 				{
-					if (Random.Next(4) == 0)
+					if (Random.NextBool(4))
 					{
 						snowLeft++;
 						snowRight++;
 					}
 				}
-				else if (Random.Next(4) == 0)
+				else if (Random.NextBool(4))
 				{
 					snowLeft--;
 					snowRight--;
@@ -57,9 +58,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					snowRight = Main.maxTilesX - 11;
 				if (snowLeft > snowRight)
 				{
-					int tmp = snowLeft;
-					snowLeft = snowRight;
-					snowRight = tmp;
+					(snowLeft, snowRight) = (snowRight, snowLeft);
 				}
 
 				snowMinX[num844] = snowLeft;
@@ -87,10 +86,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					else
 					{
 						num843 += Random.Next(-3, 4);
-						if (Random.Next(3) == 0)
+						if (Random.NextBool(3))
 						{
 							num843 += Random.Next(-4, 5);
-							if (Random.Next(3) == 0)
+							if (Random.NextBool(3))
 								num843 += Random.Next(-6, 7);
 						}
 
@@ -120,8 +119,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						}
 					}
 
-				if (Replacer.VanillaInterface.SnowBottom.Get() < num844)
-					Replacer.VanillaInterface.SnowBottom.Set(num844);
+				if (Replacer.VanillaInterface.SnowBottom.Value < num844)
+					Replacer.VanillaInterface.SnowBottom.Value = num844;
 			}
 		}
 	}

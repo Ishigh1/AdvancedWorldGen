@@ -27,7 +27,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				{
 					num362--;
 					int x = Random.Next(WorldGen.beachDistance, (int) (Main.maxTilesX * 0.48f));
-					if (Random.Next(2) == 0)
+					if (Random.NextBool(2))
 						x = Main.maxTilesX - x;
 
 					int y3 = Random.Next((int) WorldGen.worldSurfaceLow, (int) WorldGen.worldSurface);
@@ -52,7 +52,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				{
 					num366--;
 					int x = Random.Next(WorldGen.beachDistance, (int) (Main.maxTilesX * 0.47f));
-					if (Random.Next(2) == 0)
+					if (Random.NextBool(2))
 						x = Main.maxTilesX - x;
 
 					int y4 = Random.Next((int) WorldGen.worldSurfaceLow, (int) WorldGen.worldSurface);

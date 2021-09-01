@@ -46,10 +46,10 @@ namespace AdvancedWorldGen.SpecialOptions
 
 		public Entropy(int squareSize, BinaryReader reader)
 		{
-			OptionHelper = null;
-			Tiles = null;
-			Walls = null;
-			Rand = null;
+			OptionHelper = null!;
+			Tiles = null!;
+			Walls = null!;
+			Rand = null!;
 			NewTile = reader.ReadInt32();
 			NewWall = reader.ReadUInt16();
 			OldTile = reader.ReadInt32();
@@ -71,7 +71,7 @@ namespace AdvancedWorldGen.SpecialOptions
 					int y = (j + Y) % Main.maxTilesY;
 					Tile tile = Framing.GetTileSafely(x, y);
 					if (tile == null) continue;
-					List<Tuple<int, int>> coords;
+					List<Tuple<int, int>>? coords;
 					if (tile.IsActive)
 					{
 						int type = tile.type;
@@ -232,9 +232,9 @@ namespace AdvancedWorldGen.SpecialOptions
 			thread.Start(optionHelper);
 		}
 
-		public static void DoEntropy(object o)
+		public static void DoEntropy(object? o)
 		{
-			Entropy entropy = new(500, o as OptionHelper);
+			Entropy entropy = new(500, (OptionHelper) o!);
 			entropy.ExtractData();
 			entropy.RandomizeTiles();
 			entropy.RandomizeWalls();

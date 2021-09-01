@@ -9,7 +9,7 @@ using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 {
-	public class Graveyards
+	public static class Graveyards
 	{
 		public static void GenerateStructures(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -59,7 +59,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 				for (int newY = y - 1; newY >= y - 3; newY--)
 					WorldGen.PlaceWall(x + i, newY, WallID.WroughtIronFence, true);
 
-				if (i != size && Main.rand.Next(2) == 0)
+				if (i != size && Main.rand.NextBool(2))
 				{
 					if (!WorldGen.PlaceTile(x + i, y - 1, TileID.Tombstones, true, true,
 						style: Main.rand.Next(11))) continue;
@@ -91,7 +91,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 				}
 			}
 
-			if (tileType == TileID.Grass || tileType == TileID.CrimsonGrass)
+			if (tileType is TileID.Grass or TileID.CrimsonGrass)
 				tileType = TileID.Dirt;
 			if (tileType == TileID.JungleGrass)
 				tileType = TileID.Mud;
@@ -106,7 +106,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 				}
 
 				int goalY = prevTerrainY;
-				if (Main.rand.Next(5) == 0)
+				if (Main.rand.NextBool(5))
 					goalY++;
 
 				Main.tile[i, y].Slope = SlopeType.Solid;
@@ -133,7 +133,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 				}
 
 				int goalY = prevTerrainY;
-				if (Main.rand.Next(5) == 0)
+				if (Main.rand.NextBool(5))
 					goalY++;
 
 				Main.tile[i, y].Slope = SlopeType.Solid;

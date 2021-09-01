@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace AdvancedWorldGen.Helper
 {
-	public class DifficultyHelper
+	public static class DifficultyHelper
 	{
 		public static float GetDamageModifier()
 		{

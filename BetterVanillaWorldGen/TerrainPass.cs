@@ -23,13 +23,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
-			int leftBeachSize = Replacer.VanillaInterface.LeftBeachEnd.Get();
-			int rightBeachSize = Main.maxTilesX - Replacer.VanillaInterface.RightBeachStart.Get();
+			int leftBeachSize = Replacer.VanillaInterface.LeftBeachEnd.Value;
+			int rightBeachSize = Main.maxTilesX - Replacer.VanillaInterface.RightBeachStart.Value;
 
 			int num = passConfig.Get<int>("FlatBeachPadding");
-			progress.Message = Lang.gen[0].Value;
+			progress.Message = Language.GetTextValue("LegacyWorldGen.0");
 			TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
-			int num2 = 0;
 			double worldSurface = Main.maxTilesY * 0.3;
 			worldSurface *= Random.Next(90, 110) * 0.005;
 			double rockLayer = Main.maxTilesY * 0.35;
@@ -51,7 +50,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			double rockLayerHigh = rockLayer;
 			double num9 = Main.maxTilesY * 0.23;
 			SurfaceHistory surfaceHistory = new(500);
-			num2 = leftBeachSize + num;
+			int num2 = leftBeachSize + num;
 			for (int i = 0; i < Main.maxTilesX; i++)
 			{
 				progress.Set(i / (float) Main.maxTilesX);
@@ -69,8 +68,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				num2--;
 				if (i > Main.maxTilesX * 0.45 && i < Main.maxTilesX * 0.55 &&
-				    (terrainFeatureType == TerrainFeatureType.Mountain ||
-				     terrainFeatureType == TerrainFeatureType.Valley))
+				    terrainFeatureType is TerrainFeatureType.Mountain or TerrainFeatureType.Valley)
 					terrainFeatureType = (TerrainFeatureType) Random.Next(3);
 
 				if (i > Main.maxTilesX * 0.48 && i < Main.maxTilesX * 0.52)
@@ -157,7 +155,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public static void FillColumn(int x, double worldSurface, double rockLayer)
 		{
-			for (int i = 0; (double) i < worldSurface; i++)
+			for (int i = 0; i < worldSurface; i++)
 			{
 				Main.tile[x, i].IsActive = false;
 				Main.tile[x, i].frameX = -1;
@@ -183,7 +181,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		public static void RetargetColumn(int x, double worldSurface)
 		{
-			for (int i = 0; (double) i < worldSurface; i++)
+			for (int i = 0; i < worldSurface; i++)
 			{
 				Main.tile[x, i].IsActive = false;
 				Main.tile[x, i].frameX = -1;
@@ -203,7 +201,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		public double GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
 		{
 			double num = 0.0;
-			if ((WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen) && WorldGen.genRand.Next(2) == 0)
+			if ((WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen) && WorldGen.genRand.NextBool(2))
 				switch (featureType)
 				{
 					case TerrainFeatureType.Plateau:

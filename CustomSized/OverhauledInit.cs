@@ -2,7 +2,7 @@ using Terraria;
 
 namespace AdvancedWorldGen.CustomSized
 {
-	public class OverhauledInit
+	public static class OverhauledInit
 	{
 		public static void Init()
 		{

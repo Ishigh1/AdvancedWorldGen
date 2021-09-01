@@ -9,7 +9,7 @@ using static Terraria.ID.TileID;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 {
-	public class Traps
+	public static class Traps
 	{
 		public const int Left = -1;
 		public const int Right = 1;
@@ -52,7 +52,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 			for (int i = 0; i < numTraps; i++)
 			{
 				int x = Main.rand.Next(WorldGen.beachDistance, Main.maxTilesX * 2 / 5);
-				if (Main.rand.Next(2) == 0) x = Main.maxTilesX - x;
+				if (Main.rand.NextBool(2)) x = Main.maxTilesX - x;
 				switch (Main.rand.Next(4))
 				{
 					case 0:

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
@@ -19,15 +20,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
-			progress.Message = Lang.gen[70].Value;
+			progress.Message = Language.GetTextValue("LegacyWorldGen.70");
 			int jungleX = Replacer.VanillaInterface.JungleX;
 			int minX = Math.Max(10, jungleX - Main.maxTilesX / 8);
 			int maxX = Math.Min(Main.maxTilesX - 10, jungleX + Main.maxTilesX / 8);
 			int x = Random.Next(minX, maxX);
 			int y = Random.Next((int) WorldGen.rockLayer, Main.UnderworldLayer);
-			(x, y) = TileFinder.SpiralSearch(x, y, IsValid);
+			(x, _) = TileFinder.SpiralSearch(x, y, IsValid);
 
-			makeTemple(progress, x);
+			MakeTemple(progress, x);
 		}
 
 		public static bool IsValid(int x, int y)
@@ -35,32 +36,29 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			Tile tile = Main.tile[x, y];
 			if (tile.IsActive && tile.type == TileID.JungleGrass)
 				return true;
-			else if (tile.wall == WallID.Jungle || tile.wall == WallID.JungleUnsafe ||
-			         tile.wall == WallID.JungleUnsafe1 || tile.wall == WallID.JungleUnsafe2 ||
-			         tile.wall == WallID.JungleUnsafe3 || tile.wall == WallID.JungleUnsafe4)
-				return true;
-			return false;
+
+			return tile.wall is WallID.Jungle or WallID.JungleUnsafe or WallID.JungleUnsafe1 or WallID.JungleUnsafe2 or WallID.JungleUnsafe3 or WallID.JungleUnsafe4;
 		}
 
-		public void makeTemple(GenerationProgress generationProgress, int x)
+		public void MakeTemple(GenerationProgress generationProgress, int templeX)
 		{
 			List<Rectangle> rooms = new();
 			float worldSize = Main.maxTilesX / 4200f;
 			int ignored = 0;
-			int num2 = ClassicOptions.GetTempleRooms(ref ignored, worldSize);
+			int templeRoomCount = ClassicOptions.GetTempleRooms(ref ignored, worldSize);
 
 			int direction = 1;
-			if (Random.Next(2) == 0)
+			if (Random.NextBool(2))
 				direction = -1;
 
 			int num4 = direction;
-			int num7 = x;
+			int num7 = templeX;
 			int height = 0;
 			int num9 = Random.Next(1, 3);
 			int num10 = 0;
-			for (int i = 0; i < num2; i++)
+			for (int i = 0; i < templeRoomCount; i++)
 			{
-				GenPassHelper.SetProgress(generationProgress, i, num2, 1 / 12f);
+				GenPassHelper.SetProgress(generationProgress, i, templeRoomCount, 1 / 12f);
 				num10++;
 				int num11 = direction;
 				int num12 = num7;
@@ -79,7 +77,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 					if (num15 > num14)
 						num15 = num14;
 
-					if (i == num2 - 1)
+					if (i == templeRoomCount - 1)
 					{
 						num14 = Random.Next(55, 65);
 						num15 = Random.Next(45, 50);
@@ -110,7 +108,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 						if (rectangle.Intersects(rooms[j]))
 							flag = true;
 
-						if (Random.Next(100) == 0)
+						if (Random.NextBool(100))
 							num16++;
 					}
 				}
@@ -127,26 +125,26 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				height = tempHeight;
 			}
 
-			int y;
+			int templeY;
 			if (height > Main.UnderworldLayer - WorldGen.rockLayer)
-				y = Main.UnderworldLayer - height - Random.Next(Main.UnderworldLayer - WorldGen.lavaLine);
+				templeY = Main.UnderworldLayer - height - Random.Next(Main.UnderworldLayer - WorldGen.lavaLine);
 			else
-				y = Random.Next((int) WorldGen.rockLayer, Main.UnderworldLayer - height);
+				templeY = Random.Next((int) WorldGen.rockLayer, Main.UnderworldLayer - height);
 			for (int index = 0; index < rooms.Count; index++)
 			{
 				GenPassHelper.SetProgress(generationProgress, index, rooms.Count, 1 / 12f, 1 / 12f);
 				Rectangle rectangle = rooms[index];
-				rectangle.Y += y;
+				rectangle.Y += templeY;
 				rooms[index] = rectangle;
 			}
 
 			generationProgress.Value = 0.2f;
 
-			for (int k = 0; k < num2; k++)
+			for (int k = 0; k < templeRoomCount; k++)
 			{
-				GenPassHelper.SetProgress(generationProgress, k, num2, 1 / 12f, 2 / 12f);
+				GenPassHelper.SetProgress(generationProgress, k, templeRoomCount, 1 / 12f, 2 / 12f);
 				for (int l = 0; l < 2; l++)
-				for (int m = 0; m < num2; m++)
+				for (int m = 0; m < templeRoomCount; m++)
 				for (int n = 0; n < 2; n++)
 				{
 					int num17 = rooms[k].X;
@@ -185,7 +183,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 						for (int num23 = num18; num23 < num19; num23++)
 						{
 							Main.tile[num22, num23].IsActive = true;
-							Main.tile[num22, num23].type = 226;
+							Main.tile[num22, num23].type = TileID.LihzahrdBrick;
 							Main.tile[num22, num23].LiquidAmount = 0;
 							Main.tile[num22, num23].Slope = SlopeType.Solid;
 							Main.tile[num22, num23].IsHalfBlock = false;
@@ -194,14 +192,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				}
 			}
 
-			for (int num24 = 0; num24 < num2; num24++)
+			for (int num24 = 0; num24 < templeRoomCount; num24++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num24, num2, 1 / 12f, 3 / 12f);
+				GenPassHelper.SetProgress(generationProgress, num24, templeRoomCount, 1 / 12f, 3 / 12f);
 				for (int num25 = rooms[num24].X; num25 < rooms[num24].X + rooms[num24].Width; num25++)
 				for (int num26 = rooms[num24].Y; num26 < rooms[num24].Y + rooms[num24].Height; num26++)
 				{
 					Main.tile[num25, num26].IsActive = true;
-					Main.tile[num25, num26].type = 226;
+					Main.tile[num25, num26].type = TileID.LihzahrdBrick;
 					Main.tile[num25, num26].LiquidAmount = 0;
 					Main.tile[num25, num26].Slope = SlopeType.Solid;
 					Main.tile[num25, num26].IsHalfBlock = false;
@@ -224,16 +222,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				for (int num35 = x2; num35 < num27; num35++)
 				for (int num36 = y3; num36 < num28; num36++)
 				{
-					if (Random.Next(20) == 0)
+					if (Random.NextBool(20))
 						num31 += Random.Next(-1, 2);
 
-					if (Random.Next(20) == 0)
+					if (Random.NextBool(20))
 						num32 += Random.Next(-1, 2);
 
-					if (Random.Next(20) == 0)
+					if (Random.NextBool(20))
 						num29 += Random.Next(-1, 2);
 
-					if (Random.Next(20) == 0)
+					if (Random.NextBool(20))
 						num30 += Random.Next(-1, 2);
 
 					if (num29 < x2)
@@ -270,16 +268,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				for (int num37 = num28; num37 > y3; num37--)
 				for (int num38 = num27; num38 > x2; num38--)
 				{
-					if (Random.Next(20) == 0)
+					if (Random.NextBool(20))
 						num31 += Random.Next(-1, 2);
 
-					if (Random.Next(20) == 0)
+					if (Random.NextBool(20))
 						num32 += Random.Next(-1, 2);
 
-					if (Random.Next(20) == 0)
+					if (Random.NextBool(20))
 						num29 += Random.Next(-1, 2);
 
-					if (Random.Next(20) == 0)
+					if (Random.NextBool(20))
 						num30 += Random.Next(-1, 2);
 
 					if (num29 < x2)
@@ -314,10 +312,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				}
 			}
 
-			Vector2 templePath = new(x, y);
-			for (int num39 = 0; num39 < num2; num39++)
+			Vector2 templePath = new(templeX, templeY);
+			for (int num39 = 0; num39 < templeRoomCount; num39++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num39, num2, 1 / 12f, 4 / 12f);
+				GenPassHelper.SetProgress(generationProgress, num39, templeRoomCount, 1 / 12f, 4 / 12f);
 				Rectangle rectangle2 = rooms[num39];
 				rectangle2.X += 8;
 				rectangle2.Y += 8;
@@ -328,7 +326,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				{
 					int num40 = Random.Next(rectangle2.X, rectangle2.X + rectangle2.Width);
 					int num41 = Random.Next(rectangle2.Y, rectangle2.Y + rectangle2.Height);
-					if (num39 == num2 - 1)
+					if (num39 == templeRoomCount - 1)
 					{
 						num40 = rectangle2.X + rectangle2.Width / 2 + Random.Next(-10, 10);
 						num41 = rectangle2.Y + rectangle2.Height / 2 + Random.Next(-10, 10);
@@ -339,7 +337,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 						flag2 = false;
 				}
 
-				if (num39 >= num2 - 1)
+				if (num39 >= templeRoomCount - 1)
 					continue;
 
 				if (Random.Next(3) != 0)
@@ -402,55 +400,55 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				}
 			}
 
-			int num50 = Main.maxTilesX - 20;
-			int num51 = 20;
-			int num52 = Main.maxTilesY - 20;
-			int num53 = 20;
-			for (int num54 = 0; num54 < num2; num54++)
+			int templeLeft = Main.maxTilesX - 20;
+			int templeRight = 20;
+			int templeTop = Main.maxTilesY - 20;
+			int templeBottom = 20;
+			for (int num54 = 0; num54 < templeRoomCount; num54++)
 			{
-				if (rooms[num54].X < num50)
-					num50 = rooms[num54].X;
+				if (rooms[num54].X < templeLeft)
+					templeLeft = rooms[num54].X;
 
-				if (rooms[num54].X + rooms[num54].Width > num51)
-					num51 = rooms[num54].X + rooms[num54].Width;
+				if (rooms[num54].X + rooms[num54].Width > templeRight)
+					templeRight = rooms[num54].X + rooms[num54].Width;
 
-				if (rooms[num54].Y < num52)
-					num52 = rooms[num54].Y;
+				if (rooms[num54].Y < templeTop)
+					templeTop = rooms[num54].Y;
 
-				if (rooms[num54].Y + rooms[num54].Height > num53)
-					num53 = rooms[num54].Y + rooms[num54].Height;
+				if (rooms[num54].Y + rooms[num54].Height > templeBottom)
+					templeBottom = rooms[num54].Y + rooms[num54].Height;
 			}
 
-			num50 -= 10;
-			num51 += 10;
-			num52 -= 10;
-			num53 += 10;
-			for (int num55 = num50; num55 < num51; num55++)
+			templeLeft -= 10;
+			templeRight += 10;
+			templeTop -= 10;
+			templeBottom += 10;
+			for (int num55 = templeLeft; num55 < templeRight; num55++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num55, num51, 1 / 12f, 5 / 12f);
-				for (int num56 = num52; num56 < num53; num56++) WorldGen.outerTempled(num55, num56);
+				GenPassHelper.SetProgress(generationProgress, num55, templeRight, 1 / 12f, 5 / 12f);
+				for (int num56 = templeTop; num56 < templeBottom; num56++) WorldGen.outerTempled(num55, num56);
 			}
 
-			for (int num57 = num51; num57 >= num50; num57--)
+			for (int num57 = templeRight; num57 >= templeLeft; num57--)
 			{
-				GenPassHelper.SetProgress(generationProgress, num57, num50, 1 / 12f, 6 / 12f);
-				for (int num58 = num52; num58 < num53 / 2; num58++) WorldGen.outerTempled(num57, num58);
+				GenPassHelper.SetProgress(generationProgress, num57, templeLeft, 1 / 12f, 6 / 12f);
+				for (int num58 = templeTop; num58 < templeBottom / 2; num58++) WorldGen.outerTempled(num57, num58);
 			}
 
-			for (int num59 = num52; num59 < num53; num59++)
+			for (int num59 = templeTop; num59 < templeBottom; num59++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num59, num53, 1 / 12f, 7 / 12f);
-				for (int num60 = num50; num60 < num51; num60++) WorldGen.outerTempled(num60, num59);
+				GenPassHelper.SetProgress(generationProgress, num59, templeBottom, 1 / 12f, 7 / 12f);
+				for (int num60 = templeLeft; num60 < templeRight; num60++) WorldGen.outerTempled(num60, num59);
 			}
 
-			for (int num61 = num53; num61 >= num52; num61--)
+			for (int num61 = templeBottom; num61 >= templeTop; num61--)
 			{
-				GenPassHelper.SetProgress(generationProgress, num61, num52, 1 / 12f, 8 / 12f);
-				for (int num62 = num50; num62 < num51; num62++) WorldGen.outerTempled(num62, num61);
+				GenPassHelper.SetProgress(generationProgress, num61, templeTop, 1 / 12f, 8 / 12f);
+				for (int num62 = templeLeft; num62 < templeRight; num62++) WorldGen.outerTempled(num62, num61);
 			}
 
 			direction = -num4;
-			Vector2 vector = new(x, y);
+			Vector2 vector = new(templeX, templeY);
 			int num63 = Random.Next(2, 5);
 			bool flag3 = true;
 			int num64 = 0;
@@ -467,7 +465,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				vector.X += direction;
 				int num66 = (int) vector.X;
 				flag3 = false;
-				for (int num67 = (int) vector.Y - num63; (float) num67 < vector.Y + (float) num63; num67++)
+				for (int num67 = (int) vector.Y - num63; num67 < vector.Y + num63; num67++)
 				{
 					if (Main.tile[num66, num67].wall == 87 ||
 					    Main.tile[num66, num67].IsActive && Main.tile[num66, num67].type == 226)
@@ -481,9 +479,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				}
 			}
 
-			int num68 = x;
+			int num68 = templeX;
 			int num69;
-			for (num69 = y; !Main.tile[num68, num69].IsActive; num69++)
+			for (num69 = templeY; !Main.tile[num68, num69].IsActive; num69++)
 			{
 			}
 
@@ -497,7 +495,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			for (int num72 = num70; num72 <= num69; num72++)
 			{
 				Main.tile[num71, num72].IsActive = true;
-				Main.tile[num71, num72].type = 226;
+				Main.tile[num71, num72].type = TileID.LihzahrdBrick;
 				Main.tile[num71, num72].LiquidAmount = 0;
 				Main.tile[num71, num72].Slope = SlopeType.Solid;
 				Main.tile[num71, num72].IsHalfBlock = false;
@@ -514,7 +512,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			for (int num76 = num69 - 5; num76 <= num69 + 8; num76++)
 			{
 				Main.tile[num75, num76].IsActive = true;
-				Main.tile[num75, num76].type = 226;
+				Main.tile[num75, num76].type = TileID.LihzahrdBrick;
 				Main.tile[num75, num76].LiquidAmount = 0;
 				Main.tile[num75, num76].Slope = SlopeType.Solid;
 				Main.tile[num75, num76].IsHalfBlock = false;
@@ -522,29 +520,29 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 			for (int num77 = num68 - 3; num77 <= num68 + 3; num77++)
 			for (int num78 = num69 - 2; num78 < num69 + 3; num78++)
-				if (num78 >= num69 || num77 < x - 1 || num77 > x + 1)
+				if (num78 >= num69 || num77 < templeX - 1 || num77 > templeX + 1)
 				{
 					Main.tile[num77, num78].IsActive = false;
 					Main.tile[num77, num78].wall = 87;
 				}
 
 			WorldGen.PlaceTile(num68, num69, 10, true, false, -1, 11);
-			for (int num79 = num50; num79 < num51; num79++)
+			for (int num79 = templeLeft; num79 < templeRight; num79++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num79, num51, 1 / 12f, 9 / 12f);
-				for (int num80 = num52; num80 < num53; num80++) WorldGen.templeCleaner(num79, num80);
+				GenPassHelper.SetProgress(generationProgress, num79, templeRight, 1 / 12f, 9 / 12f);
+				for (int num80 = templeTop; num80 < templeBottom; num80++) WorldGen.templeCleaner(num79, num80);
 			}
 
-			for (int num81 = num53; num81 >= num52; num81--)
+			for (int num81 = templeBottom; num81 >= templeTop; num81--)
 			{
-				GenPassHelper.SetProgress(generationProgress, num81, num52, 1 / 12f, 10 / 12f);
-				for (int num82 = num51; num82 >= num50; num82--) WorldGen.templeCleaner(num82, num81);
+				GenPassHelper.SetProgress(generationProgress, num81, templeTop, 1 / 12f, 10 / 12f);
+				for (int num82 = templeRight; num82 >= templeLeft; num82--) WorldGen.templeCleaner(num82, num81);
 			}
 
-			for (int num83 = num50; num83 < num51; num83++)
+			for (int num83 = templeLeft; num83 < templeRight; num83++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num83, num51, 1 / 12f, 11 / 12f);
-				for (int num84 = num52; num84 < num53; num84++)
+				GenPassHelper.SetProgress(generationProgress, num83, templeRight, 1 / 12f, 11 / 12f);
+				for (int num84 = templeTop; num84 < templeBottom; num84++)
 				{
 					bool flag4 = true;
 					for (int num85 = num83 - 1; flag4 && num85 <= num83 + 1; num85++)
@@ -561,88 +559,84 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				}
 			}
 
-			int num87 = 0;
-			Rectangle rectangle3 = rooms[num2 - 1];
+			int tries = 0;
+			Rectangle rectangle3 = rooms[templeRoomCount - 1];
 			int num88 = rectangle3.Width / 2;
 			int num89 = rectangle3.Height / 2;
 			while (true)
 			{
-				num87++;
-				int num90 = rectangle3.X + num88 + 15 - Random.Next(30);
-				int num91 = rectangle3.Y + num89 + 15 - Random.Next(30);
-				WorldGen.PlaceTile(num90, num91, 237);
-				if (Main.tile[num90, num91].type == 237)
+				tries++;
+				int x = rectangle3.X + num88 + 15 - Random.Next(30);
+				int y = rectangle3.Y + num89 + 15 - Random.Next(30);
+				WorldGen.PlaceTile(x, y, TileID.LihzahrdAltar);
+				if (Main.tile[x, y].type == TileID.LihzahrdAltar)
 				{
-					int lAltarX = num90 - Main.tile[num90, num91].frameX / 18;
-					int lAltarY = num91 - Main.tile[num90, num91].frameY / 18;
-					typeof(WorldGen).GetField("lAltarX", BindingFlags.NonPublic | BindingFlags.Static)
-						.SetValue(null, lAltarX);
-					typeof(WorldGen).GetField("lAltarY", BindingFlags.NonPublic | BindingFlags.Static)
-						.SetValue(null, lAltarY);
+					int lAltarX = x - Main.tile[x, y].frameX / 18;
+					int lAltarY = y - Main.tile[x, y].frameY / 18;
+					Replacer.VanillaInterface.LAltarX.Value = lAltarX;
+					Replacer.VanillaInterface.LAltarY.Value = lAltarY;
 					break;
 				}
 
-				if (num87 < 1000)
+				if (tries < 1000)
 					continue;
 
-				num90 = rectangle3.X + num88;
-				num91 = rectangle3.Y + num89;
-				num90 += Random.Next(-10, 11);
-				for (num91 += Random.Next(-10, 11); !Main.tile[num90, num91].IsActive; num91++)
+				x = rectangle3.X + num88;
+				y = rectangle3.Y + num89;
+				x += Random.Next(-10, 11);
+				for (y += Random.Next(-10, 11); !Main.tile[x, y].IsActive; y++)
 				{
 				}
 
-				Main.tile[num90 - 1, num91].IsActive = true;
-				Main.tile[num90 - 1, num91].Slope = SlopeType.Solid;
-				Main.tile[num90 - 1, num91].IsHalfBlock = false;
-				Main.tile[num90 - 1, num91].type = 226;
-				Main.tile[num90, num91].IsActive = true;
-				Main.tile[num90, num91].Slope = SlopeType.Solid;
-				Main.tile[num90, num91].IsHalfBlock = false;
-				Main.tile[num90, num91].type = 226;
-				Main.tile[num90 + 1, num91].IsActive = true;
-				Main.tile[num90 + 1, num91].Slope = SlopeType.Solid;
-				Main.tile[num90 + 1, num91].IsHalfBlock = false;
-				Main.tile[num90 + 1, num91].type = 226;
-				num91 -= 2;
-				num90--;
+				Main.tile[x - 1, y].IsActive = true;
+				Main.tile[x - 1, y].Slope = SlopeType.Solid;
+				Main.tile[x - 1, y].IsHalfBlock = false;
+				Main.tile[x - 1, y].type = TileID.LihzahrdBrick;
+				Main.tile[x, y].IsActive = true;
+				Main.tile[x, y].Slope = SlopeType.Solid;
+				Main.tile[x, y].IsHalfBlock = false;
+				Main.tile[x, y].type = TileID.LihzahrdBrick;
+				Main.tile[x + 1, y].IsActive = true;
+				Main.tile[x + 1, y].Slope = SlopeType.Solid;
+				Main.tile[x + 1, y].IsHalfBlock = false;
+				Main.tile[x + 1, y].type = TileID.LihzahrdBrick;
+				y -= 2;
+				x--;
 				for (int num92 = -1; num92 <= 3; num92++)
 				for (int num93 = -1; num93 <= 1; num93++)
 				{
-					x = num90 + num92;
-					y = num91 + num93;
-					Main.tile[x, y].IsActive = false;
+					templeX = x + num92;
+					y += num93;
+					Main.tile[templeX, y].IsActive = false;
 				}
 
-				int lAltarX2 = num90;
-				int lAltarY2 = num91;
-				typeof(WorldGen).GetField("lAltarX", BindingFlags.NonPublic | BindingFlags.Static)
-					.SetValue(null, lAltarX2);
-				typeof(WorldGen).GetField("lAltarY", BindingFlags.NonPublic | BindingFlags.Static)
-					.SetValue(null, lAltarY2);
+				int lAltarX2 = x;
+				int lAltarY2 = y;
+				Replacer.VanillaInterface.LAltarX.Value = lAltarX2;
+				Replacer.VanillaInterface.LAltarY.Value = lAltarY2;
 				for (int num94 = 0; num94 <= 2; num94++)
 				for (int num95 = 0; num95 <= 1; num95++)
 				{
-					x = num90 + num94;
-					y = num91 + num95;
-					Main.tile[x, y].IsActive = true;
-					Main.tile[x, y].type = 237;
-					Main.tile[x, y].frameX = (short) (num94 * 18);
-					Main.tile[x, y].frameY = (short) (num95 * 18);
+					templeX = x + num94;
+					y += num95;
+					Main.tile[templeX, y].IsActive = true;
+					Main.tile[templeX, y].type = TileID.LihzahrdAltar;
+					Main.tile[templeX, y].frameX = (short) (num94 * 18);
+					Main.tile[templeX, y].frameY = (short) (num95 * 18);
 				}
 
 				for (int num96 = 0; num96 <= 2; num96++)
 				for (int num97 = 0; num97 <= 1; num97++)
 				{
-					x = num90 + num96;
-					y = num91 + num97;
-					WorldGen.SquareTileFrame(x, y);
+					templeX = x + num96;
+					y += num97;
+					WorldGen.SquareTileFrame(templeX, y);
 				}
 
 				break;
 			}
 
-			float num98 = num2 * 1.1f;
+			float num98 = templeRoomCount * 1.1f;
 			num98 *= 1f + Random.Next(-25, 26) * 0.01f;
 			if (WorldGen.drunkWorldGen)
 				num98 *= 1.5f;
@@ -651,69 +645,73 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			while (num98 > 0f)
 			{
 				num99++;
-				int num100 = Random.Next(num2);
-				int num101 = Random.Next(rooms[num100].X, rooms[num100].X + rooms[num100].Width);
-				int num102 = Random.Next(rooms[num100].Y, rooms[num100].Y + rooms[num100].Height);
-				if (Main.tile[num101, num102].wall == 87 && !Main.tile[num101, num102].IsActive)
+				int roomIndex = Random.Next(templeRoomCount);
+				int x = Random.Next(rooms[roomIndex].X, rooms[roomIndex].X + rooms[roomIndex].Width);
+				int y = Random.Next(rooms[roomIndex].Y, rooms[roomIndex].Y + rooms[roomIndex].Height);
+				if (Main.tile[x, y].wall == WallID.LihzahrdBrickUnsafe && !Main.tile[x, y].IsActive)
 				{
 					bool flag5 = false;
-					if (Random.Next(2) == 0)
+					if (Random.NextBool(2))
 					{
-						int num103 = 1;
-						if (Random.Next(2) == 0)
-							num103 = -1;
+						int directionY = 1;
+						if (Random.NextBool(2))
+							directionY = -1;
 
-						for (; !Main.tile[num101, num102].IsActive; num102 += num103)
+						for (; !Main.tile[x, y].IsActive; y += directionY)
 						{
 						}
 
-						num102 -= num103;
-						int num104 = Random.Next(2);
-						int num105 = Random.Next(3, 10);
-						bool flag6 = true;
-						for (int num106 = num101 - num105; num106 < num101 + num105; num106++)
-						for (int num107 = num102 - num105; num107 < num102 + num105; num107++)
-							if (Main.tile[num106, num107].IsActive && (Main.tile[num106, num107].type == 10 ||
-							                                           Main.tile[num106, num107].type == 237))
-							{
-								flag6 = false;
-								break;
-							}
+						y -= directionY;
+						bool num104 = Random.NextBool(2);
+						int range = Random.Next(3, 10);
+						bool found = true;
+						for (int xx = x - range; xx < x + range; xx++)
+						{
+							for (int yy = y - range; yy < y + range; yy++)
+								if (Main.tile[xx, yy].IsActive &&
+								    Main.tile[xx, yy].type is TileID.ClosedDoor or TileID.LihzahrdAltar)
+								{
+									found = false;
+									break;
+								}
 
-						if (flag6)
-							for (int num108 = num101 - num105; num108 < num101 + num105; num108++)
-							for (int num109 = num102 - num105; num109 < num102 + num105; num109++)
+							if (found)
+								break;
+						}
+
+						if (found)
+							for (int xx = x - range; xx < x + range; xx++)
+							for (int yy = y - range; yy < y + range; yy++)
 							{
-								if (!WorldGen.SolidTile(num108, num109) || Main.tile[num108, num109].type == 232 ||
-								    WorldGen.SolidTile(num108, num109 - num103))
+								if (!WorldGen.SolidTile(xx, yy) ||
+								    Main.tile[xx, yy].type == TileID.WoodenSpikes ||
+								    WorldGen.SolidTile(xx, yy - directionY))
 									continue;
 
-								Main.tile[num108, num109].type = 232;
+								Main.tile[xx, yy].type = TileID.WoodenSpikes;
 								flag5 = true;
-								if (num104 == 0)
+								if (num104)
 								{
-									Main.tile[num108, num109 - 1].type = 232;
-									Main.tile[num108, num109 - 1].IsActive = true;
+									Main.tile[xx, yy - 1].type = TileID.WoodenSpikes;
+									Main.tile[xx, yy - 1].IsActive = true;
 									if (WorldGen.drunkWorldGen)
 									{
-										Main.tile[num108, num109 - 2].type = 232;
-										Main.tile[num108, num109 - 2].IsActive = true;
+										Main.tile[xx, yy - 2].type = TileID.WoodenSpikes;
+										Main.tile[xx, yy - 2].IsActive = true;
 									}
 								}
 								else
 								{
-									Main.tile[num108, num109 + 1].type = 232;
-									Main.tile[num108, num109 + 1].IsActive = true;
+									Main.tile[xx, yy + 1].type = TileID.WoodenSpikes;
+									Main.tile[xx, yy + 1].IsActive = true;
 									if (WorldGen.drunkWorldGen)
 									{
-										Main.tile[num108, num109 + 2].type = 232;
-										Main.tile[num108, num109 + 2].IsActive = true;
+										Main.tile[xx, yy + 2].type = TileID.WoodenSpikes;
+										Main.tile[xx, yy + 2].IsActive = true;
 									}
 								}
 
-								num104++;
-								if (num104 > 1)
-									num104 = 0;
+								num104 = !num104;
 							}
 
 						if (flag5)
@@ -724,60 +722,59 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 					}
 					else
 					{
-						int num110 = 1;
-						if (Random.Next(2) == 0)
-							num110 = -1;
+						int directionX = 1;
+						if (Random.NextBool(2))
+							directionX = -1;
 
-						for (; !Main.tile[num101, num102].IsActive; num101 += num110)
+						for (; !Main.tile[x, y].IsActive; x += directionX)
 						{
 						}
 
-						num101 -= num110;
-						int num111 = Random.Next(2);
-						int num112 = Random.Next(3, 10);
+						x -= directionX;
+						bool num111 = Random.NextBool(2);
+						int range = Random.Next(3, 10);
 						bool flag7 = true;
-						for (int num113 = num101 - num112; num113 < num101 + num112; num113++)
-						for (int num114 = num102 - num112; num114 < num102 + num112; num114++)
-							if (Main.tile[num113, num114].IsActive && Main.tile[num113, num114].type == 10)
+						for (int xx = x - range; xx < x + range; xx++)
+						for (int yy = y - range; yy < y + range; yy++)
+							if (Main.tile[xx, yy].IsActive && Main.tile[xx, yy].type == 10)
 							{
 								flag7 = false;
 								break;
 							}
 
 						if (flag7)
-							for (int num115 = num101 - num112; num115 < num101 + num112; num115++)
-							for (int num116 = num102 - num112; num116 < num102 + num112; num116++)
+							for (int xx = x - range; xx < x + range; xx++)
+							for (int yy = y - range; yy < y + range; yy++)
 							{
-								if (!WorldGen.SolidTile(num115, num116) || Main.tile[num115, num116].type == 232 ||
-								    WorldGen.SolidTile(num115 - num110, num116))
+								if (!WorldGen.SolidTile(xx, yy) ||
+								    Main.tile[xx, yy].type == TileID.WoodenSpikes ||
+								    WorldGen.SolidTile(xx - directionX, yy))
 									continue;
 
-								Main.tile[num115, num116].type = 232;
+								Main.tile[xx, yy].type = TileID.WoodenSpikes;
 								flag5 = true;
-								if (num111 == 0)
+								if (num111)
 								{
-									Main.tile[num115 - 1, num116].type = 232;
-									Main.tile[num115 - 1, num116].IsActive = true;
+									Main.tile[xx - 1, yy].type = TileID.WoodenSpikes;
+									Main.tile[xx - 1, yy].IsActive = true;
 									if (WorldGen.drunkWorldGen)
 									{
-										Main.tile[num115 - 2, num116].type = 232;
-										Main.tile[num115 - 2, num116].IsActive = true;
+										Main.tile[xx - 2, yy].type = TileID.WoodenSpikes;
+										Main.tile[xx - 2, yy].IsActive = true;
 									}
 								}
 								else
 								{
-									Main.tile[num115 + 1, num116].type = 232;
-									Main.tile[num115 + 1, num116].IsActive = true;
+									Main.tile[xx + 1, yy].type = TileID.WoodenSpikes;
+									Main.tile[xx + 1, yy].IsActive = true;
 									if (WorldGen.drunkWorldGen)
 									{
-										Main.tile[num115 - 2, num116].type = 232;
-										Main.tile[num115 - 2, num116].IsActive = true;
+										Main.tile[xx - 2, yy].type = TileID.WoodenSpikes;
+										Main.tile[xx - 2, yy].IsActive = true;
 									}
 								}
 
-								num111++;
-								if (num111 > 1)
-									num111 = 0;
+								num111 = !num111;
 							}
 
 						if (flag5)
@@ -795,11 +792,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				}
 			}
 
-			WorldGen.tLeft = num50;
-			WorldGen.tRight = num51;
-			WorldGen.tTop = num52;
-			WorldGen.tBottom = num53;
-			WorldGen.tRooms = num2;
+			WorldGen.tLeft = templeLeft;
+			WorldGen.tRight = templeRight;
+			WorldGen.tTop = templeTop;
+			WorldGen.tBottom = templeBottom;
+			WorldGen.tRooms = templeRoomCount;
 		}
 	}
 }

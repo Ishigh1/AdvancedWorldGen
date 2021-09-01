@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.CustomSized;
-using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -19,6 +18,16 @@ namespace AdvancedWorldGen.UI
 	public class CustomSizeUI : UIState
 	{
 		public WorldSettings WorldSettings;
+
+		public static readonly FieldInfo SizeButtonsField =
+			typeof(UIWorldCreation).GetField("_sizeButtons", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
+		private static readonly Type IntInputElementType = typeof(Main).Assembly.GetType("Terraria.ModLoader.Config.UI.IntInputElement")!;
+
+		private static readonly ConstructorInfo IntInputElementConstructorInfo = IntInputElementType.GetConstructor(Array.Empty<Type>())!;
+		private static readonly FieldInfo IntInputElementMinField = IntInputElementType.GetField("min", BindingFlags.Public | BindingFlags.Instance)!;
+		private static readonly FieldInfo IntInputElementMaxField = IntInputElementType.GetField("max", BindingFlags.Public | BindingFlags.Instance)!;
+		private static readonly FieldInfo IntInputElementIncrementField = IntInputElementType.GetField("increment", BindingFlags.Public | BindingFlags.Instance)!;
 
 		public CustomSizeUI(WorldSettings worldSettings)
 		{
@@ -70,22 +79,14 @@ namespace AdvancedWorldGen.UI
 
 		public ConfigElement MakeIntInputLine(string fieldName, int min)
 		{
-			Type intInputElementType = Assembly.GetAssembly(typeof(Main))
-				.GetType("Terraria.ModLoader.Config.UI.IntInputElement");
+			ConfigElement intInputElement = (ConfigElement) IntInputElementConstructorInfo.Invoke(null);
 
-			ConfigElement intInputElement =
-				(ConfigElement) intInputElementType.GetConstructor(Array.Empty<Type>()).Invoke(null);
+			IntInputElementMinField.SetValue(intInputElement, min);
+			IntInputElementMaxField.SetValue(intInputElement, 500000);
+			IntInputElementIncrementField.SetValue(intInputElement, 100);
 
-			intInputElementType.GetField("min", BindingFlags.Public | BindingFlags.Instance)
-				.SetValue(intInputElement, min);
-			intInputElementType.GetField("max", BindingFlags.Public | BindingFlags.Instance)
-				.SetValue(intInputElement, 500000);
-			intInputElementType.GetField("increment", BindingFlags.Public | BindingFlags.Instance)
-				.SetValue(intInputElement, 100);
-
-			intInputElement.Bind(
-				new PropertyFieldWrapper(typeof(WorldSettings).GetField(fieldName,
-					BindingFlags.Instance | BindingFlags.Public)), WorldSettings, null, -1);
+			FieldInfo fieldInfo = typeof(WorldSettings).GetField(fieldName, BindingFlags.Instance | BindingFlags.Public)!;
+			intInputElement.Bind(new PropertyFieldWrapper(fieldInfo), WorldSettings, null, -1);
 			intInputElement.OnBind();
 			intInputElement.Recalculate();
 			return intInputElement;
@@ -101,11 +102,16 @@ namespace AdvancedWorldGen.UI
 				8400 when WorldSettings.SizeY == 2400 => 2,
 				_ => -1
 			};
-			new VanillaAccessor<int>(typeof(UIWorldCreation), "_optionSize", WorldSettings.UIWorldCreation).Set(size);
-			foreach (object groupOptionButton in new VanillaAccessor<object[]>(
-				typeof(UIWorldCreation), "_sizeButtons", WorldSettings.UIWorldCreation).Get())
-				groupOptionButton.GetType().GetMethod("SetCurrentOption", BindingFlags.Instance | BindingFlags.Public)
-					.Invoke(groupOptionButton, new object[] {size});
+			WorldSettings.OptionSizeField.SetValue(WorldSettings.UIWorldCreation, size);
+
+			object[] sizeButtons = (object[]) SizeButtonsField.GetValue(WorldSettings.UIWorldCreation)!;
+
+			Type groupOptionButtonType = sizeButtons.GetType().GetElementType()!;
+			MethodInfo setCurrentOptionMethod =
+				groupOptionButtonType.GetMethod("SetCurrentOption", BindingFlags.Instance | BindingFlags.Public)!;
+
+			foreach (object groupOptionButton in sizeButtons)
+				setCurrentOptionMethod.Invoke(groupOptionButton, new object[] {size});
 
 #if !WARNINGLESS
 			int oldSizeX = Main.tile.GetLength(0);

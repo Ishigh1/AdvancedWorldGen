@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using AdvancedWorldGen.Base;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.Localization;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 {
-	public partial class Dungeon
+	public static partial class Dungeon
 	{
-		public static List<(int x, int y)> DungeonRoomPos;
-		public static List<int> DungeonRoomSize;
-		public static List<int> DungeonRoomL;
-		public static List<int> DungeonRoomR;
-		public static List<int> DungeonRoomT;
-		public static List<int> DungeonRoomB;
+		public static List<(int x, int y)> DungeonRoomPos = null!;
+		public static List<int> DungeonRoomSize = null!;
+		public static List<int> DungeonRoomL = null!;
+		public static List<int> DungeonRoomR = null!;
+		public static List<int> DungeonRoomT = null!;
+		public static List<int> DungeonRoomB = null!;
 
-		public static List<(int x, int y, int pos)> Doors;
+		public static List<(int x, int y, int pos)> Doors = null!;
 
-		public static List<(int x, int y)> DungeonPlatforms;
+		public static List<(int x, int y)> DungeonPlatforms = null!;
 
 		public static int DungeonEntranceX;
 		public static bool DungeonSurface;
@@ -55,40 +57,40 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			DungeonPlatforms = new List<(int x, int y)>();
 		}
 
-		public static void MakeDungeon(int x, int y)
+		public static void MakeDungeon(int dungeonX, int dungeonY)
 		{
 			DungeonInit();
 
 			ushort tileType;
-			int wallType;
+			ushort wallType;
 			switch (WorldGen.genRand.Next(3))
 			{
 				case 0:
-					tileType = 41;
-					wallType = 7;
-					CrackedType = 481;
+					tileType = TileID.BlueDungeonBrick;
+					wallType = WallID.BlueDungeonUnsafe;
+					CrackedType = TileID.CrackedBlueDungeonBrick;
 					break;
 				case 1:
-					tileType = 43;
-					wallType = 8;
-					CrackedType = 482;
+					tileType = TileID.GreenDungeonBrick;
+					wallType = WallID.GreenDungeonUnsafe;
+					CrackedType = TileID.CrackedGreenDungeonBrick;
 					break;
 				default:
-					tileType = 44;
-					wallType = 9;
-					CrackedType = 483;
+					tileType = TileID.PinkDungeonBrick;
+					wallType = WallID.PinkDungeonUnsafe;
+					CrackedType = TileID.CrackedPinkDungeonBrick;
 					break;
 			}
 
 			Main.tileSolid[CrackedType] = false;
-			Replacer.VanillaInterface.CrackedType.Set(CrackedType);
+			Replacer.VanillaInterface.CrackedType.Value = CrackedType;
 			WorldGen.dungeonLake = true;
-			WorldGen.dungeonX = x;
-			WorldGen.dungeonY = y;
-			DungeonMinX = x;
-			DungeonMaxX = x;
-			DungeonMinY = y;
-			DungeonMaxY = y;
+			WorldGen.dungeonX = dungeonX;
+			WorldGen.dungeonY = dungeonY;
+			DungeonMinX = dungeonX;
+			DungeonMaxX = dungeonX;
+			DungeonMinY = dungeonY;
+			DungeonMaxY = dungeonY;
 			DungeonXStrength1 = WorldGen.genRand.Next(25, 30);
 			DungeonYStrength1 = WorldGen.genRand.Next(20, 25);
 			DungeonXStrength2 = WorldGen.genRand.Next(35, 50);
@@ -105,15 +107,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 				if (WorldGen.dungeonY > DungeonMaxY) DungeonMaxY = WorldGen.dungeonY;
 
-				if ((--num6 == 0) & (WorldGen.genRand.Next(3) == 0))
+				if ((--num6 == 0) && (WorldGen.genRand.NextBool(3)))
 				{
 					num6 = 5;
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num7 = WorldGen.dungeonX;
 						int num8 = WorldGen.dungeonY;
 						DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 
 						DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
@@ -132,17 +134,17 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 
 			DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
-			(int dungeonX, int dungeonY) = DungeonRoomPos[0];
-			for (int i = 0; i < DungeonRoomPos.Count; i++)
-				if (DungeonRoomPos[i].y < dungeonY)
+			(int dX, int dY) = DungeonRoomPos[0];
+			for (int index = 0; index < DungeonRoomPos.Count; index++)
+				if (DungeonRoomPos[index].y < dY)
 				{
-					dungeonX = DungeonRoomPos[i].x;
-					dungeonY = DungeonRoomPos[i].y;
+					dX = DungeonRoomPos[index].x;
+					dY = DungeonRoomPos[index].y;
 				}
 
-			WorldGen.dungeonX = dungeonX;
-			WorldGen.dungeonY = dungeonY;
-			DungeonEntranceX = dungeonX;
+			WorldGen.dungeonX = dX;
+			WorldGen.dungeonY = dY;
+			DungeonEntranceX = dX;
 			DungeonSurface = false;
 			num6 = 5;
 			if (WorldGen.drunkWorldGen) DungeonSurface = true;
@@ -151,7 +153,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			{
 				num6--;
 
-				if (num6 == 0 && WorldGen.genRand.Next(5) == 0 && WorldGen.dungeonY > Main.worldSurface + 100.0)
+				if (num6 == 0 && WorldGen.genRand.NextBool(5) && WorldGen.dungeonY > Main.worldSurface + 100.0)
 				{
 					num6 = 10;
 					int num11 = WorldGen.dungeonX;
@@ -166,7 +168,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 
 			DungeonEntrance(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
-			Main.statusText = Lang.gen[58].Value + " 65%";
+			Main.statusText = Language.GetTextValue("LegacyWorldGen.58") + " 65%";
 			int num13 = Main.maxTilesX * 2;
 			for (int num14 = 0; num14 < num13; num14++)
 			{
@@ -206,7 +208,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					}
 			}
 
-			Main.statusText = Lang.gen[58].Value + " 70%";
+			Main.statusText = Language.GetTextValue("LegacyWorldGen.58") + " 70%";
 			int num17 = 0;
 			int num18 = 1000;
 			int num19 = 0;
@@ -228,7 +230,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				if (Main.tile[x0, y0].wall == wallType && !Main.tile[x0, y0].IsActive)
 				{
 					int num24 = 1;
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 						num24 = -1;
 
 					for (; !Main.tile[x0, y0].IsActive; y0 += num24)
@@ -246,15 +248,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						       Main.tile[x0, y0 + num24].IsActive && Main.tile[x0, y0].IsActive &&
 						       !Main.tile[x0, y0 - num24].IsActive && num25 > 0)
 						{
-							Main.tile[x0, y0].type = 48;
+							Main.tile[x0, y0].type = TileID.Spikes;
 							if (!Main.tile[x0 - 1, y0 - num24].IsActive &&
 							    !Main.tile[x0 + 1, y0 - num24].IsActive)
 							{
 								Main.tile[x0, y0 - num24].Clear(TileDataType.Slope);
-								Main.tile[x0, y0 - num24].type = 48;
+								Main.tile[x0, y0 - num24].type = TileID.Spikes;
 								Main.tile[x0, y0 - num24].IsActive = true;
 								Main.tile[x0, y0 - num24 * 2].Clear(TileDataType.Slope);
-								Main.tile[x0, y0 - num24 * 2].type = 48;
+								Main.tile[x0, y0 - num24 * 2].type = TileID.Spikes;
 								Main.tile[x0, y0 - num24 * 2].IsActive = true;
 							}
 
@@ -269,15 +271,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						       Main.tile[x0, y0 + num24].IsActive && Main.tile[x0, y0].IsActive &&
 						       !Main.tile[x0, y0 - num24].IsActive && num25 > 0)
 						{
-							Main.tile[x0, y0].type = 48;
+							Main.tile[x0, y0].type = TileID.Spikes;
 							if (!Main.tile[x0 - 1, y0 - num24].IsActive &&
 							    !Main.tile[x0 + 1, y0 - num24].IsActive)
 							{
 								Main.tile[x0, y0 - num24].Clear(TileDataType.Slope);
-								Main.tile[x0, y0 - num24].type = 48;
+								Main.tile[x0, y0 - num24].type = TileID.Spikes;
 								Main.tile[x0, y0 - num24].IsActive = true;
 								Main.tile[x0, y0 - num24 * 2].Clear(TileDataType.Slope);
-								Main.tile[x0, y0 - num24 * 2].type = 48;
+								Main.tile[x0, y0 - num24 * 2].type = TileID.Spikes;
 								Main.tile[x0, y0 - num24 * 2].IsActive = true;
 							}
 
@@ -297,70 +299,70 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			num17 = 0;
 			num18 = 1000;
 			num19 = 0;
-			Main.statusText = Lang.gen[58].Value + " 75%";
+			Main.statusText = Language.GetTextValue("LegacyWorldGen.58") + " 75%";
 			while (num19 < num20)
 			{
 				num17++;
-				int x0 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				int y0 = WorldGen.genRand.Next((int) Main.worldSurface + 25, DungeonMaxY);
-				int num28 = y0;
-				if (Main.tile[x0, y0].wall == wallType && !Main.tile[x0, y0].IsActive)
+				int x = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
+				int y = WorldGen.genRand.Next((int) Main.worldSurface + 25, DungeonMaxY);
+				int num28 = y;
+				if (Main.tile[x, y].wall == wallType && !Main.tile[x, y].IsActive)
 				{
 					int num29 = 1;
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 						num29 = -1;
 
-					for (; x0 > 5 && x0 < Main.maxTilesX - 5 && !Main.tile[x0, y0].IsActive; x0 += num29)
+					for (; x > 5 && x < Main.maxTilesX - 5 && !Main.tile[x, y].IsActive; x += num29)
 					{
 					}
 
-					if (Main.tile[x0, y0 - 1].IsActive && Main.tile[x0, y0 + 1].IsActive &&
-					    Main.tile[x0, y0 - 1].type != CrackedType &&
-					    !Main.tile[x0 - num29, y0 - 1].IsActive && !Main.tile[x0 - num29, y0 + 1].IsActive)
+					if (Main.tile[x, y - 1].IsActive && Main.tile[x, y + 1].IsActive &&
+					    Main.tile[x, y - 1].type != CrackedType &&
+					    !Main.tile[x - num29, y - 1].IsActive && !Main.tile[x - num29, y + 1].IsActive)
 					{
 						num19++;
 						int num30 = WorldGen.genRand.Next(5, 13);
-						while (Main.tile[x0, y0 - 1].IsActive &&
-						       Main.tile[x0, y0 - 1].type != CrackedType &&
-						       Main.tile[x0 + num29, y0].IsActive && Main.tile[x0, y0].IsActive &&
-						       !Main.tile[x0 - num29, y0].IsActive && num30 > 0)
+						while (Main.tile[x, y - 1].IsActive &&
+						       Main.tile[x, y - 1].type != CrackedType &&
+						       Main.tile[x + num29, y].IsActive && Main.tile[x, y].IsActive &&
+						       !Main.tile[x - num29, y].IsActive && num30 > 0)
 						{
-							Main.tile[x0, y0].type = 48;
-							if (!Main.tile[x0 - num29, y0 - 1].IsActive &&
-							    !Main.tile[x0 - num29, y0 + 1].IsActive)
+							Main.tile[x, y].type = TileID.Spikes;
+							if (!Main.tile[x - num29, y - 1].IsActive &&
+							    !Main.tile[x - num29, y + 1].IsActive)
 							{
-								Main.tile[x0 - num29, y0].type = 48;
-								Main.tile[x0 - num29, y0].IsActive = true;
-								Main.tile[x0 - num29, y0].Clear(TileDataType.Slope);
-								Main.tile[x0 - num29 * 2, y0].type = 48;
-								Main.tile[x0 - num29 * 2, y0].IsActive = true;
-								Main.tile[x0 - num29 * 2, y0].Clear(TileDataType.Slope);
+								Main.tile[x - num29, y].type = TileID.Spikes;
+								Main.tile[x - num29, y].IsActive = true;
+								Main.tile[x - num29, y].Clear(TileDataType.Slope);
+								Main.tile[x - num29 * 2, y].type = TileID.Spikes;
+								Main.tile[x - num29 * 2, y].IsActive = true;
+								Main.tile[x - num29 * 2, y].Clear(TileDataType.Slope);
 							}
 
-							y0--;
+							y--;
 							num30--;
 						}
 
 						num30 = WorldGen.genRand.Next(5, 13);
-						y0 = num28 + 1;
-						while (Main.tile[x0, y0 + 1].IsActive &&
-						       Main.tile[x0, y0 + 1].type != CrackedType &&
-						       Main.tile[x0 + num29, y0].IsActive && Main.tile[x0, y0].IsActive &&
-						       !Main.tile[x0 - num29, y0].IsActive && num30 > 0)
+						y = num28 + 1;
+						while (Main.tile[x, y + 1].IsActive &&
+						       Main.tile[x, y + 1].type != CrackedType &&
+						       Main.tile[x + num29, y].IsActive && Main.tile[x, y].IsActive &&
+						       !Main.tile[x - num29, y].IsActive && num30 > 0)
 						{
-							Main.tile[x0, y0].type = 48;
-							if (!Main.tile[x0 - num29, y0 - 1].IsActive &&
-							    !Main.tile[x0 - num29, y0 + 1].IsActive)
+							Main.tile[x, y].type = TileID.Spikes;
+							if (!Main.tile[x - num29, y - 1].IsActive &&
+							    !Main.tile[x - num29, y + 1].IsActive)
 							{
-								Main.tile[x0 - num29, y0].type = 48;
-								Main.tile[x0 - num29, y0].IsActive = true;
-								Main.tile[x0 - num29, y0].Clear(TileDataType.Slope);
-								Main.tile[x0 - num29 * 2, y0].type = 48;
-								Main.tile[x0 - num29 * 2, y0].IsActive = true;
-								Main.tile[x0 - num29 * 2, y0].Clear(TileDataType.Slope);
+								Main.tile[x - num29, y].type = TileID.Spikes;
+								Main.tile[x - num29, y].IsActive = true;
+								Main.tile[x - num29, y].Clear(TileDataType.Slope);
+								Main.tile[x - num29 * 2, y].type = TileID.Spikes;
+								Main.tile[x - num29 * 2, y].IsActive = true;
+								Main.tile[x - num29 * 2, y].Clear(TileDataType.Slope);
 							}
 
-							y0++;
+							y++;
 							num30--;
 						}
 					}
@@ -373,63 +375,54 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			Main.statusText = Lang.gen[58].Value + " 80%";
-			foreach ((int i, int i1, int pos) in Doors)
+			Main.statusText = Language.GetTextValue("LegacyWorldGen.58") + " 80%";
+			foreach ((int doorX, int doorY, int pos) in Doors)
 			{
-				int num32 = i - 10;
-				int num33 = i + 10;
 				int num34 = 100;
 				int num35 = 0;
-				int num36 = 0;
-				int num37 = 0;
-				for (int num38 = num32; num38 < num33; num38++)
+				for (int x = doorX - 10; x < doorX + 10; x++)
 				{
 					bool flag = true;
-					int num39 = i1;
-					while (num39 > 10 && !Main.tile[num38, num39].IsActive) num39--;
+					int y = doorY;
+					while (y > 10 && !Main.tile[x, y].IsActive) y--;
 
-					if (!Main.tileDungeon[Main.tile[num38, num39].type])
+					if (!Main.tileDungeon[Main.tile[x, y].type])
 						flag = false;
 
-					num36 = num39;
-					for (num39 = i1; !Main.tile[num38, num39].IsActive; num39++)
+					int oldY = y;
+					for (y = doorY; !Main.tile[x, y].IsActive; y++)
 					{
 					}
 
-					if (!Main.tileDungeon[Main.tile[num38, num39].type])
+					if (!Main.tileDungeon[Main.tile[x, y].type])
 						flag = false;
 
-					num37 = num39;
-					if (num37 - num36 < 3)
+					if (y - oldY < 3)
 						continue;
-
-					int num40 = num38 - 20;
-					int num41 = num38 + 20;
-					int num42 = num37 - 10;
-					int num43 = num37 + 10;
-					for (int num44 = num40; num44 < num41; num44++)
-					for (int num45 = num42; num45 < num43; num45++)
-						if (Main.tile[num44, num45].IsActive && Main.tile[num44, num45].type == 10)
+					
+					for (int xx = x - 20; xx < x + 20; xx++)
+					for (int yy = y - 10; yy < y + 10; yy++)
+						if (Main.tile[xx, yy].IsActive && Main.tile[xx, yy].type == TileID.ClosedDoor)
 						{
 							flag = false;
 							break;
 						}
 
 					if (flag)
-						for (int num46 = num37 - 3; num46 < num37; num46++)
-						for (int num47 = num38 - 3; num47 <= num38 + 3; num47++)
-							if (Main.tile[num47, num46].IsActive)
+						for (int yy = y - 3; yy < y; yy++)
+						for (int xx = x - 3; xx <= x + 3; xx++)
+							if (Main.tile[xx, yy].IsActive)
 							{
 								flag = false;
 								break;
 							}
 
-					if (flag && num37 - num36 < 20)
-						if (pos == 0 && num37 - num36 < num34 || pos == -1 && num38 > num35 ||
-						    pos == 1 && (num38 < num35 || num35 == 0))
+					if (flag && y - oldY < 20)
+						if (pos == 0 && y - oldY < num34 || pos == -1 && x > num35 ||
+						    pos == 1 && (x < num35 || num35 == 0))
 						{
-							num35 = num38;
-							num34 = num37 - num36;
+							num35 = x;
+							num34 = y - oldY;
 						}
 				}
 
@@ -437,7 +430,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					continue;
 
 				int x0 = num35;
-				int y0 = i1;
+				int y0 = doorY;
 				int num50 = y0;
 				for (; !Main.tile[x0, y0].IsActive; y0++) Main.tile[x0, y0].IsActive = false;
 
@@ -453,21 +446,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 
 				int style = 13;
-				if (WorldGen.genRand.Next(3) == 0)
-					switch (wallType)
+				if (WorldGen.genRand.NextBool(3))
+					style = wallType switch
 					{
-						case 7:
-							style = 16;
-							break;
-						case 8:
-							style = 17;
-							break;
-						case 9:
-							style = 18;
-							break;
-					}
+						7 => 16,
+						8 => 17,
+						9 => 18,
+						_ => style
+					};
 
-				WorldGen.PlaceTile(x0, y0, 10, true, false, -1, style);
+				WorldGen.PlaceTile(x0, y0, TileID.ClosedDoor, true, false, -1, style);
 				x0--;
 				int num52 = y0 - 3;
 				while (!Main.tile[x0, num52].IsActive) num52--;
@@ -502,102 +490,108 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				Main.tile[x0 + 1, y0].Clear(TileDataType.Slope);
 			}
 
-			int[] array = new int[3];
-			switch (wallType)
+			int[] wallTypes = wallType switch
 			{
-				case 7:
-					array[0] = 7;
-					array[1] = 94;
-					array[2] = 95;
-					break;
-				case 9:
-					array[0] = 9;
-					array[1] = 96;
-					array[2] = 97;
-					break;
-				default:
-					array[0] = 8;
-					array[1] = 98;
-					array[2] = 99;
-					break;
-			}
+				WallID.BlueDungeonUnsafe => new int[]
+				{
+					WallID.BlueDungeonUnsafe,
+					WallID.BlueDungeonSlabUnsafe,
+					WallID.BlueDungeonTileUnsafe
+				},
+				WallID.PinkDungeonUnsafe => new int[]
+				{
+					WallID.PinkDungeonUnsafe,
+					WallID.PinkDungeonSlabUnsafe,
+					WallID.PinkDungeonTileUnsafe
+				},
+				_ => new int[]
+				{
+					WallID.GreenDungeonUnsafe,
+					WallID.GreenDungeonSlabUnsafe,
+					WallID.GreenDungeonTileUnsafe
+				}
+			};
 
-			for (int num55 = 0; num55 < 5; num55++)
-			for (int num56 = 0; num56 < 3; num56++)
+			for (int _ = 0; _ < 5; _++)
+			for (int i = 0; i < 3; i++)
 			{
-				int num57 = WorldGen.genRand.Next(40, 240);
-				int num58 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				int num59 = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
-				for (int num60 = num58 - num57; num60 < num58 + num57; num60++)
-				for (int num61 = num59 - num57; num61 < num59 + num57; num61++)
-					if (num61 > Main.worldSurface)
+				int range = WorldGen.genRand.Next(40, 240);
+				int randX = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
+				int randY = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
+				for (int x = randX - range; x < randX + range; x++)
+				for (int y = randY - range; y < randY + range; y++)
+					if (y > Main.worldSurface)
 					{
-						float num62 = Math.Abs(num58 - num60);
-						float num63 = Math.Abs(num59 - num61);
-						if (Math.Sqrt(num62 * num62 + num63 * num63) < num57 * 0.4 &&
-						    Main.wallDungeon[Main.tile[num60, num61].wall])
-							WorldGen.Spread.WallDungeon(num60, num61, array[num56]);
+						float distX = Math.Abs(randX - x);
+						float distY = Math.Abs(randY - y);
+						if (Math.Sqrt(distX * distX + distY * distY) < range * 0.4 && Main.wallDungeon[Main.tile[x, y].wall])
+							WorldGen.Spread.WallDungeon(x, y, wallTypes[i]);
 					}
 			}
 
-			Main.statusText = Lang.gen[58].Value + " 85%";
-			foreach ((int num65, int num66) in DungeonPlatforms)
+			Main.statusText = Language.GetTextValue("LegacyWorldGen.58") + " 85%";
+			foreach ((int platformX, int platformY) in DungeonPlatforms)
 			{
-				int num67 = Main.maxTilesX;
-				int num68 = 10;
-				if (num66 < Main.worldSurface + 50.0)
-					num68 = 20;
+				int y = int.MaxValue;
+				int offX = 10;
+				if (platformY < Main.worldSurface + 50.0)
+					offX = 20;
 
-				for (int num69 = num66 - 5; num69 <= num66 + 5; num69++)
+				for (int y1 = platformY - 5; y1 <= platformY + 5; y1++)
 				{
-					int num70 = num65;
-					int num71 = num65;
-					bool flag3 = false;
-					if (Main.tile[num70, num69].IsActive)
+					int x1 = platformX;
+					int x2 = platformX;
+					if (!Main.tile[x1, y1].IsActive)
 					{
-						flag3 = true;
+						bool flag3 = false;
+						while (!Main.tile[x1, y1].IsActive)
+						{
+							x1--;
+							if (!Main.tileDungeon[Main.tile[x1, y1].type] || x1 == 0)
+							{
+								flag3 = true;
+								break;
+							}
+						}
+						if (flag3)
+							continue;
+
+						while (!Main.tile[x2, y1].IsActive)
+						{
+							x2++;
+							if (!Main.tileDungeon[Main.tile[x2, y1].type] || x2 == Main.maxTilesX - 1)
+							{
+								flag3 = true;
+								break;
+							}
+						}
+						if (flag3)
+							continue;
 					}
 					else
 					{
-						while (!Main.tile[num70, num69].IsActive)
-						{
-							num70--;
-							if (!Main.tileDungeon[Main.tile[num70, num69].type] || num70 == 0)
-							{
-								flag3 = true;
-								break;
-							}
-						}
-
-						while (!Main.tile[num71, num69].IsActive)
-						{
-							num71++;
-							if (!Main.tileDungeon[Main.tile[num71, num69].type] || num71 == Main.maxTilesX - 1)
-							{
-								flag3 = true;
-								break;
-							}
-						}
+						continue;
 					}
 
-					if (flag3 || num71 - num70 > num68)
+					if (x2 - x1 > offX)
 						continue;
 
 					bool flag4 = true;
-					int num72 = num65 - num68 / 2 - 2;
-					int num73 = num65 + num68 / 2 + 2;
-					int num74 = num69 - 5;
-					int num75 = num69 + 5;
-					for (int num76 = num72; num76 <= num73; num76++)
-					for (int num77 = num74; num77 <= num75; num77++)
-						if (Main.tile[num76, num77].IsActive && Main.tile[num76, num77].type == 19)
-						{
-							flag4 = false;
-							break;
-						}
+					for (int xx = platformX - offX / 2 - 2; xx <= platformX + offX / 2 + 2; xx++)
+					{
+						for (int yy = y1 - 5; yy <= y1 + 5; yy++)
+							if (Main.tile[xx, yy].IsActive && Main.tile[xx, yy].type == TileID.Platforms)
+							{
+								flag4 = false;
+								break;
+							}
 
-					for (int num78 = num69 + 3; num78 >= num69 - 5; num78--)
-						if (Main.tile[num65, num78].IsActive)
+						if (!flag4)
+							break;
+					}
+
+					for (int yy = y1 + 3; yy >= y1 - 5; yy--)
+						if (Main.tile[platformX, yy].IsActive)
 						{
 							flag4 = false;
 							break;
@@ -605,58 +599,47 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 					if (flag4)
 					{
-						num67 = num69;
+						y = y1;
 						break;
 					}
 				}
 
-				if (num67 <= num66 - 10 || num67 >= num66 + 10)
+				if (y <= platformY - 10 || y >= platformY + 10)
 					continue;
 
-				int num79 = num65;
-				int num80 = num67;
-				int num81 = num65 + 1;
-				while (!Main.tile[num79, num80].IsActive)
+				int x = platformX;
+				// Place to the left
+				while (!Main.tile[x, y].IsActive)
 				{
-					Main.tile[num79, num80].IsActive = true;
-					Main.tile[num79, num80].type = 19;
-					Main.tile[num79, num80].Clear(TileDataType.Slope);
-					switch (wallType)
+					Main.tile[x, y].IsActive = true;
+					Main.tile[x, y].type = TileID.Platforms;
+					Main.tile[x, y].Clear(TileDataType.Slope);
+					Main.tile[x, y].frameY = wallType switch
 					{
-						case 7:
-							Main.tile[num79, num80].frameY = 108;
-							break;
-						case 8:
-							Main.tile[num79, num80].frameY = 144;
-							break;
-						default:
-							Main.tile[num79, num80].frameY = 126;
-							break;
-					}
+						WallID.BlueDungeonUnsafe => 6 * 18,
+						WallID.GreenDungeonUnsafe => 8 * 18,
+						_ => 7 * 18
+					};
 
-					WorldGen.TileFrame(num79, num80);
-					num79--;
+					WorldGen.TileFrame(x, y);
+					x--;
 				}
 
-				for (; !Main.tile[num81, num80].IsActive; num81++)
+				x = platformX + 1;
+				// Place to the right
+				for (; !Main.tile[x, y].IsActive; x++)
 				{
-					Main.tile[num81, num80].IsActive = true;
-					Main.tile[num81, num80].type = 19;
-					Main.tile[num81, num80].Clear(TileDataType.Slope);
-					switch (wallType)
+					Main.tile[x, y].IsActive = true;
+					Main.tile[x, y].type = TileID.Platforms;
+					Main.tile[x, y].Clear(TileDataType.Slope);
+					Main.tile[x, y].frameY = wallType switch
 					{
-						case 7:
-							Main.tile[num81, num80].frameY = 108;
-							break;
-						case 8:
-							Main.tile[num81, num80].frameY = 144;
-							break;
-						default:
-							Main.tile[num81, num80].frameY = 126;
-							break;
-					}
+						WallID.BlueDungeonUnsafe => 108,
+						WallID.GreenDungeonUnsafe => 144,
+						_ => 126
+					};
 
-					WorldGen.TileFrame(num81, num80);
+					WorldGen.TileFrame(x, y);
 				}
 			}
 
@@ -666,12 +649,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			for (int numChest = 0; numChest < evilChests; numChest++)
 			{
-				bool flag5 = false;
-				while (!flag5)
+				bool chestPlaced = false;
+				while (!chestPlaced)
 				{
-					int num84 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-					int num85 = WorldGen.genRand.Next((int) Main.worldSurface, DungeonMaxY);
-					if (!Main.wallDungeon[Main.tile[num84, num85].wall] || Main.tile[num84, num85].IsActive)
+					int randX = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
+					int randY = WorldGen.genRand.Next((int) Main.worldSurface, DungeonMaxY);
+					if (!Main.wallDungeon[Main.tile[randX, randY].wall] || Main.tile[randX, randY].IsActive)
 						continue;
 
 					ushort chestTileType = 21;
@@ -681,18 +664,18 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					{
 						case 0:
 							style2 = 23;
-							contain = 1156;
+							contain = ItemID.PiranhaGun;
 							break;
 						case 1:
 							if (!WorldGen.crimson)
 							{
 								style2 = 24;
-								contain = 1571;
+								contain = ItemID.ScourgeoftheCorruptor;
 							}
 							else
 							{
 								style2 = 25;
-								contain = 1569;
+								contain = ItemID.VampireKnives;
 							}
 
 							break;
@@ -700,151 +683,153 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 							if (WorldGen.crimson)
 							{
 								style2 = 24;
-								contain = 1571;
+								contain = ItemID.ScourgeoftheCorruptor;
 							}
 							else
 							{
 								style2 = 25;
-								contain = 1569;
+								contain = ItemID.VampireKnives;
 							}
 
 							break;
 						case 2:
 							style2 = 26;
-							contain = 1260;
+							contain = ItemID.RainbowGun;
 							break;
 						case 3:
 							style2 = 27;
-							contain = 1572;
+							contain = ItemID.StaffoftheFrostHydra;
 							break;
 						case 4:
-							chestTileType = 467;
+							chestTileType = TileID.Containers2;
 							style2 = 13;
-							contain = 4607;
+							contain = ItemID.StormTigerStaff;
 							break;
 					}
 
-					flag5 = Chest.AddBuriedChest(num84, num85, contain, false, style2, chestTileType);
+					chestPlaced = Chest.AddBuriedChest(randX, randY, contain, false, style2, chestTileType);
 				}
 			}
 
-			int[] array2 = new int[3]
+			int[] frameMult =
 			{
-				WorldGen.genRand.Next(9, 13), WorldGen.genRand.Next(9, 13), 0
+				WorldGen.genRand.Next(9, 13),
+				WorldGen.genRand.Next(9, 13),
+				WorldGen.genRand.Next(9, 13)
 			};
 
-			while (array2[1] == array2[0]) array2[1] = WorldGen.genRand.Next(9, 13);
+			while (frameMult[1] == frameMult[0])
+				frameMult[1] = WorldGen.genRand.Next(9, 13);
+			
+			while (frameMult[2] == frameMult[0] || frameMult[2] == frameMult[1])
+				frameMult[2] = WorldGen.genRand.Next(9, 13);
 
-			array2[2] = WorldGen.genRand.Next(9, 13);
-			while (array2[2] == array2[0] || array2[2] == array2[1]) array2[2] = WorldGen.genRand.Next(9, 13);
-
-			Main.statusText = Lang.gen[58].Value + " 90%";
+			Main.statusText = Language.GetTextValue("LegacyWorldGen.58") + " 90%";
 			num17 = 0;
 			num18 = 1000;
 			num19 = 0;
 			while (num19 < Main.maxTilesX / 20)
 			{
 				num17++;
-				int num86 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				int num87 = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
+				int x = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
+				int y = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
 				bool flag6 = true;
-				if (Main.wallDungeon[Main.tile[num86, num87].wall] && !Main.tile[num86, num87].IsActive)
+				if (Main.wallDungeon[Main.tile[x, y].wall] && !Main.tile[x, y].IsActive)
 				{
-					int num88 = 1;
-					if (WorldGen.genRand.Next(2) == 0)
-						num88 = -1;
+					int direction = 1;
+					if (WorldGen.genRand.NextBool(2))
+						direction = -1;
 
-					while (flag6 && !Main.tile[num86, num87].IsActive)
+					while (flag6 && !Main.tile[x, y].IsActive)
 					{
-						num86 -= num88;
-						if (num86 < 5 || num86 > Main.maxTilesX - 5)
+						x -= direction;
+						if (x < 5 || x > Main.maxTilesX - 5)
 							flag6 = false;
-						else if (Main.tile[num86, num87].IsActive && !Main.tileDungeon[Main.tile[num86, num87].type])
+						else if (Main.tile[x, y].IsActive && !Main.tileDungeon[Main.tile[x, y].type])
 							flag6 = false;
 					}
 
-					if (flag6 && Main.tile[num86, num87].IsActive && Main.tileDungeon[Main.tile[num86, num87].type] &&
-					    Main.tile[num86, num87 - 1].IsActive && Main.tileDungeon[Main.tile[num86, num87 - 1].type] &&
-					    Main.tile[num86, num87 + 1].IsActive && Main.tileDungeon[Main.tile[num86, num87 + 1].type])
+					if (flag6 &&
+					    Main.tile[x, y].IsActive && Main.tileDungeon[Main.tile[x, y].type] &&
+					    Main.tile[x, y - 1].IsActive && Main.tileDungeon[Main.tile[x, y - 1].type] &&
+					    Main.tile[x, y + 1].IsActive && Main.tileDungeon[Main.tile[x, y + 1].type])
 					{
-						num86 += num88;
-						for (int num89 = num86 - 3; num89 <= num86 + 3; num89++)
-						for (int num90 = num87 - 3; num90 <= num87 + 3; num90++)
-							if (Main.tile[num89, num90].IsActive && Main.tile[num89, num90].type == 19)
+						x += direction;
+						for (int xx = x - 3; xx <= x + 3; xx++)
+						for (int yy = y - 3; yy <= y + 3; yy++)
+							if (Main.tile[xx, yy].IsActive && Main.tile[xx, yy].type == TileID.Platforms)
 							{
 								flag6 = false;
 								break;
 							}
 
-						if (flag6 && !Main.tile[num86, num87 - 1].IsActive & !Main.tile[num86, num87 - 2].IsActive &
-							!Main.tile[num86, num87 - 3].IsActive)
+						if (flag6 && !Main.tile[x, y - 1].IsActive && !Main.tile[x, y - 2].IsActive && !Main.tile[x, y - 3].IsActive)
 						{
-							int num91 = num86;
-							int num92 = num86;
+							int distX = x;
+							int oldX = x;
 							for (;
-								num91 > DungeonMinX && num91 < DungeonMaxX && !Main.tile[num91, num87].IsActive &&
-								!Main.tile[num91, num87 - 1].IsActive && !Main.tile[num91, num87 + 1].IsActive;
-								num91 += num88)
+								distX > DungeonMinX && distX < DungeonMaxX &&
+								!Main.tile[distX, y].IsActive &&
+								!Main.tile[distX, y - 1].IsActive &&
+								!Main.tile[distX, y + 1].IsActive;
+								distX += direction)
 							{
 							}
 
-							num91 = Math.Abs(num86 - num91);
-							bool flag7 = WorldGen.genRand.Next(2) == 0;
+							distX = Math.Abs(x - distX);
+							bool books = WorldGen.genRand.NextBool(2);
 
-							if (num91 > 5)
+							if (distX > 5)
 							{
-								for (int num93 = WorldGen.genRand.Next(1, 4); num93 > 0; num93--)
+								for (int _ = WorldGen.genRand.Next(1, 4); _ > 0; _--)
 								{
-									Main.tile[num86, num87].IsActive = true;
-									Main.tile[num86, num87].Clear(TileDataType.Slope);
-									Main.tile[num86, num87].type = 19;
-									if (Main.tile[num86, num87].wall == array[0])
-										Main.tile[num86, num87].frameY = (short) (18 * array2[0]);
-									else if (Main.tile[num86, num87].wall == array[1])
-										Main.tile[num86, num87].frameY = (short) (18 * array2[1]);
+									Main.tile[x, y].IsActive = true;
+									Main.tile[x, y].Clear(TileDataType.Slope);
+									Main.tile[x, y].type = TileID.Platforms;
+									if (Main.tile[x, y].wall == wallTypes[0])
+										Main.tile[x, y].frameY = (short) (18 * frameMult[0]);
+									else if (Main.tile[x, y].wall == wallTypes[1])
+										Main.tile[x, y].frameY = (short) (18 * frameMult[1]);
 									else
-										Main.tile[num86, num87].frameY = (short) (18 * array2[2]);
+										Main.tile[x, y].frameY = (short) (18 * frameMult[2]);
 
-									WorldGen.TileFrame(num86, num87);
-									if (flag7)
+									WorldGen.TileFrame(x, y);
+									if (books)
 									{
-										WorldGen.PlaceTile(num86, num87 - 1, 50, true);
-										if (WorldGen.genRand.Next(50) == 0 &&
-										    num87 > (Main.worldSurface + Main.rockLayer) / 2.0 &&
-										    Main.tile[num86, num87 - 1].type == 50)
-											Main.tile[num86, num87 - 1].frameX = 90;
+										WorldGen.PlaceTile(x, y - 1, TileID.Books, true);
+										if (WorldGen.genRand.NextBool(50) &&
+										    y > (Main.worldSurface + Main.rockLayer) / 2.0 &&
+										    Main.tile[x, y - 1].type == TileID.Books)
+											Main.tile[x, y - 1].frameX = 90;
 									}
 
-									num86 += num88;
+									x += direction;
 								}
 
 								num17 = 0;
 								num19++;
-								if (!flag7 && WorldGen.genRand.Next(2) == 0)
+								if (!books && WorldGen.genRand.NextBool(2))
 								{
-									num86 = num92;
-									num87--;
-									int num94 = 0;
-									if (WorldGen.genRand.Next(4) == 0)
-										num94 = 1;
+									x = oldX;
+									y--;
+									int type = 0;
+									if (WorldGen.genRand.NextBool(4))
+										type = 1;
 
-									switch (num94)
+									type = type switch
 									{
-										case 0:
-											num94 = 13;
-											break;
-										case 1:
-											num94 = 49;
-											break;
-									}
+										0 => TileID.Bottles,
+										1 => TileID.WaterCandle,
+										_ => type // Impossible
+									};
 
-									WorldGen.PlaceTile(num86, num87, num94, true);
-									if (Main.tile[num86, num87].type == 13)
+									WorldGen.PlaceTile(x, y, type, true);
+									if (Main.tile[x, y].type == TileID.Bottles)
 									{
-										if (WorldGen.genRand.Next(2) == 0)
-											Main.tile[num86, num87].frameX = 18;
+										if (WorldGen.genRand.NextBool(2))
+											Main.tile[x, y].frameX = 18;
 										else
-											Main.tile[num86, num87].frameX = 36;
+											Main.tile[x, y].frameX = 36;
 									}
 								}
 							}
@@ -859,65 +844,65 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			Main.statusText = Lang.gen[58].Value + " 95%";
+			Main.statusText = Language.GetTextValue("LegacyWorldGen.58") + " 95%";
 			int num95 = 1;
-			for (int num96 = 0; num96 < DungeonRoomPos.Count; num96++)
+			for (int index = 0; index < DungeonRoomPos.Count; index++)
 			{
-				int num97 = 0;
-				while (num97 < 1000)
+				int tries = 0;
+				while (tries < 1000)
 				{
-					int num98 = (int) (DungeonRoomSize[num96] * 0.4);
-					(int i3, int num99) = DungeonRoomPos[num96];
-					i3 += WorldGen.genRand.Next(-num98, num98 + 1);
-					num99 += WorldGen.genRand.Next(-num98, num98 + 1);
-					int num100 = 0;
+					int offset = (int) (DungeonRoomSize[index] * 0.4);
+					(int x, int y) = DungeonRoomPos[index];
+					x += WorldGen.genRand.Next(-offset, offset + 1);
+					y += WorldGen.genRand.Next(-offset, offset + 1);
 					int style3 = 2;
 					if (num95 == 1)
 						num95++;
 
+					int itemType;
 					switch (num95)
 					{
 						case 2:
-							num100 = 155;
+							itemType = ItemID.Muramasa;
 							break;
 						case 3:
-							num100 = 156;
+							itemType = ItemID.CobaltShield;
 							break;
 						case 4:
-							num100 = 157;
+							itemType = ItemID.AquaScepter;
 							break;
 						case 5:
-							num100 = 163;
+							itemType = ItemID.BlueMoon;
 							break;
 						case 6:
-							num100 = 113;
+							itemType = ItemID.MagicMissile;
 							break;
 						case 7:
-							num100 = 3317;
+							itemType = ItemID.Valor;
 							break;
 						case 8:
-							num100 = 327;
+							itemType = ItemID.GoldenKey;
 							style3 = 0;
 							break;
 						default:
-							num100 = 164;
+							itemType = ItemID.Handgun;
 							num95 = 0;
 							break;
 					}
 
-					if (num99 < Main.worldSurface + 50.0)
+					if (y < Main.worldSurface + 50.0)
 					{
-						num100 = 327;
+						itemType = 327;
 						style3 = 0;
 					}
 
-					if (Chest.AddBuriedChest(i3, num99, num100, false, style3))
+					if (Chest.AddBuriedChest(x, y, itemType, false, style3))
 					{
-						num97 += 1000;
+						tries += 1000;
 						num95++;
 					}
 
-					num97++;
+					tries++;
 				}
 			}
 
@@ -933,11 +918,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			if (DungeonMaxY > Main.maxTilesY) DungeonMaxY = Main.maxTilesY;
 
-			MakeDungeon_Lights(tileType, array);
+			MakeDungeon_Lights(tileType, wallTypes);
 			MakeDungeon_Traps();
 			MakeDungeon_GroundFurniture(wallType);
-			MakeDungeon_Pictures(array);
-			MakeDungeon_Banners(array);
+			MakeDungeon_Pictures(wallTypes);
+			MakeDungeon_Banners(wallTypes);
 		}
 	}
 }

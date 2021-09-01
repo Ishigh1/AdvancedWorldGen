@@ -18,7 +18,7 @@ namespace AdvancedWorldGen.UI
 {
 	public class OptionsSelector : UIState
 	{
-		public static Dictionary<string, Option> OptionDict;
+		public static Dictionary<string, Option> OptionDict = null!;
 		public LocalizedText Description;
 
 		public UIWorldCreation UiWorldCreation;

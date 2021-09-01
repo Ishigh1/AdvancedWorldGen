@@ -37,7 +37,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 				for (int y = cluster[0].y - spreadY; y <= cluster[0].y + spreadY; y++)
 					if (WorldGen.InWorld(x, y, 1))
 					{
-						if (!registerInterestingTiles.TryGetValue((x, y), out List<int> clusterList))
+						if (!registerInterestingTiles.TryGetValue((x, y), out List<int>? clusterList))
 						{
 							clusterList = new List<int>();
 							registerInterestingTiles[(x, y)] = clusterList;
@@ -169,19 +169,19 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 						break;
 					}
 
-				if (flag && WorldGen.genRand.Next(20) == 0)
+				if (flag && WorldGen.genRand.NextBool(20))
 				{
 					WorldGen.PlaceTile(x, y - 1, 485, true, true, -1, WorldGen.genRand.Next(4));
 				}
-				else if (flag && WorldGen.genRand.Next(5) == 0)
+				else if (flag && WorldGen.genRand.NextBool(5))
 				{
 					WorldGen.PlaceTile(x, y - 1, 484, true, true);
 				}
 				else
 				{
-					if (flag ^ flag2 && WorldGen.genRand.Next(5) == 0)
+					if (flag ^ flag2 && WorldGen.genRand.NextBool(5))
 						WorldGen.PlaceTile(x, y + (!flag ? 1 : -1), 165, true, true);
-					else if (flag && WorldGen.genRand.Next(5) == 0)
+					else if (flag && WorldGen.genRand.NextBool(5))
 						WorldGen.PlaceTile(x, y - 1, 187, true, true, -1, 29 + WorldGen.genRand.Next(6));
 				}
 			}
@@ -241,7 +241,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 				if (num == -1 || num == index)
 					return;
 
-				int num2 = WorldGen.genRand.Next(2) == 0 ? -1 : index;
+				int num2 = WorldGen.genRand.NextBool(2) ? -1 : index;
 				foreach (Point item in pointClusters[num]) clusterIndexMap[item.X, item.Y] = num2;
 			}
 
@@ -257,13 +257,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 				{
 					float num4 = num / (float) num2 * (i - point.Y);
 					int num5 = Math.Min(num, (int) Math.Sqrt(num3 - num4 * num4));
-					for (int j = point.X - num5; j <= point.X + num5; j++) array[j, i] = WorldGen.genRand.Next(2) == 0;
+					for (int j = point.X - num5; j <= point.X + num5; j++) array[j, i] = WorldGen.genRand.NextBool(2);
 				}
 
 				List<List<Point>> list = new();
 				for (int k = 0; k < array.GetLength(0); k++)
 				for (int l = 0; l < array.GetLength(1); l++)
-					if (array[k, l] && WorldGen.genRand.Next(2) == 0)
+					if (array[k, l] && WorldGen.genRand.NextBool(2))
 					{
 						List<Point> list2 = new();
 						SearchForCluster(array, list2, k, l);

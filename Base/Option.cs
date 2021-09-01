@@ -4,7 +4,7 @@ namespace AdvancedWorldGen.Base
 {
 	public class Option
 	{
-		public List<string> Conflicts;
+		public List<string> Conflicts = null!;
 		public bool Hidden;
 		public ushort Id;
 	}

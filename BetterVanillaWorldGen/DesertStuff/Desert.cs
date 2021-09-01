@@ -8,8 +8,9 @@ using Terraria.ID;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 {
-	public class Desert
+	public static class Desert
 	{
+		private static readonly ConstructorInfo ConstructorInfo = typeof(DesertDescription).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Array.Empty<Type>(), null)!;
 		public static readonly Vector2 DefaultBlockScale = new(4f, 2f);
 
 		public static bool IsUndergroundDesert(int x, int y)
@@ -23,7 +24,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 			const int spread = 15;
 			for (int i = x - spread; i <= x + spread; i += 10)
 			for (int j = y - spread; j <= y + spread; j += 10)
-				if (Main.tile[i, j].wall == 187 || Main.tile[i, j].wall == 216)
+				if (Main.tile[i, j].wall is 187 or 216)
 					return true;
 
 			return false;
@@ -47,14 +48,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 			origin.Y = surfaceBottomStart + WorldGen.genRand.Next(40, 60);
 			int specialSeedModifier = Main.tenthAnniversaryWorld ? (int) (20f * worldSizeY) : 0;
 
-			Type type = typeof(DesertDescription);
-			ConstructorInfo constructorInfo =
-				type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Array.Empty<Type>(), null);
-
-			DesertDescription placement = (DesertDescription) constructorInfo.Invoke(Array.Empty<object>());
+			DesertDescription placement = (DesertDescription) ConstructorInfo.Invoke(Array.Empty<object>());
 			foreach (PropertyInfo propertyInfo in typeof(DesertDescription).GetProperties())
 			{
-				object value = propertyInfo.Name switch
+				object? value = propertyInfo.Name switch
 				{
 					"CombinedArea" => new Rectangle(origin.X, surfaceBottomStart, scaledWidth,
 						origin.Y + scaledHeight - surfaceBottomStart),

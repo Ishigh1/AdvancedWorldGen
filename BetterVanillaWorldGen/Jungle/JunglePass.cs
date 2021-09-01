@@ -1,7 +1,9 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.WorldBuilding;
 using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
 
@@ -22,13 +24,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 		{
-			progress.Message = Lang.gen[11].Value;
+			progress.Message = Language.GetTextValue("LegacyWorldGen.11");
 
-			JungleOriginX = Replacer.VanillaInterface.JungleOriginX.Get();
-			DungeonSide = Replacer.VanillaInterface.DungeonSide.Get();
+			JungleOriginX = Replacer.VanillaInterface.JungleOriginX.Value;
+			DungeonSide = Replacer.VanillaInterface.DungeonSide.Value;
 			WorldSurface = WorldGen.worldSurface;
-			LeftBeachEnd = Replacer.VanillaInterface.LeftBeachEnd.Get();
-			RightBeachStart = Replacer.VanillaInterface.RightBeachStart.Get();
+			LeftBeachEnd = Replacer.VanillaInterface.LeftBeachEnd.Value;
+			RightBeachStart = Replacer.VanillaInterface.RightBeachStart.Value;
 
 			WorldScale = Main.maxTilesX / (4200 / 1.5f);
 			Point point = CreateStartPoint();
@@ -71,10 +73,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 		public void PlaceGemsAt(int x, int y, ushort baseGem, int gemVariants)
 		{
-			for (int i = 0; (float) i < 6f * WorldScale; i++)
-				WorldGen.TileRunner(x + Random.Next(-(int) (125f * WorldScale), (int) (125f * WorldScale)),
-					y + Random.Next(-(int) (125f * WorldScale), (int) (125f * WorldScale)), Random.Next(3, 7),
-					Random.Next(3, 8), Random.Next(baseGem, baseGem + gemVariants));
+			for (int _ = 0; _ < 6f * WorldScale; _++)
+			{
+				int i = x + Random.Next(-(int) (125f * WorldScale), (int) (125f * WorldScale));
+				int j = y + Random.Next(-(int) (125f * WorldScale), (int) (125f * WorldScale));
+				int strength = Random.Next(3, 7);
+				int steps = Random.Next(3, 8);
+				int type = Random.Next(baseGem, baseGem + gemVariants);
+				WorldGen.TileRunner(i, j, strength, steps, type);
+			}
 		}
 
 		public void PlaceFirstPassMud(int x, int y, int xSpeedScale)
@@ -85,10 +92,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			WorldGen.mudWall = false;
 		}
 
-		public Point CreateStartPoint()
-		{
-			return new(JungleOriginX, (int) (Main.maxTilesY + Main.rockLayer) / 2);
-		}
+		public Point CreateStartPoint() => new(JungleOriginX, (int) (Main.maxTilesY + Main.rockLayer) / 2);
 
 		public void ApplyRandomMovement(ref int x, ref int y, int xRange, int yRange)
 		{
@@ -100,12 +104,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		public void GenerateTunnelToSurface(int x, int y)
 		{
 			double num = Random.Next(5, 11);
-			Vector2 vector = default;
-			vector.X = x;
-			vector.Y = y;
-			Vector2 vector2 = default;
-			vector2.X = Random.Next(-10, 11) * 0.1f;
-			vector2.Y = Random.Next(10, 20) * 0.1f;
+			Vector2 vector = new()
+			{
+				X = x,
+				Y = y
+			};
+			Vector2 vector2 = new()
+			{
+				X = Random.Next(-10, 11) * 0.1f,
+				Y = Random.Next(10, 20) * 0.1f
+			};
 			int num2 = 0;
 			bool flag = true;
 			while (flag)
@@ -157,7 +165,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				{
 					num2 = 0;
 					int num4 = -2;
-					if (Random.Next(2) == 0)
+					if (Random.NextBool(2))
 						num4 = 2;
 
 					WorldGen.TileRunner((int) vector.X, (int) vector.Y, Random.Next(3, 20), Random.Next(10, 100), -1,
@@ -197,65 +205,65 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			{
 				int x = Random.Next(minX, maxX);
 				int y = Random.Next((int) WorldSurface + 10, Main.UnderworldLayer);
-				if (Main.tile[x, y].wall == 64 || Main.tile[x, y].wall == 15)
+				if (Main.tile[x, y].wall is WallID.JungleUnsafe or WallID.MudUnsafe)
 					WorldGen.MudWallRunner(x, y);
 			}
 		}
 
 		public void GenerateFinishingTouches(GenerationProgress progress, int oldX, int oldY)
 		{
-			int num = oldX;
-			int num2 = oldY;
+			int x = oldX;
+			int y = oldY;
 			float worldScale = WorldScale;
-			for (int i = 0; (float) i <= 20f * worldScale; i++)
+			for (int i = 0; i <= 20f * worldScale; i++)
 			{
 				progress.Set((60f + i / worldScale) * 0.01f);
-				num += Random.Next((int) (-5f * worldScale), (int) (6f * worldScale));
-				num2 += Random.Next((int) (-5f * worldScale), (int) (6f * worldScale));
-				WorldGen.TileRunner(num, num2, Random.Next(40, 100), Random.Next(300, 500), 59);
+				x += Random.Next((int) (-5f * worldScale), (int) (6f * worldScale));
+				y += Random.Next((int) (-5f * worldScale), (int) (6f * worldScale));
+				WorldGen.TileRunner(x, y, Random.Next(40, 100), Random.Next(300, 500), 59);
 			}
 
-			for (int j = 0; (float) j <= 10f * worldScale; j++)
+			for (int j = 0; j <= 10f * worldScale; j++)
 			{
 				progress.Set((80f + j / worldScale * 2f) * 0.01f);
-				num = oldX + Random.Next((int) (-600f * worldScale), (int) (600f * worldScale));
-				num2 = oldY + Random.Next((int) (-200f * worldScale), (int) (200f * worldScale));
-				while (num < 1 || num >= Main.maxTilesX - 1 || num2 < 1 || num2 >= Main.maxTilesY - 1 ||
-				       Main.tile[num, num2].type != 59)
+				x = oldX + Random.Next((int) (-600f * worldScale), (int) (600f * worldScale));
+				y = oldY + Random.Next((int) (-200f * worldScale), (int) (200f * worldScale));
+				while (x < 1 || x >= Main.maxTilesX - 1 || y < 1 || y >= Main.maxTilesY - 1 ||
+				       Main.tile[x, y].type != 59)
 				{
-					num = oldX + Random.Next((int) (-600f * worldScale), (int) (600f * worldScale));
-					num2 = oldY + Random.Next((int) (-200f * worldScale), (int) (200f * worldScale));
+					x = oldX + Random.Next((int) (-600f * worldScale), (int) (600f * worldScale));
+					y = oldY + Random.Next((int) (-200f * worldScale), (int) (200f * worldScale));
 				}
 
-				for (int k = 0; (float) k < 8f * worldScale; k++)
+				for (int k = 0; k < 8f * worldScale; k++)
 				{
-					num += Random.Next(-30, 31);
-					num2 += Random.Next(-30, 31);
+					x += Random.Next(-30, 31);
+					y += Random.Next(-30, 31);
 					int type = -1;
-					if (Random.Next(7) == 0)
+					if (Random.NextBool(7))
 						type = -2;
 
-					WorldGen.TileRunner(num, num2, Random.Next(10, 20), Random.Next(30, 70), type);
+					WorldGen.TileRunner(x, y, Random.Next(10, 20), Random.Next(30, 70), type);
 				}
 			}
 
-			for (int l = 0; (float) l <= 300f * worldScale; l++)
+			for (int _ = 0; _ <= 300f * worldScale; _++)
 			{
-				num = oldX + Random.Next((int) (-600f * worldScale), (int) (600f * worldScale));
-				num2 = oldY + Random.Next((int) (-200f * worldScale), (int) (200f * worldScale));
-				while (num < 1 || num >= Main.maxTilesX - 1 || num2 < 1 || num2 >= Main.maxTilesY - 1 ||
-				       Main.tile[num, num2].type != 59)
+				x = oldX + Random.Next((int) (-600f * worldScale), (int) (600f * worldScale));
+				y = oldY + Random.Next((int) (-200f * worldScale), (int) (200f * worldScale));
+				while (x < 1 || x >= Main.maxTilesX - 1 || y < 1 || y >= Main.maxTilesY - 1 ||
+				       Main.tile[x, y].type != 59)
 				{
-					num = oldX + Random.Next((int) (-600f * worldScale), (int) (600f * worldScale));
-					num2 = oldY + Random.Next((int) (-200f * worldScale), (int) (200f * worldScale));
+					x = oldX + Random.Next((int) (-600f * worldScale), (int) (600f * worldScale));
+					y = oldY + Random.Next((int) (-200f * worldScale), (int) (200f * worldScale));
 				}
 
-				WorldGen.TileRunner(num, num2, Random.Next(4, 10), Random.Next(5, 30), 1);
-				if (Random.Next(4) == 0)
+				WorldGen.TileRunner(x, y, Random.Next(4, 10), Random.Next(5, 30), 1);
+				if (Random.NextBool(4))
 				{
-					int type2 = Random.Next(63, 69);
-					WorldGen.TileRunner(num + Random.Next(-1, 2), num2 + Random.Next(-1, 2), Random.Next(3, 7),
-						Random.Next(4, 8), type2);
+					int type = Random.Next(TileID.Sapphire, TileID.JungleThorns);
+					WorldGen.TileRunner(x + Random.Next(-1, 2), y + Random.Next(-1, 2), Random.Next(3, 7),
+						Random.Next(4, 8), type);
 				}
 			}
 		}

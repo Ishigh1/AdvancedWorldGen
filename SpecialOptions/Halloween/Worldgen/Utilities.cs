@@ -4,7 +4,7 @@ using Terraria.ID;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 {
-	public class Utilities
+	public static class Utilities
 	{
 		public static float WorldSize => Main.maxTilesX / 4200f;
 
@@ -79,7 +79,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 			for (int i = 0; i < 50; i++)
 			{
 				int type = Main.tile[x, y + i].type;
-				if (type == TileID.Cloud || type == TileID.RainCloud || type == TileID.SnowCloud) return true;
+				if (type is TileID.Cloud or TileID.RainCloud or TileID.SnowCloud) return true;
 			}
 
 			return false;
