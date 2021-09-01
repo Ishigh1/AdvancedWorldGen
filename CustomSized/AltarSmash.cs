@@ -9,7 +9,7 @@ using Terraria.ID;
 
 namespace AdvancedWorldGen.CustomSized
 {
-	public class AltarSmash
+	public static class AltarSmash
 	{
 		public static void SmashAltar(On.Terraria.WorldGen.orig_SmashAltar orig, int x, int y)
 		{

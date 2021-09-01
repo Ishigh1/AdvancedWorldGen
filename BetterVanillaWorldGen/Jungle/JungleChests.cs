@@ -23,7 +23,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				1 => 120,
 				2 => 158,
 				3 => 175,
-				4 => 45
+				_ => 45
 			};
 
 			float num536 = Random.Next(7, 12);

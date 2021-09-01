@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
@@ -12,7 +13,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 		{
-			progress.Message = Lang.gen[56].Value;
+			progress.Message = Language.GetTextValue("LegacyWorldGen.56");
 			Replacer.VanillaInterface.SnowTop.Set((int) Main.worldSurface);
 			int num840 = WorldGen.lavaLine - Random.Next(160, 200);
 			int snowLeft = Replacer.VanillaInterface.SnowOriginLeft.Get();
@@ -57,9 +58,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					snowRight = Main.maxTilesX - 11;
 				if (snowLeft > snowRight)
 				{
-					int tmp = snowLeft;
-					snowLeft = snowRight;
-					snowRight = tmp;
+					(snowLeft, snowRight) = (snowRight, snowLeft);
 				}
 
 				snowMinX[num844] = snowLeft;

@@ -37,7 +37,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 				for (int y = cluster[0].y - spreadY; y <= cluster[0].y + spreadY; y++)
 					if (WorldGen.InWorld(x, y, 1))
 					{
-						if (!registerInterestingTiles.TryGetValue((x, y), out List<int> clusterList))
+						if (!registerInterestingTiles.TryGetValue((x, y), out List<int>? clusterList))
 						{
 							clusterList = new List<int>();
 							registerInterestingTiles[(x, y)] = clusterList;

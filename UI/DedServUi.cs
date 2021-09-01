@@ -9,7 +9,7 @@ using WorldFile = On.Terraria.IO.WorldFile;
 
 namespace AdvancedWorldGen.UI
 {
-	public class DedServUi
+	public static class DedServUi
 	{
 		public static WorldFileData DedServOptions(WorldFile.orig_CreateMetadata orig, string name, bool cloudSave,
 			int gamemode)

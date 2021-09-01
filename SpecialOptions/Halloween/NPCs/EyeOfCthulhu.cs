@@ -5,7 +5,7 @@ using Terraria.ID;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.NPCs
 {
-	public class EyeOfCthulhu
+	public static class EyeOfCthulhu
 	{
 		public const int DashServerInitAI = -126;
 		public const int DashInitAI = -127;

@@ -25,16 +25,16 @@ namespace AdvancedWorldGen.Base
 {
 	public class ModifiedWorld : ModSystem
 	{
-		public static List<int> NPCs = new()
+		public static readonly List<int> NPCs = new()
 		{
 			Merchant, Nurse, ArmsDealer, Dryad, Guide, Demolitionist, Clothier, GoblinTinkerer, Wizard, Mechanic,
 			Truffle, Steampunker, DyeTrader, PartyGirl, Cyborg, Painter, WitchDoctor, Pirate, Stylist, Angler,
 			TaxCollector, DD2Bartender, Golfer, BestiaryGirl, Princess, TownBunny, TownDog
 		};
 
-		public CustomSizeUI CustomSizeUI;
+		public CustomSizeUI CustomSizeUI = null!;
 
-		public OptionHelper OptionHelper;
+		public OptionHelper OptionHelper = null!;
 		public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
 
 		public override void OnModLoad()
@@ -46,7 +46,7 @@ namespace AdvancedWorldGen.Base
 
 		public override void Unload()
 		{
-			OptionHelper = null;
+			OptionHelper = null!;
 		}
 
 		public override void OnWorldLoad()
@@ -136,8 +136,7 @@ namespace AdvancedWorldGen.Base
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Guide");
 			if (passIndex != -1)
 			{
-				tasks.RemoveAt(passIndex);
-				tasks.Insert(passIndex, new PassLegacy("NPCs", HandleNpcs));
+				tasks[passIndex] = new PassLegacy("NPCs", HandleNpcs);
 			}
 
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Tile Cleanup");

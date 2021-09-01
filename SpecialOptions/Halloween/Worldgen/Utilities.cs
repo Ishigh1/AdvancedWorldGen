@@ -4,7 +4,7 @@ using Terraria.ID;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 {
-	public class Utilities
+	public static class Utilities
 	{
 		public static float WorldSize => Main.maxTilesX / 4200f;
 

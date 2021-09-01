@@ -3,7 +3,7 @@ using Terraria;
 
 namespace AdvancedWorldGen.Helper
 {
-	public class TileFinder
+	public static class TileFinder
 	{
 		public static (int x, int y) SpiralSearch(int x, int y, Func<int, int, bool> check)
 		{

@@ -9,6 +9,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class Reset : ControlledWorldGenPass
 	{
+		private static readonly MethodInfo ResetGenerator =
+			typeof(WorldGen).GetMethod("ResetGenerator", BindingFlags.Static | BindingFlags.NonPublic)!;
+
 		public Reset() : base("Reset", 0.9667f)
 		{
 		}
@@ -29,8 +32,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Replacer.VanillaInterface.HeartCount.Set(0);
 			Main.checkXMas();
 			Main.checkHalloween();
-			typeof(WorldGen).GetMethod("ResetGenerator", BindingFlags.Static | BindingFlags.NonPublic)
-				.Invoke(null, null);
+			ResetGenerator.Invoke(null, null);
 			WorldGen.UndergroundDesertLocation = Rectangle.Empty;
 			WorldGen.UndergroundDesertHiveLocation = Rectangle.Empty;
 			WorldGen.numLarva = 0;

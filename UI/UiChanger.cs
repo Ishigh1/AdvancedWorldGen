@@ -28,14 +28,16 @@ namespace AdvancedWorldGen.UI
 {
 	public class UiChanger
 	{
-		public Asset<Texture2D> CopyOptionsTexture;
-		public UIText Description;
-		public OptionsSelector OptionsSelector;
-		public Asset<Texture2D> OptionsTexture;
-		public Thread Thread;
+		public readonly Asset<Texture2D> CopyOptionsTexture;
+		public readonly Asset<Texture2D> OptionsTexture;
+		public UIText Description = null!;
+		public OptionsSelector OptionsSelector = null!;
+		public Thread Thread = null!;
 
 		public UiChanger(Mod mod)
 		{
+			OptionsTexture = null!;
+			CopyOptionsTexture = null!;
 			if (!Main.dedServ)
 			{
 				OptionsTexture = mod.Assets.Request<Texture2D>("Images/WorldOptions");
@@ -87,9 +89,8 @@ namespace AdvancedWorldGen.UI
 			UIWorldCreation self, UIElement container, float accumulatedHeight, string tagGroup)
 		{
 			origAddDescriptionPanel(self, container, accumulatedHeight, tagGroup);
-			FieldInfo fieldInfo = typeof(UIWorldCreation).GetField("_seedPlate", BindingFlags.NonPublic |
-				BindingFlags.Instance);
-			UICharacterNameButton characterNameButton = (UICharacterNameButton) fieldInfo.GetValue(self);
+			FieldInfo fieldInfo = typeof(UIWorldCreation).GetField("_seedPlate", BindingFlags.NonPublic | BindingFlags.Instance)!;
+			UICharacterNameButton characterNameButton = (UICharacterNameButton) fieldInfo.GetValue(self)!;
 			characterNameButton.Width.Pixels -= 48;
 
 			GroupOptionButton<bool> groupOptionButton = new(true, null, null, Color.White, null)
@@ -103,13 +104,11 @@ namespace AdvancedWorldGen.UI
 				PaddingLeft = 4f
 			};
 
-			fieldInfo = typeof(GroupOptionButton<bool>).GetField("_iconTexture", BindingFlags.NonPublic |
-				BindingFlags.Instance);
+			fieldInfo = typeof(GroupOptionButton<bool>).GetField("_iconTexture", BindingFlags.NonPublic | BindingFlags.Instance)!;
 			fieldInfo.SetValue(groupOptionButton, OptionsTexture);
 
-			fieldInfo = typeof(UIWorldCreation).GetField("_descriptionText", BindingFlags.NonPublic |
-			                                                                 BindingFlags.Instance);
-			Description = (UIText) fieldInfo.GetValue(self);
+			fieldInfo = typeof(UIWorldCreation).GetField("_descriptionText", BindingFlags.NonPublic | BindingFlags.Instance)!;
+			Description = (UIText) fieldInfo.GetValue(self)!;
 
 			groupOptionButton.OnMouseDown += ToOptionsMenu;
 			groupOptionButton.OnMouseOver += ShowOptionDescription;
@@ -152,8 +151,8 @@ namespace AdvancedWorldGen.UI
 			orig(self, data, orderInList, canBePlayed);
 
 			FieldInfo fieldInfo = typeof(Terraria.GameContent.UI.Elements.UIWorldListItem).GetField("_buttonLabel",
-				BindingFlags.NonPublic | BindingFlags.Instance);
-			UIText uiText = (UIText) fieldInfo.GetValue(self);
+				BindingFlags.NonPublic | BindingFlags.Instance)!;
+			UIText uiText = (UIText) fieldInfo.GetValue(self)!;
 			UIImageButton copyOptionButton = new(CopyOptionsTexture)
 			{
 				VAlign = 1f,
@@ -182,8 +181,8 @@ namespace AdvancedWorldGen.UI
 			IList<TagCompound> modTags = tags.GetList<TagCompound>("modData");
 			List<string> options =
 				(from tagCompound in modTags
-					where tagCompound.GetString("mod") == "AdvancedWorldGen"
-					select (List<string>) tagCompound.GetCompound("data")?.GetList<string>("Options"))
+				 where tagCompound.GetString("mod") == "AdvancedWorldGen"
+				 select (List<string>?) tagCompound.GetCompound("data")?.GetList<string>("Options"))
 				.FirstOrDefault() ??
 				new List<string>();
 			return options;

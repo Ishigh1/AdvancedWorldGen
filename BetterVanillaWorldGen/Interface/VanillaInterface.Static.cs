@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using AdvancedWorldGen.Helper;
 using Terraria;
 
@@ -11,6 +12,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 		public VanillaAccessor<bool> SkipFramingDuringGen;
 
+		[MemberNotNull(nameof(NumOceanCaveTreasure), nameof(HeartCount), nameof(SkipFramingDuringGen), nameof(CrackedType))]
 		public void InitializeStatics()
 		{
 			NumOceanCaveTreasure = new VanillaAccessor<int>(typeof(WorldGen), "numOceanCaveTreasure");

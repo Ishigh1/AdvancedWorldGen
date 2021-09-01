@@ -95,7 +95,7 @@ namespace AdvancedWorldGen.Base
 					new Entropy(500, reader).TreatTiles();
 					break;
 				default:
-					throw new ArgumentOutOfRangeException();
+					throw new ArgumentOutOfRangeException(nameof(packetId));
 			}
 		}
 	}

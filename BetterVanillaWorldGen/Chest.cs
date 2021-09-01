@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff;
 using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 using Terraria;
@@ -9,10 +8,10 @@ using Terraria.Utilities;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
-	public class Chest
+	public static class Chest
 	{
 		public static int HellChest;
-		public static List<int> HellChestItem;
+		public static List<int> HellChestItem = null!;
 		public static bool GeneratedShadowKey;
 		public static int SandstoneUp;
 		public static int SandstoneDown;
@@ -27,11 +26,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			{
 				int indexToExchange = unifiedRandom.Next(HellChestItem.Count - index);
 				if (indexToExchange != index)
-				{
-					int oldValue = HellChestItem[index];
-					HellChestItem[index] = HellChestItem[indexToExchange];
-					HellChestItem[indexToExchange] = oldValue;
-				}
+					(HellChestItem[index], HellChestItem[indexToExchange]) =
+						(HellChestItem[indexToExchange], HellChestItem[index]);
 			}
 
 			SandstoneUp = -1;
@@ -129,27 +125,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			{
 				flag = true;
 				num8 = 11;
-				switch (WorldGen.genRand.Next(6))
+				contain = WorldGen.genRand.Next(6) switch
 				{
-					case 0:
-						contain = 670;
-						break;
-					case 1:
-						contain = 724;
-						break;
-					case 2:
-						contain = 950;
-						break;
-					case 3:
-						contain = 1319;
-						break;
-					case 4:
-						contain = 987;
-						break;
-					default:
-						contain = 1579;
-						break;
-				}
+					0 => 670,
+					1 => 724,
+					2 => 950,
+					3 => 1319,
+					4 => 987,
+					_ => 1579
+				};
 
 				if (WorldGen.genRand.Next(20) == 0)
 					contain = 997;
@@ -162,7 +146,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			if (chestTileType == 21 &&
-			    (style == 10 || contain == 211 || contain == 212 || contain == 213 || contain == 753))
+			    (style == 10 || contain is 211 or 212 or 213 or 753))
 			{
 				flag3 = true;
 				num8 = 10;

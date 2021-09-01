@@ -4,7 +4,7 @@ using Terraria.ID;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.NPCs
 {
-	public class BrainOfCthulhu
+	public static class BrainOfCthulhu
 	{
 		public const int CreeperServerAI = -126;
 		public const int CreeperInitAI = -127;

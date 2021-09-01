@@ -17,7 +17,7 @@ using ILPlayer = IL.Terraria.Player;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween
 {
-	public class HalloweenCommon
+	public static class HalloweenCommon
 	{
 		public static void Setup()
 		{

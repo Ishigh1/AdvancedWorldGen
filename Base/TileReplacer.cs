@@ -11,10 +11,10 @@ namespace AdvancedWorldGen.Base
 {
 	public class SpecialCase
 	{
-		public Func<int, int, Tile, bool> Condition;
+		public Func<int, int, Tile, bool>? Condition;
 		public int Type;
 
-		public SpecialCase(int type, Func<int, int, Tile, bool> condition = null)
+		public SpecialCase(int type, Func<int, int, Tile, bool>? condition = null)
 		{
 			Type = type;
 			Condition = condition;
@@ -33,7 +33,7 @@ namespace AdvancedWorldGen.Base
 		public const int Lava = -3;
 		public const int Honey = -4;
 
-		public static List<int> NotReplaced;
+		public static List<int> NotReplaced = null!;
 
 		public Dictionary<int, int> Dictionary;
 		public Dictionary<int, SpecialCase> SpecialCases;
@@ -64,30 +64,27 @@ namespace AdvancedWorldGen.Base
 				{
 					{
 						ImmatureHerbs, new SpecialCase(None,
-							(x, y, tile) => tile.frameX == 0 || tile.frameX == 32 || tile.frameX == 32 * 2 ||
-							                tile.frameX == 32 * 3 || tile.frameX == 32 * 6)
+							(_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
 					},
 					{
 						MatureHerbs, new SpecialCase(None,
-							(x, y, tile) => tile.frameX == 0 || tile.frameX == 32 || tile.frameX == 32 * 2 ||
-							                tile.frameX == 32 * 3 || tile.frameX == 32 * 6)
+							(_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
 					},
 					{
 						BloomingHerbs, new SpecialCase(None,
-							(x, y, tile) => tile.frameX == 0 || tile.frameX == 32 || tile.frameX == 32 * 2 ||
-							                tile.frameX == 32 * 3 || tile.frameX == 32 * 6)
+							(_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
 					},
 					{
 						Cattail, new SpecialCase(None,
-							(x, y, tile) => tile.frameY == 0 || tile.frameY == 32 * 3 || tile.frameY == 32 * 4)
+							(_, _, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4)
 					},
 					{
 						LilyPad, new SpecialCase(None,
-							(x, y, tile) => tile.frameY == 0 || tile.frameY == 32 * 3 || tile.frameY == 32 * 4)
+							(_, _, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4)
 					},
 					{
 						DyePlants, new SpecialCase(None,
-							(x, y, tile) => tile.frameX == 32 * 3 || tile.frameX == 32 * 4 || tile.frameX == 32 * 7)
+							(_, _, tile) => tile.frameX is 32 * 3 or 32 * 4 or 32 * 7)
 					}
 				};
 
@@ -109,11 +106,10 @@ namespace AdvancedWorldGen.Base
 
 		public static void Unload()
 		{
-			NotReplaced = null;
+			NotReplaced = null!;
 		}
 
-		public static void UpdateDictionary(Dictionary<int, int> dictionary, int to,
-			params int[] from)
+		public static void UpdateDictionary(Dictionary<int, int> dictionary, int to, params int[] from)
 		{
 			foreach (int tile in from) dictionary.Add(tile, to);
 		}
@@ -142,7 +138,7 @@ namespace AdvancedWorldGen.Base
 		{
 			if (!Dictionary.TryGetValue(tileType, out int type))
 			{
-				if (!SpecialCases.TryGetValue(tileType, out SpecialCase specialCase) ||
+				if (!SpecialCases.TryGetValue(tileType, out SpecialCase? specialCase) ||
 				    !specialCase.IsValid(i, j, tile))
 					return;
 				type = specialCase.Type;
@@ -288,10 +284,9 @@ namespace AdvancedWorldGen.Base
 			while (y >= 0)
 			{
 				Tile tile = Main.tile[x, y];
-				if (tile != null && tile.IsActive && Sets.Falling[tile.type] &&
-				    !Main.tile[x, y + 1].IsActive)
+				if (tile is {IsActive: true} && Sets.Falling[tile.type] && !Main.tile[x, y + 1].IsActive)
 				{
-					if (Main.tile[x, y + 1] == null) Main.tile[x, y + 1] = new Tile();
+					Main.tile[x, y + 1] ??= new Tile();
 
 					Main.tile[x, y + 1].IsActive = true;
 					Main.tile[x, y + 1].type = tile.type;

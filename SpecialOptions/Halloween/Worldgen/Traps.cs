@@ -9,7 +9,7 @@ using static Terraria.ID.TileID;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 {
-	public class Traps
+	public static class Traps
 	{
 		public const int Left = -1;
 		public const int Right = 1;

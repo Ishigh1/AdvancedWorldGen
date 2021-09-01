@@ -9,7 +9,7 @@ namespace AdvancedWorldGen.Helper
 	public class VanillaAccessor<T>
 	{
 		public FieldInfo FieldInfo;
-		public object VanillaData;
+		public object? VanillaData;
 
 		public VanillaAccessor(IEnumerable<FieldInfo> fieldInfos, string name, object vanillaData)
 		{
@@ -19,13 +19,13 @@ namespace AdvancedWorldGen.Helper
 
 		public VanillaAccessor(IReflect type, string name, object vanillaData)
 		{
-			FieldInfo = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic);
+			FieldInfo = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!;
 			VanillaData = vanillaData;
 		}
 
 		public VanillaAccessor(IReflect type, string name)
 		{
-			FieldInfo = type.GetField(name, BindingFlags.Static | BindingFlags.NonPublic);
+			FieldInfo = type.GetField(name, BindingFlags.Static | BindingFlags.NonPublic)!;
 			VanillaData = null;
 		}
 
@@ -36,7 +36,7 @@ namespace AdvancedWorldGen.Helper
 
 		public T Get()
 		{
-			return (T) FieldInfo.GetValue(VanillaData);
+			return (T) FieldInfo.GetValue(VanillaData)!;
 		}
 	}
 }

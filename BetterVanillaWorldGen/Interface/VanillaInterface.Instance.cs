@@ -30,10 +30,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 		public VanillaInterface(GenPass vanillaReset)
 		{
-			WorldGenLegacyMethod method = (WorldGenLegacyMethod) typeof(PassLegacy)
-				.GetField("_method", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(vanillaReset);
-			object vanillaData = method.GetType().GetField("_target", BindingFlags.NonPublic | BindingFlags.Instance)
-				.GetValue(method);
+			WorldGenLegacyMethod method = (WorldGenLegacyMethod) typeof(PassLegacy).GetField("_method", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(vanillaReset)!;
+			object vanillaData = method.GetType().GetField("_target", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(method)!;
 			FieldInfo[] fieldInfos = vanillaData.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
 
 			Copper = new VanillaAccessor<int>(fieldInfos, "copper", vanillaData);

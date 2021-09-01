@@ -10,7 +10,7 @@ using OnWorldGen = On.Terraria.WorldGen;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
-	public partial class Replacer
+	public static partial class Replacer
 	{
 		public static void Replace()
 		{

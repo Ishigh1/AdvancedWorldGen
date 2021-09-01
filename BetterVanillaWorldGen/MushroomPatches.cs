@@ -53,7 +53,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					for (int x2 = x - spread; x2 < x + spread && isValid; x2 += 10)
 					for (int y2 = y - spread; y2 < y + spread && isValid; y2 += 10)
 						if (Main.tile[x2, y2].type == TileID.SnowBlock || Main.tile[x2, y2].type == TileID.IceBlock ||
-						    Main.tile[x2, y2].type == TileID.IceBlock || Main.tile[x2, y2].type == TileID.JungleGrass ||
+						    Main.tile[x2, y2].type == TileID.BreakableIce || Main.tile[x2, y2].type == TileID.JungleGrass ||
 						    Main.tile[x2, y2].type == TileID.Granite || Main.tile[x2, y2].type == TileID.Marble)
 							isValid = false;
 						else if (WorldGen.UndergroundDesertLocation.Contains(new Point(x2, y2))) isValid = false;

@@ -21,8 +21,8 @@ namespace AdvancedWorldGen.Base
 {
 	public class AdvancedWorldGen : Mod
 	{
-		public Crimruption Crimruption;
-		public UiChanger UiChanger;
+		public Crimruption Crimruption = null!;
+		public UiChanger UiChanger = null!;
 		public static AdvancedWorldGen Instance => ModContent.GetInstance<AdvancedWorldGen>();
 
 		public override void Load()
@@ -83,7 +83,7 @@ namespace AdvancedWorldGen.Base
 
 			HalloweenCommon.UnSetup();
 
-			OptionsSelector.OptionDict = null;
+			OptionsSelector.OptionDict = null!;
 			TileReplacer.Unload();
 		}
 

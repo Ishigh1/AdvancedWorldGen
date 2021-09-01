@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.GameContent.Biomes;
 using Terraria.GameContent.Generation;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
@@ -18,7 +19,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 			WorldGenConfiguration configuration =
 				WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
-			progress.Message = Lang.gen[76].Value + "..Dead Man's Chests";
+			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Dead Man's Chests";
 			const float totalSteps = 10f;
 
 			DeadMansChestBiome deadMansChestBiome = configuration.CreateBiome<DeadMansChestBiome>();
@@ -34,7 +35,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				possibleChestsToTrapify.Remove(num32);
 			}
 
-			progress.Message = Lang.gen[76].Value + "..Thin Ice";
+			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Thin Ice";
 			progress.Set(1f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
@@ -61,7 +62,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 			}
 
-			progress.Message = Lang.gen[76].Value + "..Sword Shrines";
+			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Sword Shrines";
 			progress.Set(0.1f);
 			progress.Set(2f / totalSteps);
 			EnchantedSwordBiome enchantedSwordBiome = configuration.CreateBiome<EnchantedSwordBiome>();
@@ -85,7 +86,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 				}
 
-			progress.Message = Lang.gen[76].Value + "..Campsites";
+			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Campsites";
 			progress.Set(0.2f);
 			progress.Set(3f / totalSteps);
 			if (!WorldGen.notTheBees)
@@ -100,7 +101,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num39++;
 			}
 
-			progress.Message = Lang.gen[76].Value + "..Explosive Traps";
+			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Explosive Traps";
 			progress.Set(4f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
@@ -117,7 +118,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num41++;
 			}
 
-			progress.Message = Lang.gen[76].Value + "..Living Trees";
+			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Living Trees";
 			progress.Set(0.3f);
 			progress.Set(5f / totalSteps);
 			MahoganyTreeBiome mahoganyTreeBiome = configuration.CreateBiome<MahoganyTreeBiome>();
@@ -133,7 +134,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				num43++;
 			}
 
-			progress.Message = Lang.gen[76].Value + "..Long Minecart Tracks";
+			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Long Minecart Tracks";
 			progress.Set(0.4f);
 			progress.Set(6f / totalSteps);
 			progress.Set(7f / totalSteps);
@@ -161,7 +162,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 				}
 
-			progress.Message = Lang.gen[76].Value + "..Standard Minecart Tracks";
+			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Standard Minecart Tracks";
 			progress.Set(8f / totalSteps);
 			random6 = passConfig.Get<WorldGenRange>("StandardTrackCount").GetRandom(Random);
 			worldGenRange = passConfig.Get<WorldGenRange>("StandardTrackLength");
@@ -184,18 +185,18 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 				}
 
-			progress.Message = Lang.gen[76].Value + "..Lava Traps";
+			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Lava Traps";
 			progress.Set(9f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				double num48 = Main.maxTilesX * 0.02;
 
-				for (int num49 = 0; (double) num49 < num48; num49++)
-				for (int num50 = 0; num50 < 10150; num50++)
+				for (int _ = 0; _ < num48; _++)
+				for (int __ = 0; __ < 10150; __++)
 				{
-					int x2 = Random.Next(200, Main.maxTilesX - 200);
-					int y2 = Random.Next(WorldGen.lavaLine - 100, Main.maxTilesY - 210);
-					if (WorldGen.placeLavaTrap(x2, y2))
+					int x = Random.Next(200, Main.maxTilesX - 200);
+					int y = Random.Next(WorldGen.lavaLine - 100, Main.maxTilesY - 210);
+					if (WorldGen.placeLavaTrap(x, y))
 						break;
 				}
 			}

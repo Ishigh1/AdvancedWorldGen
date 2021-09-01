@@ -6,7 +6,7 @@ using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
-	public partial class Replacer
+	public static partial class Replacer
 	{
 		public static VanillaInterface VanillaInterface;
 

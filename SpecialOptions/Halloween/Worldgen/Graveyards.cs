@@ -9,7 +9,7 @@ using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 {
-	public class Graveyards
+	public static class Graveyards
 	{
 		public static void GenerateStructures(GenerationProgress progress, GameConfiguration configuration)
 		{
