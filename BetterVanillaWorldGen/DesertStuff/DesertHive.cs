@@ -59,7 +59,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 				int closestCluster = -1;
 				float distanceToSecondClosestCenter = 0f;
 				ushort type = 53;
-				if (fastRandom.Next(3) == 3)
+				if (fastRandom.Next(3) == 0)
 					type = 397;
 
 				foreach (int k in interestingClusters)
