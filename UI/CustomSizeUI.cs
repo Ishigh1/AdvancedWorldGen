@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.CustomSized;
 using Microsoft.Xna.Framework;
 using Terraria;
