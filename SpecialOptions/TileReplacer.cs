@@ -71,27 +71,27 @@ namespace AdvancedWorldGen.SpecialOptions
 				{
 					{
 						TileID.ImmatureHerbs,
-						new SpecialCase(None, (x, y, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
+						new SpecialCase(None, (_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
 					},
 					{
 						TileID.MatureHerbs,
-						new SpecialCase(None, (x, y, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
+						new SpecialCase(None, (_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
 					},
 					{
 						TileID.BloomingHerbs,
-						new SpecialCase(None, (x, y, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
+						new SpecialCase(None, (_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
 					},
 					{
 						TileID.Cattail,
-						new SpecialCase(None, (x, y, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4)
+						new SpecialCase(None, (_, _, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4)
 					},
 					{
 						TileID.LilyPad,
-						new SpecialCase(None, (x, y, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4)
+						new SpecialCase(None, (_, _, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4)
 					},
 					{
 						TileID.DyePlants,
-						new SpecialCase(None, (x, y, tile) => tile.frameX is 32 * 3 or 32 * 4 or 32 * 7)
+						new SpecialCase(None, (_, _, tile) => tile.frameX is 32 * 3 or 32 * 4 or 32 * 7)
 					}
 				};
 
