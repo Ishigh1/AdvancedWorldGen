@@ -36,13 +36,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				if (dungeonRight)
 				{
-					if (Random.Next(4) == 0)
+					if (Random.NextBool(4))
 					{
 						snowLeft++;
 						snowRight++;
 					}
 				}
-				else if (Random.Next(4) == 0)
+				else if (Random.NextBool(4))
 				{
 					snowLeft--;
 					snowRight--;
@@ -86,10 +86,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					else
 					{
 						num843 += Random.Next(-3, 4);
-						if (Random.Next(3) == 0)
+						if (Random.NextBool(3))
 						{
 							num843 += Random.Next(-4, 5);
-							if (Random.Next(3) == 0)
+							if (Random.NextBool(3))
 								num843 += Random.Next(-6, 7);
 						}
 

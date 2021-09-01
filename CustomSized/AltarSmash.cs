@@ -48,7 +48,7 @@ namespace AdvancedWorldGen.CustomSized
 					{
 						flag = true;
 						WorldGen.SavedOreTiers.Cobalt = 107;
-						if (WorldGen.genRand.Next(2) == 0) WorldGen.SavedOreTiers.Cobalt = 221;
+						if (WorldGen.genRand.NextBool(2)) WorldGen.SavedOreTiers.Cobalt = 221;
 					}
 
 					int num6 = 12;
@@ -84,7 +84,7 @@ namespace AdvancedWorldGen.CustomSized
 					{
 						flag = true;
 						WorldGen.SavedOreTiers.Mythril = 108;
-						if (WorldGen.genRand.Next(2) == 0) WorldGen.SavedOreTiers.Mythril = 222;
+						if (WorldGen.genRand.NextBool(2)) WorldGen.SavedOreTiers.Mythril = 222;
 					}
 
 					int num7 = 13;
@@ -124,7 +124,7 @@ namespace AdvancedWorldGen.CustomSized
 					{
 						flag = true;
 						WorldGen.SavedOreTiers.Adamantite = 111;
-						if (WorldGen.genRand.Next(2) == 0) WorldGen.SavedOreTiers.Adamantite = 223;
+						if (WorldGen.genRand.NextBool(2)) WorldGen.SavedOreTiers.Adamantite = 223;
 					}
 
 					int num5 = 14;

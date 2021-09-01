@@ -73,7 +73,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 								break;
 
 							bool flag2 = false;
-							if (WorldGen.genRand.Next(7) == 0)
+							if (WorldGen.genRand.NextBool(7))
 							{
 								int style = roomWall[0] switch
 								{
@@ -767,7 +767,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						}
 
 						for (int num22 = num7 - 1; num22 <= num7 + 1; num22++)
-							if (WorldGen.genRand.Next(2) == 0 && !Main.tile[num22, j - 2].IsActive)
+							if (WorldGen.genRand.NextBool(2) && !Main.tile[num22, j - 2].IsActive)
 							{
 								int num23 = WorldGen.genRand.Next(5);
 								if (num8 != -1 && num23 <= 1 && !Main.tileLighted[Main.tile[num22 - 1, j - 2].type])
@@ -789,7 +789,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						if (!Main.tile[num7, j].IsActive)
 							break;
 
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 						{
 							if (!Main.tile[num7 - 1, j].IsActive)
 							{
@@ -807,7 +807,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						}
 
 						for (int n = num7; n <= num7 + 1; n++)
-							if (WorldGen.genRand.Next(2) == 0 && !Main.tile[n, j - 1].IsActive)
+							if (WorldGen.genRand.NextBool(2) && !Main.tile[n, j - 1].IsActive)
 							{
 								int num21 = WorldGen.genRand.Next(5);
 								if (num8 != -1 && num21 <= 1 && !Main.tileLighted[Main.tile[n - 1, j - 1].type])
@@ -830,7 +830,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						WorldGen.PlaceTile(num7, j, 101, true, false, -1, style4);
 						break;
 					case 4:
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 						{
 							WorldGen.PlaceTile(num7, j, 15, true, false, -1, style);
 							Main.tile[num7, j].frameX += 18;
@@ -843,7 +843,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 						break;
 					case 5:
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							WorldGen.Place4x2(num7, j, 79, 1, num10);
 						else
 							WorldGen.Place4x2(num7, j, 79, -1, num10);
@@ -858,7 +858,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 						WorldGen.PlaceTile(num7, j, 89, true, false, -1, num13);
 						break;
 					case 9:
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							WorldGen.Place4x2(num7, j, 90, 1, num14);
 						else
 							WorldGen.Place4x2(num7, j, 90, -1, num14);
@@ -995,9 +995,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			Vector2 delta = new(direction, -1);
 			if (WorldGen.genRand.Next(3) != 0)
 				delta.X *= 1f + WorldGen.genRand.Next(0, 200) * 0.01f;
-			else if (WorldGen.genRand.Next(3) == 0)
+			else if (WorldGen.genRand.NextBool(3))
 				delta.X *= WorldGen.genRand.Next(50, 76) * 0.01f;
-			else if (WorldGen.genRand.Next(6) == 0)
+			else if (WorldGen.genRand.NextBool(6))
 				delta.Y *= 2f;
 
 			if (WorldGen.dungeonX < Main.maxTilesX / 2 && delta.X < 0f && delta.X < 0.5 ||
@@ -1141,7 +1141,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				flag2 = true;
 				WorldGen.dungeonLake = false;
 			}
-			else if (WorldGen.genRand.Next(8) == 0)
+			else if (WorldGen.genRand.NextBool(8))
 			{
 				flag2 = true;
 			}
@@ -1199,14 +1199,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			int num3 = 1;
 			Vector2 vector = new(i, j);
 			int num4 = WorldGen.genRand.Next(35, 80);
-			bool flag = WorldGen.genRand.Next(5) == 0;
+			bool flag = WorldGen.genRand.NextBool(5);
 
 			if (forceX)
 			{
 				num4 += 20;
 				WorldGen.lastDungeonHall = Vector2.Zero;
 			}
-			else if (WorldGen.genRand.Next(5) == 0)
+			else if (WorldGen.genRand.NextBool(5))
 			{
 				num *= 2.0;
 				num4 /= 2;
@@ -1288,7 +1288,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					if (!flag8 && !flag9 && !flag6 && !flag7)
 					{
 						num3 = WorldGen.genRand.Next(2) != 0 ? 1 : -1;
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							flag5 = true;
 					}
 					else
@@ -1318,7 +1318,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				else
 				{
 					num3 = WorldGen.genRand.Next(2) != 0 ? 1 : -1;
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 						flag5 = true;
 				}
 
@@ -1334,9 +1334,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					zero3.X = -num3;
 					zero.Y = 0f;
 					zero.X = num3;
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.Y = -0.2f;
 						else
 							zero.Y = 0.2f;
@@ -1354,14 +1354,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					if (WorldGen.genRand.Next(3) != 0)
 					{
 						flag3 = true;
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.X = WorldGen.genRand.Next(10, 20) * 0.1f;
 						else
 							zero.X = -WorldGen.genRand.Next(10, 20) * 0.1f;
 					}
-					else if (WorldGen.genRand.Next(2) == 0)
+					else if (WorldGen.genRand.NextBool(2))
 					{
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.X = WorldGen.genRand.Next(20, 40) * 0.01f;
 						else
 							zero.X = -WorldGen.genRand.Next(20, 40) * 0.01f;
@@ -1386,9 +1386,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					zero2.X = num3;
 					zero.Y = 0f;
 					zero.X = num3;
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.Y = -0.2f;
 						else
 							zero.Y = 0.2f;
@@ -1401,9 +1401,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					zero2.X = num3;
 					zero.Y = 0f;
 					zero.X = num3;
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.Y = -0.2f;
 						else
 							zero.Y = 0.2f;
@@ -1417,9 +1417,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					zero.X = 0f;
 					zero2.X = 0f;
 					zero2.Y = num3;
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.X = WorldGen.genRand.Next(20, 50) * 0.01f;
 						else
 							zero.X = -WorldGen.genRand.Next(20, 50) * 0.01f;
@@ -1436,14 +1436,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					if (WorldGen.genRand.Next(3) != 0)
 					{
 						flag3 = true;
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.X = WorldGen.genRand.Next(10, 20) * 0.1f;
 						else
 							zero.X = -WorldGen.genRand.Next(10, 20) * 0.1f;
 					}
-					else if (WorldGen.genRand.Next(2) == 0)
+					else if (WorldGen.genRand.NextBool(2))
 					{
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.X = WorldGen.genRand.Next(20, 50) * 0.01f;
 						else
 							zero.X = WorldGen.genRand.Next(20, 50) * 0.01f;
@@ -1456,9 +1456,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					zero2.X = num3;
 					zero.Y = 0f;
 					zero.X = num3;
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.Y = -0.2f;
 						else
 							zero.Y = 0.2f;
@@ -1471,9 +1471,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					zero2.X = num3;
 					zero.Y = 0f;
 					zero.X = num3;
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							zero.Y = -0.2f;
 						else
 							zero.Y = 0.2f;

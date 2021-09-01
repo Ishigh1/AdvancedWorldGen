@@ -165,7 +165,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				{
 					num2 = 0;
 					int num4 = -2;
-					if (Random.Next(2) == 0)
+					if (Random.NextBool(2))
 						num4 = 2;
 
 					WorldGen.TileRunner((int) vector.X, (int) vector.Y, Random.Next(3, 20), Random.Next(10, 100), -1,
@@ -240,7 +240,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 					x += Random.Next(-30, 31);
 					y += Random.Next(-30, 31);
 					int type = -1;
-					if (Random.Next(7) == 0)
+					if (Random.NextBool(7))
 						type = -2;
 
 					WorldGen.TileRunner(x, y, Random.Next(10, 20), Random.Next(30, 70), type);
@@ -259,7 +259,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				}
 
 				WorldGen.TileRunner(x, y, Random.Next(4, 10), Random.Next(5, 30), 1);
-				if (Random.Next(4) == 0)
+				if (Random.NextBool(4))
 				{
 					int type = Random.Next(TileID.Sapphire, TileID.JungleThorns);
 					WorldGen.TileRunner(x + Random.Next(-1, 2), y + Random.Next(-1, 2), Random.Next(3, 7),

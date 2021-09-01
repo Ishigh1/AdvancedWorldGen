@@ -76,7 +76,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					while (num38++ <= Main.maxTilesX)
 					{
 						origin2.Y = (int) WorldGen.worldSurface + Random.Next(50, 100);
-						if (Random.Next(2) == 0)
+						if (Random.NextBool(2))
 							origin2.X = Random.Next(50, (int) (Main.maxTilesX * 0.3f));
 						else
 							origin2.X = Random.Next((int) (Main.maxTilesX * 0.7f), Main.maxTilesX - 50);

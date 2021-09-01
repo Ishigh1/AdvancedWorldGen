@@ -203,7 +203,7 @@ namespace AdvancedWorldGen.Base
 			NPC newNPC = Main.npc[NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, npcType)];
 			newNPC.homeTileX = Main.spawnTileX;
 			newNPC.homeTileY = Main.spawnTileY;
-			newNPC.direction = WorldGen._genRand.Next(2) == 0 ? 1 : -1;
+			newNPC.direction = WorldGen._genRand.NextBool(2) ? 1 : -1;
 			newNPC.homeless = true;
 			availableNPCs.RemoveAll(i => i == npcType);
 			return newNPC;

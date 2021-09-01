@@ -119,7 +119,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 									Main.tile[x2, y + 1].type = 59;
 							}
 
-						if (Random.Next(4) == 0)
+						if (Random.NextBool(4))
 						{
 							int num814 = x + Random.Next(-20, 21);
 							int num815 = y + Random.Next(-20, 21);

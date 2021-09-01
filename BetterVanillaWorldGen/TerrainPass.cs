@@ -27,7 +27,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int rightBeachSize = Main.maxTilesX - Replacer.VanillaInterface.RightBeachStart.Get();
 
 			int num = passConfig.Get<int>("FlatBeachPadding");
-			progress.Message = Lang.gen[0].Value;
+			progress.Message = Language.GetTextValue("LegacyWorldGen.0");
 			TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
 			int num2 = 0;
 			double worldSurface = Main.maxTilesY * 0.3;
@@ -203,7 +203,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		public double GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
 		{
 			double num = 0.0;
-			if ((WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen) && WorldGen.genRand.Next(2) == 0)
+			if ((WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen) && WorldGen.genRand.NextBool(2))
 				switch (featureType)
 				{
 					case TerrainFeatureType.Plateau:

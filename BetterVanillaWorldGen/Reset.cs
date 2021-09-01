@@ -42,7 +42,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Main.slimeRainTime = -Random.Next(num917 * 2, num917 * 3);
 			Main.cloudBGActive = -Random.Next(8640, num917);
 			Replacer.VanillaInterface.SkipFramingDuringGen.Set(false);
-			if (Random.Next(2) == 0)
+			if (Random.NextBool(2))
 			{
 				Replacer.VanillaInterface.Copper.Set(166);
 				WorldGen.copperBar = 703;
@@ -54,7 +54,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				WorldGen.copperBar = 20;
 			}
 
-			if (Random.Next(2) == 0)
+			if (Random.NextBool(2))
 			{
 				Replacer.VanillaInterface.Iron.Set(167);
 				WorldGen.ironBar = 704;
@@ -66,7 +66,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				WorldGen.ironBar = 22;
 			}
 
-			if (Random.Next(2) == 0)
+			if (Random.NextBool(2))
 			{
 				Replacer.VanillaInterface.Silver.Set(168);
 				WorldGen.silverBar = 705;
@@ -78,7 +78,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				WorldGen.silverBar = 21;
 			}
 
-			if (Random.Next(2) == 0)
+			if (Random.NextBool(2))
 			{
 				Replacer.VanillaInterface.Gold.Set(169);
 				WorldGen.goldBar = 706;
@@ -94,7 +94,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			{
 				0 => false,
 				1 => true,
-				_ => Main.rand.Next(2) == 0 //Using Main.rand to not affect the worldgen
+				_ => Main.rand.NextBool(2) //Using Main.rand to not affect the worldgen
 			};
 
 			Main.worldID = Random.Next(int.MaxValue);
@@ -104,7 +104,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			WorldGen.RandomizeMoonState();
 			WorldGen.TreeTops.CopyExistingWorldInfoForWorldGeneration();
 
-			int dungeonSide = Random.Next(2) == 0 ? 1 : -1;
+			int dungeonSide = Random.NextBool(2) ? 1 : -1;
 			Replacer.VanillaInterface.DungeonSide.Set(dungeonSide);
 
 			int shift = (int) (Main.maxTilesX * Random.Next(15, 30) * 0.01f);

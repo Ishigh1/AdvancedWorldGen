@@ -107,15 +107,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 				if (WorldGen.dungeonY > DungeonMaxY) DungeonMaxY = WorldGen.dungeonY;
 
-				if ((--num6 == 0) && (WorldGen.genRand.Next(3) == 0))
+				if ((--num6 == 0) && (WorldGen.genRand.NextBool(3)))
 				{
 					num6 = 5;
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num7 = WorldGen.dungeonX;
 						int num8 = WorldGen.dungeonY;
 						DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 
 						DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
@@ -153,7 +153,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			{
 				num6--;
 
-				if (num6 == 0 && WorldGen.genRand.Next(5) == 0 && WorldGen.dungeonY > Main.worldSurface + 100.0)
+				if (num6 == 0 && WorldGen.genRand.NextBool(5) && WorldGen.dungeonY > Main.worldSurface + 100.0)
 				{
 					num6 = 10;
 					int num11 = WorldGen.dungeonX;
@@ -230,7 +230,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				if (Main.tile[x0, y0].wall == wallType && !Main.tile[x0, y0].IsActive)
 				{
 					int num24 = 1;
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 						num24 = -1;
 
 					for (; !Main.tile[x0, y0].IsActive; y0 += num24)
@@ -309,7 +309,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				if (Main.tile[x, y].wall == wallType && !Main.tile[x, y].IsActive)
 				{
 					int num29 = 1;
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 						num29 = -1;
 
 					for (; x > 5 && x < Main.maxTilesX - 5 && !Main.tile[x, y].IsActive; x += num29)
@@ -446,7 +446,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 
 				int style = 13;
-				if (WorldGen.genRand.Next(3) == 0)
+				if (WorldGen.genRand.NextBool(3))
 					style = wallType switch
 					{
 						7 => 16,
@@ -737,7 +737,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				if (Main.wallDungeon[Main.tile[x, y].wall] && !Main.tile[x, y].IsActive)
 				{
 					int direction = 1;
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 						direction = -1;
 
 					while (flag6 && !Main.tile[x, y].IsActive)
@@ -777,7 +777,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 							}
 
 							distX = Math.Abs(x - distX);
-							bool books = WorldGen.genRand.Next(2) == 0;
+							bool books = WorldGen.genRand.NextBool(2);
 
 							if (distX > 5)
 							{
@@ -797,7 +797,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 									if (books)
 									{
 										WorldGen.PlaceTile(x, y - 1, TileID.Books, true);
-										if (WorldGen.genRand.Next(50) == 0 &&
+										if (WorldGen.genRand.NextBool(50) &&
 										    y > (Main.worldSurface + Main.rockLayer) / 2.0 &&
 										    Main.tile[x, y - 1].type == TileID.Books)
 											Main.tile[x, y - 1].frameX = 90;
@@ -808,12 +808,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 								num17 = 0;
 								num19++;
-								if (!books && WorldGen.genRand.Next(2) == 0)
+								if (!books && WorldGen.genRand.NextBool(2))
 								{
 									x = oldX;
 									y--;
 									int type = 0;
-									if (WorldGen.genRand.Next(4) == 0)
+									if (WorldGen.genRand.NextBool(4))
 										type = 1;
 
 									type = type switch
@@ -826,7 +826,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 									WorldGen.PlaceTile(x, y, type, true);
 									if (Main.tile[x, y].type == TileID.Bottles)
 									{
-										if (WorldGen.genRand.Next(2) == 0)
+										if (WorldGen.genRand.NextBool(2))
 											Main.tile[x, y].frameX = 18;
 										else
 											Main.tile[x, y].frameX = 36;

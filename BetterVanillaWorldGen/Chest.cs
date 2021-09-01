@@ -135,10 +135,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					_ => 1579
 				};
 
-				if (WorldGen.genRand.Next(20) == 0)
+				if (WorldGen.genRand.NextBool(20))
 					contain = 997;
 
-				if (WorldGen.genRand.Next(50) == 0)
+				if (WorldGen.genRand.NextBool(50))
 					contain = 669;
 
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
@@ -268,7 +268,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 							case 832:
 								chest.item[num13].SetDefaults(933);
 								num13++;
-								if (WorldGen.genRand.Next(10) == 0)
+								if (WorldGen.genRand.NextBool(10))
 								{
 									int num14 = WorldGen.genRand.Next(2);
 									switch (num14)
@@ -352,36 +352,36 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(6) == 0)
+					if (WorldGen.genRand.NextBool(6))
 					{
 						chest.item[num13].SetDefaults(3093);
 						chest.item[num13].stack = 1;
-						if (WorldGen.genRand.Next(5) == 0)
+						if (WorldGen.genRand.NextBool(5))
 							chest.item[num13].stack += WorldGen.genRand.Next(2);
-						if (WorldGen.genRand.Next(10) == 0)
+						if (WorldGen.genRand.NextBool(10))
 							chest.item[num13].stack += WorldGen.genRand.Next(3);
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(6) == 0)
+					if (WorldGen.genRand.NextBool(6))
 					{
 						chest.item[num13].SetDefaults(4345);
 						chest.item[num13].stack = 1;
-						if (WorldGen.genRand.Next(5) == 0)
+						if (WorldGen.genRand.NextBool(5))
 							chest.item[num13].stack += WorldGen.genRand.Next(2);
-						if (WorldGen.genRand.Next(10) == 0)
+						if (WorldGen.genRand.NextBool(10))
 							chest.item[num13].stack += WorldGen.genRand.Next(3);
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
 						chest.item[num13].SetDefaults(168);
 						chest.item[num13].stack = WorldGen.genRand.Next(3, 6);
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num16 = WorldGen.genRand.Next(2);
 
@@ -394,7 +394,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int stack2 = WorldGen.genRand.Next(50, 101);
 						chest.item[num13].SetDefaults(965);
@@ -412,7 +412,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int stack4 = WorldGen.genRand.Next(3) + 3;
 						chest.item[num13].SetDefaults(28);
@@ -458,7 +458,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num19 = WorldGen.genRand.Next(2);
 
@@ -468,14 +468,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						chest.item[num13].SetDefaults(72);
 						chest.item[num13].stack = WorldGen.genRand.Next(10, 30);
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						chest.item[num13].SetDefaults(9);
 						chest.item[num13].stack = WorldGen.genRand.Next(50, 100);
@@ -496,13 +496,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						chest.item[num13].SetDefaults(contain);
 						chest.item[num13].Prefix(-1);
 						num13++;
-						if (flag4 && WorldGen.genRand.Next(2) == 0)
+						if (flag4 && WorldGen.genRand.NextBool(2))
 						{
 							chest.item[num13].SetDefaults(4460);
 							num13++;
 						}
 
-						if (flag5 && WorldGen.genRand.Next(10) == 0)
+						if (flag5 && WorldGen.genRand.NextBool(10))
 						{
 							int num20 = WorldGen.genRand.Next(2);
 							switch (num20)
@@ -519,7 +519,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 							num13++;
 						}
 
-						if (flag8 && (!GeneratedShadowKey || WorldGen.genRand.Next(3) == 0))
+						if (flag8 && (!GeneratedShadowKey || WorldGen.genRand.NextBool(3)))
 						{
 							GeneratedShadowKey = true;
 							chest.item[num13].SetDefaults(329);
@@ -557,13 +557,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						}
 
 						num13++;
-						if (WorldGen.genRand.Next(20) == 0)
+						if (WorldGen.genRand.NextBool(20))
 						{
 							chest.item[num13].SetDefaults(997);
 							chest.item[num13].Prefix(-1);
 							num13++;
 						}
-						else if (WorldGen.genRand.Next(20) == 0)
+						else if (WorldGen.genRand.NextBool(20))
 						{
 							chest.item[num13].SetDefaults(930);
 							chest.item[num13].Prefix(-1);
@@ -573,13 +573,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 							num13++;
 						}
 
-						if (flag6 && WorldGen.genRand.Next(2) == 0)
+						if (flag6 && WorldGen.genRand.NextBool(2))
 						{
 							chest.item[num13].SetDefaults(4450);
 							num13++;
 						}
 
-						if (flag6 && WorldGen.genRand.Next(3) == 0)
+						if (flag6 && WorldGen.genRand.NextBool(3))
 						{
 							chest.item[num13].SetDefaults(4779);
 							num13++;
@@ -592,27 +592,27 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 					if (flag2)
 					{
-						if (WorldGen.genRand.Next(3) == 0)
+						if (WorldGen.genRand.NextBool(3))
 						{
 							chest.item[num13].SetDefaults(4423);
 							chest.item[num13].stack = WorldGen.genRand.Next(10, 20);
 							num13++;
 						}
 					}
-					else if (WorldGen.genRand.Next(3) == 0)
+					else if (WorldGen.genRand.NextBool(3))
 					{
 						chest.item[num13].SetDefaults(166);
 						chest.item[num13].stack = WorldGen.genRand.Next(10, 20);
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(5) == 0)
+					if (WorldGen.genRand.NextBool(5))
 					{
 						chest.item[num13].SetDefaults(52);
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
 						int stack7 = WorldGen.genRand.Next(50, 101);
 						chest.item[num13].SetDefaults(965);
@@ -620,7 +620,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num21 = WorldGen.genRand.Next(2);
 						int stack8 = WorldGen.genRand.Next(10) + 5;
@@ -634,7 +634,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num22 = WorldGen.genRand.Next(2);
 						int stack9 = WorldGen.genRand.Next(25) + 25;
@@ -648,7 +648,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int stack10 = WorldGen.genRand.Next(3) + 3;
 						chest.item[num13].SetDefaults(28);
@@ -699,7 +699,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int stack13 = WorldGen.genRand.Next(11) + 10;
 						if (num8 == 11)
@@ -711,7 +711,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						chest.item[num13].SetDefaults(72);
 						chest.item[num13].stack = WorldGen.genRand.Next(50, 90);
@@ -725,7 +725,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						chest.item[num13].SetDefaults(contain);
 						chest.item[num13].Prefix(-1);
 						num13++;
-						if (flag && WorldGen.genRand.Next(5) == 0)
+						if (flag && WorldGen.genRand.NextBool(5))
 						{
 							chest.item[num13].SetDefaults(3199);
 							num13++;
@@ -733,35 +733,35 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 						if (flag2)
 						{
-							if (WorldGen.genRand.Next(7) == 0)
+							if (WorldGen.genRand.NextBool(7))
 							{
 								chest.item[num13].SetDefaults(4346);
 								num13++;
 							}
 
-							if (WorldGen.genRand.Next(15) == 0)
+							if (WorldGen.genRand.NextBool(15))
 							{
 								chest.item[num13].SetDefaults(4066);
 								num13++;
 							}
 						}
 
-						if (flag3 && WorldGen.genRand.Next(6) == 0)
+						if (flag3 && WorldGen.genRand.NextBool(6))
 						{
 							chest.item[num13++].SetDefaults(3360);
 							chest.item[num13++].SetDefaults(3361);
 						}
 
-						if (flag3 && WorldGen.genRand.Next(10) == 0)
+						if (flag3 && WorldGen.genRand.NextBool(10))
 							chest.item[num13++].SetDefaults(4426);
 
-						if (flag4 && WorldGen.genRand.Next(2) == 0)
+						if (flag4 && WorldGen.genRand.NextBool(2))
 						{
 							chest.item[num13].SetDefaults(4460);
 							num13++;
 						}
 
-						if (flag8 && (!GeneratedShadowKey || WorldGen.genRand.Next(3) == 0))
+						if (flag8 && (!GeneratedShadowKey || WorldGen.genRand.NextBool(3)))
 						{
 							GeneratedShadowKey = true;
 							chest.item[num13].SetDefaults(329);
@@ -771,12 +771,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					else
 					{
 						int num24 = WorldGen.genRand.Next(8);
-						if (WorldGen.genRand.Next(20) == 0 && y > WorldGen.lavaLine)
+						if (WorldGen.genRand.NextBool(20) && y > WorldGen.lavaLine)
 						{
 							chest.item[num13].SetDefaults(906);
 							chest.item[num13].Prefix(-1);
 						}
-						else if (WorldGen.genRand.Next(15) == 0)
+						else if (WorldGen.genRand.NextBool(15))
 						{
 							chest.item[num13].SetDefaults(997);
 							chest.item[num13].Prefix(-1);
@@ -836,13 +836,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						}
 
 						num13++;
-						if (flag6 && WorldGen.genRand.Next(2) == 0)
+						if (flag6 && WorldGen.genRand.NextBool(2))
 						{
 							chest.item[num13].SetDefaults(4450);
 							num13++;
 						}
 
-						if (flag6 && WorldGen.genRand.Next(3) == 0)
+						if (flag6 && WorldGen.genRand.NextBool(3))
 						{
 							chest.item[num13].SetDefaults(4779);
 							num13++;
@@ -853,26 +853,26 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						}
 					}
 
-					if (WorldGen.genRand.Next(5) == 0)
+					if (WorldGen.genRand.NextBool(5))
 					{
 						chest.item[num13].SetDefaults(43);
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
 						chest.item[num13].SetDefaults(167);
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(4) == 0)
+					if (WorldGen.genRand.NextBool(4))
 					{
 						chest.item[num13].SetDefaults(51);
 						chest.item[num13].stack = WorldGen.genRand.Next(26) + 25;
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num25 = WorldGen.genRand.Next(2);
 						int stack14 = WorldGen.genRand.Next(8) + 3;
@@ -886,7 +886,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num26 = WorldGen.genRand.Next(2);
 						int stack15 = WorldGen.genRand.Next(26) + 25;
@@ -900,7 +900,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int stack16 = WorldGen.genRand.Next(3) + 3;
 						chest.item[num13].SetDefaults(188);
@@ -960,7 +960,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int stack19 = WorldGen.genRand.Next(2, 5);
 						chest.item[num13].SetDefaults(2350);
@@ -968,7 +968,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num29 = WorldGen.genRand.Next(2);
 						int stack20 = WorldGen.genRand.Next(15) + 15;
@@ -987,7 +987,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						chest.item[num13].SetDefaults(73);
 						chest.item[num13].stack = WorldGen.genRand.Next(1, 3);
@@ -1001,18 +1001,18 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						chest.item[num13].SetDefaults(contain);
 						chest.item[num13].Prefix(-1);
 						num13++;
-						if (flag7 && WorldGen.genRand.Next(10) == 0)
+						if (flag7 && WorldGen.genRand.NextBool(10))
 						{
 							chest.item[num13].SetDefaults(4443);
 							num13++;
 						}
 
-						if (flag7 && WorldGen.genRand.Next(10) == 0)
+						if (flag7 && WorldGen.genRand.NextBool(10))
 						{
 							chest.item[num13].SetDefaults(4737);
 							num13++;
 						}
-						else if (flag7 && WorldGen.genRand.Next(10) == 0)
+						else if (flag7 && WorldGen.genRand.NextBool(10))
 						{
 							chest.item[num13].SetDefaults(4551);
 							num13++;
@@ -1048,13 +1048,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
 						chest.item[num13].SetDefaults(167);
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num31 = WorldGen.genRand.Next(2);
 						int stack21 = WorldGen.genRand.Next(15) + 15;
@@ -1068,7 +1068,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num32 = WorldGen.genRand.Next(2);
 						int stack22 = WorldGen.genRand.Next(25) + 50;
@@ -1087,7 +1087,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int stack23 = WorldGen.genRand.Next(6) + 15;
 						chest.item[num13].SetDefaults(227);
@@ -1159,10 +1159,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(3) == 0)
+					if (WorldGen.genRand.NextBool(3))
 					{
 						int stack26 = WorldGen.genRand.Next(1, 3);
-						if (WorldGen.genRand.Next(2) == 0)
+						if (WorldGen.genRand.NextBool(2))
 							chest.item[num13].SetDefaults(2350);
 						else
 							chest.item[num13].SetDefaults(4870);
@@ -1171,7 +1171,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						int num35 = WorldGen.genRand.Next(2);
 						int stack27 = WorldGen.genRand.Next(15) + 15;
@@ -1185,7 +1185,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num13++;
 					}
 
-					if (WorldGen.genRand.Next(2) == 0)
+					if (WorldGen.genRand.NextBool(2))
 					{
 						chest.item[num13].SetDefaults(73);
 						chest.item[num13].stack = WorldGen.genRand.Next(2, 5);
@@ -1195,19 +1195,19 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				if (num13 <= 0 || chestTileType != 21)
 					continue;
-				if (num8 == 10 && WorldGen.genRand.Next(4) == 0)
+				if (num8 == 10 && WorldGen.genRand.NextBool(4))
 				{
 					chest.item[num13].SetDefaults(2204);
 					num13++;
 				}
 
-				if (num8 == 11 && WorldGen.genRand.Next(7) == 0)
+				if (num8 == 11 && WorldGen.genRand.NextBool(7))
 				{
 					chest.item[num13].SetDefaults(2198);
 					num13++;
 				}
 
-				if (num8 == 13 && WorldGen.genRand.Next(3) == 0)
+				if (num8 == 13 && WorldGen.genRand.NextBool(3))
 				{
 					chest.item[num13].SetDefaults(2197);
 					num13++;
@@ -1219,7 +1219,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					num13++;
 				}
 
-				if (Main.wallDungeon[Main.tile[x, y].wall] && WorldGen.genRand.Next(8) == 0)
+				if (Main.wallDungeon[Main.tile[x, y].wall] && WorldGen.genRand.NextBool(8))
 				{
 					chest.item[num13].SetDefaults(2192);
 					num13++;
@@ -1227,7 +1227,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				if (num8 == 16)
 				{
-					if (WorldGen.genRand.Next(5) == 0)
+					if (WorldGen.genRand.NextBool(5))
 					{
 						chest.item[num13].SetDefaults(2767);
 						num13++;
