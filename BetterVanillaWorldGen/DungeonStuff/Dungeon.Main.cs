@@ -532,7 +532,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			Main.statusText = Language.GetTextValue("LegacyWorldGen.58") + " 85%";
 			foreach ((int platformX, int platformY) in DungeonPlatforms)
 			{
-				int y = Main.maxTilesX; // TODO: Is this supposed to be 'Main.maxTilesY'?
+				int y = int.MaxValue;
 				int offX = 10;
 				if (platformY < Main.worldSurface + 50.0)
 					offX = 20;
@@ -616,9 +616,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					Main.tile[x, y].Clear(TileDataType.Slope);
 					Main.tile[x, y].frameY = wallType switch
 					{
-						WallID.BlueDungeonUnsafe => 108,
-						WallID.GreenDungeonUnsafe => 144,
-						_ => 126
+						WallID.BlueDungeonUnsafe => 6 * 18,
+						WallID.GreenDungeonUnsafe => 8 * 18,
+						_ => 7 * 18
 					};
 
 					WorldGen.TileFrame(x, y);
