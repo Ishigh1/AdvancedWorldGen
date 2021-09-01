@@ -34,8 +34,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 			
 			LAltarX = new VanillaAccessor<int>(typeof(WorldGen), "lAltarX");
 			LAltarY = new VanillaAccessor<int>(typeof(WorldGen), "lAltarY");
-			NumJChests = new VanillaAccessor<int>(typeof(WorldGen), "numJChests");
-			NumJChests = new VanillaAccessor<int>(typeof(WorldGen), "numJChests");
 		}
 	}
 }
