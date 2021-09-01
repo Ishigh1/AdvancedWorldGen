@@ -9,6 +9,12 @@ namespace AdvancedWorldGen.Helper
 		public FieldInfo FieldInfo;
 		public object? VanillaData;
 
+		public T Value
+		{
+			get => (T) FieldInfo.GetValue(VanillaData)!;
+			set => FieldInfo.SetValue(VanillaData, value);
+		}
+
 		public VanillaAccessor(IEnumerable<FieldInfo> fieldInfos, string name, object vanillaData)
 		{
 			FieldInfo = fieldInfos.First(info => info.Name == name);
@@ -25,16 +31,6 @@ namespace AdvancedWorldGen.Helper
 		{
 			FieldInfo = type.GetField(name, BindingFlags.Static | BindingFlags.NonPublic)!;
 			VanillaData = null;
-		}
-
-		public void Set(T value)
-		{
-			FieldInfo.SetValue(VanillaData, value);
-		}
-
-		public T Get()
-		{
-			return (T) FieldInfo.GetValue(VanillaData)!;
 		}
 	}
 }

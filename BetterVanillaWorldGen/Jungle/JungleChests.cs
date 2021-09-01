@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -11,15 +10,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 {
 	public class JungleChests : ControlledWorldGenPass
 	{
-		private static readonly FieldInfo JChestXField = typeof(WorldGen)
-			.GetField("JChestX", BindingFlags.NonPublic | BindingFlags.Static)!;
-
-		private static readonly FieldInfo JChestYField = typeof(WorldGen)
-			.GetField("JChestY", BindingFlags.NonPublic | BindingFlags.Static)!;
-
-		private static readonly FieldInfo NumJChestsField = typeof(WorldGen)
-			.GetField("numJChests", BindingFlags.NonPublic | BindingFlags.Static)!;
-
 		public JungleChests() : base("Jungle Chests", 0.5896f)
 		{
 		}
@@ -133,13 +123,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				}
 
 
-				int[] jChestX = (int[]) JChestXField.GetValue(null)!;
-				int[] jChestY = (int[]) JChestYField.GetValue(null)!;
-				int numJChests = (int) NumJChestsField.GetValue(null)!;
+				int[] jChestX = Replacer.VanillaInterface.JChestX.Value;
+				int[] jChestY = Replacer.VanillaInterface.JChestY.Value;
+				int numJChests = Replacer.VanillaInterface.NumJChests.Value;
 				jChestX[numJChests] = x;
 				jChestY[numJChests] = y;
 				WorldGen.structures.AddProtectedStructure(area);
-				NumJChestsField.SetValue(null, numJChests + 1);
+				Replacer.VanillaInterface.NumJChests.Value = numJChests + 1;
 			}
 
 			Main.tileSolid[TileID.Traps] = false;

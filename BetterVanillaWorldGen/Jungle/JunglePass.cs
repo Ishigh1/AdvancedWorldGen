@@ -26,11 +26,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		{
 			progress.Message = Language.GetTextValue("LegacyWorldGen.11");
 
-			JungleOriginX = Replacer.VanillaInterface.JungleOriginX.Get();
-			DungeonSide = Replacer.VanillaInterface.DungeonSide.Get();
+			JungleOriginX = Replacer.VanillaInterface.JungleOriginX.Value;
+			DungeonSide = Replacer.VanillaInterface.DungeonSide.Value;
 			WorldSurface = WorldGen.worldSurface;
-			LeftBeachEnd = Replacer.VanillaInterface.LeftBeachEnd.Get();
-			RightBeachStart = Replacer.VanillaInterface.RightBeachStart.Get();
+			LeftBeachEnd = Replacer.VanillaInterface.LeftBeachEnd.Value;
+			RightBeachStart = Replacer.VanillaInterface.RightBeachStart.Value;
 
 			WorldScale = Main.maxTilesX / (4200 / 1.5f);
 			Point point = CreateStartPoint();

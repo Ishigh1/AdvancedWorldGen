@@ -83,7 +83,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 
 			Main.tileSolid[CrackedType] = false;
-			Replacer.VanillaInterface.CrackedType.Set(CrackedType);
+			Replacer.VanillaInterface.CrackedType.Value = CrackedType;
 			WorldGen.dungeonLake = true;
 			WorldGen.dungeonX = dungeonX;
 			WorldGen.dungeonY = dungeonY;

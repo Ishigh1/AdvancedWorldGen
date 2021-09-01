@@ -23,8 +23,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
-			int leftBeachSize = Replacer.VanillaInterface.LeftBeachEnd.Get();
-			int rightBeachSize = Main.maxTilesX - Replacer.VanillaInterface.RightBeachStart.Get();
+			int leftBeachSize = Replacer.VanillaInterface.LeftBeachEnd.Value;
+			int rightBeachSize = Main.maxTilesX - Replacer.VanillaInterface.RightBeachStart.Value;
 
 			int num = passConfig.Get<int>("FlatBeachPadding");
 			progress.Message = Language.GetTextValue("LegacyWorldGen.0");

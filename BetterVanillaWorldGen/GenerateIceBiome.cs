@@ -14,15 +14,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = Language.GetTextValue("LegacyWorldGen.56");
-			Replacer.VanillaInterface.SnowTop.Set((int) Main.worldSurface);
+			Replacer.VanillaInterface.SnowTop.Value = (int) Main.worldSurface;
 			int num840 = WorldGen.lavaLine - Random.Next(160, 200);
-			int snowLeft = Replacer.VanillaInterface.SnowOriginLeft.Get();
-			int snowRight = Replacer.VanillaInterface.SnowOriginRight.Get();
+			int snowLeft = Replacer.VanillaInterface.SnowOriginLeft.Value;
+			int snowRight = Replacer.VanillaInterface.SnowOriginRight.Value;
 			int num843 = 10;
-			bool dungeonRight = Replacer.VanillaInterface.DungeonSide.Get() > 0;
+			bool dungeonRight = Replacer.VanillaInterface.DungeonSide.Value > 0;
 
-			int[] snowMinX = Replacer.VanillaInterface.SnowMinX.Get();
-			int[] snowMaxX = Replacer.VanillaInterface.SnowMaxX.Get();
+			int[] snowMinX = Replacer.VanillaInterface.SnowMinX.Value;
+			int[] snowMaxX = Replacer.VanillaInterface.SnowMaxX.Value;
 			for (int num844 = 0; num844 <= WorldGen.lavaLine - 140; num844++)
 			{
 				progress.Set(num844 / (float) (WorldGen.lavaLine - 140));
@@ -119,8 +119,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						}
 					}
 
-				if (Replacer.VanillaInterface.SnowBottom.Get() < num844)
-					Replacer.VanillaInterface.SnowBottom.Set(num844);
+				if (Replacer.VanillaInterface.SnowBottom.Value < num844)
+					Replacer.VanillaInterface.SnowBottom.Value = num844;
 			}
 		}
 	}
