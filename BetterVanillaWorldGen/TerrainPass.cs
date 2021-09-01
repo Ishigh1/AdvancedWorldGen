@@ -68,8 +68,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				num2--;
 				if (i > Main.maxTilesX * 0.45 && i < Main.maxTilesX * 0.55 &&
-				    (terrainFeatureType == TerrainFeatureType.Mountain ||
-				     terrainFeatureType == TerrainFeatureType.Valley))
+				    terrainFeatureType is TerrainFeatureType.Mountain or TerrainFeatureType.Valley)
 					terrainFeatureType = (TerrainFeatureType) Random.Next(3);
 
 				if (i > Main.maxTilesX * 0.48 && i < Main.maxTilesX * 0.52)

@@ -77,7 +77,7 @@ namespace AdvancedWorldGen.CustomSized
 								break;
 						}
 
-						if (Main.tile[m, n].wall == 3 || Main.tile[m, n].wall == 83)
+						if (Main.tile[m, n].wall is 3 or 83)
 							Main.tile[m, n].wall = 28;
 
 						switch (Main.tile[m, n].type)

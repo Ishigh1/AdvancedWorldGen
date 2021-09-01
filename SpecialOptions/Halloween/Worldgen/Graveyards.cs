@@ -91,7 +91,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 				}
 			}
 
-			if (tileType == TileID.Grass || tileType == TileID.CrimsonGrass)
+			if (tileType is TileID.Grass or TileID.CrimsonGrass)
 				tileType = TileID.Dirt;
 			if (tileType == TileID.JungleGrass)
 				tileType = TileID.Mud;

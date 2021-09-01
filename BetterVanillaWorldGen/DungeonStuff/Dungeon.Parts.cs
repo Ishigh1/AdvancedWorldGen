@@ -58,7 +58,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 							for (int i = num - 15; i < num + 15; i++)
 							for (int j = num3 - 15; j < num3 + 15; j++)
 								if (i > 0 && i < Main.maxTilesX && j > 0 && j < Main.maxTilesY &&
-								    (Main.tile[i, j].type == 42 || Main.tile[i, j].type == 34))
+								    Main.tile[i, j].type is 42 or 34)
 								{
 									flag = true;
 									break;
@@ -250,8 +250,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				bool flag = true;
 				for (int j = num - 1; j <= num + 1; j++)
 				for (int k = num2; k <= num2 + 3; k++)
-					if (Main.tile[j, k].IsActive && (Main.tile[j, k].type == 10 || Main.tile[j, k].type == 11 ||
-					                                 Main.tile[j, k].type == 91))
+					if (Main.tile[j, k].IsActive && Main.tile[j, k].type is 10 or 11 or 91)
 						flag = false;
 
 				if (flag)
@@ -653,7 +652,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 
 				int num18 = WorldGen.genRand.Next(13);
-				if ((num18 == 10 || num18 == 11 || num18 == 12) && WorldGen.genRand.Next(4) != 0)
+				if (num18 is 10 or 11 or 12 && WorldGen.genRand.Next(4) != 0)
 					num18 = WorldGen.genRand.Next(13);
 
 				while (num18 == 2 && num9 == -1 || num18 == 5 && num10 == -1 || num18 == 6 && num11 == -1 ||

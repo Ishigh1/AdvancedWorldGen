@@ -24,7 +24,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 			const int spread = 15;
 			for (int i = x - spread; i <= x + spread; i += 10)
 			for (int j = y - spread; j <= y + spread; j += 10)
-				if (Main.tile[i, j].wall == 187 || Main.tile[i, j].wall == 216)
+				if (Main.tile[i, j].wall is 187 or 216)
 					return true;
 
 			return false;

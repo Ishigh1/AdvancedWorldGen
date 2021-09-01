@@ -119,9 +119,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			if (chestTileType == 21 && (num8 == 11 || contain == 0 && y >= Main.worldSurface + 25.0 &&
 				y <= Main.maxTilesY - 205 &&
-				(Main.tile[x, y].type == 147 ||
-				 Main.tile[x, y].type == 161 ||
-				 Main.tile[x, y].type == 162)))
+				Main.tile[x, y].type is 147 or 161 or 162))
 			{
 				flag = true;
 				num8 = 11;
@@ -226,7 +224,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					contain = 52;
 			}
 
-			if (chestTileType == 21 && num8 != 0 && (contain == 848 || contain == 857 || contain == 934))
+			if (chestTileType == 21 && num8 != 0 && contain is 848 or 857 or 934)
 				flag9 = true;
 		}
 
