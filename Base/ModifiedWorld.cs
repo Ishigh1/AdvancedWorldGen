@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
+using AdvancedWorldGen.SpecialOptions.Snow;
 using AdvancedWorldGen.UI;
 using MonoMod.Cil;
 using Terraria;
@@ -122,7 +124,7 @@ namespace AdvancedWorldGen.Base
 		{
 			Replacer.ReplaceGenPasses(tasks);
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
-			if (passIndex != -1 && !WorldgenSettings.Revamped && OptionsContains("Crimruption"))
+			if (passIndex != -1 && OptionsContains("Crimruption"))
 			{
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption1", Crimruption.Crimruption1));
 				passIndex++;
@@ -133,7 +135,10 @@ namespace AdvancedWorldGen.Base
 			if (passIndex != -1)
 				tasks[passIndex] = new PassLegacy("NPCs", HandleNpcs);
 
-			GenPass liquidSettle = tasks.Find(pass => pass.Name == "Settle Liquids Again")!;
+			GenPass? liquidSettle = null;
+			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Settle Liquids Again");
+			if (passIndex != -1)
+				liquidSettle = tasks[passIndex];
 
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Tile Cleanup");
 			if (passIndex != -1 && OptionsContains("Crimruption"))
@@ -147,10 +152,11 @@ namespace AdvancedWorldGen.Base
 			if (passIndex != -1)
 				HalloweenCommon.InsertTasks(tasks, ref passIndex);
 
-			if (OptionHelper.OptionsContains("Santa", "Random", "Painted"))
+			if (OptionHelper.OptionsContains("Santa", "Evil", "Random", "Painted"))
 			{
 				tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
-				tasks.Add(liquidSettle);
+				if(liquidSettle != null)
+					tasks.Add(liquidSettle);
 			}
 		}
 
@@ -227,7 +233,10 @@ namespace AdvancedWorldGen.Base
 		public void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
 		{
 			if (OptionHelper.OptionsContains("Santa"))
-				TileReplacer.Snow.ReplaceTiles(progress, "SnowReplace");
+				new SnowReplacer().ReplaceTiles(progress, "SnowReplace");
+			
+			if (OptionHelper.OptionsContains("Evil"))
+				EvilReplacer.CorruptWorld(progress);
 
 			if (OptionHelper.OptionsContains("Random", "Painted")) TileReplacer.RandomizeWorld(progress, OptionHelper);
 		}

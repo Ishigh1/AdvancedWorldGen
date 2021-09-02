@@ -83,6 +83,28 @@
         "hidden": true,
         "internal_name": "Entropy"
     },
+    "Evil": {
+        "conflicts": {
+            "NotTheBees": {
+                "en-US": "Not The Bees leaves nearly no corruptible tile.",
+                "fr-FR": "Not The Bees ne laisse pas beaucoup de bloc corruptibles."
+            },
+            "Random": {
+                "en-US": "Evil only leaves a few blocks to be randomized.",
+                "fr-FR": "Mal\u00e9fique ne laisse que peu de blocs \u00e0 randomiser."
+            }
+        },
+        "description": {
+            "en-US": "Transforms every tile into an evil one.",
+            "fr-FR": "Transforme chaque bloc en un bloc d\u00e9moniaque."
+        },
+        "displayed_name": {
+            "en-US": "Evil",
+            "fr-FR": "Mal\u00e9fique"
+        },
+        "hidden": false,
+        "internal_name": "Evil"
+    },
     "ForTheWorthy": {
         "conflicts": {},
         "description": {
@@ -98,22 +120,26 @@
     },
     "NotTheBees": {
         "conflicts": {
+            "Evil": {
+                "en-US": "Not The Bees leaves nearly no corruptible tile.",
+                "fr-FR": "Not The Bees ne laisse pas beaucoup de bloc corruptibles."
+            },
             "Random": {
-                "en-US": "Not the bees only leaves a few blocks to be randomized.",
+                "en-US": "Not The Bees only leaves a few blocks to be randomized.",
                 "fr-FR": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser."
             },
             "Santa": {
-                "en-US": "Santa will not have much effect on a not the bees world.",
+                "en-US": "Santa will not have much effect on a Not The Bees world.",
                 "fr-FR": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees."
             },
             "SmallNotTheBees": {
-                "en-US": "Having not the bees twice doesn't do anything",
+                "en-US": "Having Not The Bees twice doesn't do anything",
                 "fr-FR": "Avoir Not The Bees deux fois ne fait rien."
             }
         },
         "description": {
-            "en-US": "The not the bees secret seed.",
-            "fr-FR": "La graine secr\u00e8te \"not the bees\"."
+            "en-US": "The Not The Bees secret seed.",
+            "fr-FR": "La graine secr\u00e8te \"Not The Bees\"."
         },
         "displayed_name": {
             "en-US": "Not The Bees",
@@ -137,8 +163,12 @@
     },
     "Random": {
         "conflicts": {
+            "Evil": {
+                "en-US": "Evil only leaves a few blocks to be randomized.",
+                "fr-FR": "Mal\u00e9fique ne laisse que peu de blocs \u00e0 randomiser."
+            },
             "NotTheBees": {
-                "en-US": "Not the bees only leaves a few blocks to be randomized.",
+                "en-US": "Not The Bees only leaves a few blocks to be randomized.",
                 "fr-FR": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser."
             },
             "Santa": {
@@ -160,7 +190,7 @@
     "Santa": {
         "conflicts": {
             "NotTheBees": {
-                "en-US": "Santa will not have much effect on a not the bees world.",
+                "en-US": "Santa will not have much effect on a Not The Bees world.",
                 "fr-FR": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees."
             },
             "Random": {
@@ -182,12 +212,12 @@
     "SmallNotTheBees": {
         "conflicts": {
             "NotTheBees": {
-                "en-US": "Having not the bees twice doesn't do anything",
+                "en-US": "Having Not The Bees twice doesn't do anything",
                 "fr-FR": "Avoir Not The Bees deux fois ne fait rien."
             }
         },
         "description": {
-            "en-US": "Like not the bees, but without the entire world being a jungle.",
+            "en-US": "Like Not The Bees, but without the entire world being a jungle.",
             "fr-FR": "Comme Not The Bees, mais sans transformer le monde entier en jungle."
         },
         "displayed_name": {

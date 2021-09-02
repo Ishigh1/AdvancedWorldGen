@@ -9,22 +9,6 @@ using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.SpecialOptions
 {
-	public class SpecialCase
-	{
-		public delegate bool ConditionDelegate(int x, int y, Tile tile);
-
-		public ConditionDelegate? Condition;
-		public int Type;
-
-		public SpecialCase(int type, ConditionDelegate? condition = null)
-		{
-			Type = type;
-			Condition = condition;
-		}
-
-		public bool IsValid(int x, int y, Tile tile) => Condition == null || Condition(x, y, tile);
-	}
-
 	public class TileReplacer
 	{
 		public const int None = -1;
@@ -34,69 +18,13 @@ namespace AdvancedWorldGen.SpecialOptions
 
 		public static List<int> NotReplaced = null!;
 
-		public static TileReplacer Snow;
-
-		public Dictionary<int, int> Dictionary;
+		public Dictionary<int, int> DirectReplacements;
 		public Dictionary<int, SpecialCase> SpecialCases;
 
-		static TileReplacer()
+		public TileReplacer()
 		{
-			Snow = InitSnow();
-		}
-
-		public TileReplacer(Dictionary<int, int> dictionary, Dictionary<int, SpecialCase> specialCases)
-		{
-			Dictionary = dictionary;
-			SpecialCases = specialCases;
-		}
-
-		private static TileReplacer InitSnow()
-		{
-			Dictionary<int, int> dictionary = new();
-			UpdateDictionary(dictionary, TileID.SnowBlock, TileID.Dirt, TileID.Grass, TileID.CorruptGrass,
-				TileID.ClayBlock, TileID.CrimsonGrass);
-			UpdateDictionary(dictionary, TileID.IceBlock, TileID.Stone, TileID.GreenMoss, TileID.BrownMoss,
-				TileID.RedMoss, TileID.BlueMoss, TileID.PurpleMoss, TileID.LavaMoss, TileID.KryptonMoss,
-				TileID.XenonMoss, TileID.ArgonMoss);
-			UpdateDictionary(dictionary, TileID.CorruptIce, TileID.Ebonstone);
-			UpdateDictionary(dictionary, TileID.FleshIce, TileID.Crimstone);
-			UpdateDictionary(dictionary, TileID.BorealWood, TileID.WoodBlock);
-			UpdateDictionary(dictionary, TileID.BreakableIce, Water);
-			UpdateDictionary(dictionary, TileID.Slush, TileID.Silt);
-			UpdateDictionary(dictionary, TileID.Trees, TileID.VanityTreeSakura, TileID.VanityTreeYellowWillow);
-			UpdateDictionary(dictionary, None, TileID.Plants, TileID.CorruptPlants, TileID.Sunflower, TileID.Vines,
-				TileID.Plants2, TileID.CrimsonPlants, TileID.CrimsonVines, TileID.VineFlowers, TileID.CorruptThorns,
-				TileID.CrimsonThorns);
-
-			Dictionary<int, SpecialCase> specialCases = new()
-			{
-				{
-					TileID.ImmatureHerbs,
-					new SpecialCase(None, (_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
-				},
-				{
-					TileID.MatureHerbs,
-					new SpecialCase(None, (_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
-				},
-				{
-					TileID.BloomingHerbs,
-					new SpecialCase(None, (_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6)
-				},
-				{
-					TileID.Cattail,
-					new SpecialCase(None, (_, _, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4)
-				},
-				{
-					TileID.LilyPad,
-					new SpecialCase(None, (_, _, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4)
-				},
-				{
-					TileID.DyePlants,
-					new SpecialCase(None, (_, _, tile) => tile.frameX is 32 * 3 or 32 * 4 or 32 * 7)
-				}
-			};
-
-			return new TileReplacer(dictionary, specialCases);
+			DirectReplacements = new Dictionary<int, int>();
+			SpecialCases = new Dictionary<int, SpecialCase>();
 		}
 
 		public static void Initialize()
@@ -123,9 +51,9 @@ namespace AdvancedWorldGen.SpecialOptions
 			NotReplaced = null!;
 		}
 
-		public static void UpdateDictionary(Dictionary<int, int> dictionary, int to, params int[] from)
+		public void UpdateDictionary(int to, params int[] from)
 		{
-			foreach (int tile in from) dictionary.Add(tile, to);
+			foreach (int tile in from) DirectReplacements.Add(tile, to);
 		}
 
 		public void ReplaceTiles(GenerationProgress progress, string s)
@@ -148,7 +76,7 @@ namespace AdvancedWorldGen.SpecialOptions
 
 		public void HandleReplacement(int tileType, int x, int y, Tile tile)
 		{
-			if (!Dictionary.TryGetValue(tileType, out int type))
+			if (!DirectReplacements.TryGetValue(tileType, out int type))
 			{
 				if (!SpecialCases.TryGetValue(tileType, out SpecialCase? specialCase) ||
 				    !specialCase.IsValid(x, y, tile))
@@ -188,7 +116,6 @@ namespace AdvancedWorldGen.SpecialOptions
 		public static void RandomizeWorld(GenerationProgress progress, OptionHelper optionHelper)
 		{
 			Dictionary<ushort, ushort> tileRandom = new();
-			tileRandom.Add(189, 53);
 			Dictionary<ushort, ushort> wallRandom = new();
 			Dictionary<ushort, byte> paintRandom = new();
 			Dictionary<ushort, byte> paintWallRandom = new();

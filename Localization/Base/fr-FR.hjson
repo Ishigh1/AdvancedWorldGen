@@ -11,6 +11,7 @@
                 }
             },
             "WorldGenMessage": {
+                "Evil": "Suppression de la pureté",
                 "Random": "Randomisation du monde",
                 "SnowReplace": "Grande glaciation"
             },
