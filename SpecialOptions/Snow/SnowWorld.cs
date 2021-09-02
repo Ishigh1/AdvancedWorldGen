@@ -10,7 +10,7 @@ using static Terraria.ID.ProjectileID;
 using static Terraria.ID.TileID;
 using OnMain = On.Terraria.Main;
 
-namespace AdvancedWorldGen.SpecialOptions
+namespace AdvancedWorldGen.SpecialOptions.Snow
 {
 	public class SnowWorld
 	{

@@ -54,7 +54,8 @@ while True:
             if o in conflicts_not_found:
                 conflicts_not_found.pop(o)
         if len(conflicts_not_found) != 0:
-            print("A conflict wasn't found")
+            for not_found in conflicts_not_found:
+                print("Conflict " + not_found + " wasn't found")
             break
 
         options[option["internal_name"]] = option

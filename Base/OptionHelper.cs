@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using AdvancedWorldGen.CustomSized;
 using AdvancedWorldGen.SpecialOptions;
+using AdvancedWorldGen.SpecialOptions.Snow;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Chat;

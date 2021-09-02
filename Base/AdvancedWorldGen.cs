@@ -4,6 +4,7 @@ using System.Text;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
+using AdvancedWorldGen.SpecialOptions.Snow;
 using AdvancedWorldGen.UI;
 using Newtonsoft.Json;
 using Terraria.ModLoader;

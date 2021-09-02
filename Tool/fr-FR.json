@@ -22,14 +22,20 @@
                     "Crimruption": "Ivre contient d\u00e9j\u00e0 Carmruption."
                 },
                 "Entropy": {},
+                "Evil": {
+                    "NotTheBees": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
+                    "Random": "Mal\u00e9fique ne laisse que peu de blocs \u00e0 randomiser."
+                },
                 "ForTheWorthy": {},
                 "NotTheBees": {
+                    "Evil": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
                     "Random": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser.",
                     "Santa": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees.",
                     "SmallNotTheBees": "Avoir Not The Bees deux fois ne fait rien."
                 },
                 "Painted": {},
                 "Random": {
+                    "Evil": "Mal\u00e9fique ne laisse que peu de blocs \u00e0 randomiser.",
                     "NotTheBees": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser.",
                     "Santa": "No\u00ebl ne laisse que peu de blocs \u00c3\u00a0 randomiser."
                 },
@@ -62,13 +68,17 @@
                 "$parentVal": "Entropie",
                 "Description": "A monde o\u00f9 chaque aube et cr\u00e9puscule, une partie du monde a un type de blocs et murs randomis\u00e9."
             },
+            "Evil": {
+                "$parentVal": "Mal\u00e9fique",
+                "Description": "Transforme chaque bloc en un bloc d\u00e9moniaque."
+            },
             "ForTheWorthy": {
                 "$parentVal": "For The Worthy",
                 "Description": "La graine secr\u00e8te \"for the worthy\"."
             },
             "NotTheBees": {
                 "$parentVal": "Not The Bees",
-                "Description": "La graine secr\u00e8te \"not the bees\"."
+                "Description": "La graine secr\u00e8te \"Not The Bees\"."
             },
             "Painted": {
                 "$parentVal": "Peint",

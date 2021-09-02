@@ -31,15 +31,24 @@
         "id": 102,
         "Conflicts": []
     },
-    "ForTheWorthy": {
+    "Evil": {
         "Hidden": false,
         "id": 4,
+        "Conflicts": [
+            "NotTheBees",
+            "Random"
+        ]
+    },
+    "ForTheWorthy": {
+        "Hidden": false,
+        "id": 5,
         "Conflicts": []
     },
     "NotTheBees": {
         "Hidden": false,
-        "id": 5,
+        "id": 6,
         "Conflicts": [
+            "Evil",
             "Random",
             "Santa",
             "SmallNotTheBees"
@@ -47,20 +56,21 @@
     },
     "Painted": {
         "Hidden": false,
-        "id": 6,
+        "id": 7,
         "Conflicts": []
     },
     "Random": {
         "Hidden": false,
-        "id": 7,
+        "id": 8,
         "Conflicts": [
+            "Evil",
             "NotTheBees",
             "Santa"
         ]
     },
     "Santa": {
         "Hidden": false,
-        "id": 8,
+        "id": 9,
         "Conflicts": [
             "NotTheBees",
             "Random"
@@ -68,7 +78,7 @@
     },
     "SmallNotTheBees": {
         "Hidden": false,
-        "id": 9,
+        "id": 10,
         "Conflicts": [
             "NotTheBees"
         ]
