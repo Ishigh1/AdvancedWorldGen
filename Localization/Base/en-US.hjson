@@ -11,6 +11,7 @@
                 }
             },
             "WorldGenMessage": {
+                "Evil": "Removing the purity",
                 "Random": "Randomizing tiles",
                 "SnowReplace": "Making the world cooler"
             },
