@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -83,7 +84,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 
 			Main.tileSolid[CrackedType] = false;
-			Replacer.VanillaInterface.CrackedType.Value = CrackedType;
+			VanillaInterface.CrackedType.Value = CrackedType;
 			WorldGen.dungeonLake = true;
 			WorldGen.dungeonX = dungeonX;
 			WorldGen.dungeonY = dungeonY;

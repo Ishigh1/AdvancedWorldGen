@@ -27,9 +27,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 		public readonly VanillaAccessor<int> LeftBeachEnd;
 		public readonly VanillaAccessor<int> RightBeachStart;
 
-		public VanillaInterface(GenPass vanillaReset)
+		public VanillaInterface(GenPass vanillaResetPass)
 		{
-			VanillaAccessor<WorldGenLegacyMethod> methodAccessor = new(typeof(PassLegacy), "_method", vanillaReset);
+			VanillaAccessor<WorldGenLegacyMethod> methodAccessor = new(typeof(PassLegacy), "_method", vanillaResetPass);
 			WorldGenLegacyMethod method = methodAccessor.Value;
 
 			VanillaAccessor<object> dataAccessor = new(method.GetType(), "_target", method);

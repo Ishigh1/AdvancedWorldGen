@@ -1,4 +1,5 @@
 using System;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -41,8 +42,7 @@ namespace AdvancedWorldGen.CustomSized
 		{
 			orig(self, evt, listeningElement);
 
-			// TODO: maybe store in VanillaInterface with null VanillaData and assign data on every use
-			var optionSize = new VanillaAccessor<int>(typeof(UIWorldCreation), "_optionSize", self);
+			VanillaAccessor<int> optionSize = VanillaInterface.OptionSize(self);
 			int newSize = optionSize.Value;
 			SetSizeTo(newSize);
 		}

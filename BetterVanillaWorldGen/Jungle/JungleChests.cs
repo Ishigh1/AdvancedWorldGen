@@ -1,4 +1,5 @@
 using System;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -123,13 +124,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				}
 
 
-				int[] jChestX = Replacer.VanillaInterface.JChestX.Value;
-				int[] jChestY = Replacer.VanillaInterface.JChestY.Value;
-				int numJChests = Replacer.VanillaInterface.NumJChests.Value;
+				int[] jChestX = VanillaInterface.JChestX.Value;
+				int[] jChestY = VanillaInterface.JChestY.Value;
+				int numJChests = VanillaInterface.NumJChests.Value;
 				jChestX[numJChests] = x;
 				jChestY[numJChests] = y;
 				WorldGen.structures.AddProtectedStructure(area);
-				Replacer.VanillaInterface.NumJChests.Value = numJChests + 1;
+				VanillaInterface.NumJChests.Value = numJChests + 1;
 			}
 
 			Main.tileSolid[TileID.Traps] = false;

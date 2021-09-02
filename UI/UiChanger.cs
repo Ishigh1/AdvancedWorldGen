@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using AdvancedWorldGen.Base;
-using AdvancedWorldGen.Helper;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -91,8 +90,7 @@ namespace AdvancedWorldGen.UI
 		{
 			origAddDescriptionPanel(self, container, accumulatedHeight, tagGroup);
 
-			VanillaAccessor<UICharacterNameButton> seedPlate = new(typeof(UIWorldCreation), "_seedPlate", self);
-			UICharacterNameButton characterNameButton = seedPlate.Value;
+			UICharacterNameButton characterNameButton = VanillaInterface.SeedPlate(self).Value;
 			characterNameButton.Width.Pixels -= 48;
 
 			GroupOptionButton<bool> groupOptionButton = new(true, null, null, Color.White, null)
@@ -106,12 +104,9 @@ namespace AdvancedWorldGen.UI
 				PaddingLeft = 4f
 			};
 
-			VanillaAccessor<Asset<Texture2D>> iconTexture =
-				new(typeof(GroupOptionButton<bool>), "_iconTexture", groupOptionButton);
-			iconTexture.Value = OptionsTexture;
+			VanillaInterface.IconTexture(groupOptionButton).Value = OptionsTexture;
 
-			VanillaAccessor<UIText> descriptionText = new(typeof(UIWorldCreation), "_descriptionText", self);
-			Description = descriptionText.Value;
+			Description = VanillaInterface.DescriptionText(self).Value;
 
 			groupOptionButton.OnMouseDown += ToOptionsMenu;
 			groupOptionButton.OnMouseOver += ShowOptionDescription;
@@ -155,9 +150,7 @@ namespace AdvancedWorldGen.UI
 		{
 			orig(self, data, orderInList, canBePlayed);
 
-			FieldInfo fieldInfo = typeof(UIWorldListItem).GetField("_buttonLabel",
-				BindingFlags.NonPublic | BindingFlags.Instance)!;
-			UIText uiText = (UIText) fieldInfo.GetValue(self)!;
+			UIText uiText = VanillaInterface.ButtonLabel(self).Value;
 			UIImageButton copyOptionButton = new(CopyOptionsTexture)
 			{
 				VAlign = 1f,

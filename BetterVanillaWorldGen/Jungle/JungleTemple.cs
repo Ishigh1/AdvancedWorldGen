@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using AdvancedWorldGen.SpecialOptions;
 using Microsoft.Xna.Framework;
@@ -572,8 +573,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				{
 					int lAltarX = x - Main.tile[x, y].frameX / 18;
 					int lAltarY = y - Main.tile[x, y].frameY / 18;
-					Replacer.VanillaInterface.LAltarX.Value = lAltarX;
-					Replacer.VanillaInterface.LAltarY.Value = lAltarY;
+					VanillaInterface.LAltarX.Value = lAltarX;
+					VanillaInterface.LAltarY.Value = lAltarY;
 					break;
 				}
 
@@ -611,8 +612,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 				int lAltarX2 = x;
 				int lAltarY2 = y;
-				Replacer.VanillaInterface.LAltarX.Value = lAltarX2;
-				Replacer.VanillaInterface.LAltarY.Value = lAltarY2;
+				VanillaInterface.LAltarX.Value = lAltarX2;
+				VanillaInterface.LAltarY.Value = lAltarY2;
 				for (int num94 = 0; num94 <= 2; num94++)
 				for (int num95 = 0; num95 <= 1; num95++)
 				{

@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 using AdvancedWorldGen.BetterVanillaWorldGen;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.CustomSized;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
@@ -18,9 +18,6 @@ namespace AdvancedWorldGen.UI
 {
 	public class CustomSizeUI : UIState
 	{
-		public static readonly FieldInfo SizeButtonsField =
-			typeof(UIWorldCreation).GetField("_sizeButtons", BindingFlags.Instance | BindingFlags.NonPublic)!;
-
 		private static readonly Type IntInputElementType =
 			typeof(Main).Assembly.GetType("Terraria.ModLoader.Config.UI.IntInputElement")!;
 
@@ -111,12 +108,11 @@ namespace AdvancedWorldGen.UI
 				8400 when WorldSettings.SizeY == 2400 => 2,
 				_ => -1
 			};
-
-			// TODO store in VanillaInterface with null Data and assign data on every use
-			var optionSize = new VanillaAccessor<int>(typeof(UIWorldCreation), "_optionSize", WorldSettings.UIWorldCreation);
+			
+			VanillaAccessor<int> optionSize = VanillaInterface.OptionSize(WorldSettings.UIWorldCreation);
 			optionSize.Value = size;
 
-			object[] sizeButtons = (object[]) SizeButtonsField.GetValue(WorldSettings.UIWorldCreation)!;
+			object[] sizeButtons = VanillaInterface.SizeButtons(WorldSettings.UIWorldCreation).Value;
 
 			Type groupOptionButtonType = sizeButtons.GetType().GetElementType()!;
 			MethodInfo setCurrentOptionMethod =
