@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+using AdvancedWorldGen.Helper;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -9,8 +9,8 @@ namespace AdvancedWorldGen.CustomSized
 	{
 		public override void LoadWorldData(TagCompound tag)
 		{
-			if (TryGetValue(tag, "ocean", out int value)) WorldGen.oceanDistance = value;
-			if (TryGetValue(tag, "beach", out value)) WorldGen.beachDistance = value;
+			if (tag.TryGetValue("ocean", out int value)) WorldGen.oceanDistance = value;
+			if (tag.TryGetValue("beach", out value)) WorldGen.beachDistance = value;
 		}
 
 		public override TagCompound SaveWorldData()
@@ -29,18 +29,6 @@ namespace AdvancedWorldGen.CustomSized
 		{
 			WorldGen.oceanDistance = 250;
 			WorldGen.beachDistance = 380;
-		}
-
-		public static bool TryGetValue<T>(TagCompound tagCompound, string name, [NotNullWhen(true)] out T? value)
-		{
-			if (tagCompound.ContainsKey(name))
-			{
-				value = tagCompound.Get<T>(name)!;
-				return true;
-			}
-
-			value = default;
-			return false;
 		}
 	}
 }
