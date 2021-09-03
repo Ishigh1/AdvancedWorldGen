@@ -23,14 +23,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int mushroomBiomes = Math.Max(1, Main.maxTilesX / 700);
 
 			List<Vector2> mushroomBiomesPosition = new();
-			int tries = 0;
 			const int spread = 100;
 			int minTiles1 = (int) Math.Max(spread, Main.maxTilesX * 0.2);
-			int maxTiles1 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.975);
+			int maxTiles1 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.8);
 			int minTiles2 = (int) Math.Max(spread, Main.maxTilesX * 0.25);
-			int maxTiles2 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.8);
+			int maxTiles2 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.975);
 			for (int numBiome = 0; numBiome < mushroomBiomes; numBiome++)
 			{
+				int tries = 0;
 				GenPassHelper.SetProgress(progress, numBiome, mushroomBiomes, 0.5f);
 				bool isValid = false;
 				while (!isValid)
@@ -39,7 +39,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					if (tries > Main.maxTilesX / 2)
 						break;
 
-					int x = tries < Main.maxTilesX / 4
+					int x = tries <= Main.maxTilesX / 4
 						? Random.Next(minTiles1, maxTiles1)
 						: Random.Next(minTiles2, maxTiles2);
 
