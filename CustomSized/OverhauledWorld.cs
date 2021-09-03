@@ -9,10 +9,10 @@ namespace AdvancedWorldGen.CustomSized
 	{
 		public override void LoadWorldData(TagCompound tag)
 		{
-			if (TryGetValue(tag, "ocean", out object? value)) WorldGen.oceanDistance = (int) value;
-			if (TryGetValue(tag, "beach", out value)) WorldGen.beachDistance = (int) value;
+			if (TryGetValue(tag, "ocean", out int value)) WorldGen.oceanDistance = value;
+			if (TryGetValue(tag, "beach", out value)) WorldGen.beachDistance = value;
 		}
-		
+
 		public override TagCompound SaveWorldData()
 		{
 			TagCompound data = new();
@@ -31,11 +31,11 @@ namespace AdvancedWorldGen.CustomSized
 			WorldGen.beachDistance = 380;
 		}
 
-		public static bool TryGetValue(TagCompound tagCompound, string name, [NotNullWhen(true)] out object? value)
+		public static bool TryGetValue<T>(TagCompound tagCompound, string name, [NotNullWhen(true)] out T? value)
 		{
 			if (tagCompound.ContainsKey(name))
 			{
-				value = tagCompound[name];
+				value = tagCompound.Get<T>(name)!;
 				return true;
 			}
 
