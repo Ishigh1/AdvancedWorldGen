@@ -31,7 +31,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			for (int numBiome = 0; numBiome < mushroomBiomes; numBiome++)
 			{
 				int tries = 0;
-				GenPassHelper.SetProgress(progress, numBiome, mushroomBiomes, 0.5f);
+				progress.SetProgress(numBiome, mushroomBiomes, 0.5f);
 				bool isValid = false;
 				while (!isValid)
 				{
@@ -76,7 +76,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			for (int x = 50; x < Main.maxTilesX - 50; x++)
 			{
-				GenPassHelper.SetProgress(progress, x - 50, Main.maxTilesX - 100, 0.5f, 0.5f);
+				progress.SetProgress(x - 50, Main.maxTilesX - 100, 0.5f, 0.5f);
 				for (int y = (int) Main.worldSurface; y < Main.maxTilesY - 50; y++)
 				{
 					if (!Main.tile[x, y].IsActive)

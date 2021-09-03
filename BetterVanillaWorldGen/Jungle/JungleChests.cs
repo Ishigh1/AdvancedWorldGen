@@ -40,7 +40,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			int jungleX = Replacer.VanillaInterface.JungleX;
 			for (int step = 0; step < stepCount; step++)
 			{
-				GenPassHelper.SetProgress(progress, step, stepCount);
+				progress.SetProgress(step, stepCount);
 				int minX = Math.Max(10, jungleX - Main.maxTilesX / 8);
 				int maxX = Math.Min(Main.maxTilesX - 10, jungleX + Main.maxTilesX / 8);
 				int x = Random.Next(minX, maxX);

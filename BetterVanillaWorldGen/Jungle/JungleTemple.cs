@@ -58,7 +58,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			int num10 = 0;
 			for (int i = 0; i < templeRoomCount; i++)
 			{
-				GenPassHelper.SetProgress(generationProgress, i, templeRoomCount, 1 / 12f);
+				generationProgress.SetProgress(i, templeRoomCount, 1 / 12f);
 				num10++;
 				int num11 = direction;
 				int num12 = num7;
@@ -132,7 +132,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				templeY = Random.Next((int) WorldGen.rockLayer, Main.UnderworldLayer - height);
 			for (int index = 0; index < rooms.Count; index++)
 			{
-				GenPassHelper.SetProgress(generationProgress, index, rooms.Count, 1 / 12f, 1 / 12f);
+				generationProgress.SetProgress(index, rooms.Count, 1 / 12f, 1 / 12f);
 				Rectangle rectangle = rooms[index];
 				rectangle.Y += templeY;
 				rooms[index] = rectangle;
@@ -142,7 +142,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 			for (int k = 0; k < templeRoomCount; k++)
 			{
-				GenPassHelper.SetProgress(generationProgress, k, templeRoomCount, 1 / 12f, 2 / 12f);
+				generationProgress.SetProgress(k, templeRoomCount, 1 / 12f, 2 / 12f);
 				for (int l = 0; l < 2; l++)
 				for (int m = 0; m < templeRoomCount; m++)
 				for (int n = 0; n < 2; n++)
@@ -194,7 +194,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 			for (int num24 = 0; num24 < templeRoomCount; num24++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num24, templeRoomCount, 1 / 12f, 3 / 12f);
+				generationProgress.SetProgress(num24, templeRoomCount, 1 / 12f, 3 / 12f);
 				for (int num25 = rooms[num24].X; num25 < rooms[num24].X + rooms[num24].Width; num25++)
 				for (int num26 = rooms[num24].Y; num26 < rooms[num24].Y + rooms[num24].Height; num26++)
 				{
@@ -315,7 +315,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			Vector2 templePath = new(templeX, templeY);
 			for (int num39 = 0; num39 < templeRoomCount; num39++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num39, templeRoomCount, 1 / 12f, 4 / 12f);
+				generationProgress.SetProgress(num39, templeRoomCount, 1 / 12f, 4 / 12f);
 				Rectangle rectangle2 = rooms[num39];
 				rectangle2.X += 8;
 				rectangle2.Y += 8;
@@ -425,25 +425,25 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			templeBottom += 10;
 			for (int num55 = templeLeft; num55 < templeRight; num55++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num55, templeRight, 1 / 12f, 5 / 12f);
+				generationProgress.SetProgress(num55, templeRight, 1 / 12f, 5 / 12f);
 				for (int num56 = templeTop; num56 < templeBottom; num56++) WorldGen.outerTempled(num55, num56);
 			}
 
 			for (int num57 = templeRight; num57 >= templeLeft; num57--)
 			{
-				GenPassHelper.SetProgress(generationProgress, num57, templeLeft, 1 / 12f, 6 / 12f);
+				generationProgress.SetProgress(num57, templeLeft, 1 / 12f, 6 / 12f);
 				for (int num58 = templeTop; num58 < templeBottom / 2; num58++) WorldGen.outerTempled(num57, num58);
 			}
 
 			for (int num59 = templeTop; num59 < templeBottom; num59++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num59, templeBottom, 1 / 12f, 7 / 12f);
+				generationProgress.SetProgress(num59, templeBottom, 1 / 12f, 7 / 12f);
 				for (int num60 = templeLeft; num60 < templeRight; num60++) WorldGen.outerTempled(num60, num59);
 			}
 
 			for (int num61 = templeBottom; num61 >= templeTop; num61--)
 			{
-				GenPassHelper.SetProgress(generationProgress, num61, templeTop, 1 / 12f, 8 / 12f);
+				generationProgress.SetProgress(num61, templeTop, 1 / 12f, 8 / 12f);
 				for (int num62 = templeLeft; num62 < templeRight; num62++) WorldGen.outerTempled(num62, num61);
 			}
 
@@ -529,19 +529,19 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			WorldGen.PlaceTile(num68, num69, 10, true, false, -1, 11);
 			for (int num79 = templeLeft; num79 < templeRight; num79++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num79, templeRight, 1 / 12f, 9 / 12f);
+				generationProgress.SetProgress(num79, templeRight, 1 / 12f, 9 / 12f);
 				for (int num80 = templeTop; num80 < templeBottom; num80++) WorldGen.templeCleaner(num79, num80);
 			}
 
 			for (int num81 = templeBottom; num81 >= templeTop; num81--)
 			{
-				GenPassHelper.SetProgress(generationProgress, num81, templeTop, 1 / 12f, 10 / 12f);
+				generationProgress.SetProgress(num81, templeTop, 1 / 12f, 10 / 12f);
 				for (int num82 = templeRight; num82 >= templeLeft; num82--) WorldGen.templeCleaner(num82, num81);
 			}
 
 			for (int num83 = templeLeft; num83 < templeRight; num83++)
 			{
-				GenPassHelper.SetProgress(generationProgress, num83, templeRight, 1 / 12f, 11 / 12f);
+				generationProgress.SetProgress(num83, templeRight, 1 / 12f, 11 / 12f);
 				for (int num84 = templeTop; num84 < templeBottom; num84++)
 				{
 					bool flag4 = true;
