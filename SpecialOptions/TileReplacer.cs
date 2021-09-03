@@ -78,8 +78,7 @@ namespace AdvancedWorldGen.SpecialOptions
 		{
 			if (!DirectReplacements.TryGetValue(tileType, out int type))
 			{
-				if (!SpecialCases.TryGetValue(tileType, out SpecialCase? specialCase) ||
-				    !specialCase.IsValid(x, y, tile))
+				if (!SpecialCases.TryGetValue(tileType, out SpecialCase? specialCase) || !specialCase.IsValid(x, y, tile))
 					return;
 				type = specialCase.Type;
 			}
