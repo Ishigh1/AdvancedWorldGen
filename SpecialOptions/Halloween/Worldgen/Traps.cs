@@ -104,7 +104,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 				WorldGen.PlaceTile(x - direction, 39, TileID.Cloud);
 				WorldGen.PlaceTile(x + 2 * direction, 38, TileID.Cloud);
 				WorldGen.PlaceTile(x - direction, 38, TileID.Cloud);
-				trap.Invoke(x - modifier, 39);
+				trap(x - modifier, 39);
 			}
 			else
 			{
@@ -124,7 +124,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen
 							enlarging = false;
 							WorldGen.KillTile(x, cloudY + 1);
 							WorldGen.KillTile(x + direction, cloudY + 1);
-							trap.Invoke(x + modifier, cloudY + 1);
+							trap(x + modifier, cloudY + 1);
 							WorldGen.PlaceWall(x, cloudY + 1, WallID.Cloud);
 							WorldGen.PlaceWall(x + direction, cloudY + 1, WallID.Cloud);
 							WorldGen.PlaceWall(x, cloudY, WallID.Cloud);
