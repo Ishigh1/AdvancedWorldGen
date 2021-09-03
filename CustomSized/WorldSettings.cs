@@ -121,8 +121,6 @@ namespace AdvancedWorldGen.CustomSized
 				Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
 				Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
 			}
-
-			OverhauledInit.Init();
 		}
 	}
 }
