@@ -135,8 +135,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int beachBordersWidth = (int) (275 * worldSize);
 			int beachSandRandomWidthRange = (int) (20 * worldSize);
 			int beachSandRandomCenter = beachBordersWidth + 5 + 2 * beachSandRandomWidthRange;
-			WorldGen.oceanDistance = beachBordersWidth - 25;
-			WorldGen.beachDistance = beachSandRandomCenter + beachSandDungeonExtraWidth + beachSandJungleExtraWidth;
+			if (worldSize < 1)
+			{
+				WorldGen.oceanDistance = beachBordersWidth - 25;
+				WorldGen.beachDistance = beachSandRandomCenter + beachSandDungeonExtraWidth + beachSandJungleExtraWidth;
+			}
 
 			int leftBeachEnd = beachSandRandomCenter +
 			                   Random.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
