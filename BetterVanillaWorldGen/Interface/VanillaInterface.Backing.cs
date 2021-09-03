@@ -25,41 +25,5 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 		private static readonly VanillaAccessor<UIText> _buttonLabel =
 			new(typeof(UIWorldListItem), "_buttonLabel", null);
-
-		public static VanillaAccessor<int> OptionSize(UIWorldCreation instance)
-		{
-			_optionSize.VanillaData = instance;
-			return _optionSize;
-		}
-
-		public static VanillaAccessor<object[]> SizeButtons(UIWorldCreation instance)
-		{
-			_sizeButtons.VanillaData = instance;
-			return _sizeButtons;
-		}
-
-		public static VanillaAccessor<UICharacterNameButton> SeedPlate(UIWorldCreation instance)
-		{
-			_seedPlate.VanillaData = instance;
-			return _seedPlate;
-		}
-
-		public static VanillaAccessor<Asset<Texture2D>> IconTexture(GroupOptionButton<bool> instance)
-		{
-			_iconTexture.VanillaData = instance;
-			return _iconTexture;
-		}
-
-		public static VanillaAccessor<UIText> DescriptionText(UIWorldCreation instance)
-		{
-			_descriptionText.VanillaData = instance;
-			return _descriptionText;
-		}
-
-		public static VanillaAccessor<UIText> ButtonLabel(UIWorldListItem instance)
-		{
-			_buttonLabel.VanillaData = instance;
-			return _buttonLabel;
-		}
 	}
 }
