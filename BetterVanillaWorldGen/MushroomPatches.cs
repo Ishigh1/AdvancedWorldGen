@@ -28,9 +28,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int maxTiles1 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.8);
 			int minTiles2 = (int) Math.Max(spread, Main.maxTilesX * 0.25);
 			int maxTiles2 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.75);
+			
+			int tries = 0;
 			for (int numBiome = 0; numBiome < mushroomBiomes; numBiome++)
 			{
-				int tries = 0;
 				progress.SetProgress(numBiome, mushroomBiomes, 0.5f);
 				bool isValid = false;
 				while (!isValid)
