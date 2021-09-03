@@ -27,7 +27,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int minTiles1 = (int) Math.Max(spread, Main.maxTilesX * 0.2);
 			int maxTiles1 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.8);
 			int minTiles2 = (int) Math.Max(spread, Main.maxTilesX * 0.25);
-			int maxTiles2 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.975);
+			int maxTiles2 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.75);
 			for (int numBiome = 0; numBiome < mushroomBiomes; numBiome++)
 			{
 				int tries = 0;
