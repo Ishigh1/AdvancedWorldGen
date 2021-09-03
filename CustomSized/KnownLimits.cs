@@ -1,6 +1,6 @@
 namespace AdvancedWorldGen.CustomSized
 {
-	public class KnownLimits
+	public static class KnownLimits
 	{
 		public const int OverhauledMinX = 1900;
 		public const int NormalMinX = 4200;
