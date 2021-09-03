@@ -124,7 +124,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			waterLine += Random.Next(-100, 20);
 			int lavaLine = waterLine + Random.Next(50, 80);
 			if (rockLayer > Main.UnderworldLayer)
-				throw new Exception(Language.GetTextValue("Mods.AdvancedWorldGen.Exceptions.RockUnderHell"));
+				throw new RockUnderHellException();
 			while (lavaLine > Main.UnderworldLayer)
 			{
 				waterLine -= (int) (waterLine - rockLayer) / 8;
