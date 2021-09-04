@@ -21,13 +21,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
 			progress.Message = Language.GetTextValue("LegacyWorldGen.70");
-			int jungleX = Replacer.VanillaInterface.JungleX;
-			int minX = Math.Max(10, jungleX - Main.maxTilesX / 8);
-			int maxX = Math.Min(Main.maxTilesX - 10, jungleX + Main.maxTilesX / 8);
-			int x = Random.Next(minX, maxX);
-			int y = Random.Next((int) WorldGen.rockLayer, Main.UnderworldLayer);
-			(x, _) = TileFinder.SpiralSearch(x, y, IsValid);
-
+			int x = Random.Next(Replacer.VanillaInterface.JungleMinX, Replacer.VanillaInterface.JungleMaxX);
 			MakeTemple(progress, x);
 		}
 

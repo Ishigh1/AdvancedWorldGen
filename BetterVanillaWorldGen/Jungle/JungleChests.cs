@@ -37,12 +37,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 			float stepCount = Random.Next(7, 12);
 			stepCount *= Main.maxTilesX / 4200f;
-			int jungleX = Replacer.VanillaInterface.JungleX;
 			for (int step = 0; step < stepCount; step++)
 			{
 				progress.SetProgress(step, stepCount);
-				int minX = Math.Max(10, jungleX - Main.maxTilesX / 8);
-				int maxX = Math.Min(Main.maxTilesX - 10, jungleX + Main.maxTilesX / 8);
+				int minX = Replacer.VanillaInterface.JungleMinX;
+				int maxX = Replacer.VanillaInterface.JungleMaxX;
 				int x = Random.Next(minX, maxX);
 
 				int y;

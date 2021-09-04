@@ -24,10 +24,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			List<Vector2> mushroomBiomesPosition = new();
 			const int spread = 100;
-			int minTiles1 = (int) Math.Max(spread, Main.maxTilesX * 0.2);
-			int maxTiles1 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.8);
-			int minTiles2 = (int) Math.Max(spread, Main.maxTilesX * 0.25);
-			int maxTiles2 = (int) Math.Min(Main.maxTilesX - spread, Main.maxTilesX * 0.75);
+			int jungleMinX = Math.Min(Replacer.VanillaInterface.JungleMinX - spread, spread);
+			int jungleSpread = Math.Max(Replacer.VanillaInterface.JungleMaxX + spread, Main.maxTilesX - spread) - jungleMinX;
+			int maxTilesX = Main.maxTilesX - jungleSpread - spread;
 			
 			int tries = 0;
 			for (int numBiome = 0; numBiome < mushroomBiomes; numBiome++)
@@ -40,11 +39,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					if (tries > Main.maxTilesX / 2)
 						break;
 
-					int x = tries <= Main.maxTilesX / 4
-						? Random.Next(minTiles1, maxTiles1)
-						: Random.Next(minTiles2, maxTiles2);
+					int x = Random.Next(spread, maxTilesX);
+					if (x >= jungleMinX)
+						x += jungleSpread;
 
-					int y = Random.Next((int) Main.rockLayer + 50, Main.maxTilesY - 300);
+					int y = Random.Next((int) Main.rockLayer + 50, Main.UnderworldLayer - 100);
 					const int distanceBetweenBiomes = 500;
 
 					Vector2 current = new(x, y);
