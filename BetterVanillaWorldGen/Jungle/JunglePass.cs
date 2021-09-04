@@ -66,6 +66,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			WorldGen.TileRunner(x, y, num, 10000, 59, false, 0f, -20f, true);
 			GenerateTunnelToSurface(x, y);
 			WorldGen.mudWall = false;
+			DelimitJungle();
 			progress.Set(0.6f);
 			GenerateHolesInMudWalls();
 			GenerateFinishingTouches(progress, oldX, oldY);
@@ -193,14 +194,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				if (vector2.X < -1.5)
 					vector2.X = -1.5f;
 			}
-
-			Replacer.VanillaInterface.JungleX = (int) vector.X;
 		}
 
 		public void GenerateHolesInMudWalls()
 		{
-			int minX = Math.Max(10, JungleOriginX - Main.maxTilesX / 8);
-			int maxX = Math.Min(Main.maxTilesX - 10, JungleOriginX + Main.maxTilesX / 8);
+			int minX = Replacer.VanillaInterface.JungleMinX;
+			int maxX = Replacer.VanillaInterface.JungleMaxX;
 			for (int i = 0; i < Main.maxTilesX / 4; i++)
 			{
 				int x = Random.Next(minX, maxX);
@@ -208,6 +207,28 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				if (Main.tile[x, y].wall is WallID.JungleUnsafe or WallID.MudUnsafe)
 					WorldGen.MudWallRunner(x, y);
 			}
+		}
+
+		public void DelimitJungle()
+		{
+			int y = (int) ((WorldGen.rockLayer + Main.UnderworldLayer) / 2);
+			int x = JungleOriginX;
+			Tile tile = Main.tile[x, y];
+			while (!tile.IsActive || tile.type is TileID.Mud or TileID.JungleGrass)
+			{
+				x--;
+				tile = Main.tile[x, y];
+			}
+			Replacer.VanillaInterface.JungleMinX = x + 1;
+			
+			x = JungleOriginX;
+			tile = Main.tile[x, y];
+			while (!tile.IsActive || tile.type is TileID.Mud or TileID.JungleGrass)
+			{
+				x++;
+				tile = Main.tile[x, y];
+			}
+			Replacer.VanillaInterface.JungleMaxX = x - 1;
 		}
 
 		public void GenerateFinishingTouches(GenerationProgress progress, int oldX, int oldY)

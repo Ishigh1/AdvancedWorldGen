@@ -7,31 +7,34 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 {
 	public partial class VanillaInterface
 	{
-		public VanillaAccessor<int> Copper;
-		public VanillaAccessor<int> DungeonLocation;
+		public readonly VanillaAccessor<int> Copper;
+		public readonly VanillaAccessor<int> Iron;
+		public readonly VanillaAccessor<int> Silver;
+		public readonly VanillaAccessor<int> Gold;
 
-		public VanillaAccessor<int> DungeonSide;
-		public VanillaAccessor<int> Gold;
-		public VanillaAccessor<int> Iron;
+		public readonly VanillaAccessor<int> DungeonSide;
+		public readonly VanillaAccessor<int> DungeonLocation;
 
-		public VanillaAccessor<int> JungleOriginX;
+		public readonly VanillaAccessor<int> JungleOriginX;
 
-		public VanillaAccessor<int> LeftBeachEnd;
-		public VanillaAccessor<int> RightBeachStart;
-		public VanillaAccessor<int> Silver;
-		public VanillaAccessor<int> SnowBottom;
-		public VanillaAccessor<int[]> SnowMaxX;
-		public VanillaAccessor<int[]> SnowMinX;
+		public readonly VanillaAccessor<int> SnowOriginLeft;
+		public readonly VanillaAccessor<int> SnowOriginRight;
+		public readonly VanillaAccessor<int[]> SnowMinX;
+		public readonly VanillaAccessor<int[]> SnowMaxX;
+		public readonly VanillaAccessor<int> SnowTop;
+		public readonly VanillaAccessor<int> SnowBottom;
 
-		public VanillaAccessor<int> SnowOriginLeft;
-		public VanillaAccessor<int> SnowOriginRight;
-		public VanillaAccessor<int> SnowTop;
+		public readonly VanillaAccessor<int> LeftBeachEnd;
+		public readonly VanillaAccessor<int> RightBeachStart;
 
-
-		public VanillaInterface(GenPass vanillaReset)
+		public VanillaInterface(GenPass vanillaResetPass)
 		{
-			WorldGenLegacyMethod method = (WorldGenLegacyMethod) typeof(PassLegacy).GetField("_method", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(vanillaReset)!;
-			object vanillaData = method.GetType().GetField("_target", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(method)!;
+			VanillaAccessor<WorldGenLegacyMethod> methodAccessor = new(typeof(PassLegacy), "_method", vanillaResetPass);
+			WorldGenLegacyMethod method = methodAccessor.Value;
+
+			VanillaAccessor<object> dataAccessor = new(method.GetType(), "_target", method);
+			object vanillaData = dataAccessor.Value;
+
 			FieldInfo[] fieldInfos = vanillaData.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
 
 			Copper = new VanillaAccessor<int>(fieldInfos, "copper", vanillaData);
@@ -53,8 +56,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 			LeftBeachEnd = new VanillaAccessor<int>(fieldInfos, "leftBeachEnd", vanillaData);
 			RightBeachStart = new VanillaAccessor<int>(fieldInfos, "rightBeachStart", vanillaData);
-
-			InitializeStatics();
 		}
 	}
 }

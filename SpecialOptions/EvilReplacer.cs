@@ -41,7 +41,7 @@ namespace AdvancedWorldGen.SpecialOptions
 				conversionType = WorldGen.crimson ? 4 : 1;
 			for (int x = 0; x < Main.maxTilesX; x++)
 			{
-				GenPassHelper.SetProgress(progress, x, Main.maxTilesX);
+				progress.SetProgress(x, Main.maxTilesX);
 				if (x == Main.maxTilesX / 2 && isDrunk)
 					conversionType = corruptOnLeft ? 4 : 1;
 				for (int y = 0; y < Main.maxTilesY; y++) WorldGen.Convert(x, y, conversionType, 0);

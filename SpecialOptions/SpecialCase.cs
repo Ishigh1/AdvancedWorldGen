@@ -16,7 +16,7 @@ namespace AdvancedWorldGen.SpecialOptions
 
 		public bool IsValid(int x, int y, Tile tile)
 		{
-			return Condition == null || Condition.Invoke(x, y, tile);
+			return Condition == null || Condition(x, y, tile);
 		}
 	}
 }

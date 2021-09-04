@@ -118,7 +118,7 @@ namespace AdvancedWorldGen.SpecialOptions.Snow
 			cursor.GotoNext(MoveType.After, instruction => instruction.OpCode == OpCodes.Brfalse_S);
 			object label = cursor.Prev.Operand;
 
-			ILHelper.OptionContains(cursor, "Santa");
+			cursor.OptionContains("Santa");
 			cursor.Emit(OpCodes.Brtrue_S, label);
 		}
 	}

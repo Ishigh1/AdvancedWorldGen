@@ -234,8 +234,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 				}
 			}
 
-			public static void AttemptClaim(int x, int y, int[,] clusterIndexMap, List<List<Point>> pointClusters,
-				int index)
+			public static void AttemptClaim(int x, int y, int[,] clusterIndexMap, List<List<Point>> pointClusters, int index)
 			{
 				int num = clusterIndexMap[x, y];
 				if (num == -1 || num == index)
@@ -260,7 +259,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 					for (int j = point.X - num5; j <= point.X + num5; j++) array[j, i] = WorldGen.genRand.NextBool(2);
 				}
 
-				List<List<Point>> list = new();
+				List<List<Point>> pointClusters = new();
 				for (int k = 0; k < array.GetLength(0); k++)
 				for (int l = 0; l < array.GetLength(1); l++)
 					if (array[k, l] && WorldGen.genRand.NextBool(2))
@@ -268,48 +267,48 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 						List<Point> list2 = new();
 						SearchForCluster(array, list2, k, l);
 						if (list2.Count > 2)
-							list.Add(list2);
+							pointClusters.Add(list2);
 					}
 
-				int[,] array2 = new int[array.GetLength(0), array.GetLength(1)];
-				for (int m = 0; m < array2.GetLength(0); m++)
-				for (int n = 0; n < array2.GetLength(1); n++)
-					array2[m, n] = -1;
+				int[,] clusterIndexMap = new int[array.GetLength(0), array.GetLength(1)];
+				for (int m = 0; m < clusterIndexMap.GetLength(0); m++)
+				for (int n = 0; n < clusterIndexMap.GetLength(1); n++)
+					clusterIndexMap[m, n] = -1;
 
-				for (int num6 = 0; num6 < list.Count; num6++)
-					foreach (Point item in list[num6])
-						array2[item.X, item.Y] = num6;
+				for (int num6 = 0; num6 < pointClusters.Count; num6++)
+					foreach (Point item in pointClusters[num6])
+						clusterIndexMap[item.X, item.Y] = num6;
 
-				for (int num7 = 0; num7 < list.Count; num7++)
-					foreach (Point item2 in list[num7])
-					{
-						int x = item2.X;
-						int y = item2.Y;
-						if (array2[x, y] == -1)
-							break;
+				foreach (List<Point> pointCluster in pointClusters)
+				foreach (Point item2 in pointCluster)
+				{
+					int x = item2.X;
+					int y = item2.Y;
+					if (clusterIndexMap[x, y] == -1)
+						break;
 
-						int index = array2[x, y];
-						if (x > 0)
-							AttemptClaim(x - 1, y, array2, list, index);
+					int index = clusterIndexMap[x, y];
+					if (x > 0)
+						AttemptClaim(x - 1, y, clusterIndexMap, pointClusters, index);
 
-						if (x < array2.GetLength(0) - 1)
-							AttemptClaim(x + 1, y, array2, list, index);
+					if (x < clusterIndexMap.GetLength(0) - 1)
+						AttemptClaim(x + 1, y, clusterIndexMap, pointClusters, index);
 
-						if (y > 0)
-							AttemptClaim(x, y - 1, array2, list, index);
+					if (y > 0)
+						AttemptClaim(x, y - 1, clusterIndexMap, pointClusters, index);
 
-						if (y < array2.GetLength(1) - 1)
-							AttemptClaim(x, y + 1, array2, list, index);
-					}
+					if (y < clusterIndexMap.GetLength(1) - 1)
+						AttemptClaim(x, y + 1, clusterIndexMap, pointClusters, index);
+				}
 
-				foreach (List<Point> item3 in list) item3.Clear();
+				foreach (List<Point> item3 in pointClusters) item3.Clear();
 
-				for (int num8 = 0; num8 < array2.GetLength(0); num8++)
-				for (int num9 = 0; num9 < array2.GetLength(1); num9++)
-					if (array2[num8, num9] != -1)
-						list[array2[num8, num9]].Add(new Point(num8, num9));
+				for (int num8 = 0; num8 < clusterIndexMap.GetLength(0); num8++)
+				for (int num9 = 0; num9 < clusterIndexMap.GetLength(1); num9++)
+					if (clusterIndexMap[num8, num9] != -1)
+						pointClusters[clusterIndexMap[num8, num9]].Add(new Point(num8, num9));
 
-				foreach (List<Point> item5 in list)
+				foreach (List<Point> item5 in pointClusters)
 				{
 					Cluster cluster = new();
 					if (item5.Count < 4)

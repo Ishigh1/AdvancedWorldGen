@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.IO;
@@ -18,7 +19,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
 		{
-			Replacer.VanillaInterface.NumOceanCaveTreasure.Value = 0;
+			VanillaInterface.NumOceanCaveTreasure.Value = 0;
 			WorldGen.skipDesertTileCheck = false;
 			WorldGen.gen = true;
 			Liquid.ReInit();
@@ -29,7 +30,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Main.cloudAlpha = 0f;
 			Main.maxRaining = 0f;
 			Main.raining = false;
-			Replacer.VanillaInterface.HeartCount.Value = 0;
+			VanillaInterface.HeartCount.Value = 0;
 			Main.checkXMas();
 			Main.checkHalloween();
 			ResetGenerator.Invoke(null, null);
@@ -41,7 +42,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			const int num917 = 86400;
 			Main.slimeRainTime = -Random.Next(num917 * 2, num917 * 3);
 			Main.cloudBGActive = -Random.Next(8640, num917);
-			Replacer.VanillaInterface.SkipFramingDuringGen.Value = false;
+			VanillaInterface.SkipFramingDuringGen.Value = false;
 			if (Random.NextBool(2))
 			{
 				Replacer.VanillaInterface.Copper.Value = 166;

@@ -25,7 +25,7 @@ namespace AdvancedWorldGen.SpecialOptions
 		public void OrOptionContainsCrimruption(ILCursor cursor)
 		{
 			cursor.Remove();
-			ILHelper.OptionContains(cursor, "Crimruption", "Drunk");
+			cursor.OptionContains("Crimruption", "Drunk");
 		}
 
 		public static void Crimruption1(GenerationProgress progress, GameConfiguration configuration)

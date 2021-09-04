@@ -86,7 +86,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween
 			ILCursor cursor = new(il);
 			if (!cursor.TryGotoNext(MoveType.After, instruction => instruction.MatchStloc(0))) return;
 
-			ILHelper.OptionContains(cursor, "Spooky");
+			cursor.OptionContains("Spooky");
 			ILLabel label = cursor.DefineLabel();
 
 			cursor.Emit(OpCodes.Brfalse_S, label);
