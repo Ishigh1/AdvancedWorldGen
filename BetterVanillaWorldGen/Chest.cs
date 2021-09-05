@@ -37,72 +37,78 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		public static bool AddBuriedChest(int x, int y, int contain = 0, bool notNearOtherChests = false,
 			int style = -1, ushort chestTileType = 0)
 		{
+			int xLeft = x - 1;
+			int yUp1 = y - 1;
+			int yUp2 = y - 2;
+
 			for (;
-				WorldGen.SolidTile(x - 1, y - 2) || WorldGen.SolidTile(x, y - 2) ||
-				!WorldGen.SolidTile(x - 1, y) || !WorldGen.SolidTile(x, y);
+				WorldGen.SolidTile(xLeft, yUp2) || WorldGen.SolidTile(x, yUp2) ||
+				!WorldGen.SolidTile(xLeft, y) || !WorldGen.SolidTile(x, y);
 				y++)
 				if (y >= Main.maxTilesY - 50)
 					return false;
 
-			WorldGen.KillTile(x - 1, y - 2);
-			WorldGen.KillTile(x, y - 2);
-			WorldGen.KillTile(x - 1, y - 1);
-			WorldGen.KillTile(x, y - 1);
+			WorldGen.KillTile(xLeft, yUp2);
+			WorldGen.KillTile(x, yUp2);
+			WorldGen.KillTile(xLeft, yUp1);
+			WorldGen.KillTile(x, yUp1);
 
-			if (Main.tile[x - 1, y - 2].IsActive || Main.tile[x, y - 2].IsActive ||
-			    Main.tile[x - 1, y - 1].IsActive || Main.tile[x, y - 1].IsActive)
+			if (Main.tile[xLeft, yUp2].IsActive || Main.tile[x, yUp2].IsActive ||
+			    Main.tile[xLeft, yUp1].IsActive || Main.tile[x, yUp1].IsActive)
 				return false;
 
-			Main.tile[x - 1, y].Slope = SlopeType.Solid;
+			Main.tile[xLeft, y].Slope = SlopeType.Solid;
 			Main.tile[x, y].Slope = SlopeType.Solid;
 
-			PreLoot(x, ref contain, style, ref chestTileType, y, out bool flag10,
-				out int num8, out bool flag2, out bool flag, out bool flag3, out bool flag7, out bool flag4,
-				out bool flag5, out bool flag6, out bool flag8, out bool flag9);
+			PreLoot(x, ref contain, style, ref chestTileType, y,
+				out bool shadowChest, out style,
+				out bool desertBiome, out bool iceBiome, out bool jungleBiome, out bool underworld,
+				out bool style17, out bool style12, out bool style32,
+				out bool dungeon, out bool pyramid);
 
-			int num7 = WorldGen.PlaceChest(x - 1, y - 1, chestTileType, notNearOtherChests, num8);
-			if (num7 >= 0)
-			{
-				VanillaLoot(x, contain, chestTileType, flag10, num7, num8, y, flag9, flag4, flag5, flag8,
-					flag6, flag2, flag, flag3, flag7);
+			int chestIndex = WorldGen.PlaceChest(xLeft, yUp1, chestTileType, notNearOtherChests, style);
+			if (chestIndex < 0)
+				return false;
 
-				return true;
-			}
+			VanillaLoot(x, contain, chestTileType, shadowChest, chestIndex, style, y,
+				pyramid, style17, style12, dungeon, style32, desertBiome, iceBiome, jungleBiome, underworld);
 
-			return false;
+			return true;
 		}
 
 		public static void PreLoot(int x, ref int contain, int style, ref ushort chestTileType, int y,
-			out bool flag10, out int num8, out bool flag2, out bool flag, out bool flag3, out bool flag7,
-			out bool flag4, out bool flag5, out bool flag6, out bool flag8, out bool flag9)
+			out bool shadowChest, out int outStyle,
+			out bool desertBiome, out bool iceBiome, out bool jungleBiome, out bool underworld,
+			out bool style17, out bool style12, out bool style32,
+			out bool dungeon, out bool pyramid)
 		{
 			if (chestTileType == 0)
-				chestTileType = 21;
+				chestTileType = TileID.Containers;
 
-			flag = false;
-			flag2 = false;
-			flag3 = false;
-			flag4 = false;
-			flag5 = false;
-			flag6 = false;
-			flag7 = false;
-			flag8 = false;
-			flag9 = false;
-			flag10 = false;
-			int angelChances = 15;
-			num8 = 0;
-			if (y >= Main.worldSurface + 25.0 || contain > 0)
-				num8 = 1;
+			iceBiome = false;
+			desertBiome = false;
+			jungleBiome = false;
+			style17 = false;
+			style12 = false;
+			style32 = false;
+			underworld = false;
+			dungeon = false;
+			pyramid = false;
+			shadowChest = false;
+			const int angelChances = 15;
+			outStyle = 0;
+			if (y >= Main.worldSurface + 25.0 || contain > ItemID.None)
+				outStyle = 1;
 
 			if (style >= 0)
-				num8 = style;
+				outStyle = style;
 
-			if (contain == 0 && y >= Main.worldSurface + 25.0 && y <= Main.maxTilesY - 205 &&
+			if (contain == ItemID.None && y >= Main.worldSurface + 25.0 && y <= Main.maxTilesY - 205 &&
 			    Desert.IsUndergroundDesert(x, y))
 			{
-				flag2 = true;
-				num8 = 10;
-				chestTileType = 467;
+				desertBiome = true;
+				outStyle = 10;
+				chestTileType = TileID.Containers2;
 				contain = y <= (SandstoneUp * 3 + SandstoneDown * 4) / 7
 					? Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
 						ItemID.MysticCoilSnake, ItemID.MagicConch)
@@ -114,143 +120,146 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					ItemID.DripplerFlail);
 
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
-					contain = 52;
+					contain = ItemID.AngelStatue;
 			}
 
-			if (chestTileType == 21 && (num8 == 11 || contain == 0 && y >= Main.worldSurface + 25.0 &&
+			if (chestTileType == TileID.Containers && (outStyle == 11 || contain == ItemID.None &&
+				y >= Main.worldSurface + 25.0 &&
 				y <= Main.maxTilesY - 205 &&
-				Main.tile[x, y].type is 147 or 161 or 162))
+				Main.tile[x, y].type is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce))
 			{
-				flag = true;
-				num8 = 11;
+				iceBiome = true;
+				outStyle = 11;
 				contain = WorldGen.genRand.Next(6) switch
 				{
-					0 => 670,
-					1 => 724,
-					2 => 950,
-					3 => 1319,
-					4 => 987,
-					_ => 1579
+					0 => ItemID.IceBoomerang,
+					1 => ItemID.IceBlade,
+					2 => ItemID.IceSkates,
+					3 => ItemID.SnowballCannon,
+					4 => ItemID.BlizzardinaBottle,
+					_ => ItemID.FlurryBoots
 				};
 
 				if (WorldGen.genRand.NextBool(20))
-					contain = 997;
+					contain = ItemID.Extractinator;
 
 				if (WorldGen.genRand.NextBool(50))
-					contain = 669;
+					contain = ItemID.Fish;
 
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
-					contain = 52;
+					contain = ItemID.AngelStatue;
 			}
 
-			if (chestTileType == 21 &&
-			    (style == 10 || contain is 211 or 212 or 213 or 753))
+			if (chestTileType == TileID.Containers &&
+			    (style == 10 ||
+			     contain is ItemID.FeralClaws or ItemID.AnkletoftheWind or ItemID.StaffofRegrowth or ItemID.Seaweed))
 			{
-				flag3 = true;
-				num8 = 10;
+				jungleBiome = true;
+				outStyle = 10;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
-					contain = 52;
+					contain = ItemID.AngelStatue;
 			}
 
-			if (chestTileType == 21 && y > Main.maxTilesY - 205 && contain == 0)
+			if (chestTileType == TileID.Containers && y > Main.maxTilesY - 205 && contain == ItemID.None)
 			{
-				flag7 = true;
+				underworld = true;
 				if (HellChest == HellChestItem[1])
 				{
-					contain = 220;
-					num8 = 4;
-					flag10 = true;
+					contain = ItemID.Sunfury;
+					outStyle = 4;
+					shadowChest = true;
 				}
 				else if (HellChest == HellChestItem[2])
 				{
-					contain = 112;
-					num8 = 4;
-					flag10 = true;
+					contain = ItemID.FlowerofFire;
+					outStyle = 4;
+					shadowChest = true;
 				}
 				else if (HellChest == HellChestItem[3])
 				{
-					contain = 218;
-					num8 = 4;
-					flag10 = true;
+					contain = ItemID.Flamelash;
+					outStyle = 4;
+					shadowChest = true;
 				}
 				else if (HellChest == HellChestItem[4])
 				{
-					contain = 274;
-					num8 = 4;
-					flag10 = true;
+					contain = ItemID.DarkLance;
+					outStyle = 4;
+					shadowChest = true;
 				}
 				else if (HellChest == HellChestItem[5])
 				{
-					contain = 3019;
-					num8 = 4;
-					flag10 = true;
+					contain = ItemID.HellwingBow;
+					outStyle = 4;
+					shadowChest = true;
 				}
 				else
 				{
-					contain = 5010;
-					num8 = 4;
-					flag10 = true;
+					contain = ItemID.TreasureMagnet;
+					outStyle = 4;
+					shadowChest = true;
 				}
 
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
-					contain = 52;
+					contain = ItemID.AngelStatue;
 			}
 
-			if (chestTileType == 21 && num8 == 17)
+			if (chestTileType == TileID.Containers && outStyle == 17)
 			{
-				flag4 = true;
+				style17 = true;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
-					contain = 52;
+					contain = ItemID.AngelStatue;
 			}
 
-			if (chestTileType == 21 && num8 == 12)
+			if (chestTileType == TileID.Containers && outStyle == 12)
 			{
-				flag5 = true;
+				style12 = true;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
-					contain = 52;
+					contain = ItemID.AngelStatue;
 			}
 
-			if (chestTileType == 21 && num8 == 32)
+			if (chestTileType == TileID.Containers && outStyle == 32)
 			{
-				flag6 = true;
+				style32 = true;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
-					contain = 52;
+					contain = ItemID.AngelStatue;
 			}
 
-			if (chestTileType == 21 && num8 != 0 && Dungeon.IsDungeon(x, y))
+			if (chestTileType == TileID.Containers && outStyle != 0 && Dungeon.IsDungeon(x, y))
 			{
-				flag8 = true;
+				dungeon = true;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
-					contain = 52;
+					contain = ItemID.AngelStatue;
 			}
 
-			if (chestTileType == 21 && num8 != 0 && contain is 848 or 857 or 934)
-				flag9 = true;
+			if (chestTileType == TileID.Containers && outStyle != 0 &&
+			    contain is ItemID.PharaohsMask or ItemID.SandstorminaBottle or ItemID.FlyingCarpet)
+				pyramid = true;
 		}
 
 
-		public static void VanillaLoot(int x, int contain, ushort chestTileType, bool flag10, int num7, int num8,
-			int y, bool flag9, bool flag4, bool flag5, bool flag8, bool flag6, bool flag2, bool flag, bool flag3,
-			bool flag7)
+		public static void VanillaLoot(int x, int contain, ushort chestTileType, bool shadowChest, int chestIndex, int style,
+			int y, bool pyramid, bool style17, bool style12,
+			bool dungeon, bool glowingMushroomBiome, bool desertBiome, bool iceBiome, bool jungleBiome, bool underworld)
 		{
-			if (flag2)
+			if (desertBiome)
 			{
 				SandstoneUp = SandstoneUp == 1 ? x - 1 : Math.Min(SandstoneUp, x - 1);
 				SandstoneDown = Math.Max(x, SandstoneDown);
 			}
 
-			if (flag10)
+			if (shadowChest)
 			{
 				HellChest++;
 				if (HellChest > 4)
 					HellChest = 0;
 			}
 
-			Terraria.Chest chest = Main.chest[num7];
+			Terraria.Chest chest = Main.chest[chestIndex];
 			int index = 0;
 			while (index == 0)
 			{
-				if (num8 == 0 && y < Main.worldSurface + 25.0 || flag9)
+				if (style == 0 && y < Main.worldSurface + 25.0 || pyramid)
 				{
 					if (contain > 0)
 					{
@@ -259,90 +268,85 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						index++;
 						switch (contain)
 						{
-							case 848:
-								chest.item[index].SetDefaults(866);
+							case ItemID.PharaohsMask:
+								chest.item[index].SetDefaults(ItemID.PharaohsRobe);
 								index++;
 								break;
-							case 832:
-								chest.item[index].SetDefaults(933);
+							case ItemID.LivingWoodWand:
+								chest.item[index].SetDefaults(ItemID.LeafWand);
 								index++;
 								if (WorldGen.genRand.NextBool(10))
-								{
-									int num14 = WorldGen.genRand.Next(2);
-									switch (num14)
+									switch (WorldGen.genRand.Next(2))
 									{
 										case 0:
-											num14 = 4429;
+											chest.item[index].SetDefaults(ItemID.SunflowerMinecart);
+											index++;
 											break;
 										case 1:
-											num14 = 4427;
+											chest.item[index].SetDefaults(ItemID.LadybugMinecart);
+											index++;
 											break;
 									}
-
-									chest.item[index].SetDefaults(num14);
-									index++;
-								}
 
 								break;
 						}
 
-						if (Main.tenthAnniversaryWorld && flag9)
+						if (Main.tenthAnniversaryWorld && pyramid)
 						{
-							chest.item[index++].SetDefaults(848);
-							chest.item[index++].SetDefaults(866);
+							chest.item[index++].SetDefaults(ItemID.PharaohsMask);
+							chest.item[index++].SetDefaults(ItemID.PharaohsRobe);
 						}
 					}
 					else
 					{
-						int num15 = WorldGen.genRand.Next(12);
-						switch (num15)
+						switch (WorldGen.genRand.Next(12))
 						{
 							case 0:
-								chest.item[index].SetDefaults(280);
+								chest.item[index].SetDefaults(ItemID.Spear);
 								chest.item[index].Prefix(-1);
 								break;
 							case 1:
-								chest.item[index].SetDefaults(281);
+								chest.item[index].SetDefaults(ItemID.Blowpipe);
 								chest.item[index].Prefix(-1);
 								break;
 							case 2:
-								chest.item[index].SetDefaults(284);
+								chest.item[index].SetDefaults(ItemID.WoodenBoomerang);
 								chest.item[index].Prefix(-1);
 								break;
 							case 3:
-								chest.item[index].SetDefaults(282);
+								chest.item[index].SetDefaults(ItemID.Glowstick);
 								chest.item[index].stack = WorldGen.genRand.Next(40, 75);
 								break;
 							case 4:
-								chest.item[index].SetDefaults(279);
+								chest.item[index].SetDefaults(ItemID.ThrowingKnife);
 								chest.item[index].stack = WorldGen.genRand.Next(150, 300);
 								break;
 							case 5:
-								chest.item[index].SetDefaults(285);
+								chest.item[index].SetDefaults(ItemID.Aglet);
 								chest.item[index].Prefix(-1);
 								break;
 							case 6:
-								chest.item[index].SetDefaults(953);
+								chest.item[index].SetDefaults(ItemID.ClimbingClaws);
 								chest.item[index].Prefix(-1);
 								break;
 							case 7:
-								chest.item[index].SetDefaults(946);
+								chest.item[index].SetDefaults(ItemID.Umbrella);
 								chest.item[index].Prefix(-1);
 								break;
 							case 8:
-								chest.item[index].SetDefaults(3068);
+								chest.item[index].SetDefaults(ItemID.CordageGuide);
 								chest.item[index].Prefix(-1);
 								break;
 							case 9:
-								chest.item[index].SetDefaults(3069);
+								chest.item[index].SetDefaults(ItemID.WandofSparking);
 								chest.item[index].Prefix(-1);
 								break;
 							case 10:
-								chest.item[index].SetDefaults(3084);
+								chest.item[index].SetDefaults(ItemID.Radar);
 								chest.item[index].Prefix(-1);
 								break;
 							case 11:
-								chest.item[index].SetDefaults(4341);
+								chest.item[index].SetDefaults(ItemID.PortableStool);
 								chest.item[index].Prefix(-1);
 								break;
 						}
@@ -352,7 +356,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 					if (WorldGen.genRand.NextBool(6))
 					{
-						chest.item[index].SetDefaults(3093);
+						chest.item[index].SetDefaults(ItemID.HerbBag);
 						chest.item[index].stack = 1;
 						if (WorldGen.genRand.NextBool(5))
 							chest.item[index].stack += WorldGen.genRand.Next(2);
@@ -363,7 +367,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 					if (WorldGen.genRand.NextBool(6))
 					{
-						chest.item[index].SetDefaults(4345);
+						chest.item[index].SetDefaults(ItemID.CanOfWorms);
 						chest.item[index].stack = 1;
 						if (WorldGen.genRand.NextBool(5))
 							chest.item[index].stack += WorldGen.genRand.Next(2);
@@ -374,108 +378,117 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 					if (WorldGen.genRand.NextBool(3))
 					{
-						chest.item[index].SetDefaults(168);
+						chest.item[index].SetDefaults(ItemID.Grenade);
 						chest.item[index].stack = WorldGen.genRand.Next(3, 6);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int num16 = WorldGen.genRand.Next(2);
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0:
+								chest.item[index].SetDefaults(WorldGen.copperBar);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(WorldGen.ironBar);
+								break;
+						}
 
-						int stack = WorldGen.genRand.Next(8) + 3;
-						if (num16 == 0)
-							chest.item[index].SetDefaults(WorldGen.copperBar);
-						if (num16 == 1)
-							chest.item[index].SetDefaults(WorldGen.ironBar);
-						chest.item[index].stack = stack;
+						chest.item[index].stack = WorldGen.genRand.Next(8) + 3;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int stack2 = WorldGen.genRand.Next(50, 101);
-						chest.item[index].SetDefaults(965);
-						chest.item[index].stack = stack2;
+						chest.item[index].SetDefaults(ItemID.Rope);
+						chest.item[index].stack = WorldGen.genRand.Next(50, 101);
 						index++;
 					}
 
 					if (WorldGen.genRand.Next(3) != 0)
 					{
-						int num17 = WorldGen.genRand.Next(2);
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.WoodenArrow);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.Shuriken);
+								break;
+						}
 
-						int stack3 = WorldGen.genRand.Next(26) + 25;
-						chest.item[index].SetDefaults(num17 == 0 ? 40 : 42);
-						chest.item[index].stack = stack3;
+						chest.item[index].stack = WorldGen.genRand.Next(26) + 25;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int stack4 = WorldGen.genRand.Next(3) + 3;
-						chest.item[index].SetDefaults(28);
-						chest.item[index].stack = stack4;
+						chest.item[index].SetDefaults(ItemID.LesserHealingPotion);
+						chest.item[index].stack = WorldGen.genRand.Next(3) + 3;
 						index++;
 					}
 
 					if (WorldGen.genRand.Next(3) != 0)
 					{
-						chest.item[index].SetDefaults(2350);
+						chest.item[index].SetDefaults(ItemID.RecallPotion);
 						chest.item[index].stack = WorldGen.genRand.Next(3, 6);
 						index++;
 					}
 
 					if (WorldGen.genRand.Next(3) > 0)
 					{
-						int num18 = WorldGen.genRand.Next(6);
-
-						int stack5 = WorldGen.genRand.Next(1, 3);
-						switch (num18)
+						switch (WorldGen.genRand.Next(6))
 						{
 							case 0:
-								chest.item[index].SetDefaults(292);
+								chest.item[index].SetDefaults(ItemID.IronskinPotion);
 								break;
 							case 1:
-								chest.item[index].SetDefaults(298);
+								chest.item[index].SetDefaults(ItemID.ShinePotion);
 								break;
 							case 2:
-								chest.item[index].SetDefaults(299);
+								chest.item[index].SetDefaults(ItemID.NightOwlPotion);
 								break;
 							case 3:
-								chest.item[index].SetDefaults(290);
+								chest.item[index].SetDefaults(ItemID.SwiftnessPotion);
 								break;
 							case 4:
-								chest.item[index].SetDefaults(2322);
+								chest.item[index].SetDefaults(ItemID.MiningPotion);
 								break;
 							case 5:
-								chest.item[index].SetDefaults(2325);
+								chest.item[index].SetDefaults(ItemID.BuilderPotion);
 								break;
 						}
 
-						chest.item[index].stack = stack5;
+						chest.item[index].stack = WorldGen.genRand.Next(1, 3);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int num19 = WorldGen.genRand.Next(2);
-
-						int stack6 = WorldGen.genRand.Next(11) + 10;
-						chest.item[index].SetDefaults(num19 == 0 ? 8 : 31);
-						chest.item[index].stack = stack6;
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.Torch);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.Bottle);
+								break;
+						}
+						chest.item[index].stack = WorldGen.genRand.Next(11) + 10;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						chest.item[index].SetDefaults(72);
+						chest.item[index].SetDefaults(ItemID.SilverCoin);
 						chest.item[index].stack = WorldGen.genRand.Next(10, 30);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						chest.item[index].SetDefaults(9);
+						chest.item[index].SetDefaults(ItemID.Wood);
 						chest.item[index].stack = WorldGen.genRand.Next(50, 100);
 						index++;
 					}
@@ -483,44 +496,42 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				else if (y < Main.rockLayer)
 				{
-					if (contain > 0)
+					if (contain > ItemID.None)
 					{
-						if (contain == 832)
+						if (contain == ItemID.LivingWoodWand)
 						{
-							chest.item[index].SetDefaults(933);
+							chest.item[index].SetDefaults(ItemID.LeafWand);
 							index++;
 						}
 
 						chest.item[index].SetDefaults(contain);
 						chest.item[index].Prefix(-1);
 						index++;
-						if (flag4 && WorldGen.genRand.NextBool(2))
+						if (style17 && WorldGen.genRand.NextBool(2))
 						{
-							chest.item[index].SetDefaults(4460);
+							chest.item[index].SetDefaults(ItemID.SandcastleBucket);
 							index++;
 						}
 
-						if (flag5 && WorldGen.genRand.NextBool(10))
+						if (style12 && WorldGen.genRand.NextBool(10))
 						{
-							int num20 = WorldGen.genRand.Next(2);
-							switch (num20)
+							switch (WorldGen.genRand.Next(2))
 							{
 								case 0:
-									num20 = 4429;
+									chest.item[index].SetDefaults(ItemID.SunflowerMinecart);
 									break;
 								case 1:
-									num20 = 4427;
+									chest.item[index].SetDefaults(ItemID.LadybugMinecart);
 									break;
 							}
 
-							chest.item[index].SetDefaults(num20);
 							index++;
 						}
 
-						if (flag8 && (!GeneratedShadowKey || WorldGen.genRand.NextBool(3)))
+						if (dungeon && (!GeneratedShadowKey || WorldGen.genRand.NextBool(3)))
 						{
 							GeneratedShadowKey = true;
-							chest.item[index].SetDefaults(329);
+							chest.item[index].SetDefaults(ItemID.ShadowKey);
 							index++;
 						}
 					}
@@ -529,27 +540,27 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						switch (WorldGen.genRand.Next(6))
 						{
 							case 0:
-								chest.item[index].SetDefaults(49);
+								chest.item[index].SetDefaults(ItemID.BandofRegeneration);
 								chest.item[index].Prefix(-1);
 								break;
 							case 1:
-								chest.item[index].SetDefaults(50);
+								chest.item[index].SetDefaults(ItemID.MagicMirror);
 								chest.item[index].Prefix(-1);
 								break;
 							case 2:
-								chest.item[index].SetDefaults(53);
+								chest.item[index].SetDefaults(ItemID.CloudinaBottle);
 								chest.item[index].Prefix(-1);
 								break;
 							case 3:
-								chest.item[index].SetDefaults(54);
+								chest.item[index].SetDefaults(ItemID.HermesBoots);
 								chest.item[index].Prefix(-1);
 								break;
 							case 4:
-								chest.item[index].SetDefaults(5011);
+								chest.item[index].SetDefaults(ItemID.Mace);
 								chest.item[index].Prefix(-1);
 								break;
 							default:
-								chest.item[index].SetDefaults(975);
+								chest.item[index].SetDefaults(ItemID.ShoeSpikes);
 								chest.item[index].Prefix(-1);
 								break;
 						}
@@ -557,161 +568,163 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						index++;
 						if (WorldGen.genRand.NextBool(20))
 						{
-							chest.item[index].SetDefaults(997);
+							chest.item[index].SetDefaults(ItemID.Extractinator);
 							chest.item[index].Prefix(-1);
 							index++;
 						}
 						else if (WorldGen.genRand.NextBool(20))
 						{
-							chest.item[index].SetDefaults(930);
+							chest.item[index].SetDefaults(ItemID.FlareGun);
 							chest.item[index].Prefix(-1);
 							index++;
-							chest.item[index].SetDefaults(931);
+							chest.item[index].SetDefaults(ItemID.Flare);
 							chest.item[index].stack = WorldGen.genRand.Next(26) + 25;
 							index++;
 						}
 
-						if (flag6 && WorldGen.genRand.NextBool(2))
+						if (glowingMushroomBiome && WorldGen.genRand.NextBool(2))
 						{
-							chest.item[index].SetDefaults(4450);
+							chest.item[index].SetDefaults(ItemID.ShroomMinecart);
 							index++;
 						}
 
-						if (flag6 && WorldGen.genRand.NextBool(3))
+						if (glowingMushroomBiome && WorldGen.genRand.NextBool(3))
 						{
-							chest.item[index].SetDefaults(4779);
+							chest.item[index].SetDefaults(ItemID.MushroomHat);
 							index++;
-							chest.item[index].SetDefaults(4780);
+							chest.item[index].SetDefaults(ItemID.MushroomVest);
 							index++;
-							chest.item[index].SetDefaults(4781);
+							chest.item[index].SetDefaults(ItemID.MushroomPants);
 							index++;
 						}
 					}
 
-					if (flag2)
+					if (desertBiome)
 					{
 						if (WorldGen.genRand.NextBool(3))
 						{
-							chest.item[index].SetDefaults(4423);
+							chest.item[index].SetDefaults(ItemID.ScarabBomb);
 							chest.item[index].stack = WorldGen.genRand.Next(10, 20);
 							index++;
 						}
 					}
 					else if (WorldGen.genRand.NextBool(3))
 					{
-						chest.item[index].SetDefaults(166);
+						chest.item[index].SetDefaults(ItemID.Bomb);
 						chest.item[index].stack = WorldGen.genRand.Next(10, 20);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(5))
 					{
-						chest.item[index].SetDefaults(52);
+						chest.item[index].SetDefaults(ItemID.AngelStatue);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(3))
 					{
-						int stack7 = WorldGen.genRand.Next(50, 101);
-						chest.item[index].SetDefaults(965);
-						chest.item[index].stack = stack7;
+						chest.item[index].SetDefaults(ItemID.Rope);
+						chest.item[index].stack = WorldGen.genRand.Next(50, 101);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int num21 = WorldGen.genRand.Next(2);
-						int stack8 = WorldGen.genRand.Next(10) + 5;
-						if (num21 == 0)
-							chest.item[index].SetDefaults(WorldGen.ironBar);
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0:
+								chest.item[index].SetDefaults(WorldGen.ironBar);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(WorldGen.silverBar);
+								break;
+						}
 
-						if (num21 == 1)
-							chest.item[index].SetDefaults(WorldGen.silverBar);
-
-						chest.item[index].stack = stack8;
+						chest.item[index].stack = WorldGen.genRand.Next(10) + 5;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int num22 = WorldGen.genRand.Next(2);
-						int stack9 = WorldGen.genRand.Next(25) + 25;
-						if (num22 == 0)
-							chest.item[index].SetDefaults(40);
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.WoodenArrow);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.Shuriken);
+								break;
+						}
 
-						if (num22 == 1)
-							chest.item[index].SetDefaults(42);
-
-						chest.item[index].stack = stack9;
+						chest.item[index].stack = WorldGen.genRand.Next(25) + 25;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int stack10 = WorldGen.genRand.Next(3) + 3;
-						chest.item[index].SetDefaults(28);
-						chest.item[index].stack = stack10;
+						chest.item[index].SetDefaults(ItemID.LesserHealingPotion);
+						chest.item[index].stack = WorldGen.genRand.Next(3) + 3;
 						index++;
 					}
 
 					if (WorldGen.genRand.Next(3) > 0)
 					{
-						int num23 = WorldGen.genRand.Next(9);
-						int stack11 = WorldGen.genRand.Next(1, 3);
-						if (num23 == 0)
-							chest.item[index].SetDefaults(289);
+						switch (WorldGen.genRand.Next(9))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.RegenerationPotion);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.ShinePotion);
+								break;
+							case 2:
+								chest.item[index].SetDefaults(ItemID.NightOwlPotion);
+								break;
+							case 3:
+								chest.item[index].SetDefaults(ItemID.SwiftnessPotion);
+								break;
+							case 4:
+								chest.item[index].SetDefaults(ItemID.ArcheryPotion);
+								break;
+							case 5:
+								chest.item[index].SetDefaults(ItemID.GillsPotion);
+								break;
+							case 6:
+								chest.item[index].SetDefaults(ItemID.HunterPotion);
+								break;
+							case 7:
+								chest.item[index].SetDefaults(ItemID.MiningPotion);
+								break;
+							case 8:
+								chest.item[index].SetDefaults(ItemID.TrapsightPotion);
+								break;
+						}
 
-						if (num23 == 1)
-							chest.item[index].SetDefaults(298);
-
-						if (num23 == 2)
-							chest.item[index].SetDefaults(299);
-
-						if (num23 == 3)
-							chest.item[index].SetDefaults(290);
-
-						if (num23 == 4)
-							chest.item[index].SetDefaults(303);
-
-						if (num23 == 5)
-							chest.item[index].SetDefaults(291);
-
-						if (num23 == 6)
-							chest.item[index].SetDefaults(304);
-
-						if (num23 == 7)
-							chest.item[index].SetDefaults(2322);
-
-						if (num23 == 8)
-							chest.item[index].SetDefaults(2329);
-
-						chest.item[index].stack = stack11;
+						chest.item[index].stack = WorldGen.genRand.Next(1, 3);
 						index++;
 					}
 
 					if (WorldGen.genRand.Next(3) != 0)
 					{
-						int stack12 = WorldGen.genRand.Next(2, 5);
-						chest.item[index].SetDefaults(2350);
-						chest.item[index].stack = stack12;
+						chest.item[index].SetDefaults(ItemID.RecallPotion);
+						chest.item[index].stack = WorldGen.genRand.Next(2, 5);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int stack13 = WorldGen.genRand.Next(11) + 10;
-						if (num8 == 11)
-							chest.item[index].SetDefaults(974);
+						if (style == 11)
+							chest.item[index].SetDefaults(ItemID.IceTorch);
 						else
-							chest.item[index].SetDefaults(8);
+							chest.item[index].SetDefaults(ItemID.Torch);
 
-						chest.item[index].stack = stack13;
+						chest.item[index].stack = WorldGen.genRand.Next(11) + 10;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						chest.item[index].SetDefaults(72);
+						chest.item[index].SetDefaults(ItemID.SilverCoin);
 						chest.item[index].stack = WorldGen.genRand.Next(50, 90);
 						index++;
 					}
@@ -723,271 +736,264 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						chest.item[index].SetDefaults(contain);
 						chest.item[index].Prefix(-1);
 						index++;
-						if (flag && WorldGen.genRand.NextBool(5))
+						if (iceBiome && WorldGen.genRand.NextBool(5))
 						{
-							chest.item[index].SetDefaults(3199);
+							chest.item[index].SetDefaults(ItemID.IceMirror);
 							index++;
 						}
 
-						if (flag2)
+						if (desertBiome)
 						{
 							if (WorldGen.genRand.NextBool(7))
 							{
-								chest.item[index].SetDefaults(4346);
+								chest.item[index].SetDefaults(ItemID.EncumberingStone);
 								index++;
 							}
 
 							if (WorldGen.genRand.NextBool(15))
 							{
-								chest.item[index].SetDefaults(4066);
+								chest.item[index].SetDefaults(ItemID.DesertMinecart);
 								index++;
 							}
 						}
 
-						if (flag3 && WorldGen.genRand.NextBool(6))
+						if (jungleBiome && WorldGen.genRand.NextBool(6))
 						{
-							chest.item[index++].SetDefaults(3360);
-							chest.item[index++].SetDefaults(3361);
+							chest.item[index++].SetDefaults(ItemID.LivingMahoganyWand);
+							chest.item[index++].SetDefaults(ItemID.LivingMahoganyLeafWand);
 						}
 
-						if (flag3 && WorldGen.genRand.NextBool(10))
-							chest.item[index++].SetDefaults(4426);
+						if (jungleBiome && WorldGen.genRand.NextBool(10))
+							chest.item[index++].SetDefaults(ItemID.BeeMinecart);
 
-						if (flag4 && WorldGen.genRand.NextBool(2))
+						if (style17 && WorldGen.genRand.NextBool(2))
 						{
-							chest.item[index].SetDefaults(4460);
+							chest.item[index].SetDefaults(ItemID.SandcastleBucket);
 							index++;
 						}
 
-						if (flag8 && (!GeneratedShadowKey || WorldGen.genRand.NextBool(3)))
+						if (dungeon && (!GeneratedShadowKey || WorldGen.genRand.NextBool(3)))
 						{
 							GeneratedShadowKey = true;
-							chest.item[index].SetDefaults(329);
+							chest.item[index].SetDefaults(ItemID.ShadowKey);
 							index++;
 						}
 					}
 					else
 					{
-						int num24 = WorldGen.genRand.Next(8);
 						if (WorldGen.genRand.NextBool(20) && y > WorldGen.lavaLine)
 						{
-							chest.item[index].SetDefaults(906);
+							chest.item[index].SetDefaults(ItemID.LavaCharm);
 							chest.item[index].Prefix(-1);
 						}
 						else if (WorldGen.genRand.NextBool(15))
 						{
-							chest.item[index].SetDefaults(997);
+							chest.item[index].SetDefaults(ItemID.Extractinator);
 							chest.item[index].Prefix(-1);
 						}
 						else
 						{
-							if (num24 == 0)
+							switch (WorldGen.genRand.Next(8))
 							{
-								chest.item[index].SetDefaults(49);
-								chest.item[index].Prefix(-1);
-							}
-
-							if (num24 == 1)
-							{
-								chest.item[index].SetDefaults(50);
-								chest.item[index].Prefix(-1);
-							}
-
-							if (num24 == 2)
-							{
-								chest.item[index].SetDefaults(53);
-								chest.item[index].Prefix(-1);
-							}
-
-							if (num24 == 3)
-							{
-								chest.item[index].SetDefaults(54);
-								chest.item[index].Prefix(-1);
-							}
-
-							if (num24 == 4)
-							{
-								chest.item[index].SetDefaults(5011);
-								chest.item[index].Prefix(-1);
-							}
-
-							if (num24 == 5)
-							{
-								chest.item[index].SetDefaults(975);
-								chest.item[index].Prefix(-1);
-							}
-
-							if (num24 == 6)
-							{
-								chest.item[index].SetDefaults(158);
-								chest.item[index].Prefix(-1);
-							}
-
-							if (num24 == 7)
-							{
-								chest.item[index].SetDefaults(930);
-								chest.item[index].Prefix(-1);
-								index++;
-								chest.item[index].SetDefaults(931);
-								chest.item[index].stack = WorldGen.genRand.Next(26) + 25;
+								case 0:
+									chest.item[index].SetDefaults(ItemID.BandofRegeneration);
+									chest.item[index].Prefix(-1);
+									break;
+								case 1:
+									chest.item[index].SetDefaults(ItemID.MagicMirror);
+									chest.item[index].Prefix(-1);
+									break;
+								case 2:
+									chest.item[index].SetDefaults(ItemID.CloudinaBottle);
+									chest.item[index].Prefix(-1);
+									break;
+								case 3:
+									chest.item[index].SetDefaults(ItemID.HermesBoots);
+									chest.item[index].Prefix(-1);
+									break;
+								case 4:
+									chest.item[index].SetDefaults(ItemID.Mace);
+									chest.item[index].Prefix(-1);
+									break;
+								case 5:
+									chest.item[index].SetDefaults(ItemID.ShoeSpikes);
+									chest.item[index].Prefix(-1);
+									break;
+								case 6:
+									chest.item[index].SetDefaults(ItemID.LuckyHorseshoe);
+									chest.item[index].Prefix(-1);
+									break;
+								case 7:
+									chest.item[index].SetDefaults(ItemID.FlareGun);
+									chest.item[index].Prefix(-1);
+									index++;
+									chest.item[index].SetDefaults(ItemID.Flare);
+									chest.item[index].stack = WorldGen.genRand.Next(26) + 25;
+									break;
 							}
 						}
 
 						index++;
-						if (flag6 && WorldGen.genRand.NextBool(2))
+						if (glowingMushroomBiome && WorldGen.genRand.NextBool(2))
 						{
-							chest.item[index].SetDefaults(4450);
+							chest.item[index].SetDefaults(ItemID.ShroomMinecart);
 							index++;
 						}
 
-						if (flag6 && WorldGen.genRand.NextBool(3))
+						if (glowingMushroomBiome && WorldGen.genRand.NextBool(3))
 						{
-							chest.item[index].SetDefaults(4779);
+							chest.item[index].SetDefaults(ItemID.MushroomHat);
 							index++;
-							chest.item[index].SetDefaults(4780);
+							chest.item[index].SetDefaults(ItemID.MushroomVest);
 							index++;
-							chest.item[index].SetDefaults(4781);
+							chest.item[index].SetDefaults(ItemID.MushroomPants);
 							index++;
 						}
 					}
 
 					if (WorldGen.genRand.NextBool(5))
 					{
-						chest.item[index].SetDefaults(43);
+						chest.item[index].SetDefaults(ItemID.SuspiciousLookingEye);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(3))
 					{
-						chest.item[index].SetDefaults(167);
+						chest.item[index].SetDefaults(ItemID.Dynamite);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(4))
 					{
-						chest.item[index].SetDefaults(51);
+						chest.item[index].SetDefaults(ItemID.JestersArrow);
 						chest.item[index].stack = WorldGen.genRand.Next(26) + 25;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int num25 = WorldGen.genRand.Next(2);
-						int stack14 = WorldGen.genRand.Next(8) + 3;
-						if (num25 == 0)
-							chest.item[index].SetDefaults(WorldGen.goldBar);
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0:
+								chest.item[index].SetDefaults(WorldGen.goldBar);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(WorldGen.silverBar);
+								break;
+						}
 
-						if (num25 == 1)
-							chest.item[index].SetDefaults(WorldGen.silverBar);
-
-						chest.item[index].stack = stack14;
+						chest.item[index].stack = WorldGen.genRand.Next(8) + 3;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int num26 = WorldGen.genRand.Next(2);
-						int stack15 = WorldGen.genRand.Next(26) + 25;
-						if (num26 == 0)
-							chest.item[index].SetDefaults(41);
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.FlamingArrow);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.ThrowingKnife);
+								break;
+						}
 
-						if (num26 == 1)
-							chest.item[index].SetDefaults(279);
-
-						chest.item[index].stack = stack15;
+						chest.item[index].stack = WorldGen.genRand.Next(26) + 25;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int stack16 = WorldGen.genRand.Next(3) + 3;
-						chest.item[index].SetDefaults(188);
-						chest.item[index].stack = stack16;
+						chest.item[index].SetDefaults(ItemID.HealingPotion);
+						chest.item[index].stack = WorldGen.genRand.Next(3) + 3;
 						index++;
 					}
 
 					if (WorldGen.genRand.Next(3) > 0)
 					{
-						int num27 = WorldGen.genRand.Next(6);
-						int stack17 = WorldGen.genRand.Next(1, 3);
-						if (num27 == 0)
-							chest.item[index].SetDefaults(296);
+						switch (WorldGen.genRand.Next(6))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.SpelunkerPotion);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.FeatherfallPotion);
+								break;
+							case 2:
+								chest.item[index].SetDefaults(ItemID.NightOwlPotion);
+								break;
+							case 3:
+								chest.item[index].SetDefaults(ItemID.WaterWalkingPotion);
+								break;
+							case 4:
+								chest.item[index].SetDefaults(ItemID.ArcheryPotion);
+								break;
+							case 5:
+								chest.item[index].SetDefaults(ItemID.GravitationPotion);
+								break;
+						}
 
-						if (num27 == 1)
-							chest.item[index].SetDefaults(295);
-
-						if (num27 == 2)
-							chest.item[index].SetDefaults(299);
-
-						if (num27 == 3)
-							chest.item[index].SetDefaults(302);
-
-						if (num27 == 4)
-							chest.item[index].SetDefaults(303);
-
-						if (num27 == 5)
-							chest.item[index].SetDefaults(305);
-
-						chest.item[index].stack = stack17;
+						chest.item[index].stack = WorldGen.genRand.Next(1, 3);
 						index++;
 					}
 
 					if (WorldGen.genRand.Next(3) > 1)
 					{
-						int num28 = WorldGen.genRand.Next(6);
-						int stack18 = WorldGen.genRand.Next(1, 3);
-						if (num28 == 0)
-							chest.item[index].SetDefaults(301);
-
-						if (num28 == 1)
-							chest.item[index].SetDefaults(297);
-
-						if (num28 == 2)
-							chest.item[index].SetDefaults(304);
-
-						if (num28 == 3)
-							chest.item[index].SetDefaults(2329);
-
-						if (num28 == 4)
-							chest.item[index].SetDefaults(2351);
-
-						if (num28 == 5)
-							chest.item[index].SetDefaults(2326);
-
-						chest.item[index].stack = stack18;
-						index++;
-					}
-
-					if (WorldGen.genRand.NextBool(2))
-					{
-						int stack19 = WorldGen.genRand.Next(2, 5);
-						chest.item[index].SetDefaults(2350);
-						chest.item[index].stack = stack19;
-						index++;
-					}
-
-					if (WorldGen.genRand.NextBool(2))
-					{
-						int num29 = WorldGen.genRand.Next(2);
-						int stack20 = WorldGen.genRand.Next(15) + 15;
-						if (num29 == 0)
+						switch (WorldGen.genRand.Next(6))
 						{
-							if (num8 == 11)
-								chest.item[index].SetDefaults(974);
-							else
-								chest.item[index].SetDefaults(8);
+							case 0:
+								chest.item[index].SetDefaults(ItemID.ThornsPotion);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.InvisibilityPotion);
+								break;
+							case 2:
+								chest.item[index].SetDefaults(ItemID.HunterPotion);
+								break;
+							case 3:
+								chest.item[index].SetDefaults(ItemID.TrapsightPotion);
+								break;
+							case 4:
+								chest.item[index].SetDefaults(ItemID.TeleportationPotion);
+								break;
+							case 5:
+								chest.item[index].SetDefaults(ItemID.TitanPotion);
+								break;
 						}
 
-						if (num29 == 1)
-							chest.item[index].SetDefaults(282);
-
-						chest.item[index].stack = stack20;
+						chest.item[index].stack = WorldGen.genRand.Next(1, 3);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						chest.item[index].SetDefaults(73);
+						chest.item[index].SetDefaults(ItemID.RecallPotion);
+						chest.item[index].stack = WorldGen.genRand.Next(2, 5);
+						index++;
+					}
+
+					if (WorldGen.genRand.NextBool(2))
+					{
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0 when style == 11:
+								chest.item[index].SetDefaults(ItemID.IceTorch);
+								break;
+							case 0:
+								chest.item[index].SetDefaults(ItemID.Torch);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.Glowstick);
+								break;
+						}
+
+						chest.item[index].stack = WorldGen.genRand.Next(15) + 15;
+						index++;
+					}
+
+					if (WorldGen.genRand.NextBool(2))
+					{
+						chest.item[index].SetDefaults(ItemID.GoldCoin);
 						chest.item[index].stack = WorldGen.genRand.Next(1, 3);
 						index++;
 					}
@@ -999,48 +1005,46 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						chest.item[index].SetDefaults(contain);
 						chest.item[index].Prefix(-1);
 						index++;
-						if (flag7 && WorldGen.genRand.NextBool(10))
+						if (underworld)
 						{
-							chest.item[index].SetDefaults(4443);
-							index++;
-						}
+							if (WorldGen.genRand.NextBool(10))
+							{
+								chest.item[index].SetDefaults(ItemID.HellMinecart);
+								index++;
+							}
 
-						if (flag7 && WorldGen.genRand.NextBool(10))
-						{
-							chest.item[index].SetDefaults(4737);
-							index++;
-						}
-						else if (flag7 && WorldGen.genRand.NextBool(10))
-						{
-							chest.item[index].SetDefaults(4551);
-							index++;
+							if (WorldGen.genRand.NextBool(10))
+							{
+								chest.item[index].SetDefaults(ItemID.OrnateShadowKey);
+								index++;
+							}
+							else if (WorldGen.genRand.NextBool(10))
+							{
+								chest.item[index].SetDefaults(ItemID.HellCake);
+								index++;
+							}
 						}
 					}
 					else
 					{
-						int num30 = WorldGen.genRand.Next(4);
-						if (num30 == 0)
+						switch (WorldGen.genRand.Next(4))
 						{
-							chest.item[index].SetDefaults(49);
-							chest.item[index].Prefix(-1);
-						}
-
-						if (num30 == 1)
-						{
-							chest.item[index].SetDefaults(50);
-							chest.item[index].Prefix(-1);
-						}
-
-						if (num30 == 2)
-						{
-							chest.item[index].SetDefaults(53);
-							chest.item[index].Prefix(-1);
-						}
-
-						if (num30 == 3)
-						{
-							chest.item[index].SetDefaults(54);
-							chest.item[index].Prefix(-1);
+							case 0:
+								chest.item[index].SetDefaults(ItemID.BandofRegeneration);
+								chest.item[index].Prefix(-1);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.MagicMirror);
+								chest.item[index].Prefix(-1);
+								break;
+							case 2:
+								chest.item[index].SetDefaults(ItemID.CloudinaBottle);
+								chest.item[index].Prefix(-1);
+								break;
+							case 3:
+								chest.item[index].SetDefaults(ItemID.HermesBoots);
+								chest.item[index].Prefix(-1);
+								break;
 						}
 
 						index++;
@@ -1048,191 +1052,194 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 					if (WorldGen.genRand.NextBool(3))
 					{
-						chest.item[index].SetDefaults(167);
+						chest.item[index].SetDefaults(ItemID.Dynamite);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int num31 = WorldGen.genRand.Next(2);
-						int stack21 = WorldGen.genRand.Next(15) + 15;
-						if (num31 == 0)
-							chest.item[index].SetDefaults(117);
-
-						if (num31 == 1)
-							chest.item[index].SetDefaults(WorldGen.goldBar);
-
-						chest.item[index].stack = stack21;
-						index++;
-					}
-
-					if (WorldGen.genRand.NextBool(2))
-					{
-						int num32 = WorldGen.genRand.Next(2);
-						int stack22 = WorldGen.genRand.Next(25) + 50;
-						if (num32 == 0)
-							chest.item[index].SetDefaults(265);
-
-						if (num32 == 1)
+						switch (WorldGen.genRand.Next(2))
 						{
-							if (WorldGen.SavedOreTiers.Silver == 168)
-								chest.item[index].SetDefaults(4915);
-							else
-								chest.item[index].SetDefaults(278);
+							case 0:
+								chest.item[index].SetDefaults(ItemID.MeteoriteBar);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(WorldGen.goldBar);
+								break;
 						}
 
-						chest.item[index].stack = stack22;
+						chest.item[index].stack = WorldGen.genRand.Next(15) + 15;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int stack23 = WorldGen.genRand.Next(6) + 15;
-						chest.item[index].SetDefaults(227);
-						chest.item[index].stack = stack23;
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.HellfireArrow);
+								break;
+							case 1 when WorldGen.SavedOreTiers.Silver == 168:
+								chest.item[index].SetDefaults(ItemID.TungstenBullet);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.SilverBullet);
+								break;
+						}
+
+						chest.item[index].stack = WorldGen.genRand.Next(25) + 50;
+						index++;
+					}
+
+					if (WorldGen.genRand.NextBool(2))
+					{
+						chest.item[index].SetDefaults(ItemID.RestorationPotion);
+						chest.item[index].stack = WorldGen.genRand.Next(6) + 15;
 						index++;
 					}
 
 					if (WorldGen.genRand.Next(4) > 0)
 					{
-						int num33 = WorldGen.genRand.Next(8);
-						int stack24 = WorldGen.genRand.Next(1, 3);
-						if (num33 == 0)
-							chest.item[index].SetDefaults(296);
+						switch (WorldGen.genRand.Next(8))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.SpelunkerPotion);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.FeatherfallPotion);
+								break;
+							case 2:
+								chest.item[index].SetDefaults(ItemID.ManaRegenerationPotion);
+								break;
+							case 3:
+								chest.item[index].SetDefaults(ItemID.ObsidianSkinPotion);
+								break;
+							case 4:
+								chest.item[index].SetDefaults(ItemID.MagicPowerPotion);
+								break;
+							case 5:
+								chest.item[index].SetDefaults(ItemID.InvisibilityPotion);
+								break;
+							case 6:
+								chest.item[index].SetDefaults(ItemID.HunterPotion);
+								break;
+							case 7:
+								chest.item[index].SetDefaults(ItemID.HeartreachPotion);
+								break;
+						}
 
-						if (num33 == 1)
-							chest.item[index].SetDefaults(295);
-
-						if (num33 == 2)
-							chest.item[index].SetDefaults(293);
-
-						if (num33 == 3)
-							chest.item[index].SetDefaults(288);
-
-						if (num33 == 4)
-							chest.item[index].SetDefaults(294);
-
-						if (num33 == 5)
-							chest.item[index].SetDefaults(297);
-
-						if (num33 == 6)
-							chest.item[index].SetDefaults(304);
-
-						if (num33 == 7)
-							chest.item[index].SetDefaults(2323);
-
-						chest.item[index].stack = stack24;
+						chest.item[index].stack = WorldGen.genRand.Next(1, 3);
 						index++;
 					}
 
 					if (WorldGen.genRand.Next(3) > 0)
 					{
-						int num34 = WorldGen.genRand.Next(8);
-						int stack25 = WorldGen.genRand.Next(1, 3);
-						if (num34 == 0)
-							chest.item[index].SetDefaults(305);
+						switch (WorldGen.genRand.Next(8))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.GravitationPotion);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.ThornsPotion);
+								break;
+							case 2:
+								chest.item[index].SetDefaults(ItemID.WaterWalkingPotion);
+								break;
+							case 3:
+								chest.item[index].SetDefaults(ItemID.ObsidianSkinPotion);
+								break;
+							case 4:
+								chest.item[index].SetDefaults(ItemID.BattlePotion);
+								break;
+							case 5:
+								chest.item[index].SetDefaults(ItemID.TeleportationPotion);
+								break;
+							case 6:
+								chest.item[index].SetDefaults(ItemID.InfernoPotion);
+								break;
+							case 7:
+								chest.item[index].SetDefaults(ItemID.LifeforcePotion);
+								break;
+						}
 
-						if (num34 == 1)
-							chest.item[index].SetDefaults(301);
-
-						if (num34 == 2)
-							chest.item[index].SetDefaults(302);
-
-						if (num34 == 3)
-							chest.item[index].SetDefaults(288);
-
-						if (num34 == 4)
-							chest.item[index].SetDefaults(300);
-
-						if (num34 == 5)
-							chest.item[index].SetDefaults(2351);
-
-						if (num34 == 6)
-							chest.item[index].SetDefaults(2348);
-
-						if (num34 == 7)
-							chest.item[index].SetDefaults(2345);
-
-						chest.item[index].stack = stack25;
+						chest.item[index].stack = WorldGen.genRand.Next(1, 3);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(3))
 					{
-						int stack26 = WorldGen.genRand.Next(1, 3);
 						if (WorldGen.genRand.NextBool(2))
-							chest.item[index].SetDefaults(2350);
+							chest.item[index].SetDefaults(ItemID.RecallPotion);
 						else
-							chest.item[index].SetDefaults(4870);
+							chest.item[index].SetDefaults(ItemID.PotionOfReturn);
 
-						chest.item[index].stack = stack26;
+						chest.item[index].stack = WorldGen.genRand.Next(1, 3);
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						int num35 = WorldGen.genRand.Next(2);
-						int stack27 = WorldGen.genRand.Next(15) + 15;
-						if (num35 == 0)
-							chest.item[index].SetDefaults(8);
+						switch (WorldGen.genRand.Next(2))
+						{
+							case 0:
+								chest.item[index].SetDefaults(ItemID.Torch);
+								break;
+							case 1:
+								chest.item[index].SetDefaults(ItemID.Glowstick);
+								break;
+						}
 
-						if (num35 == 1)
-							chest.item[index].SetDefaults(282);
-
-						chest.item[index].stack = stack27;
+						chest.item[index].stack = WorldGen.genRand.Next(15) + 15;
 						index++;
 					}
 
 					if (WorldGen.genRand.NextBool(2))
 					{
-						chest.item[index].SetDefaults(73);
+						chest.item[index].SetDefaults(ItemID.GoldCoin);
 						chest.item[index].stack = WorldGen.genRand.Next(2, 5);
 						index++;
 					}
 				}
 
-				if (index <= 0 || chestTileType != 21)
+				if (index <= 0 || chestTileType != TileID.Containers)
 					continue;
-				if (num8 == 10 && WorldGen.genRand.NextBool(4))
-				{
-					chest.item[index].SetDefaults(2204);
-					index++;
-				}
 
-				if (num8 == 11 && WorldGen.genRand.NextBool(7))
+				switch (style)
 				{
-					chest.item[index].SetDefaults(2198);
-					index++;
-				}
-
-				if (num8 == 13 && WorldGen.genRand.NextBool(3))
-				{
-					chest.item[index].SetDefaults(2197);
-					index++;
-				}
-
-				if (num8 == 16)
-				{
-					chest.item[index].SetDefaults(2195);
-					index++;
+					case 10 when WorldGen.genRand.NextBool(4):
+						chest.item[index].SetDefaults(ItemID.HoneyDispenser);
+						index++;
+						break;
+					case 11 when WorldGen.genRand.NextBool(7):
+						chest.item[index].SetDefaults(ItemID.IceMachine);
+						index++;
+						break;
+					case 13 when WorldGen.genRand.NextBool(3):
+						chest.item[index].SetDefaults(ItemID.SkyMill);
+						index++;
+						break;
+					case 16:
+						chest.item[index].SetDefaults(ItemID.LihzahrdFurnace);
+						index++;
+						break;
 				}
 
 				if (Main.wallDungeon[Main.tile[x, y].wall] && WorldGen.genRand.NextBool(8))
 				{
-					chest.item[index].SetDefaults(2192);
+					chest.item[index].SetDefaults(ItemID.BoneWelder);
 					index++;
 				}
 
-				if (num8 == 16)
+				if (style == 16)
 				{
 					if (WorldGen.genRand.NextBool(5))
 					{
-						chest.item[index].SetDefaults(2767);
+						chest.item[index].SetDefaults(ItemID.SolarTablet);
 						index++;
 					}
 					else
 					{
-						chest.item[index].SetDefaults(2766);
+						chest.item[index].SetDefaults(ItemID.LunarTabletFragment);
 						chest.item[index].stack = WorldGen.genRand.Next(3, 8);
 						index++;
 					}
