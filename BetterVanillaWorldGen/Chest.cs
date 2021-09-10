@@ -34,44 +34,46 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			SandstoneDown = -1;
 		}
 
-		public static bool AddBuriedChest(int x, int y, int contain = 0, bool notNearOtherChests = false,
+		public static bool AddBuriedChest(int chestRightX, int groundY, int contain = 0,
+			bool notNearOtherChests = false,
 			int style = -1, ushort chestTileType = 0)
 		{
-			int xLeft = x - 1;
-			int yUp1 = y - 1;
-			int yUp2 = y - 2;
+			int chestLeftX = chestRightX - 1;
+			int chestBottomY = groundY - 1;
+			int chestTopY = groundY - 2;
 
 			for (;
-				WorldGen.SolidTile(xLeft, yUp2) || WorldGen.SolidTile(x, yUp2) ||
-				!WorldGen.SolidTile(xLeft, y) || !WorldGen.SolidTile(x, y);
-				y++)
-				if (y >= Main.maxTilesY - 50)
+				WorldGen.SolidTile(chestLeftX, chestTopY) || WorldGen.SolidTile(chestRightX, chestTopY) ||
+				!WorldGen.SolidTile(chestLeftX, groundY) || !WorldGen.SolidTile(chestRightX, groundY);
+				groundY++)
+				if (groundY >= Main.maxTilesY - 50)
 					return false;
 
-			WorldGen.KillTile(xLeft, yUp2);
-			WorldGen.KillTile(x, yUp2);
-			WorldGen.KillTile(xLeft, yUp1);
-			WorldGen.KillTile(x, yUp1);
+			WorldGen.KillTile(chestLeftX, chestTopY);
+			WorldGen.KillTile(chestRightX, chestTopY);
+			WorldGen.KillTile(chestLeftX, chestBottomY);
+			WorldGen.KillTile(chestRightX, chestBottomY);
 
-			if (Main.tile[xLeft, yUp2].IsActive || Main.tile[x, yUp2].IsActive ||
-			    Main.tile[xLeft, yUp1].IsActive || Main.tile[x, yUp1].IsActive)
+			if (Main.tile[chestLeftX, chestTopY].IsActive || Main.tile[chestRightX, chestTopY].IsActive ||
+			    Main.tile[chestLeftX, chestBottomY].IsActive || Main.tile[chestRightX, chestBottomY].IsActive)
 				return false;
 
-			Main.tile[xLeft, y].Slope = SlopeType.Solid;
-			Main.tile[x, y].Slope = SlopeType.Solid;
+			Main.tile[chestLeftX, groundY].Slope = SlopeType.Solid;
+			Main.tile[chestRightX, groundY].Slope = SlopeType.Solid;
 
-			PreLoot(x, ref contain, style, ref chestTileType, y,
+			PreLoot(chestRightX, ref contain, style, ref chestTileType, groundY,
 				out bool shadowChest, out style,
 				out bool desertBiome, out bool iceBiome, out bool jungleBiome, out bool underworld,
-				out bool style17, out bool style12, out bool style32,
+				out bool water, out bool livingWood, out bool glowingMushroomBiome,
 				out bool dungeon, out bool pyramid);
 
-			int chestIndex = WorldGen.PlaceChest(xLeft, yUp1, chestTileType, notNearOtherChests, style);
+			int chestIndex = WorldGen.PlaceChest(chestLeftX, chestBottomY, chestTileType, notNearOtherChests, style);
 			if (chestIndex < 0)
 				return false;
 
-			VanillaLoot(x, contain, chestTileType, shadowChest, chestIndex, style, y,
-				pyramid, style17, style12, dungeon, style32, desertBiome, iceBiome, jungleBiome, underworld);
+			VanillaLoot(chestRightX, contain, chestTileType, shadowChest, chestIndex, style, groundY,
+				pyramid, water, livingWood, dungeon, glowingMushroomBiome, desertBiome, iceBiome, jungleBiome,
+				underworld);
 
 			return true;
 		}
@@ -79,7 +81,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		public static void PreLoot(int x, ref int contain, int style, ref ushort chestTileType, int y,
 			out bool shadowChest, out int outStyle,
 			out bool desertBiome, out bool iceBiome, out bool jungleBiome, out bool underworld,
-			out bool style17, out bool style12, out bool style32,
+			out bool water, out bool livingWood, out bool glowingMushroomBiome,
 			out bool dungeon, out bool pyramid)
 		{
 			if (chestTileType == 0)
@@ -88,9 +90,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			iceBiome = false;
 			desertBiome = false;
 			jungleBiome = false;
-			style17 = false;
-			style12 = false;
-			style32 = false;
+			water = false;
+			livingWood = false;
+			glowingMushroomBiome = false;
 			underworld = false;
 			dungeon = false;
 			pyramid = false;
@@ -206,21 +208,21 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			if (chestTileType == TileID.Containers && outStyle == 17)
 			{
-				style17 = true;
+				water = true;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
 					contain = ItemID.AngelStatue;
 			}
 
 			if (chestTileType == TileID.Containers && outStyle == 12)
 			{
-				style12 = true;
+				livingWood = true;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
 					contain = ItemID.AngelStatue;
 			}
 
 			if (chestTileType == TileID.Containers && outStyle == 32)
 			{
-				style32 = true;
+				glowingMushroomBiome = true;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
 					contain = ItemID.AngelStatue;
 			}
@@ -238,9 +240,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		}
 
 
-		public static void VanillaLoot(int x, int contain, ushort chestTileType, bool shadowChest, int chestIndex, int style,
-			int y, bool pyramid, bool style17, bool style12,
-			bool dungeon, bool glowingMushroomBiome, bool desertBiome, bool iceBiome, bool jungleBiome, bool underworld)
+		public static void VanillaLoot(int x, int contain, ushort chestTileType, bool shadowChest, int chestIndex,
+			int style, int y, bool pyramid, bool water, bool livingWood, bool dungeon, bool glowingMushroomBiome,
+			bool desertBiome, bool iceBiome, bool jungleBiome, bool underworld)
 		{
 			if (desertBiome)
 			{
@@ -475,6 +477,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 								chest.item[index].SetDefaults(ItemID.Bottle);
 								break;
 						}
+
 						chest.item[index].stack = WorldGen.genRand.Next(11) + 10;
 						index++;
 					}
@@ -507,13 +510,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						chest.item[index].SetDefaults(contain);
 						chest.item[index].Prefix(-1);
 						index++;
-						if (style17 && WorldGen.genRand.NextBool(2))
+						if (water && WorldGen.genRand.NextBool(2))
 						{
 							chest.item[index].SetDefaults(ItemID.SandcastleBucket);
 							index++;
 						}
 
-						if (style12 && WorldGen.genRand.NextBool(10))
+						if (livingWood && WorldGen.genRand.NextBool(10))
 						{
 							switch (WorldGen.genRand.Next(2))
 							{
@@ -766,7 +769,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						if (jungleBiome && WorldGen.genRand.NextBool(10))
 							chest.item[index++].SetDefaults(ItemID.BeeMinecart);
 
-						if (style17 && WorldGen.genRand.NextBool(2))
+						if (water && WorldGen.genRand.NextBool(2))
 						{
 							chest.item[index].SetDefaults(ItemID.SandcastleBucket);
 							index++;
