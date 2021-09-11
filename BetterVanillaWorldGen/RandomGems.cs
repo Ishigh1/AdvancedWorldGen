@@ -11,9 +11,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+		protected override void ApplyPass()
 		{
-			progress.Set(1f);
+			Progress.Set(1f);
 			int yMax = Main.maxTilesY - 300 > Main.rockLayer ? Main.maxTilesY - 300 : Main.UnderworldLayer;
 			for (int _ = 0; _ < Main.maxTilesX; _++)
 			{

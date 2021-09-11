@@ -35,10 +35,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		}
 
 		public static bool AddBuriedChest(int chestRightX, int groundY, int contain = 0,
-			bool notNearOtherChests = false,
-			int style = -1, ushort chestTileType = 0)
+			bool notNearOtherChests = false, int style = -1, ushort chestTileType = TileID.Containers)
 		{
 			int chestLeftX = chestRightX - 1;
+
 			int chestBottomY = groundY - 1;
 			int chestTopY = groundY - 2;
 
@@ -61,24 +61,25 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Main.tile[chestLeftX, groundY].Slope = SlopeType.Solid;
 			Main.tile[chestRightX, groundY].Slope = SlopeType.Solid;
 
-			PreLoot(chestRightX, ref contain, style, ref chestTileType, groundY,
-				out bool shadowChest, out style,
-				out bool desertBiome, out bool iceBiome, out bool jungleBiome, out bool underworld,
-				out bool water, out bool livingWood, out bool glowingMushroomBiome,
-				out bool dungeon, out bool pyramid);
-
+			PreLoot(chestRightX, groundY,
+				ref contain, style,
+				ref chestTileType, out bool shadowChest, out style, out bool desertBiome,
+				out bool iceBiome, out bool jungleBiome, out bool underworld,
+				out bool water, out bool livingWood, out bool glowingMushroomBiome, out bool dungeon, out bool pyramid);
+			
 			int chestIndex = WorldGen.PlaceChest(chestLeftX, chestBottomY, chestTileType, notNearOtherChests, style);
 			if (chestIndex < 0)
 				return false;
 
-			VanillaLoot(chestRightX, contain, chestTileType, shadowChest, chestIndex, style, groundY,
-				pyramid, water, livingWood, dungeon, glowingMushroomBiome, desertBiome, iceBiome, jungleBiome,
-				underworld);
+			VanillaLoot(chestRightX, groundY,
+				contain, chestTileType, shadowChest, chestIndex, style, pyramid, water, livingWood,
+				dungeon, glowingMushroomBiome, desertBiome, iceBiome, jungleBiome, underworld);
 
 			return true;
 		}
 
-		public static void PreLoot(int x, ref int contain, int style, ref ushort chestTileType, int y,
+		public static void PreLoot(int x, int y,
+			ref int contain, int style, ref ushort chestTileType,
 			out bool shadowChest, out int outStyle,
 			out bool desertBiome, out bool iceBiome, out bool jungleBiome, out bool underworld,
 			out bool water, out bool livingWood, out bool glowingMushroomBiome,
@@ -227,7 +228,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					contain = ItemID.AngelStatue;
 			}
 
-			if (chestTileType == TileID.Containers && outStyle != 0 && Dungeon.IsDungeon(x, y))
+			if (chestTileType == TileID.Containers && outStyle != 0 && DungeonPass.IsDungeon(x, y))
 			{
 				dungeon = true;
 				if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
@@ -240,9 +241,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		}
 
 
-		public static void VanillaLoot(int x, int contain, ushort chestTileType, bool shadowChest, int chestIndex,
-			int style, int y, bool pyramid, bool water, bool livingWood, bool dungeon, bool glowingMushroomBiome,
-			bool desertBiome, bool iceBiome, bool jungleBiome, bool underworld)
+		public static void VanillaLoot(int x, int y, int contain, ushort chestTileType, bool shadowChest,
+			int chestIndex, int style, bool pyramid, bool water, bool livingWood, bool dungeon, 
+			bool glowingMushroomBiome, bool desertBiome, bool iceBiome, bool jungleBiome, bool underworld)
 		{
 			if (desertBiome)
 			{

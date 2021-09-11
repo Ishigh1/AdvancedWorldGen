@@ -17,14 +17,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
+		protected override void ApplyPass()
 		{
 			VanillaInterface.NumOceanCaveTreasure.Value = 0;
 			WorldGen.skipDesertTileCheck = false;
 			WorldGen.gen = true;
 			Liquid.ReInit();
 			WorldGen.noTileActions = true;
-			progress.Message = "";
+			Progress.Message = "";
 			WorldGen.SetupStatueList();
 			WorldGen.RandomizeWeather();
 			Main.cloudAlpha = 0f;

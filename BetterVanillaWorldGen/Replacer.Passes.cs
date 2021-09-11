@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 using Terraria.WorldBuilding;
@@ -36,6 +37,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Mushroom Patches");
 			if (index != -1) genPasses[index] = new MushroomPatches();
+
+			index = genPasses.FindIndex(index, pass => pass.Name == "Dungeon");
+			if (index != -1) genPasses[index] = new DungeonPass();
 
 			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Temple");
 			if (index != -1) genPasses[index] = new JungleTemple();

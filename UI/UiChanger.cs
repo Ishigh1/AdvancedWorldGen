@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -71,11 +73,11 @@ namespace AdvancedWorldGen.UI
 				uiTextPanel.Recalculate();
 				uiTextPanel.OnMouseOver += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
 				uiTextPanel.OnMouseOut += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
-				uiTextPanel.OnClick += UiTextPanelOnOnClick;
+				uiTextPanel.OnClick += Abort;
 			}
 		}
 
-		public void UiTextPanelOnOnClick(UIMouseEvent evt, UIElement listeningElement)
+		public void Abort(UIMouseEvent evt, UIElement listeningElement)
 		{
 			SoundEngine.PlaySound(SoundID.MenuClose);
 			Tile[,] tiles = Main.tile;
@@ -83,6 +85,13 @@ namespace AdvancedWorldGen.UI
 			WorldGen._genRand = null;
 			Thread.Join();
 			Main.tile = tiles;
+			
+			if (WorldgenSettings.AbortedSaving)
+			{
+				Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World); 
+				Main.worldName += "_Aborted";
+				WorldFile.SaveWorld();
+			}
 		}
 
 		public void TweakWorldGenUi(OnUIWorldCreation.orig_AddDescriptionPanel origAddDescriptionPanel,

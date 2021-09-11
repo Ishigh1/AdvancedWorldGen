@@ -21,13 +21,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
+		protected override void ApplyPass()
 		{
 			int leftBeachSize = Replacer.VanillaInterface.LeftBeachEnd.Value;
 			int rightBeachSize = Main.maxTilesX - Replacer.VanillaInterface.RightBeachStart.Value;
 
-			int num = passConfig.Get<int>("FlatBeachPadding");
-			progress.Message = Language.GetTextValue("LegacyWorldGen.0");
+			int num = Configuration.Get<int>("FlatBeachPadding");
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.0");
 			TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
 			double worldSurface = Main.maxTilesY * 0.3;
 			worldSurface *= Random.Next(90, 110) * 0.005;
@@ -53,7 +53,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int num2 = leftBeachSize + num;
 			for (int i = 0; i < Main.maxTilesX; i++)
 			{
-				progress.Set(i / (float) Main.maxTilesX);
+				Progress.Set(i / (float) Main.maxTilesX);
 				worldSurfaceLow = Math.Min(worldSurface, worldSurfaceLow);
 				worldSurfaceHigh = Math.Max(worldSurface, worldSurfaceHigh);
 				rockLayerLow = Math.Min(rockLayer, rockLayerLow);

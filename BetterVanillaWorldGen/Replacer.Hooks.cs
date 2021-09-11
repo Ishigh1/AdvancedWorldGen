@@ -16,7 +16,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 			OnDesertHive.Place += ReplaceDesertHive;
 			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
-			OnWorldGen.MakeDungeon += ReplaceDungeon;
 			OnDesertDescription.CreateFromPlacement += ReplaceDesertDescriptionCreation;
 		}
 
@@ -26,7 +25,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			OnDesertHive.Place -= ReplaceDesertHive;
 			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= ReplaceChest;
-			OnWorldGen.MakeDungeon -= ReplaceDungeon;
 			OnDesertDescription.CreateFromPlacement -= ReplaceDesertDescriptionCreation;
 		}
 
@@ -45,14 +43,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			return WorldgenSettings.Revamped
 				? Chest.AddBuriedChest(i, j, contain, notNearOtherChests, style, chestTileType)
 				: orig(i, j, contain, notNearOtherChests, style, trySlope, chestTileType);
-		}
-
-		public static void ReplaceDungeon(OnWorldGen.orig_MakeDungeon orig, int x, int y)
-		{
-			if (WorldgenSettings.Revamped)
-				Dungeon.MakeDungeon(x, y);
-			else
-				orig(x, y);
 		}
 
 		public static DesertDescription ReplaceDesertDescriptionCreation(

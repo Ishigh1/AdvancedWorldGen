@@ -14,14 +14,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
+		protected override void ApplyPass()
 		{
 			int num360 = Random.Next(Main.maxTilesX / (4200 / 5), Main.maxTilesX / (4200 / 10));
 			List<int> orePatchesX = new();
 
 			for (int num361 = 0; num361 < num360; num361++)
 			{
-				progress.SetProgress(num361, num360, 0.5f);
+				Progress.SetProgress(num361, num360, 0.5f);
 				int num362 = Main.maxTilesX / 420;
 				while (num362 > 0)
 				{
@@ -46,7 +46,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			num360 = maxStonePatches > 1 ? Random.Next(1, maxStonePatches) : 1;
 			for (int num365 = 0; num365 < num360; num365++)
 			{
-				progress.SetProgress(num365, num360, 0.5f, 0.5f);
+				Progress.SetProgress(num365, num360, 0.5f, 0.5f);
 				int num366 = Main.maxTilesX / 420;
 				while (num366 > 0)
 				{

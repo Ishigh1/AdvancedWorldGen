@@ -11,9 +11,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+		protected override void ApplyPass()
 		{
-			progress.Message = Language.GetTextValue("LegacyWorldGen.56");
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.56");
 			Replacer.VanillaInterface.SnowTop.Value = (int) Main.worldSurface;
 			int num840 = WorldGen.lavaLine - Random.Next(160, 200);
 			int snowLeft = Replacer.VanillaInterface.SnowOriginLeft.Value;
@@ -25,7 +25,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int[] snowMaxX = Replacer.VanillaInterface.SnowMaxX.Value;
 			for (int num844 = 0; num844 <= WorldGen.lavaLine - 140; num844++)
 			{
-				progress.Set(num844 / (float) (WorldGen.lavaLine - 140));
+				Progress.Set(num844 / (float) (WorldGen.lavaLine - 140));
 				snowLeft += Random.Next(-4, 4);
 				snowRight += Random.Next(-3, 5);
 				if (num844 > 0)

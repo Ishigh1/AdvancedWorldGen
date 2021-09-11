@@ -11,6 +11,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		[DefaultValue(false)] public bool FasterWorldgen;
 
 		public static bool Revamped => ModContent.GetInstance<WorldgenSettings>().FasterWorldgen;
+		
+		
+		[Label("$Mods.AdvancedWorldGen.Config.SaveOnFail.Label")]
+		[Tooltip("$Mods.AdvancedWorldGen.Config.SaveOnFail.Tooltip")]
+		[DefaultValue(false)] public bool SaveOnFail;
+
+		public static bool AbortedSaving => ModContent.GetInstance<WorldgenSettings>().SaveOnFail;
 
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 	}

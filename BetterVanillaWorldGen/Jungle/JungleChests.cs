@@ -15,7 +15,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
+		protected override void ApplyPass()
 		{
 			int rand = Random.Next(5);
 			ushort tileType = rand switch
@@ -39,7 +39,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			stepCount *= Main.maxTilesX / 4200f;
 			for (int step = 0; step < stepCount; step++)
 			{
-				progress.SetProgress(step, stepCount);
+				Progress.SetProgress(step, stepCount);
 				int minX = Replacer.VanillaInterface.JungleMinX;
 				int maxX = Replacer.VanillaInterface.JungleMaxX;
 				int x = Random.Next(minX, maxX);

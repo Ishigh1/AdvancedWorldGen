@@ -22,9 +22,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+		protected override void ApplyPass()
 		{
-			progress.Message = Language.GetTextValue("LegacyWorldGen.11");
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.11");
 
 			JungleOriginX = Replacer.VanillaInterface.JungleOriginX.Value;
 			DungeonSide = Replacer.VanillaInterface.DungeonSide.Value;
@@ -42,13 +42,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			zero.Y += y;
 			PlaceFirstPassMud(x, y, 3);
 			PlaceGemsAt(x, y, 63, 2);
-			progress.Set(0.15f);
+			Progress.Set(0.15f);
 			ApplyRandomMovement(ref x, ref y, 250, 150);
 			zero.X += x;
 			zero.Y += y;
 			PlaceFirstPassMud(x, y, 0);
 			PlaceGemsAt(x, y, 65, 2);
-			progress.Set(0.3f);
+			Progress.Set(0.3f);
 			int oldX = x;
 			int oldY = y;
 			ApplyRandomMovement(ref x, ref y, 400, 150);
@@ -56,7 +56,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			zero.Y += y;
 			PlaceFirstPassMud(x, y, -3);
 			PlaceGemsAt(x, y, 67, 2);
-			progress.Set(0.45f);
+			Progress.Set(0.45f);
 			x = zero.X / 3;
 			y = zero.Y / 3;
 			int num = Random.Next((int) (400f * WorldScale), (int) (600f * WorldScale));
@@ -67,9 +67,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			GenerateTunnelToSurface(x, y);
 			WorldGen.mudWall = false;
 			DelimitJungle();
-			progress.Set(0.6f);
+			Progress.Set(0.6f);
 			GenerateHolesInMudWalls();
-			GenerateFinishingTouches(progress, oldX, oldY);
+			GenerateFinishingTouches(Progress, oldX, oldY);
 		}
 
 		public void PlaceGemsAt(int x, int y, ushort baseGem, int gemVariants)

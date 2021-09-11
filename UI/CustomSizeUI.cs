@@ -121,7 +121,7 @@ namespace AdvancedWorldGen.UI
 			foreach (object groupOptionButton in sizeButtons)
 				setCurrentOptionMethod.Invoke(groupOptionButton, new object[] {size});
 
-#if !WARNINGLESS
+#if !SPECIALDEBUG
 			int oldSizeX = Main.tile.GetLength(0);
 			int oldSizeY = Main.tile.GetLength(1);
 			if (oldSizeX < WorldSettings.SizeX || oldSizeY < WorldSettings.SizeY)

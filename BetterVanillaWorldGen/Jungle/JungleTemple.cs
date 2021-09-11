@@ -17,11 +17,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
+		protected override void ApplyPass()
 		{
-			progress.Message = Language.GetTextValue("LegacyWorldGen.70");
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.70");
 			int x = Random.Next(Replacer.VanillaInterface.JungleMinX, Replacer.VanillaInterface.JungleMaxX);
-			MakeTemple(progress, x);
+			MakeTemple(Progress, x);
 		}
 
 		public static bool IsValid(int x, int y)

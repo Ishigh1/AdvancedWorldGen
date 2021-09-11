@@ -15,16 +15,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration passConfig)
+		protected override void ApplyPass()
 		{
 			WorldGenConfiguration configuration =
 				WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
-			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Dead Man's Chests";
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Dead Man's Chests";
 			const float totalSteps = 10f;
 
 			DeadMansChestBiome deadMansChestBiome = configuration.CreateBiome<DeadMansChestBiome>();
 			List<int> possibleChestsToTrapify = deadMansChestBiome.GetPossibleChestsToTrapify(WorldGen.structures);
-			int random = passConfig.Get<WorldGenRange>("DeadManChests").GetRandom(Random);
+			int random = Configuration.Get<WorldGenRange>("DeadManChests").GetRandom(Random);
 			int num31 = 0;
 			while (num31 < random && possibleChestsToTrapify.Count > 0)
 			{
@@ -35,12 +35,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				possibleChestsToTrapify.Remove(num32);
 			}
 
-			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Thin Ice";
-			progress.Set(1f / totalSteps);
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Thin Ice";
+			Progress.Set(1f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				ThinIceBiome thinIceBiome = configuration.CreateBiome<ThinIceBiome>();
-				int random2 = passConfig.Get<WorldGenRange>("ThinIcePatchCount").GetRandom(Random);
+				int random2 = Configuration.Get<WorldGenRange>("ThinIcePatchCount").GetRandom(Random);
 				int num33 = 0;
 				const int num34 = 1000;
 				int num35 = 0;
@@ -62,12 +62,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 			}
 
-			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Sword Shrines";
-			progress.Set(0.1f);
-			progress.Set(2f / totalSteps);
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Sword Shrines";
+			Progress.Set(0.1f);
+			Progress.Set(2f / totalSteps);
 			EnchantedSwordBiome enchantedSwordBiome = configuration.CreateBiome<EnchantedSwordBiome>();
-			int random3 = passConfig.Get<WorldGenRange>("SwordShrineAttempts").GetRandom(Random);
-			float num36 = passConfig.Get<float>("SwordShrinePlacementChance");
+			int random3 = Configuration.Get<WorldGenRange>("SwordShrineAttempts").GetRandom(Random);
+			float num36 = Configuration.Get<float>("SwordShrinePlacementChance");
 			Point origin2 = default;
 			for (int num37 = 0; num37 < random3; num37++)
 				if (!(Random.NextFloat() > num36))
@@ -86,13 +86,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 				}
 
-			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Campsites";
-			progress.Set(0.2f);
-			progress.Set(3f / totalSteps);
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Campsites";
+			Progress.Set(0.2f);
+			Progress.Set(3f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				CampsiteBiome campsiteBiome = configuration.CreateBiome<CampsiteBiome>();
-				int random4 = passConfig.Get<WorldGenRange>("CampsiteCount").GetRandom(Random);
+				int random4 = Configuration.Get<WorldGenRange>("CampsiteCount").GetRandom(Random);
 				int num39 = 0;
 				while (num39 < random4)
 					if (campsiteBiome.Place(
@@ -101,12 +101,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num39++;
 			}
 
-			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Explosive Traps";
-			progress.Set(4f / totalSteps);
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Explosive Traps";
+			Progress.Set(4f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				MiningExplosivesBiome miningExplosivesBiome = configuration.CreateBiome<MiningExplosivesBiome>();
-				int num40 = passConfig.Get<WorldGenRange>("ExplosiveTrapCount").GetRandom(Random);
+				int num40 = Configuration.Get<WorldGenRange>("ExplosiveTrapCount").GetRandom(Random);
 				if (WorldGen.getGoodWorldGen)
 					num40 = (int) (num40 * 1.5);
 
@@ -118,11 +118,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						num41++;
 			}
 
-			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Living Trees";
-			progress.Set(0.3f);
-			progress.Set(5f / totalSteps);
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Living Trees";
+			Progress.Set(0.3f);
+			Progress.Set(5f / totalSteps);
 			MahoganyTreeBiome mahoganyTreeBiome = configuration.CreateBiome<MahoganyTreeBiome>();
-			int random5 = passConfig.Get<WorldGenRange>("LivingTreeCount").GetRandom(Random);
+			int random5 = Configuration.Get<WorldGenRange>("LivingTreeCount").GetRandom(Random);
 			int num42 = 0;
 			int num43 = 0;
 			while (num42 < random5 && num43 < 20000)
@@ -134,14 +134,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				num43++;
 			}
 
-			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Long Minecart Tracks";
-			progress.Set(0.4f);
-			progress.Set(6f / totalSteps);
-			progress.Set(7f / totalSteps);
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Long Minecart Tracks";
+			Progress.Set(0.4f);
+			Progress.Set(6f / totalSteps);
+			Progress.Set(7f / totalSteps);
 			// Extra patch context.
 			TrackGenerator trackGenerator = new();
-			int random6 = passConfig.Get<WorldGenRange>("LongTrackCount").GetRandom(Random);
-			WorldGenRange worldGenRange = passConfig.Get<WorldGenRange>("LongTrackLength");
+			int random6 = Configuration.Get<WorldGenRange>("LongTrackCount").GetRandom(Random);
+			WorldGenRange worldGenRange = Configuration.Get<WorldGenRange>("LongTrackLength");
 			int num44 = Main.maxTilesX * 10;
 			int num45 = 0;
 			int num46 = 0;
@@ -162,10 +162,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 				}
 
-			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Standard Minecart Tracks";
-			progress.Set(8f / totalSteps);
-			random6 = passConfig.Get<WorldGenRange>("StandardTrackCount").GetRandom(Random);
-			worldGenRange = passConfig.Get<WorldGenRange>("StandardTrackLength");
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Standard Minecart Tracks";
+			Progress.Set(8f / totalSteps);
+			random6 = Configuration.Get<WorldGenRange>("StandardTrackCount").GetRandom(Random);
+			worldGenRange = Configuration.Get<WorldGenRange>("StandardTrackLength");
 			num45 = 0;
 			int num47 = 0;
 			while (num47 < random6)
@@ -185,8 +185,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					}
 				}
 
-			progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Lava Traps";
-			progress.Set(9f / totalSteps);
+			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Lava Traps";
+			Progress.Set(9f / totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				double num48 = Main.maxTilesX * 0.02;
@@ -201,7 +201,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 			}
 
-			progress.Set(1f);
+			Progress.Set(1f);
 		}
 
 		public Point RandomSurfaceWorldPoint(int top = 0, int right = 0, int bottom = 0, int left = 0)
