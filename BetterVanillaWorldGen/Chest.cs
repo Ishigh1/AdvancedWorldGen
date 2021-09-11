@@ -39,15 +39,21 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 			int chestLeftX = chestRightX - 1;
 
-			int chestBottomY = groundY - 1;
 			int chestTopY = groundY - 2;
+			int chestBottomY = groundY - 1;
 
 			for (;
 				WorldGen.SolidTile(chestLeftX, chestTopY) || WorldGen.SolidTile(chestRightX, chestTopY) ||
 				!WorldGen.SolidTile(chestLeftX, groundY) || !WorldGen.SolidTile(chestRightX, groundY);
-				groundY++)
+				)
+			{
 				if (groundY >= Main.maxTilesY - 50)
 					return false;
+
+				chestTopY = chestBottomY;
+				chestBottomY = groundY;
+				groundY++;
+			}
 
 			WorldGen.KillTile(chestLeftX, chestTopY);
 			WorldGen.KillTile(chestRightX, chestTopY);
