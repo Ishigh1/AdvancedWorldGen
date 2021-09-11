@@ -7,7 +7,11 @@
             "Config": {
                 "FasterWorldgen": {
                     "Label": "Génération du monde révisée",
-                    "Tooltip": "Rend la génération u monde plus rapide et adaptée aux mondes de taille non standard.\nLes mondes plus petits que 4200 x ... ne peuvent pas être générés sans."
+                    "Tooltip": "Rend la génération du monde plus rapide et adaptée aux mondes de taille non standard.\nLes mondes plus petits que 4200 x ... ne peuvent pas être générés sans."
+                },
+                "SaveOnFail": {
+                    "Label": "Sauvegarde en cas d'échec",
+                    "Tooltip": "Si la génération du monde échoue ou est interrompue, sauvegarde le monde quand même."
                 }
             },
             "WorldGenMessage": {

@@ -8,6 +8,10 @@
                 "FasterWorldgen": {
                     "Label": "Overhauled Worldgen",
                     "Tooltip": "Tweaks the worldgen so it is faster and more adapted to custom sized worlds.\nWorlds smaller than 4200 x ... can't be generated without it."
+                },
+                "SaveOnFail": {
+                    "Label": "Save on failed worldgen",
+                    "Tooltip": "If the worldgen fails or is aborted, saves it anyway."
                 }
             },
             "WorldGenMessage": {
