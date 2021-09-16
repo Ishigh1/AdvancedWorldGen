@@ -5,9 +5,7 @@ using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.IO;
 using Terraria.Localization;
-using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
@@ -39,11 +37,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					if (tries > Main.maxTilesX / 2)
 						break;
 
-					int x = Random.Next(spread, maxTilesX);
+					int x = WorldGen.genRand.Next(spread, maxTilesX);
 					if (x >= jungleMinX)
 						x += jungleSpread;
 
-					int y = Random.Next((int) Main.rockLayer + 50, Main.UnderworldLayer - 100);
+					int y = WorldGen.genRand.Next((int) Main.rockLayer + 50, Main.UnderworldLayer - 100);
 					const int distanceBetweenBiomes = 500;
 
 					Vector2 current = new(x, y);
@@ -62,8 +60,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					ShroomPatch(x, y);
 					for (int it = 0; it < 5; it++)
 					{
-						int x2 = x + Random.Next(-40, 41);
-						int y2 = y + Random.Next(-40, 41);
+						int x2 = x + WorldGen.genRand.Next(-40, 41);
+						int y2 = y + WorldGen.genRand.Next(-40, 41);
 						ShroomPatch(x2, y2);
 					}
 
@@ -117,10 +115,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 									Main.tile[x2, y + 1].type = 59;
 							}
 
-						if (Random.NextBool(4))
+						if (WorldGen.genRand.NextBool(4))
 						{
-							int num814 = x + Random.Next(-20, 21);
-							int num815 = y + Random.Next(-20, 21);
+							int num814 = x + WorldGen.genRand.Next(-20, 21);
+							int num815 = y + WorldGen.genRand.Next(-20, 21);
 							if (Main.tile[num814, num815].type == 59)
 								Main.tile[num814, num815].type = 70;
 						}
@@ -129,27 +127,25 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 		}
 
-		public void ShroomPatch(int i, int j)
+		public void ShroomPatch(int x, int y)
 		{
-			double num = Random.Next(80, 100);
-			float num2 = Random.Next(20, 26);
-			float num3 = Main.maxTilesX / 4200f;
+			int num = WorldGen.genRand.Next(80, 100);
+			int num2 = WorldGen.genRand.Next(20, 26);
+			float worldSize = Main.maxTilesX / 4200f;
 			if (WorldGen.getGoodWorldGen)
-				num3 *= 2f;
+				worldSize *= 2f;
 
-			num *= num3;
-			num2 *= num3;
+			num = (int) (num * worldSize);
+			num2 = (int) (num2 * worldSize);
 			float num4 = num2 - 1f;
-			Vector2 vector = default;
-			vector.X = i;
-			vector.Y = j - num2 * 0.3f;
-			Vector2 vector2 = default;
-			vector2.X = Random.Next(-100, 101) * 0.005f;
-			vector2.Y = Random.Next(-200, -100) * 0.005f;
-			while (num > 0.0 && num2 > 0f)
+			
+			Vector2 vector = new(x, y - num2 * 0.3f);
+			Vector2 vector2 = new(WorldGen.genRand.Next(-100, 101) * 0.005f, WorldGen.genRand.Next(-200, -100) * 0.005f);
+			
+			while (num > 0 && num2 > 0)
 			{
-				num -= Random.Next(3);
-				num2 -= 1f;
+				num -= WorldGen.genRand.Next(3);
+				num2 -= 1;
 				int xMin = (int) (vector.X - num * 0.5);
 				int xMax = (int) (vector.X + num * 0.5);
 				int yMin = (int) (vector.Y - num * 0.5);
@@ -166,9 +162,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				if (yMax > Main.maxTilesY)
 					yMax = Main.maxTilesY;
 
-				double num5 = num * Random.Next(80, 120) * 0.01;
-				for (int x = xMin; x < xMax; x++)
-				for (int y = yMin; y < yMax; y++)
+				double num5 = num * WorldGen.genRand.Next(80, 120) * 0.01;
+				for (x = xMin; x < xMax; x++)
+				for (y = yMin; y < yMax; y++)
 				{
 					float num10 = Math.Abs(x - vector.X);
 					float num11 = Math.Abs((y - vector.Y) * 2.3f);
@@ -182,7 +178,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 						if (Main.tile[x, y].wall > 0)
 							Main.tile[x, y].wall = 80;
 					}
-					else if (num12 < num5 * 0.4 * (0.95 + Random.NextFloat() * 0.1))
+					else if (num12 < num5 * 0.4 * (0.95 + WorldGen.genRand.NextFloat() * 0.1))
 					{
 						Main.tile[x, y].type = 59;
 						if (num2 == num4 && y > vector.Y)
@@ -195,8 +191,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				vector += vector2;
 				vector.X += vector2.X;
-				vector2.X += Random.Next(-100, 110) * 0.005f;
-				vector2.Y -= Random.Next(110) * 0.005f;
+				vector2.X += WorldGen.genRand.Next(-100, 110) * 0.005f;
+				vector2.Y -= WorldGen.genRand.Next(110) * 0.005f;
 				if (vector2.X > -0.5 && vector2.X < 0.5)
 				{
 					if (vector2.X < 0f)
@@ -219,13 +215,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 				for (int m = 0; m < 2; m++)
 				{
-					int x = (int) vector.X + Random.Next(-20, 20);
-					int y = (int) vector.Y + Random.Next(0, 20);
-					if (!Main.tile[x, y].IsActive)
-						(x, y) = TileFinder.SpiralSearch(x, y, (i1, i2) => Main.tile[i1, i2].IsActive);
+					x = (int) vector.X + WorldGen.genRand.Next(-20, 20);
+					y = (int) vector.Y + WorldGen.genRand.Next(0, 20);
+					(x, y) = TileFinder.SpiralSearch(x, y, (i1, i2) => Main.tile[i1, i2].IsActive);
 
-					int strength = Random.Next(10, 20);
-					int steps = Random.Next(10, 20);
+					int strength = WorldGen.genRand.Next(10, 20);
+					int steps = WorldGen.genRand.Next(10, 20);
 					WorldGen.TileRunner(x, y, strength, steps, TileID.Mud, false, 0f, 2f, true);
 				}
 			}

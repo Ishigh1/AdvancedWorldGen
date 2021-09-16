@@ -37,13 +37,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			WorldGen.UndergroundDesertLocation = Rectangle.Empty;
 			WorldGen.UndergroundDesertHiveLocation = Rectangle.Empty;
 			WorldGen.numLarva = 0;
-			Chest.ShuffleChests(Random);
+			Chest.ShuffleChests(WorldGen.genRand);
 
 			const int num917 = 86400;
-			Main.slimeRainTime = -Random.Next(num917 * 2, num917 * 3);
-			Main.cloudBGActive = -Random.Next(8640, num917);
+			Main.slimeRainTime = -WorldGen.genRand.Next(num917 * 2, num917 * 3);
+			Main.cloudBGActive = -WorldGen.genRand.Next(8640, num917);
 			VanillaInterface.SkipFramingDuringGen.Value = false;
-			if (Random.NextBool(2))
+			if (WorldGen.genRand.NextBool(2))
 			{
 				Replacer.VanillaInterface.Copper.Value = 166;
 				WorldGen.copperBar = 703;
@@ -55,7 +55,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				WorldGen.copperBar = 20;
 			}
 
-			if (Random.NextBool(2))
+			if (WorldGen.genRand.NextBool(2))
 			{
 				Replacer.VanillaInterface.Iron.Value = 167;
 				WorldGen.ironBar = 704;
@@ -67,7 +67,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				WorldGen.ironBar = 22;
 			}
 
-			if (Random.NextBool(2))
+			if (WorldGen.genRand.NextBool(2))
 			{
 				Replacer.VanillaInterface.Silver.Value = 168;
 				WorldGen.silverBar = 705;
@@ -79,7 +79,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				WorldGen.silverBar = 21;
 			}
 
-			if (Random.NextBool(2))
+			if (WorldGen.genRand.NextBool(2))
 			{
 				Replacer.VanillaInterface.Gold.Value = 169;
 				WorldGen.goldBar = 706;
@@ -98,17 +98,17 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				_ => Main.rand.NextBool(2) //Using Main.rand to not affect the worldgen
 			};
 
-			Main.worldID = Random.Next(int.MaxValue);
+			Main.worldID = WorldGen.genRand.Next(int.MaxValue);
 			WorldGen.RandomizeTreeStyle();
 			WorldGen.RandomizeCaveBackgrounds();
-			WorldGen.RandomizeBackgrounds(Random);
+			WorldGen.RandomizeBackgrounds(WorldGen.genRand);
 			WorldGen.RandomizeMoonState();
 			WorldGen.TreeTops.CopyExistingWorldInfoForWorldGeneration();
 
-			int dungeonSide = Random.NextBool(2) ? 1 : -1;
+			int dungeonSide = WorldGen.genRand.NextBool(2) ? 1 : -1;
 			Replacer.VanillaInterface.DungeonSide.Value = dungeonSide;
 
-			int shift = (int) (Main.maxTilesX * Random.Next(15, 30) * 0.01f);
+			int shift = (int) (Main.maxTilesX * WorldGen.genRand.Next(15, 30) * 0.01f);
 			Replacer.VanillaInterface.JungleOriginX.Value = dungeonSide == 1 ? shift : Main.maxTilesX - shift;
 
 			int snowCenter;
@@ -117,15 +117,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			else
 				snowCenter = (int) (Main.maxTilesX * 0.25f + Main.maxTilesX * 0.15f);
 
-			int num921 = Random.Next(50, 90);
+			int num921 = WorldGen.genRand.Next(50, 90);
 			float worldSize = Main.maxTilesX / 4200f;
-			num921 += (int) (Random.Next(20, 40) * worldSize);
-			num921 += (int) (Random.Next(20, 40) * worldSize);
+			num921 += (int) (WorldGen.genRand.Next(20, 40) * worldSize);
+			num921 += (int) (WorldGen.genRand.Next(20, 40) * worldSize);
 			int snowOriginLeft = Math.Max(0, snowCenter - num921);
 
-			num921 = Random.Next(50, 90);
-			num921 += (int) (Random.Next(20, 40) * worldSize);
-			num921 += (int) (Random.Next(20, 40) * worldSize);
+			num921 = WorldGen.genRand.Next(50, 90);
+			num921 += (int) (WorldGen.genRand.Next(20, 40) * worldSize);
+			num921 += (int) (WorldGen.genRand.Next(20, 40) * worldSize);
 			int snowOriginRight = Math.Min(Main.maxTilesX, snowCenter + num921);
 
 			Replacer.VanillaInterface.SnowOriginLeft.Value = snowOriginLeft;
@@ -143,19 +143,19 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			int leftBeachEnd = beachSandRandomCenter +
-			                   Random.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
+			                   WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
 			leftBeachEnd += dungeonSide == 1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
 			Replacer.VanillaInterface.LeftBeachEnd.Value = leftBeachEnd;
 
 			int rightBeachStart = Main.maxTilesX - beachSandRandomCenter +
-			                      Random.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
+			                      WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
 			rightBeachStart -= dungeonSide == -1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
 			Replacer.VanillaInterface.RightBeachStart.Value = rightBeachStart;
 
 			int dungeonShift = (int) (50 * worldSize);
 			Replacer.VanillaInterface.DungeonLocation.Value = dungeonSide == -1
-				? Random.Next(leftBeachEnd + dungeonShift, (int) (Main.maxTilesX * 0.2))
-				: Random.Next((int) (Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
+				? WorldGen.genRand.Next(leftBeachEnd + dungeonShift, (int) (Main.maxTilesX * 0.2))
+				: WorldGen.genRand.Next((int) (Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
 		}
 	}
 }

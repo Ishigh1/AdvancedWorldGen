@@ -7,7 +7,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 {
 	public class RandomGems : ControlledWorldGenPass
 	{
-		public RandomGems() : base("Random Gems", 18.4925f)
+		public RandomGems() : base("WorldGen.genRand Gems", 18.4925f)
 		{
 		}
 
@@ -17,13 +17,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int yMax = Main.maxTilesY - 300 > Main.rockLayer ? Main.maxTilesY - 300 : Main.UnderworldLayer;
 			for (int _ = 0; _ < Main.maxTilesX; _++)
 			{
-				int x = Random.Next(20, Main.maxTilesX - 20);
-				int y = Random.Next((int) Main.rockLayer, yMax);
+				int x = WorldGen.genRand.Next(20, Main.maxTilesX - 20);
+				int y = WorldGen.genRand.Next((int) Main.rockLayer, yMax);
 				Tile tile = Main.tile[x, y];
 				if (!tile.IsActive && tile.LiquidType != LiquidID.Lava &&
 				    !Main.wallDungeon[tile.wall] && tile.wall != WallID.Planked)
 				{
-					int style = Random.Next(12) switch
+					int style = WorldGen.genRand.Next(12) switch
 					{
 						< 3 => 0,
 						< 6 => 1,
@@ -38,15 +38,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			for (int _ = 0; _ < Main.maxTilesX; _++)
 			{
-				int x = Random.Next(20, Main.maxTilesX - 20);
-				int y = Random.Next((int) Main.worldSurface, yMax);
+				int x = WorldGen.genRand.Next(20, Main.maxTilesX - 20);
+				int y = WorldGen.genRand.Next((int) Main.worldSurface, yMax);
 				Tile tile = Main.tile[x, y];
 				if (!tile.IsActive && tile.LiquidType != LiquidID.Lava && tile.wall is WallID.HardenedSand or WallID.Sandstone)
 				{
-					int num169 = Random.Next(1, 4);
-					int num170 = Random.Next(1, 4);
-					int num171 = Random.Next(1, 4);
-					int num172 = Random.Next(1, 4);
+					int num169 = WorldGen.genRand.Next(1, 4);
+					int num170 = WorldGen.genRand.Next(1, 4);
+					int num171 = WorldGen.genRand.Next(1, 4);
+					int num172 = WorldGen.genRand.Next(1, 4);
 					for (int xx = x - num169; xx < x + num170; xx++)
 					for (int yy = y - num171; yy < y + num172; yy++)
 						if (!Main.tile[xx, yy].IsActive)

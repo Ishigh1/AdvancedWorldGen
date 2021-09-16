@@ -22,7 +22,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 			Progress = progress;
 			Configuration = configuration;
+			UnifiedRandom random = WorldGen.genRand;
+			WorldGen._genRand = Random;
 			ApplyPass();
+			WorldGen._genRand = random;
 		}
 	}
 }
