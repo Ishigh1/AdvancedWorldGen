@@ -28,7 +28,9 @@
             "Abort": "Abort",
             "NoOptions": "World without options",
             "CopySettings": "Copy settings",
-            "OptionButton": "Choose your world generation settings"
+            "OptionButton": "Choose your world generation settings",
+            "SeedOptions": "Worldgen Options",
+            "PassEditor": "Pass Editor"
         }
     }
 }

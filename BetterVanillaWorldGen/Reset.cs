@@ -45,49 +45,53 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			VanillaInterface.SkipFramingDuringGen.Value = false;
 			if (Random.NextBool(2))
 			{
-				Replacer.VanillaInterface.Copper.Value = 166;
 				WorldGen.copperBar = 703;
+				Replacer.VanillaInterface.Copper.Value = 166;
 				WorldGen.SavedOreTiers.Copper = 166;
 			}
 			else
 			{
 				WorldGen.SavedOreTiers.Copper = 7;
+				Replacer.VanillaInterface.Copper.Value = 20;
 				WorldGen.copperBar = 20;
 			}
 
 			if (Random.NextBool(2))
 			{
-				Replacer.VanillaInterface.Iron.Value = 167;
 				WorldGen.ironBar = 704;
+				Replacer.VanillaInterface.Iron.Value = 167;
 				WorldGen.SavedOreTiers.Iron = 167;
 			}
 			else
 			{
 				WorldGen.SavedOreTiers.Iron = 6;
+				Replacer.VanillaInterface.Iron.Value = 22;
 				WorldGen.ironBar = 22;
 			}
 
 			if (Random.NextBool(2))
 			{
-				Replacer.VanillaInterface.Silver.Value = 168;
 				WorldGen.silverBar = 705;
+				Replacer.VanillaInterface.Silver.Value = 168;
 				WorldGen.SavedOreTiers.Silver = 168;
 			}
 			else
 			{
 				WorldGen.SavedOreTiers.Silver = 9;
+				Replacer.VanillaInterface.Silver.Value = 21;
 				WorldGen.silverBar = 21;
 			}
 
 			if (Random.NextBool(2))
 			{
-				Replacer.VanillaInterface.Gold.Value = 169;
 				WorldGen.goldBar = 706;
+				Replacer.VanillaInterface.Gold.Value = 169;
 				WorldGen.SavedOreTiers.Gold = 169;
 			}
 			else
 			{
 				WorldGen.SavedOreTiers.Gold = 8;
+				Replacer.VanillaInterface.Gold.Value = 19;
 				WorldGen.goldBar = 19;
 			}
 
@@ -131,6 +135,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Replacer.VanillaInterface.SnowOriginLeft.Value = snowOriginLeft;
 			Replacer.VanillaInterface.SnowOriginRight.Value = snowOriginRight;
 
+			worldSize = Math.Min(worldSize, 1);
 			int beachSandDungeonExtraWidth = (int) (40 * worldSize);
 			int beachSandJungleExtraWidth = (int) (20 * worldSize);
 			int beachBordersWidth = (int) (275 * worldSize);

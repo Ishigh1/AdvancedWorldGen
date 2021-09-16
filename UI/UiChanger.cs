@@ -6,6 +6,7 @@ using System.Threading;
 using AdvancedWorldGen.Base;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -71,8 +72,8 @@ namespace AdvancedWorldGen.UI
 				uiTextPanel.HAlign = 0.5f;
 				uiTextPanel.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.Abort"));
 				uiTextPanel.Recalculate();
-				uiTextPanel.OnMouseOver += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
-				uiTextPanel.OnMouseOut += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
+				uiTextPanel.OnMouseOver += UIHelper.FadedMouseOver;
+				uiTextPanel.OnMouseOut += UIHelper.FadedMouseOut;
 				uiTextPanel.OnClick += Abort;
 			}
 		}
@@ -116,41 +117,20 @@ namespace AdvancedWorldGen.UI
 			VanillaInterface.IconTexture(groupOptionButton).Value = OptionsTexture;
 
 			Description = VanillaInterface.DescriptionText(self).Value;
+			ModifiedWorld.Instance.OptionHelper.Options.Clear();
+			OptionsSelector = new OptionsSelector(self);
 
-			groupOptionButton.OnMouseDown += ToOptionsMenu;
+			groupOptionButton.OnMouseDown += UIHelper.GoTo(OptionsSelector);
 			groupOptionButton.OnMouseOver += ShowOptionDescription;
 			groupOptionButton.OnMouseOut += self.ClearOptionDescription;
 
 			container.Append(groupOptionButton);
 
-			ModifiedWorld.Instance.OptionHelper.Options.Clear();
-			OptionsSelector = new OptionsSelector(self);
-		}
-
-		public void ToOptionsMenu(UIMouseEvent evt, UIElement listeningElement)
-		{
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Main.MenuUI.SetState(OptionsSelector);
 		}
 
 		public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Description.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.OptionButton"));
-		}
-
-		public static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			SoundEngine.PlaySound(SoundID.MenuTick);
-			UIPanel panel = (UIPanel) evt.Target;
-			panel.BackgroundColor = new Color(73, 94, 171);
-			panel.BorderColor = Colors.FancyUIFatButtonMouseOver;
-		}
-
-		public static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			UIPanel panel = (UIPanel) evt.Target;
-			panel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
-			panel.BorderColor = Color.Black;
 		}
 
 		public void CopySettingsButton(OnUIWorldListItem.orig_ctor orig,

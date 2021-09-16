@@ -1,4 +1,5 @@
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -48,9 +49,9 @@ namespace AdvancedWorldGen.UI
 				Top = new StyleDimension(0f, 0.75f),
 				HAlign = 0.35f
 			};
-			goBack.OnMouseDown += GoBack;
-			goBack.OnMouseOver += UiChanger.FadedMouseOver;
-			goBack.OnMouseOut += UiChanger.FadedMouseOut;
+			goBack.OnMouseDown += UIHelper.GoTo(ModifiedWorld.Instance.CustomSizeUI, false);
+			goBack.OnMouseOver += UIHelper.FadedMouseOver;
+			goBack.OnMouseOut += UIHelper.FadedMouseOut;
 			Append(goBack);
 
 			UITextPanel<string> goForward = new(Language.GetTextValue("tModLoader.Continue"))
@@ -59,22 +60,10 @@ namespace AdvancedWorldGen.UI
 				Top = new StyleDimension(0f, 0.75f),
 				HAlign = 0.65f
 			};
-			goForward.OnMouseDown += Continue;
-			goForward.OnMouseOver += UiChanger.FadedMouseOver;
-			goForward.OnMouseOut += UiChanger.FadedMouseOut;
+			goForward.OnMouseDown += UIHelper.GoTo(Base.AdvancedWorldGenMod.Instance.UiChanger.OptionsSelector);
+			goForward.OnMouseOver += UIHelper.FadedMouseOver;
+			goForward.OnMouseOut += UIHelper.FadedMouseOut;
 			Append(goForward);
-		}
-
-		public static void GoBack(UIMouseEvent evt, UIElement listeningElement)
-		{
-			SoundEngine.PlaySound(SoundID.MenuClose);
-			Main.MenuUI.SetState(ModifiedWorld.Instance.CustomSizeUI);
-		}
-
-		public static void Continue(UIMouseEvent evt, UIElement listeningElement)
-		{
-			SoundEngine.PlaySound(SoundID.MenuClose);
-			Main.MenuUI.SetState(Base.AdvancedWorldGen.Instance.UiChanger.OptionsSelector);
 		}
 	}
 }

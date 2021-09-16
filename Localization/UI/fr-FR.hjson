@@ -28,7 +28,9 @@
             "Abort": "Avorter",
             "NoOptions": "Monde sans options",
             "CopySettings": "Copier les options",
-            "OptionButton": "Choisissez vos options pour générer le monde"
+            "OptionButton": "Choisissez vos options pour générer le monde",
+            "SeedOptions": "Options de génération",
+            "PassEditor": "Editeur de pass"
         }
     }
 }

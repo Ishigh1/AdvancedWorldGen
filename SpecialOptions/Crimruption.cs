@@ -28,24 +28,13 @@ namespace AdvancedWorldGen.SpecialOptions
 			cursor.OptionContains("Crimruption", "Drunk");
 		}
 
-		public static void Crimruption1(GenerationProgress progress, GameConfiguration configuration)
+		public static void MakeDrunk(GenerationProgress progress, GameConfiguration configuration)
 		{
 			WasDrunk = WorldGen.drunkWorldGen;
 			WorldGen.drunkWorldGen = true;
 		}
 
-		public static void Crimruption2(GenerationProgress progress, GameConfiguration configuration)
-		{
-			WorldGen.drunkWorldGen = WasDrunk;
-		}
-
-		public static void Crimruption3(GenerationProgress progress, GameConfiguration configuration)
-		{
-			WasDrunk = WorldGen.drunkWorldGen;
-			WorldGen.drunkWorldGen = true;
-		}
-
-		public static void Crimruption4(GenerationProgress progress, GameConfiguration configuration)
+		public static void UnmakeDrunk(GenerationProgress progress, GameConfiguration configuration)
 		{
 			WorldGen.drunkWorldGen = WasDrunk;
 		}

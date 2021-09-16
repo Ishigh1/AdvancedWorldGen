@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;
@@ -31,12 +32,6 @@ namespace AdvancedWorldGen.UI
 			CreateOptionPanel();
 		}
 
-		public void GoBack(UIMouseEvent evt, UIElement listeningElement)
-		{
-			SoundEngine.PlaySound(SoundID.MenuClose);
-			Main.MenuUI.SetState(UiWorldCreation);
-		}
-
 		public void CreateOptionPanel()
 		{
 			UIPanel uiPanel = new()
@@ -49,7 +44,7 @@ namespace AdvancedWorldGen.UI
 			};
 			Append(uiPanel);
 
-			UIText uiTitle = new("Seed options", 0.75f, true) {HAlign = 0.5f};
+			UIText uiTitle = new(Language.GetText("Mods.AdvancedWorldGen.SeedOptions"), 0.75f, true) {HAlign = 0.5f};
 			uiTitle.Height = uiTitle.MinHeight;
 			uiPanel.Append(uiTitle);
 			uiPanel.Append(new UIHorizontalSeparator
@@ -90,29 +85,34 @@ namespace AdvancedWorldGen.UI
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),
-				HAlign = 0.4f
+				HAlign = 0.3f
 			};
-			goBack.OnMouseDown += GoBack;
-			goBack.OnMouseOver += UiChanger.FadedMouseOver;
-			goBack.OnMouseOut += UiChanger.FadedMouseOut;
+			goBack.OnMouseDown += UIHelper.GoTo(UiWorldCreation, false);
+			goBack.OnMouseOver += UIHelper.FadedMouseOver;
+			goBack.OnMouseOut += UIHelper.FadedMouseOut;
 			Append(goBack);
 
 			UITextPanel<string> customSize = new(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSize"))
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),
-				HAlign = 0.6f
+				HAlign = 0.5f
 			};
-			customSize.OnMouseDown += GoToCustomSize;
-			customSize.OnMouseOver += UiChanger.FadedMouseOver;
-			customSize.OnMouseOut += UiChanger.FadedMouseOut;
+			customSize.OnMouseDown += UIHelper.GoTo(ModifiedWorld.Instance.CustomSizeUI);
+			customSize.OnMouseOver += UIHelper.FadedMouseOver;
+			customSize.OnMouseOut += UIHelper.FadedMouseOut;
 			Append(customSize);
-		}
 
-		public void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
-		{
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Main.MenuUI.SetState(ModifiedWorld.Instance.CustomSizeUI);
+			UITextPanel<string> editPasses = new(Language.GetTextValue("Mods.AdvancedWorldGen.EditPasses"))
+			{
+				Width = new StyleDimension(0f, 0.1f),
+				Top = new StyleDimension(0f, 0.75f),
+				HAlign = 0.7f
+			};
+			editPasses.OnMouseDown += UIHelper.GoTo(new PassListEditor(this));
+			editPasses.OnMouseOver += UIHelper.FadedMouseOver;
+			editPasses.OnMouseOut += UIHelper.FadedMouseOut;
+			Append(editPasses);
 		}
 
 		public void CreateSelectableOptions(UIElement uiPanel, UIText uiDescription)
@@ -201,13 +201,12 @@ namespace AdvancedWorldGen.UI
 
 			importButton.OnMouseOut += SetDefaultDescription;
 
-			foreach (KeyValuePair<string, Option> keyValuePair in OptionDict)
+			foreach (var (optionText, option) in OptionDict)
 			{
-				if (keyValuePair.Value.Hidden && !showHidden) continue;
-				string option = keyValuePair.Key;
+				if (option.Hidden && !showHidden) continue;
 				GroupOptionButton<bool> clickableText = new(true,
-					Language.GetText("Mods.AdvancedWorldGen." + option),
-					Language.GetText("Mods.AdvancedWorldGen." + option + ".Description"), Color.White, null)
+					Language.GetText("Mods.AdvancedWorldGen." + optionText),
+					Language.GetText("Mods.AdvancedWorldGen." + optionText + ".Description"), Color.White, null)
 				{
 					HAlign = 0.5f,
 					Width = new StyleDimension(0f, 1f),
@@ -217,16 +216,16 @@ namespace AdvancedWorldGen.UI
 				currentHeight += 40;
 				uiList.Add(clickableText);
 
-				clickableText.SetCurrentOption(ModifiedWorld.Instance.OptionHelper.OptionsContains(option));
+				clickableText.SetCurrentOption(ModifiedWorld.Instance.OptionHelper.OptionsContains(optionText));
 				clickableText.OnMouseDown += delegate
 				{
 					bool selected = clickableText.IsSelected;
 					if (selected)
-						ModifiedWorld.Instance.OptionHelper.Options.Remove(option);
+						ModifiedWorld.Instance.OptionHelper.Options.Remove(optionText);
 					else
-						ModifiedWorld.Instance.OptionHelper.Options.Add(option);
+						ModifiedWorld.Instance.OptionHelper.Options.Add(optionText);
 
-					if (OptionDict[option].Conflicts
+					if (OptionDict[optionText].Conflicts
 						.Any(conflict => ModifiedWorld.Instance.OptionHelper.OptionsContains(conflict)))
 						CreateOptionList(uiDescription, uiList, showHidden);
 					else
@@ -239,12 +238,12 @@ namespace AdvancedWorldGen.UI
 				};
 				clickableText.OnMouseOut += SetDefaultDescription;
 
-				if (ModifiedWorld.Instance.OptionHelper.OptionsContains(option))
-					foreach (string conflict in OptionDict[option].Conflicts)
+				if (ModifiedWorld.Instance.OptionHelper.OptionsContains(optionText))
+					foreach (string conflict in OptionDict[optionText].Conflicts)
 						if (ModifiedWorld.Instance.OptionHelper.OptionsContains(conflict))
 						{
 							LocalizedText conflictDescription =
-								Language.GetText("Mods.AdvancedWorldGen.Conflict." + option + "." + conflict);
+								Language.GetText("Mods.AdvancedWorldGen.Conflict." + optionText + "." + conflict);
 							UIImage uiImage = new(UICommon.ButtonErrorTexture)
 							{
 								Left = new StyleDimension(-15, 0f),

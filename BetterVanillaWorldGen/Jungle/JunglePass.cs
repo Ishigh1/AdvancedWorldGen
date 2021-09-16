@@ -59,11 +59,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			Progress.Set(0.45f);
 			x = zero.X / 3;
 			y = zero.Y / 3;
-			int num = Random.Next((int) (400f * WorldScale), (int) (600f * WorldScale));
+			int strength = Random.Next((int) (400f * WorldScale), (int) (600f * WorldScale));
 			int num2 = (int) (25f * WorldScale);
-			x = Utils.Clamp(x, LeftBeachEnd + num / 2 + num2, RightBeachStart - num / 2 - num2);
+			x = Utils.Clamp(x, LeftBeachEnd + strength / 2 + num2, RightBeachStart - strength / 2 - num2);
 			WorldGen.mudWall = true;
-			WorldGen.TileRunner(x, y, num, 10000, 59, false, 0f, -20f, true);
+			WorldGen.TileRunner(x, y, strength, 10000, 59, false, 0f, -20f, true);
 			GenerateTunnelToSurface(x, y);
 			WorldGen.mudWall = false;
 			DelimitJungle();

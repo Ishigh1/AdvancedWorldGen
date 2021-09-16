@@ -78,8 +78,8 @@ namespace AdvancedWorldGen.UI
 				HAlign = 0.5f
 			};
 			goBack.OnMouseDown += GoBack;
-			goBack.OnMouseOver += UiChanger.FadedMouseOver;
-			goBack.OnMouseOut += UiChanger.FadedMouseOut;
+			goBack.OnMouseOver += UIHelper.FadedMouseOver;
+			goBack.OnMouseOut += UIHelper.FadedMouseOut;
 			Append(goBack);
 		}
 
@@ -171,7 +171,7 @@ namespace AdvancedWorldGen.UI
 			}
 #endif
 
-			Main.MenuUI.SetState(Base.AdvancedWorldGen.Instance.UiChanger.OptionsSelector);
+			Main.MenuUI.SetState(Base.AdvancedWorldGenMod.Instance.UiChanger.OptionsSelector);
 		}
 	}
 }

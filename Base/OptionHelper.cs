@@ -16,7 +16,7 @@ namespace AdvancedWorldGen.Base
 {
 	public class OptionHelper
 	{
-		public AdvancedWorldGen AdvancedWorldGen;
+		public AdvancedWorldGenMod AdvancedWorldGenMod;
 		public HashSet<string> Options;
 		public SnowWorld SnowWorld;
 		public WorldSettings WorldSettings;
@@ -26,7 +26,7 @@ namespace AdvancedWorldGen.Base
 			Options = new HashSet<string>();
 			WorldSettings = new WorldSettings();
 			SnowWorld = new SnowWorld(this);
-			AdvancedWorldGen = (AdvancedWorldGen) ModLoader.GetMod("AdvancedWorldGen");
+			AdvancedWorldGenMod = (AdvancedWorldGenMod) ModLoader.GetMod("AdvancedWorldGen");
 		}
 
 		public bool OptionsContains(params string[] value)

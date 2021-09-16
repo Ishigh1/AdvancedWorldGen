@@ -7,6 +7,7 @@ using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
 using AdvancedWorldGen.SpecialOptions.Snow;
 using AdvancedWorldGen.UI;
+using AdvancedWorldGen.WorldRegenerator;
 using MonoMod.Cil;
 using Terraria;
 using Terraria.GameContent.Events;
@@ -43,13 +44,7 @@ namespace AdvancedWorldGen.Base
 		public override void OnModLoad()
 		{
 			OptionHelper = new OptionHelper();
-			if (!Main.dedServ)
-				CustomSizeUI = new CustomSizeUI(OptionHelper.WorldSettings);
-		}
-
-		public override void Unload()
-		{
-			OptionHelper = null!;
+			if (!Main.dedServ) CustomSizeUI = new CustomSizeUI(OptionHelper.WorldSettings);
 		}
 
 		public override void OnWorldLoad()
@@ -94,7 +89,7 @@ namespace AdvancedWorldGen.Base
 			foreach (string seedHelperOption in OptionHelper.Options)
 				writer.Write(OptionsSelector.OptionDict[seedHelperOption].Id);
 
-			writer.Write(0);
+			writer.Write((ushort) 0);
 		}
 
 		public override void PreWorldGen()
@@ -125,9 +120,9 @@ namespace AdvancedWorldGen.Base
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
 			if (passIndex != -1 && OptionsContains("Crimruption"))
 			{
-				tasks.Insert(passIndex++, new PassLegacy("Crimruption1", Crimruption.Crimruption1));
+				tasks.Insert(passIndex++, new PassLegacy("MakeDrunk1", Crimruption.MakeDrunk));
 				passIndex++;
-				tasks.Insert(passIndex++, new PassLegacy("Crimruption2", Crimruption.Crimruption2));
+				tasks.Insert(passIndex++, new PassLegacy("UnmakeDrunk1", Crimruption.UnmakeDrunk));
 			}
 
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Guide");
@@ -142,9 +137,9 @@ namespace AdvancedWorldGen.Base
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Tile Cleanup");
 			if (passIndex != -1 && OptionsContains("Crimruption"))
 			{
-				tasks.Insert(passIndex++, new PassLegacy("Crimruption3", Crimruption.Crimruption3));
+				tasks.Insert(passIndex++, new PassLegacy("MakeDrunk2", Crimruption.MakeDrunk));
 				passIndex++;
-				tasks.Insert(passIndex++, new PassLegacy("Crimruption4", Crimruption.Crimruption4));
+				tasks.Insert(passIndex++, new PassLegacy("UnmakeDrunk2", Crimruption.UnmakeDrunk));
 			}
 
 			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Micro Biomes");
@@ -266,6 +261,7 @@ namespace AdvancedWorldGen.Base
 			{
 				OptionHelper.Options = new HashSet<string>();
 				OptionHelper.WorldSettings.SetSizeTo(-1);
+				PassHandler.ReplacePasses = false;
 			}
 		}
 	}
