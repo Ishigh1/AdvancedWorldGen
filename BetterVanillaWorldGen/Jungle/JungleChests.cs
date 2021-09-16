@@ -17,7 +17,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 		protected override void ApplyPass()
 		{
-			int rand = Random.Next(5);
+			int rand = WorldGen.genRand.Next(5);
 			ushort tileType = rand switch
 			{
 				0 => TileID.IridescentBrick,
@@ -35,28 +35,28 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				_ => WallID.GoldBrick
 			};
 
-			float stepCount = Random.Next(7, 12);
+			float stepCount = WorldGen.genRand.Next(7, 12);
 			stepCount *= Main.maxTilesX / 4200f;
 			for (int step = 0; step < stepCount; step++)
 			{
 				Progress.SetProgress(step, stepCount);
 				int minX = Replacer.VanillaInterface.JungleMinX;
 				int maxX = Replacer.VanillaInterface.JungleMaxX;
-				int x = Random.Next(minX, maxX);
+				int x = WorldGen.genRand.Next(minX, maxX);
 
 				int y;
 				if (Main.maxTilesY - 400 - (Main.worldSurface + Main.rockLayer) / 2 > 100)
-					y = Random.Next((int) (Main.worldSurface + Main.rockLayer) / 2, Main.maxTilesY - 400);
+					y = WorldGen.genRand.Next((int) (Main.worldSurface + Main.rockLayer) / 2, Main.maxTilesY - 400);
 				else if ((Main.worldSurface + Main.rockLayer) / 2 - Main.worldSurface > 100)
-					y = Random.Next((int) (Main.worldSurface + Main.rockLayer) / 2 - 100, Main.maxTilesY - 400);
+					y = WorldGen.genRand.Next((int) (Main.worldSurface + Main.rockLayer) / 2 - 100, Main.maxTilesY - 400);
 				else
-					y = Random.Next((int) Main.worldSurface, Main.UnderworldLayer);
+					y = WorldGen.genRand.Next((int) Main.worldSurface, Main.UnderworldLayer);
 
 
 				(x, y) = TileFinder.SpiralSearch(x, y, IsValid);
 
-				int width = Random.Next(2, 4);
-				int height = Random.Next(2, 4);
+				int width = WorldGen.genRand.Next(2, 4);
+				int height = WorldGen.genRand.Next(2, 4);
 				Rectangle area = new(x - width - 1, y - height - 1, width + 1, height + 1);
 
 				for (int xx = x - width - 1; xx <= x + width + 1; xx++)
@@ -80,8 +80,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				while (!torchPlaced && tries < 100)
 				{
 					tries++;
-					int xx = Random.Next(x - width, x + width + 1);
-					int yy = Random.Next(y - height, y + height - 2);
+					int xx = WorldGen.genRand.Next(x - width, x + width + 1);
+					int yy = WorldGen.genRand.Next(y - height, y + height - 2);
 					WorldGen.PlaceTile(xx, yy, TileID.Torches, true, false, -1, 3);
 					if (TileID.Sets.Torch[Main.tile[xx, yy].type])
 						torchPlaced = true;
@@ -108,7 +108,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 					}
 				}
 
-				width -= Random.Next(1, 3);
+				width -= WorldGen.genRand.Next(1, 3);
 				int j = y - height - 2;
 				while (width > -1)
 				{
@@ -118,7 +118,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 						Main.tile[i, j].type = tileType;
 					}
 
-					width -= Random.Next(1, 3);
+					width -= WorldGen.genRand.Next(1, 3);
 					j--;
 				}
 

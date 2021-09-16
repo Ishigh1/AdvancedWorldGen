@@ -1,6 +1,5 @@
 using Terraria;
 using Terraria.Localization;
-using static Terraria.WorldGen;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 {
@@ -16,13 +15,13 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			int dungeonX = Replacer.VanillaInterface.DungeonLocation.Value;
 			int dungeonY;
 			bool solidGround = false;
-			if (drunkWorldGen)
+			if (WorldGen.drunkWorldGen)
 				dungeonY = (int) Main.worldSurface + 70;
 			else
 			{
-				dungeonY = (int) ((Main.worldSurface + Main.rockLayer) / 2.0) + Random.Next(-200, 200);
+				dungeonY = (int) ((Main.worldSurface + Main.rockLayer) / 2.0) + WorldGen.genRand.Next(-200, 200);
 				for (int num665 = 0; num665 < 10; num665++)
-					if (SolidTile(dungeonX, dungeonY + num665))
+					if (WorldGen.SolidTile(dungeonX, dungeonY + num665))
 					{
 						solidGround = true;
 						break;
@@ -31,7 +30,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				if (!solidGround)
 				{
 					int minX = (int) ((Main.worldSurface + Main.rockLayer) / 2.0) + 200;
-					for (; dungeonY < minX && !SolidTile(dungeonX, dungeonY + 10); dungeonY++)
+					for (; dungeonY < minX && !WorldGen.SolidTile(dungeonX, dungeonY + 10); dungeonY++)
 					{
 					}
 				}

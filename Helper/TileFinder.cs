@@ -16,13 +16,14 @@ namespace AdvancedWorldGen.Helper
 
 			while (true)
 			{
-				x += xStep;
-				y += yStep;
 				if (WorldGen.InWorld(x, y, 10) && check(x, y))
 				{
 					break;
 				}
-				else if (--activeLength == 0)
+				
+				x += xStep;
+				y += yStep;
+				if (--activeLength == 0)
 				{
 					int tmp = xStep;
 					xStep = -yStep;

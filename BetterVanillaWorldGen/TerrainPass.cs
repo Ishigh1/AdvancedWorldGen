@@ -30,9 +30,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.0");
 			TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
 			double worldSurface = Main.maxTilesY * 0.3;
-			worldSurface *= Random.Next(90, 110) * 0.005;
+			worldSurface *= WorldGen.genRand.Next(90, 110) * 0.005;
 			double rockLayer = Main.maxTilesY * 0.35;
-			rockLayer *= Random.Next(90, 110) * 0.01;
+			rockLayer *= WorldGen.genRand.Next(90, 110) * 0.01;
 			if (rockLayer < worldSurface + Main.maxTilesY * 0.05)
 			{
 				if (worldSurface - rockLayer > Main.maxTilesY * 0.05)
@@ -60,16 +60,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				rockLayerHigh = Math.Max(rockLayer, rockLayerHigh);
 				if (num2 <= 0)
 				{
-					terrainFeatureType = (TerrainFeatureType) Random.Next(0, 5);
-					num2 = Random.Next(5, 40);
+					terrainFeatureType = (TerrainFeatureType) WorldGen.genRand.Next(0, 5);
+					num2 = WorldGen.genRand.Next(5, 40);
 					if (terrainFeatureType == TerrainFeatureType.Plateau)
-						num2 *= (int) (Random.Next(5, 30) * 0.2);
+						num2 *= (int) (WorldGen.genRand.Next(5, 30) * 0.2);
 				}
 
 				num2--;
 				if (i > Main.maxTilesX * 0.45 && i < Main.maxTilesX * 0.55 &&
 				    terrainFeatureType is TerrainFeatureType.Mountain or TerrainFeatureType.Valley)
-					terrainFeatureType = (TerrainFeatureType) Random.Next(3);
+					terrainFeatureType = (TerrainFeatureType) WorldGen.genRand.Next(3);
 
 				if (i > Main.maxTilesX * 0.48 && i < Main.maxTilesX * 0.52)
 					terrainFeatureType = TerrainFeatureType.Plateau;
@@ -98,7 +98,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					num2 = 0;
 				}
 
-				while (Random.Next(0, 3) == 0) rockLayer += Random.Next(-2, 3);
+				while (WorldGen.genRand.Next(0, 3) == 0) rockLayer += WorldGen.genRand.Next(-2, 3);
 
 				if (rockLayer < worldSurface + Main.maxTilesY * 0.06)
 					rockLayer += 1.0;
@@ -121,8 +121,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Main.worldSurface = (int) (worldSurfaceHigh + 25.0);
 			Main.rockLayer = rockLayerHigh;
 			int waterLine = (int) (Main.rockLayer + Main.maxTilesY) / 2;
-			waterLine += Random.Next(-100, 20);
-			int lavaLine = waterLine + Random.Next(50, 80);
+			waterLine += WorldGen.genRand.Next(-100, 20);
+			int lavaLine = waterLine + WorldGen.genRand.Next(50, 80);
 			if (rockLayer > Main.UnderworldLayer)
 				throw new RockUnderHellException();
 			while (lavaLine > Main.UnderworldLayer)
@@ -205,23 +205,23 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				switch (featureType)
 				{
 					case TerrainFeatureType.Plateau:
-						while (Random.Next(0, 6) == 0) num += Random.Next(-1, 2);
+						while (WorldGen.genRand.Next(0, 6) == 0) num += WorldGen.genRand.Next(-1, 2);
 						break;
 					case TerrainFeatureType.Hill:
-						while (Random.Next(0, 3) == 0) num -= 1.0;
-						while (Random.Next(0, 10) == 0) num += 1.0;
+						while (WorldGen.genRand.Next(0, 3) == 0) num -= 1.0;
+						while (WorldGen.genRand.Next(0, 10) == 0) num += 1.0;
 						break;
 					case TerrainFeatureType.Dale:
-						while (Random.Next(0, 3) == 0) num += 1.0;
-						while (Random.Next(0, 10) == 0) num -= 1.0;
+						while (WorldGen.genRand.Next(0, 3) == 0) num += 1.0;
+						while (WorldGen.genRand.Next(0, 10) == 0) num -= 1.0;
 						break;
 					case TerrainFeatureType.Mountain:
-						while (Random.Next(0, 3) != 0) num -= 1.0;
-						while (Random.Next(0, 6) == 0) num += 1.0;
+						while (WorldGen.genRand.Next(0, 3) != 0) num -= 1.0;
+						while (WorldGen.genRand.Next(0, 6) == 0) num += 1.0;
 						break;
 					case TerrainFeatureType.Valley:
-						while (Random.Next(0, 3) != 0) num += 1.0;
-						while (Random.Next(0, 5) == 0) num -= 1.0;
+						while (WorldGen.genRand.Next(0, 3) != 0) num += 1.0;
+						while (WorldGen.genRand.Next(0, 5) == 0) num -= 1.0;
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(featureType), featureType, null);
@@ -230,23 +230,23 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				switch (featureType)
 				{
 					case TerrainFeatureType.Plateau:
-						while (Random.Next(0, 7) == 0) num += Random.Next(-1, 2);
+						while (WorldGen.genRand.Next(0, 7) == 0) num += WorldGen.genRand.Next(-1, 2);
 						break;
 					case TerrainFeatureType.Hill:
-						while (Random.Next(0, 4) == 0) num -= 1.0;
-						while (Random.Next(0, 10) == 0) num += 1.0;
+						while (WorldGen.genRand.Next(0, 4) == 0) num -= 1.0;
+						while (WorldGen.genRand.Next(0, 10) == 0) num += 1.0;
 						break;
 					case TerrainFeatureType.Dale:
-						while (Random.Next(0, 4) == 0) num += 1.0;
-						while (Random.Next(0, 10) == 0) num -= 1.0;
+						while (WorldGen.genRand.Next(0, 4) == 0) num += 1.0;
+						while (WorldGen.genRand.Next(0, 10) == 0) num -= 1.0;
 						break;
 					case TerrainFeatureType.Mountain:
-						while (Random.Next(0, 2) == 0) num -= 1.0;
-						while (Random.Next(0, 6) == 0) num += 1.0;
+						while (WorldGen.genRand.Next(0, 2) == 0) num -= 1.0;
+						while (WorldGen.genRand.Next(0, 6) == 0) num += 1.0;
 						break;
 					case TerrainFeatureType.Valley:
-						while (Random.Next(0, 2) == 0) num += 1.0;
-						while (Random.Next(0, 5) == 0) num -= 1.0;
+						while (WorldGen.genRand.Next(0, 2) == 0) num += 1.0;
+						while (WorldGen.genRand.Next(0, 5) == 0) num -= 1.0;
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(featureType), featureType, null);
