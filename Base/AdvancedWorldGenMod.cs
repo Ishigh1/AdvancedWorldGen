@@ -38,7 +38,7 @@ namespace AdvancedWorldGen.Base
 			Crimruption = new Crimruption();
 
 			OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
-			OnUIWorldListItem.ctor += UiChanger.CopySettingsButton;
+			//OnUIWorldListItem.ctor += UiChanger.CopySettingsButton; Removed until twld can be loaded in a reasonable time
 			ILWorldGen.GenerateWorld += PassHandler.OverridePasses;
 
 			ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;

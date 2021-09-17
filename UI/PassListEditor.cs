@@ -1,4 +1,3 @@
-using AdvancedWorldGen.Base;
 using AdvancedWorldGen.Helper;
 using AdvancedWorldGen.WorldRegenerator;
 using Microsoft.Xna.Framework;
@@ -84,18 +83,23 @@ namespace AdvancedWorldGen.UI
 			uiPanel.Append(uiList);
 
 			float currentHeight = 0f;
+			int i = 0;
 			foreach (GenPass availablePass in PassHandler.AvailablePasses)
 			{
-				LocalizedText fakeLocalization = LanguageManager.Instance.GetText(availablePass.Name);
-				UIIconTextButton passEntry = new(fakeLocalization, Color.White, null)
+				UIIconTextButton passEntry = new(LocalizedText.Empty, Color.White, null)
 				{
 					HAlign = 0.5f,
 					Width = new StyleDimension(0f, 1f),
 					Height = new StyleDimension(40f, 0f),
 					Top = new StyleDimension(currentHeight, 0f)
 				};
+				UIText uiText = new VanillaAccessor<UIText>(typeof(UIIconTextButton), "_title", passEntry).Value;
+				new VanillaAccessor<string>(typeof(UIText), "_text", uiText).Value = i++ + " : " + availablePass.Name;
+
 				uiList.Add(passEntry);
 				currentHeight += 40f;
+				if(i == 50)
+					break;
 			}
 		}
 	}

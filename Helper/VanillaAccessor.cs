@@ -21,7 +21,7 @@ namespace AdvancedWorldGen.Helper
 			VanillaData = vanillaData;
 		}
 
-		public VanillaAccessor(IReflect type, string name, object? vanillaData)
+		public VanillaAccessor(IReflect type, string name, object vanillaData)
 		{
 			FieldInfo = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!;
 			VanillaData = vanillaData;
