@@ -129,6 +129,7 @@ namespace AdvancedWorldGen.UI
 				Width = new StyleDimension(-20f, 1f),
 				Top = new StyleDimension(50, 0f)
 			};
+			uiList.ManualSortMethod = _ => { };
 			uiList.SetScrollbar(uiScrollbar);
 			uiPanel.Append(uiScrollbar);
 			uiPanel.Append(uiList);
@@ -164,7 +165,6 @@ namespace AdvancedWorldGen.UI
 
 		public void CreateOptionList(UIText uiDescription, UIList uiList, bool showHidden)
 		{
-			float currentHeight = 50;
 			uiList.Clear();
 			bool isLookingAtConflict = false;
 
@@ -174,10 +174,8 @@ namespace AdvancedWorldGen.UI
 			{
 				HAlign = 0.5f,
 				Width = new StyleDimension(0f, 1f),
-				Height = new StyleDimension(40f, 0f),
-				Top = new StyleDimension(currentHeight, 0f)
+				Height = new StyleDimension(40f, 0f)
 			};
-			currentHeight += 40;
 			uiList.Add(importButton);
 
 			importButton.SetCurrentOption(false);
@@ -210,10 +208,8 @@ namespace AdvancedWorldGen.UI
 				{
 					HAlign = 0.5f,
 					Width = new StyleDimension(0f, 1f),
-					Height = new StyleDimension(40f, 0f),
-					Top = new StyleDimension(currentHeight, 0f)
+					Height = new StyleDimension(40f, 0f)
 				};
-				currentHeight += 40;
 				uiList.Add(clickableText);
 
 				clickableText.SetCurrentOption(ModifiedWorld.Instance.OptionHelper.OptionsContains(optionText));
