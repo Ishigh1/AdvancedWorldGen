@@ -15,7 +15,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			int rand = WorldGen.genRand.Next(5);
 			ushort tileType = rand switch

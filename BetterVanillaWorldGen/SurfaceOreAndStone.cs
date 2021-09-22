@@ -14,7 +14,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			int num360 = WorldGen.genRand.Next(Main.maxTilesX / (4200 / 5), Main.maxTilesX / (4200 / 10));
 			List<int> orePatchesX = new();

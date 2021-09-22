@@ -103,13 +103,13 @@ namespace AdvancedWorldGen.UI
 			customSize.OnMouseOut += UIHelper.FadedMouseOut;
 			Append(customSize);
 
-			UITextPanel<string> editPasses = new(Language.GetTextValue("Mods.AdvancedWorldGen.EditPasses"))
+			UITextPanel<string> editPasses = new(Language.GetTextValue("Mods.AdvancedWorldGen.PassEditor"))
 			{
 				Width = new StyleDimension(0f, 0.1f),
 				Top = new StyleDimension(0f, 0.75f),
 				HAlign = 0.7f
 			};
-			editPasses.OnMouseDown += UIHelper.GoTo(new PassListEditor(this));
+			editPasses.OnMouseDown += UIHelper.GoTo(() => new PassListEditor(this));
 			editPasses.OnMouseOver += UIHelper.FadedMouseOver;
 			editPasses.OnMouseOut += UIHelper.FadedMouseOut;
 			Append(editPasses);

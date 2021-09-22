@@ -21,7 +21,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			int leftBeachSize = Replacer.VanillaInterface.LeftBeachEnd.Value;
 			int rightBeachSize = Main.maxTilesX - Replacer.VanillaInterface.RightBeachStart.Value;

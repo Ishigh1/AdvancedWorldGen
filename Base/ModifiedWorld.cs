@@ -146,12 +146,12 @@ namespace AdvancedWorldGen.Base
 			if (passIndex != -1)
 				HalloweenCommon.InsertTasks(tasks, ref passIndex);
 
-			if (OptionHelper.OptionsContains("Santa", "Evil", "Random", "Painted"))
-			{
-				tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
-				if(liquidSettle != null)
-					tasks.Add(liquidSettle);
-			}
+			if (OptionHelper.OptionsContains("Evil"))
+				tasks.Add(new EvilReplacer());
+			if (OptionHelper.OptionsContains("Santa"))
+				tasks.Add(new SnowReplacer());
+			if (OptionHelper.OptionsContains("Random", "Painted")) 
+				tasks.Add(new Randomizer());
 		}
 
 		public void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
@@ -223,17 +223,6 @@ namespace AdvancedWorldGen.Base
 		}
 
 		public static int RandomNpc(List<int> availableNPCs) => WorldGen._genRand.NextFromList(availableNPCs.ToArray());
-
-		public void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
-		{
-			if (OptionHelper.OptionsContains("Santa"))
-				new SnowReplacer().ReplaceTiles(progress, "SnowReplace");
-			
-			if (OptionHelper.OptionsContains("Evil"))
-				EvilReplacer.CorruptWorld(progress);
-
-			if (OptionHelper.OptionsContains("Random", "Painted")) TileReplacer.RandomizeWorld(progress, OptionHelper);
-		}
 
 		public override void PostUpdateTime()
 		{

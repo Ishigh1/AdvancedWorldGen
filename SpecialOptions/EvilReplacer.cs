@@ -1,36 +1,43 @@
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.Helper;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.SpecialOptions
 {
-	public static class EvilReplacer
+	public class EvilReplacer : ControlledWorldGenPass
 	{
-		public static void CorruptWorld(GenerationProgress progress)
+		public EvilReplacer() : base("Evil", 2)
 		{
-			progress.Message = Language.GetTextValue("Mods.AdvancedWorldGen.WorldGenMessage.Evil");
+		}
+
+		public override void ApplyPass()
+		{
+			Progress.Message = Language.GetTextValue("Mods.AdvancedWorldGen.WorldGenMessage.Evil");
 			bool isDrunk = WorldGen.drunkWorldGen || ModifiedWorld.OptionsContains("Crimruption");
 			bool corruptOnLeft = isDrunk;
 			if (isDrunk)
 				for (int x = WorldGen.beachDistance; x < Main.maxTilesX - WorldGen.beachDistance; x++)
-				for (int y = (int) Main.worldSurface; y < Main.rockLayer; y++)
 				{
-					Tile tile = Main.tile[x, y];
-					if(!tile.IsActive)
-						continue;
-					ushort tileType = tile.type;
-					if (TileID.Sets.Corrupt[tileType])
+					Progress.SetProgress(x, Main.maxTilesX);
+					for (int y = (int) Main.worldSurface; y < Main.rockLayer; y++)
 					{
-						corruptOnLeft = x < Main.maxTilesX / 2;
-						break;
-					}
-					else if(TileID.Sets.Crimson[tileType])
-					{
-						corruptOnLeft = x >= Main.maxTilesX / 2;
-						break;
+						Tile tile = Main.tile[x, y];
+						if (!tile.IsActive)
+							continue;
+						ushort tileType = tile.type;
+						if (TileID.Sets.Corrupt[tileType])
+						{
+							corruptOnLeft = x < Main.maxTilesX / 2;
+							break;
+						}
+						else if (TileID.Sets.Crimson[tileType])
+						{
+							corruptOnLeft = x >= Main.maxTilesX / 2;
+							break;
+						}
 					}
 				}
 
@@ -41,7 +48,7 @@ namespace AdvancedWorldGen.SpecialOptions
 				conversionType = WorldGen.crimson ? 4 : 1;
 			for (int x = 0; x < Main.maxTilesX; x++)
 			{
-				progress.SetProgress(x, Main.maxTilesX);
+				Progress.SetProgress(x, Main.maxTilesX, 0.5f, 0.5f);
 				if (x == Main.maxTilesX / 2 && isDrunk)
 					conversionType = corruptOnLeft ? 4 : 1;
 				for (int y = 0; y < Main.maxTilesY; y++) WorldGen.Convert(x, y, conversionType, 0);

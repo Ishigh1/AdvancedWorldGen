@@ -17,7 +17,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			VanillaInterface.NumOceanCaveTreasure.Value = 0;
 			WorldGen.skipDesertTileCheck = false;

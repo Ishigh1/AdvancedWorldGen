@@ -16,7 +16,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Random = new UnifiedRandom(WorldGen.genRand.Next());
 		}
 
-		protected abstract void ApplyPass();
+		public abstract void ApplyPass();
 
 		protected sealed override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 		{

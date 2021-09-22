@@ -17,7 +17,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.70");
 			int x = WorldGen.genRand.Next(Replacer.VanillaInterface.JungleMinX, Replacer.VanillaInterface.JungleMaxX);

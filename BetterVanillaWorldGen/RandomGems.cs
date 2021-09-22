@@ -11,7 +11,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			Progress.Set(1f);
 			int yMax = Main.maxTilesY - 300 > Main.rockLayer ? Main.maxTilesY - 300 : Main.UnderworldLayer;

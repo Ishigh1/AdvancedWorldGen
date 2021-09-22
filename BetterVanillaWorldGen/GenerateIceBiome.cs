@@ -11,7 +11,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.56");
 			Replacer.VanillaInterface.SnowTop.Value = (int) Main.worldSurface;

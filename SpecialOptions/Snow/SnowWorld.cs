@@ -39,7 +39,7 @@ namespace AdvancedWorldGen.SpecialOptions.Snow
 
 				if (Main.netMode == NetmodeID.Server)
 				{
-					ModPacket modPacket = OptionHelper.AdvancedWorldGenMod.GetPacket();
+					ModPacket modPacket = AdvancedWorldGenMod.Instance.GetPacket();
 					modPacket.Write((byte) PacketId.SantaWaterFreezing);
 					modPacket.Write(x);
 					modPacket.Write(y);

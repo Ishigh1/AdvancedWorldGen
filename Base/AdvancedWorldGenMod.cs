@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using Terraria.ModLoader;
 using OnWorldGen = On.Terraria.WorldGen;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
-using OnUIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
+// using OnUIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
 using OnUserInterface = On.Terraria.UI.UserInterface;
 using OnUIWorldLoad = On.Terraria.GameContent.UI.States.UIWorldLoad;
 using OnWorldFile = On.Terraria.IO.WorldFile;
@@ -33,7 +33,7 @@ namespace AdvancedWorldGen.Base
 				Encoding.UTF8.GetString(GetFileBytes("Options.json")));
 			TileReplacer.Initialize();
 
-			UiChanger = new UiChanger(this);
+			UiChanger = new UiChanger();
 
 			Crimruption = new Crimruption();
 

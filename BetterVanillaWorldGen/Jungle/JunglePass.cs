@@ -22,7 +22,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.11");
 

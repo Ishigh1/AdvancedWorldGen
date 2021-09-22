@@ -9,7 +9,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.58");
 			int dungeonX = Replacer.VanillaInterface.DungeonLocation.Value;

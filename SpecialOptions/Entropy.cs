@@ -162,7 +162,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			if (Main.netMode == NetmodeID.Server &&
 			    (OldTile != -1 && NewTile != -1 || OldWall != 0 && NewWall != 0))
 			{
-				ModPacket modPacket = OptionHelper.AdvancedWorldGenMod.GetPacket();
+				ModPacket modPacket = AdvancedWorldGenMod.Instance.GetPacket();
 				modPacket.Write((byte) PacketId.SantaWaterFreezing);
 				modPacket.Write(NewTile);
 				modPacket.Write(NewWall);

@@ -7,6 +7,8 @@ using AdvancedWorldGen.Base;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
+using AdvancedWorldGen.WorldRegenerator;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -31,33 +33,42 @@ namespace AdvancedWorldGen.UI
 {
 	public class UiChanger
 	{
-		public readonly Asset<Texture2D> CopyOptionsTexture;
-		public readonly Asset<Texture2D> OptionsTexture;
 		public UIText Description = null!;
 		public OptionsSelector OptionsSelector = null!;
 		public Thread Thread = null!;
-
-		public UiChanger(Mod mod)
-		{
-			OptionsTexture = null!;
-			CopyOptionsTexture = null!;
-			if (!Main.dedServ)
-			{
-				OptionsTexture = mod.Assets.Request<Texture2D>("Images/WorldOptions");
-				CopyOptionsTexture = mod.Assets.Request<Texture2D>("Images/CopyWorldButton");
-			}
-		}
+		public bool Aborting;
 
 		public void ThreadifyWorldGen(OnWorldGen.orig_worldGenCallback orig, object threadContext)
 		{
-			if (!Main.dedServ)
+			if (Main.dedServ)
 			{
-				Thread = new Thread(() => { orig(threadContext); }) {Name = "WorldGen"};
-				Thread.Start();
+				orig(threadContext);
 			}
 			else
 			{
-				orig(threadContext);
+				Thread = new Thread(() =>
+				{
+					try
+					{
+						WorldGen.do_worldGenCallBack(threadContext);
+					}
+					catch (Exception e)
+					{
+						if (!Aborting)
+						{
+							if (WorldgenSettings.AbortedSaving)
+							{
+								Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
+								Main.worldName += "_Aborted";
+								WorldFile.SaveWorld();
+							}
+
+							LogManager.GetLogger(nameof(Terraria))
+								.Error(Language.GetTextValue("tModLoader.WorldGenError"), e);
+						}
+					}
+				}) {Name = "WorldGen"};
+				Thread.Start();
 			}
 		}
 
@@ -81,18 +92,21 @@ namespace AdvancedWorldGen.UI
 		public void Abort(UIMouseEvent evt, UIElement listeningElement)
 		{
 			SoundEngine.PlaySound(SoundID.MenuClose);
+			Aborting = true;
 			Tile[,] tiles = Main.tile;
 			Main.tile = null;
 			WorldGen._genRand = null;
 			Thread.Join();
 			Main.tile = tiles;
-			
+
 			if (WorldgenSettings.AbortedSaving)
 			{
-				Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World); 
+				Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
 				Main.worldName += "_Aborted";
 				WorldFile.SaveWorld();
 			}
+
+			Aborting = false;
 		}
 
 		public void TweakWorldGenUi(OnUIWorldCreation.orig_AddDescriptionPanel origAddDescriptionPanel,
@@ -114,7 +128,8 @@ namespace AdvancedWorldGen.UI
 				PaddingLeft = 4f
 			};
 
-			VanillaInterface.IconTexture(groupOptionButton).Value = OptionsTexture;
+			VanillaInterface.IconTexture(groupOptionButton).Value = AdvancedWorldGenMod.Instance.Assets
+				.Request<Texture2D>("Images/WorldOptions");
 
 			Description = VanillaInterface.DescriptionText(self).Value;
 			ModifiedWorld.Instance.OptionHelper.Options.Clear();
@@ -125,7 +140,6 @@ namespace AdvancedWorldGen.UI
 			groupOptionButton.OnMouseOut += self.ClearOptionDescription;
 
 			container.Append(groupOptionButton);
-
 		}
 
 		public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement)
@@ -140,13 +154,14 @@ namespace AdvancedWorldGen.UI
 			orig(self, data, orderInList, canBePlayed);
 
 			UIText uiText = VanillaInterface.ButtonLabel(self).Value;
-			UIImageButton copyOptionButton = new(CopyOptionsTexture)
-			{
-				VAlign = 1f,
-				Left = new StyleDimension(uiText.Left.Pixels - 4, 0f),
-				PaddingTop = 4f,
-				PaddingLeft = 4f
-			};
+			UIImageButton copyOptionButton =
+				new(AdvancedWorldGenMod.Instance.Assets.Request<Texture2D>("Images/WorldOptions"))
+				{
+					VAlign = 1f,
+					Left = new StyleDimension(uiText.Left.Pixels - 4, 0f),
+					PaddingTop = 4f,
+					PaddingLeft = 4f
+				};
 
 			List<string> options = GetOptionsFromData(data);
 
@@ -168,8 +183,8 @@ namespace AdvancedWorldGen.UI
 			IList<TagCompound> modTags = tags.GetList<TagCompound>("modData");
 			List<string> options =
 				(from tagCompound in modTags
-				 where tagCompound.GetString("mod") == "AdvancedWorldGen"
-				 select (List<string>?) tagCompound.GetCompound("data")?.GetList<string>("Options"))
+					where tagCompound.GetString("mod") == nameof(AdvancedWorldGen)
+					select (List<string>?) tagCompound.GetCompound("data")?.GetList<string>("Options"))
 				.FirstOrDefault() ??
 				new List<string>();
 			return options;

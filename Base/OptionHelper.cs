@@ -26,7 +26,7 @@ namespace AdvancedWorldGen.Base
 			Options = new HashSet<string>();
 			WorldSettings = new WorldSettings();
 			SnowWorld = new SnowWorld(this);
-			AdvancedWorldGenMod = (AdvancedWorldGenMod) ModLoader.GetMod("AdvancedWorldGen");
+			AdvancedWorldGenMod = (AdvancedWorldGenMod) AdvancedWorldGenMod.Instance;
 		}
 
 		public bool OptionsContains(params string[] value)
