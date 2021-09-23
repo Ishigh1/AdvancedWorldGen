@@ -68,7 +68,11 @@ namespace AdvancedWorldGen.Base
 			}
 		}
 
-		public override TagCompound SaveWorldData() => new() {["Options"] = OptionHelper.Options.ToList()};
+		public override void SaveWorldData(TagCompound tagCompound)
+		{
+			if(OptionHelper.Options.Count != 0)
+				tagCompound["Options"] = OptionHelper.Options.ToList();
+		}
 
 		public override void NetReceive(BinaryReader reader)
 		{

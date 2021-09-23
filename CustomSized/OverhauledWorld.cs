@@ -13,16 +13,13 @@ namespace AdvancedWorldGen.CustomSized
 			if (tag.TryGetValue("beach", out value)) WorldGen.beachDistance = value;
 		}
 
-		public override TagCompound SaveWorldData()
+		public override void SaveWorldData(TagCompound tagCompound)
 		{
-			TagCompound data = new();
 			if (Main.maxTilesX < 2400)
 			{
-				data["ocean"] = WorldGen.oceanDistance;
-				data["beach"] = WorldGen.beachDistance;
+				tagCompound["ocean"] = WorldGen.oceanDistance;
+				tagCompound["beach"] = WorldGen.beachDistance;
 			}
-
-			return data;
 		}
 
 		public override void OnWorldUnload()
