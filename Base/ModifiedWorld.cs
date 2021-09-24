@@ -75,7 +75,7 @@ namespace AdvancedWorldGen.Base
 			OptionHelper.Options.Clear();
 
 			int id;
-			while ((id = reader.ReadInt16()) != 0) list.Add(id);
+			while ((id = reader.ReadUInt16()) != 0) list.Add(id);
 
 			foreach (KeyValuePair<string, Option> keyValuePair in OptionsSelector.OptionDict.Where(keyValuePair =>
 				list.Remove(keyValuePair.Value.Id)))
