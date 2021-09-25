@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AdvancedWorldGen.Base;
 using AdvancedWorldGen.Helper;
+using AdvancedWorldGen.UI.PassEditor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;

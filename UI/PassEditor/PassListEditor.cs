@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.Helper;
 using AdvancedWorldGen.WorldRegenerator;
 using Microsoft.Xna.Framework;
@@ -13,9 +14,10 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
-namespace AdvancedWorldGen.UI
+namespace AdvancedWorldGen.UI.PassEditor
 {
 	public class PassListEditor : UIState
 	{
@@ -78,15 +80,16 @@ namespace AdvancedWorldGen.UI
 				Width = new StyleDimension(-20f, 1f),
 				Top = new StyleDimension(50, 0f)
 			};
-			Dictionary<UIElement, int> order = new();
 			uiList.ManualSortMethod = uiElements =>
-				uiElements.Sort((element1, element2) => order[element1] >= order[element2] ? 1 : -1);
+				uiElements.Sort((element1, element2) => ((PassItem) element1).Index >= ((PassItem) element2).Index ? 1 : -1);
 			uiList.SetScrollbar(uiScrollbar);
 			uiPanel.Append(uiScrollbar);
 			uiPanel.Append(uiList);
 
-			for (int index = 0; index < PassHandler.AvailablePasses.Count; index++)
-				CreatePassEntry(index, order, uiList);
+			PassItem.Order = new List<PassItem>();
+			PassItem.UIList = uiList;
+			foreach (GenPass genPass in PassHandler.AvailablePasses)
+				new PassItem(genPass);
 		}
 
 		public static void CreatePassEntry(int index, Dictionary<UIElement, int> order, UIList uiList)
@@ -102,7 +105,12 @@ namespace AdvancedWorldGen.UI
 			order.Add(passEntry, index);
 
 			UIText uiText = new VanillaAccessor<UIText>(typeof(UIIconTextButton), "_title", passEntry).Value;
-			new VanillaAccessor<string>(typeof(UIText), "_text", uiText).Value = availablePass.Name;
+			string text = availablePass.Name;
+			if (availablePass is ControlledWorldGenPass controlledWorldGenPass)
+				text += "\n" +
+				        new VanillaAccessor<int[]>(typeof(UnifiedRandom), "SeedArray", controlledWorldGenPass.Random)
+					        .Value[55];
+			new VanillaAccessor<string>(typeof(UIText), "_text", uiText).Value = text;
 
 			UIImage deletePassButton = new(TextureAssets.Trash)
 			{

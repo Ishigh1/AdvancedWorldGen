@@ -18,21 +18,6 @@ namespace AdvancedWorldGen.UI
 {
 	public class CustomSizeUI : UIState
 	{
-		private static readonly Type IntInputElementType =
-			typeof(Main).Assembly.GetType("Terraria.ModLoader.Config.UI.IntInputElement")!;
-
-		private static readonly ConstructorInfo IntInputElementConstructorInfo =
-			IntInputElementType.GetConstructor(Array.Empty<Type>())!;
-
-		private static readonly FieldInfo IntInputElementMinField =
-			IntInputElementType.GetField("min", BindingFlags.Public | BindingFlags.Instance)!;
-
-		private static readonly FieldInfo IntInputElementMaxField =
-			IntInputElementType.GetField("max", BindingFlags.Public | BindingFlags.Instance)!;
-
-		private static readonly FieldInfo IntInputElementIncrementField =
-			IntInputElementType.GetField("increment", BindingFlags.Public | BindingFlags.Instance)!;
-
 		public WorldSettings WorldSettings;
 
 		public CustomSizeUI(WorldSettings worldSettings)
@@ -63,11 +48,11 @@ namespace AdvancedWorldGen.UI
 				Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 			});
 
-			ConfigElement sizeXInput = MakeIntInputLine(nameof(WorldSettings.SizeX), 100);
+			ConfigElement sizeXInput = InputElement.MakeIntInputLine(WorldSettings, nameof(WorldSettings.SizeX), 100, 50_000, 100);
 			sizeXInput.Top.Pixels = 50;
 			uiPanel.Append(sizeXInput);
 
-			ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 100);
+			ConfigElement sizeYInput = InputElement.MakeIntInputLine(WorldSettings, nameof(WorldSettings.SizeY), 100, 50_000, 100);
 			sizeYInput.Top.Pixels = sizeXInput.Top.Pixels + sizeXInput.Height.Pixels + 4;
 			uiPanel.Append(sizeYInput);
 
@@ -81,21 +66,6 @@ namespace AdvancedWorldGen.UI
 			goBack.OnMouseOver += UIHelper.FadedMouseOver;
 			goBack.OnMouseOut += UIHelper.FadedMouseOut;
 			Append(goBack);
-		}
-
-		public ConfigElement MakeIntInputLine(string fieldName, int min)
-		{
-			ConfigElement intInputElement = (ConfigElement) IntInputElementConstructorInfo.Invoke(null);
-
-			IntInputElementMinField.SetValue(intInputElement, min);
-			IntInputElementMaxField.SetValue(intInputElement, 500000);
-			IntInputElementIncrementField.SetValue(intInputElement, 100);
-
-			FieldInfo fieldInfo = typeof(WorldSettings).GetField(fieldName, BindingFlags.Instance | BindingFlags.Public)!;
-			intInputElement.Bind(new PropertyFieldWrapper(fieldInfo), WorldSettings, null, -1);
-			intInputElement.OnBind();
-			intInputElement.Recalculate();
-			return intInputElement;
 		}
 
 		public void GoBack(UIMouseEvent evt, UIElement listeningElement)
