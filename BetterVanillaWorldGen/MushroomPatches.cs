@@ -23,9 +23,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			List<Vector2> mushroomBiomesPosition = new();
 			const int spread = 100;
 			int jungleMinX = Math.Min(Replacer.VanillaInterface.JungleMinX - spread, spread);
-			int jungleSpread = Math.Max(Replacer.VanillaInterface.JungleMaxX + spread, Main.maxTilesX - spread) - jungleMinX;
-			int maxTilesX = Main.maxTilesX - jungleSpread - spread;
-			
+			int jungleSpread = Math.Max(Replacer.VanillaInterface.JungleMaxX + spread, Main.maxTilesX - spread) -
+			                   jungleMinX;
+			int xMax = Main.maxTilesX - jungleSpread - spread;
+
 			int tries = 0;
 			for (int numBiome = 0; numBiome < mushroomBiomes; numBiome++)
 			{
@@ -37,15 +38,19 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 					if (tries > Main.maxTilesX / 2)
 						break;
 
-					int x = WorldGen.genRand.Next(spread, maxTilesX);
+					int x = WorldGen.genRand.Next(spread, xMax);
 					if (x >= jungleMinX)
 						x += jungleSpread;
 
-					int y = WorldGen.genRand.Next((int) Main.rockLayer + 50, Main.UnderworldLayer - 100);
+					int y;
+					y = Main.rockLayer + 200 < Main.UnderworldLayer
+						? WorldGen.genRand.Next((int) Main.rockLayer + 50, Main.UnderworldLayer - 100)
+						: WorldGen.genRand.Next((int) Main.rockLayer, Main.UnderworldLayer);
 					const int distanceBetweenBiomes = 500;
 
 					Vector2 current = new(x, y);
-					isValid = mushroomBiomesPosition.All(position => current.Distance(position) > distanceBetweenBiomes);
+					isValid = mushroomBiomesPosition.All(position =>
+						current.Distance(position) > distanceBetweenBiomes);
 
 					for (int x2 = x - spread; x2 < x + spread && isValid; x2 += 10)
 					for (int y2 = y - spread; y2 < y + spread && isValid; y2 += 10)
@@ -138,10 +143,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			num = (int) (num * worldSize);
 			num2 = (int) (num2 * worldSize);
 			float num4 = num2 - 1f;
-			
+
 			Vector2 vector = new(x, y - num2 * 0.3f);
-			Vector2 vector2 = new(WorldGen.genRand.Next(-100, 101) * 0.005f, WorldGen.genRand.Next(-200, -100) * 0.005f);
-			
+			Vector2 vector2 = new(WorldGen.genRand.Next(-100, 101) * 0.005f,
+				WorldGen.genRand.Next(-200, -100) * 0.005f);
+
 			while (num > 0 && num2 > 0)
 			{
 				num -= WorldGen.genRand.Next(3);

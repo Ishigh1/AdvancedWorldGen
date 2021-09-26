@@ -27,6 +27,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 		public readonly VanillaAccessor<int> LeftBeachEnd;
 		public readonly VanillaAccessor<int> RightBeachStart;
 
+		public readonly VanillaAccessor<int> ShellStartXLeft;
+		public readonly VanillaAccessor<int> ShellStartYLeft;
+		public readonly VanillaAccessor<int> ShellStartXRight;
+		public readonly VanillaAccessor<int> ShellStartYRight;
+
 		public VanillaInterface(GenPass vanillaResetPass)
 		{
 			VanillaAccessor<WorldGenLegacyMethod> methodAccessor = new(typeof(PassLegacy), "_method", vanillaResetPass);
@@ -56,6 +61,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 			LeftBeachEnd = new VanillaAccessor<int>(fieldInfos, "leftBeachEnd", vanillaData);
 			RightBeachStart = new VanillaAccessor<int>(fieldInfos, "rightBeachStart", vanillaData);
+
+			ShellStartXLeft = new VanillaAccessor<int>(fieldInfos, "shellStartXLeft", vanillaData);
+			ShellStartYLeft = new VanillaAccessor<int>(fieldInfos, "shellStartYLeft", vanillaData);
+			ShellStartXRight = new VanillaAccessor<int>(fieldInfos, "shellStartXRight", vanillaData);
+			ShellStartYRight = new VanillaAccessor<int>(fieldInfos, "shellStartYRight", vanillaData);
 		}
 	}
 }
