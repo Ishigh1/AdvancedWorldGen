@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
+using Terraria;
 using Terraria.WorldBuilding;
 using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
 
@@ -29,28 +30,35 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			index = genPasses.FindIndex(pass => pass.Name == "Terrain");
 			if (index != -1) genPasses[index] = new TerrainPass();
 
-			index = genPasses.FindIndex(index, pass => pass.Name == "Generate Ice Biome");
+			index = genPasses.FindIndex(pass => pass.Name == "Generate Ice Biome");
 			if (index != -1) genPasses[index] = new GenerateIceBiome();
 
-			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle");
+			index = genPasses.FindIndex(pass => pass.Name == "Jungle");
 			if (index != -1) genPasses[index] = new JunglePass();
 
-			index = genPasses.FindIndex(index, pass => pass.Name == "Mushroom Patches");
+			index = genPasses.FindIndex(pass => pass.Name == "Mushroom Patches");
 			if (index != -1) genPasses[index] = new MushroomPatches();
 
-			index = genPasses.FindIndex(index, pass => pass.Name == "Dungeon");
+			index = genPasses.FindIndex(pass => pass.Name == "Dungeon");
 			if (index != -1) genPasses[index] = new DungeonPass();
 
-			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Temple");
+			index = genPasses.FindIndex(pass => pass.Name == "Jungle Temple");
 			if (index != -1) genPasses[index] = new JungleTemple();
 
-			index = genPasses.FindIndex(index, pass => pass.Name == "Jungle Chests");
+			index = genPasses.FindIndex(pass => pass.Name == "Jungle Chests");
 			if (index != -1) genPasses[index] = new JungleChests();
+			
+			index = genPasses.FindIndex(pass => pass.Name == "Shell Piles");
+			if (index != -1)
+				if(!WorldGen.notTheBees)
+					genPasses[index] = new ShellPiles();
+				else
+					genPasses.RemoveAt(index);
 
-			index = genPasses.FindIndex(index, pass => pass.Name == "Surface Ore and Stone");
+			index = genPasses.FindIndex(pass => pass.Name == "Surface Ore and Stone");
 			if (index != -1) genPasses[index] = new SurfaceOreAndStone();
 
-			index = genPasses.FindIndex(index, pass => pass.Name == "Micro Biomes");
+			index = genPasses.FindIndex(pass => pass.Name == "Micro Biomes");
 			if (index != -1) genPasses[index] = new MicroBiomes();
 		}
 	}

@@ -40,9 +40,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			int ignored = 0;
 			int templeRoomCount = ClassicOptions.GetTempleRooms(ref ignored, worldSize);
 
-			int direction = 1;
-			if (WorldGen.genRand.NextBool(2))
-				direction = -1;
+			int direction = WorldGen.genRand.NextBool(2) ? 1 : -1;
 
 			int num4 = direction;
 			int num7 = templeX;
