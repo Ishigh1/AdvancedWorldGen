@@ -16,5 +16,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
 
 		public static readonly VanillaAccessor<int> LAltarX = new(typeof(WorldGen), "lAltarX");
 		public static readonly VanillaAccessor<int> LAltarY = new(typeof(WorldGen), "lAltarY");
+		
+		//Island stuff
+		public static readonly VanillaAccessor<int> NumIslandHouses = new(typeof(WorldGen), "numIslandHouses");
+		public static readonly VanillaAccessor<int[]> floatingIslandHouseX = new(typeof(WorldGen), "floatingIslandHouseX");
+		public static readonly VanillaAccessor<int[]> floatingIslandHouseY = new(typeof(WorldGen), "floatingIslandHouseY");
+		public static readonly VanillaAccessor<int[]> floatingIslandStyle = new(typeof(WorldGen), "floatingIslandStyle");
+		public static readonly VanillaAccessor<bool[]> skyLake = new(typeof(WorldGen), "skyLake");
 	}
 }

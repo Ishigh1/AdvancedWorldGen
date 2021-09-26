@@ -21,7 +21,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			for (int num361 = 0; num361 < num360; num361++)
 			{
-				Progress.SetProgress(num361, num360, 0.5f);
+				Progress.Set(num361, num360, 0.5f);
 				int num362 = Main.maxTilesX / 420;
 				while (num362 > 0)
 				{
@@ -46,7 +46,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			num360 = maxStonePatches > 1 ? WorldGen.genRand.Next(1, maxStonePatches) : 1;
 			for (int num365 = 0; num365 < num360; num365++)
 			{
-				Progress.SetProgress(num365, num360, 0.5f, 0.5f);
+				Progress.Set(num365, num360, 0.5f, 0.5f);
 				int num366 = Main.maxTilesX / 420;
 				while (num366 > 0)
 				{

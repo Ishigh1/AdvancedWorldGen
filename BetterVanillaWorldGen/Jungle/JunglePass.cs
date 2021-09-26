@@ -26,11 +26,11 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		{
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.11");
 
-			JungleOriginX = Replacer.VanillaInterface.JungleOriginX.Value;
-			DungeonSide = Replacer.VanillaInterface.DungeonSide.Value;
+			JungleOriginX = VanillaInterface.JungleOriginX.Value;
+			DungeonSide = VanillaInterface.DungeonSide.Value;
 			WorldSurface = WorldGen.worldSurface;
-			LeftBeachEnd = Replacer.VanillaInterface.LeftBeachEnd.Value;
-			RightBeachStart = Replacer.VanillaInterface.RightBeachStart.Value;
+			LeftBeachEnd = VanillaInterface.LeftBeachEnd.Value;
+			RightBeachStart = VanillaInterface.RightBeachStart.Value;
 
 			WorldScale = Main.maxTilesX / (4200 / 1.5f);
 			Point point = CreateStartPoint();
@@ -169,7 +169,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 					if (WorldGen.genRand.NextBool(2))
 						num4 = 2;
 
-					WorldGen.TileRunner((int) vector.X, (int) vector.Y, WorldGen.genRand.Next(3, 20), WorldGen.genRand.Next(10, 100), -1,
+					WorldGen.TileRunner((int) vector.X, (int) vector.Y, WorldGen.genRand.Next(3, 20),
+						WorldGen.genRand.Next(10, 100), -1,
 						false, num4);
 				}
 
@@ -198,8 +199,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 
 		public void GenerateHolesInMudWalls()
 		{
-			int minX = Replacer.VanillaInterface.JungleMinX;
-			int maxX = Replacer.VanillaInterface.JungleMaxX;
+			int minX = VanillaInterface.JungleMinX;
+			int maxX = VanillaInterface.JungleMaxX;
 			for (int i = 0; i < Main.maxTilesX / 4; i++)
 			{
 				int x = WorldGen.genRand.Next(minX, maxX);
@@ -212,23 +213,37 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 		public void DelimitJungle()
 		{
 			int y = (int) ((WorldGen.rockLayer + Main.UnderworldLayer) / 2);
-			int x = JungleOriginX;
-			Tile tile = Main.tile[x, y];
-			while (!tile.IsActive || tile.type is TileID.Mud or TileID.JungleGrass)
+			int importantX = JungleOriginX;
+			int currentX = JungleOriginX;
+			Tile tile1;
+			Tile tile2;
+			Tile tile3;
+			do
 			{
-				x--;
-				tile = Main.tile[x, y];
-			}
-			Replacer.VanillaInterface.JungleMinX = x + 1;
-			
-			x = JungleOriginX;
-			tile = Main.tile[x, y];
-			while (!tile.IsActive || tile.type is TileID.Mud or TileID.JungleGrass)
+				tile1 = Main.tile[currentX, y];
+				tile2 = Main.tile[currentX, y - 10];
+				tile3 = Main.tile[currentX, y + 10];
+				if (tile1.IsActive || tile2.IsActive || tile3.IsActive) importantX = currentX;
+				currentX--;
+			} while (!tile1.IsActive || tile1.type is TileID.Mud ||
+			         !tile2.IsActive || tile2.type is TileID.Mud ||
+			         !tile3.IsActive || tile3.type is TileID.Mud);
+
+			VanillaInterface.JungleMinX = importantX + 1;
+
+			currentX = JungleOriginX;
+			do
 			{
-				x++;
-				tile = Main.tile[x, y];
-			}
-			Replacer.VanillaInterface.JungleMaxX = x - 1;
+				tile1 = Main.tile[currentX, y];
+				tile2 = Main.tile[currentX, y - 10];
+				tile3 = Main.tile[currentX, y + 10];
+				if (tile1.IsActive || tile2.IsActive || tile3.IsActive) importantX = currentX;
+				currentX++;
+			} while (!tile1.IsActive || tile1.type is TileID.Mud ||
+			         !tile2.IsActive || tile2.type is TileID.Mud ||
+			         !tile3.IsActive || tile3.type is TileID.Mud);
+
+			VanillaInterface.JungleMaxX = importantX - 1;
 		}
 
 		public void GenerateFinishingTouches(GenerationProgress progress, int oldX, int oldY)
@@ -283,7 +298,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 				if (WorldGen.genRand.NextBool(4))
 				{
 					int type = WorldGen.genRand.Next(TileID.Sapphire, TileID.JungleThorns);
-					WorldGen.TileRunner(x + WorldGen.genRand.Next(-1, 2), y + WorldGen.genRand.Next(-1, 2), WorldGen.genRand.Next(3, 7),
+					WorldGen.TileRunner(x + WorldGen.genRand.Next(-1, 2), y + WorldGen.genRand.Next(-1, 2),
+						WorldGen.genRand.Next(3, 7),
 						WorldGen.genRand.Next(4, 8), type);
 				}
 			}

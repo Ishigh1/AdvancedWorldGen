@@ -1,3 +1,4 @@
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using Terraria;
 using Terraria.IO;
 using Terraria.Utilities;
@@ -8,12 +9,14 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 	public abstract class ControlledWorldGenPass : GenPass
 	{
 		public UnifiedRandom Random;
+		public VanillaInterface VanillaInterface;
 		public GenerationProgress Progress = null!;
 		public GameConfiguration Configuration = null!;
 		
 		protected ControlledWorldGenPass(string name, float loadWeight) : base(name, loadWeight)
 		{
 			Random = new UnifiedRandom(WorldGen.genRand.Next());
+			VanillaInterface = Replacer.VanillaInterface;
 		}
 
 		protected abstract void ApplyPass();

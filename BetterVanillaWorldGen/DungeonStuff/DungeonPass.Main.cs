@@ -169,7 +169,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 
 			DungeonEntrance(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
-			Progress.SetProgress(65, 100);
+			Progress.Set(65, 100);
 			int num13 = Main.maxTilesX * 2;
 			for (int num14 = 0; num14 < num13; num14++)
 			{
@@ -209,7 +209,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					}
 			}
 
-			Progress.SetProgress(70, 100);
+			Progress.Set(70, 100);
 			int num17 = 0;
 			int num18 = 1000;
 			int num19 = 0;
@@ -300,7 +300,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			num17 = 0;
 			num18 = 1000;
 			num19 = 0;
-			Progress.SetProgress(75, 100);
+			Progress.Set(75, 100);
 			while (num19 < num20)
 			{
 				num17++;
@@ -376,7 +376,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			Progress.SetProgress(80, 100);
+			Progress.Set(80, 100);
 			foreach ((int doorX, int doorY, int pos) in Doors)
 			{
 				int num34 = 100;
@@ -530,7 +530,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 					}
 			}
 
-			Progress.SetProgress(85, 100);
+			Progress.Set(85, 100);
 			foreach ((int platformX, int platformY) in DungeonPlatforms)
 			{
 				int y = int.MaxValue;
@@ -725,7 +725,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			while (frameMult[2] == frameMult[0] || frameMult[2] == frameMult[1])
 				frameMult[2] = WorldGen.genRand.Next(9, 13);
 
-			Progress.SetProgress(90, 100);
+			Progress.Set(90, 100);
 			num17 = 0;
 			num18 = 1000;
 			num19 = 0;
@@ -845,7 +845,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			Progress.SetProgress(95, 100);
+			Progress.Set(95, 100);
 			int num95 = 1;
 			for (int index = 0; index < DungeonRoomPos.Count; index++)
 			{

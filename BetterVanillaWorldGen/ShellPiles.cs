@@ -15,8 +15,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			float worldSize = Main.maxTilesX < 4200 ? Main.maxTilesX / 4200f : 1;
 			if (WorldGen.genRand.Next(2) == 0)
 			{
-				int baseShellStartXLeft = Replacer.VanillaInterface.ShellStartXLeft.Value;
-				int baseShellStartYLeft = Replacer.VanillaInterface.ShellStartYLeft.Value;
+				int baseShellStartXLeft = VanillaInterface.ShellStartXLeft.Value;
+				int baseShellStartYLeft = VanillaInterface.ShellStartYLeft.Value;
 				int shellStartXLeft = baseShellStartXLeft;
 				int shellStartYLeft = baseShellStartYLeft;
 
@@ -69,8 +69,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			if (WorldGen.genRand.Next(2) == 0)
 			{
-				int baseShellStartXRight = Replacer.VanillaInterface.ShellStartXRight.Value;
-				int baseShellStartYRight = Replacer.VanillaInterface.ShellStartYRight.Value;
+				int baseShellStartXRight = VanillaInterface.ShellStartXRight.Value;
+				int baseShellStartYRight = VanillaInterface.ShellStartYRight.Value;
 				int shellStartXRight = baseShellStartXRight;
 				int shellStartYRight = baseShellStartYRight;
 

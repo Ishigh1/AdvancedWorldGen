@@ -45,7 +45,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			VanillaInterface.SkipFramingDuringGen.Value = false;
 			if (WorldGen.genRand.NextBool(2))
 			{
-				Replacer.VanillaInterface.Copper.Value = 166;
+				VanillaInterface.Copper.Value = 166;
 				WorldGen.copperBar = 703;
 				WorldGen.SavedOreTiers.Copper = 166;
 			}
@@ -57,7 +57,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			if (WorldGen.genRand.NextBool(2))
 			{
-				Replacer.VanillaInterface.Iron.Value = 167;
+				VanillaInterface.Iron.Value = 167;
 				WorldGen.ironBar = 704;
 				WorldGen.SavedOreTiers.Iron = 167;
 			}
@@ -69,7 +69,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			if (WorldGen.genRand.NextBool(2))
 			{
-				Replacer.VanillaInterface.Silver.Value = 168;
+				VanillaInterface.Silver.Value = 168;
 				WorldGen.silverBar = 705;
 				WorldGen.SavedOreTiers.Silver = 168;
 			}
@@ -81,7 +81,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			if (WorldGen.genRand.NextBool(2))
 			{
-				Replacer.VanillaInterface.Gold.Value = 169;
+				VanillaInterface.Gold.Value = 169;
 				WorldGen.goldBar = 706;
 				WorldGen.SavedOreTiers.Gold = 169;
 			}
@@ -106,10 +106,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			WorldGen.TreeTops.CopyExistingWorldInfoForWorldGeneration();
 
 			int dungeonSide = WorldGen.genRand.NextBool(2) ? 1 : -1;
-			Replacer.VanillaInterface.DungeonSide.Value = dungeonSide;
+			VanillaInterface.DungeonSide.Value = dungeonSide;
 
 			int shift = (int) (Main.maxTilesX * WorldGen.genRand.Next(15, 30) * 0.01f);
-			Replacer.VanillaInterface.JungleOriginX.Value = dungeonSide == 1 ? shift : Main.maxTilesX - shift;
+			VanillaInterface.JungleOriginX.Value = dungeonSide == 1 ? shift : Main.maxTilesX - shift;
 
 			int snowCenter;
 			if (dungeonSide == 1 && !WorldGen.drunkWorldGen || dungeonSide == -1 && WorldGen.drunkWorldGen)
@@ -128,8 +128,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			num921 += (int) (WorldGen.genRand.Next(20, 40) * worldSize);
 			int snowOriginRight = Math.Min(Main.maxTilesX, snowCenter + num921);
 
-			Replacer.VanillaInterface.SnowOriginLeft.Value = snowOriginLeft;
-			Replacer.VanillaInterface.SnowOriginRight.Value = snowOriginRight;
+			VanillaInterface.SnowOriginLeft.Value = snowOriginLeft;
+			VanillaInterface.SnowOriginRight.Value = snowOriginRight;
 
 			int beachSandDungeonExtraWidth = (int) (40 * worldSize);
 			int beachSandJungleExtraWidth = (int) (20 * worldSize);
@@ -145,15 +145,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			int leftBeachEnd = beachSandRandomCenter +
 			                   WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
 			leftBeachEnd += dungeonSide == 1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
-			Replacer.VanillaInterface.LeftBeachEnd.Value = leftBeachEnd;
+			VanillaInterface.LeftBeachEnd.Value = leftBeachEnd;
 
 			int rightBeachStart = Main.maxTilesX - beachSandRandomCenter +
 			                      WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
 			rightBeachStart -= dungeonSide == -1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
-			Replacer.VanillaInterface.RightBeachStart.Value = rightBeachStart;
+			VanillaInterface.RightBeachStart.Value = rightBeachStart;
 
 			int dungeonShift = (int) (50 * worldSize);
-			Replacer.VanillaInterface.DungeonLocation.Value = dungeonSide == -1
+			VanillaInterface.DungeonLocation.Value = dungeonSide == -1
 				? WorldGen.genRand.Next(leftBeachEnd + dungeonShift, (int) (Main.maxTilesX * 0.2))
 				: WorldGen.genRand.Next((int) (Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
 		}

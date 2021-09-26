@@ -61,7 +61,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			progress.Message = Language.GetTextValue("Mods.AdvancedWorldGen.WorldGenMessage." + s);
 			for (int x = 0; x < Main.maxTilesX; x++)
 			{
-				progress.SetProgress(x, Main.maxTilesX);
+				progress.Set(x, Main.maxTilesX);
 				for (int y = 0; y < Main.maxTilesY; y++)
 				{
 					Tile tile = Main.tile[x, y];
@@ -122,7 +122,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			progress.Message = Language.GetTextValue("Mods.AdvancedWorldGen.WorldGenMessage.Random");
 			for (int x = 0; x < Main.maxTilesX; x++)
 			{
-				progress.SetProgress(x, Main.maxTilesX, 0.5f);
+				progress.Set(x, Main.maxTilesX, 0.5f);
 				for (int y = 0; y < Main.maxTilesY; y++)
 				{
 					Tile tile = Main.tile[x, y];
@@ -137,7 +137,7 @@ namespace AdvancedWorldGen.SpecialOptions
 
 			for (int x = 0; x < Main.maxTilesX; x++)
 			{
-				progress.SetProgress(x, Main.maxTilesX, 0.5f, 0.5f);
+				progress.Set(x, Main.maxTilesX, 0.5f, 0.5f);
 				int previousBlock = 0;
 				for (int y = Main.maxTilesY - 1; y >= 1; y--)
 				{

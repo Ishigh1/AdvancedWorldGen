@@ -24,7 +24,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Dead Man's Chests";
 			const int totalSteps = 9;
 			int currentStep = 0;
-			Progress.SetProgress(currentStep++, totalSteps);
+			Progress.Set(currentStep++, totalSteps);
 
 			DeadMansChestBiome deadMansChestBiome = configuration.CreateBiome<DeadMansChestBiome>();
 			List<int> possibleChestsToTrapify = deadMansChestBiome.GetPossibleChestsToTrapify(WorldGen.structures);
@@ -40,7 +40,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Thin Ice";
-			Progress.SetProgress(currentStep++, totalSteps);
+			Progress.Set(currentStep++, totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				ThinIceBiome thinIceBiome = configuration.CreateBiome<ThinIceBiome>();
@@ -67,7 +67,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Sword Shrines";
-			Progress.SetProgress(currentStep++, totalSteps);
+			Progress.Set(currentStep++, totalSteps);
 			EnchantedSwordBiome enchantedSwordBiome = configuration.CreateBiome<EnchantedSwordBiome>();
 			int random3 = Configuration.Get<WorldGenRange>("SwordShrineAttempts").GetRandom(WorldGen.genRand);
 			float num36 = Configuration.Get<float>("SwordShrinePlacementChance");
@@ -90,7 +90,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Campsites";
-			Progress.SetProgress(currentStep++, totalSteps);
+			Progress.Set(currentStep++, totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				CampsiteBiome campsiteBiome = configuration.CreateBiome<CampsiteBiome>();
@@ -104,7 +104,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Explosive Traps";
-			Progress.SetProgress(currentStep++, totalSteps);
+			Progress.Set(currentStep++, totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				MiningExplosivesBiome miningExplosivesBiome = configuration.CreateBiome<MiningExplosivesBiome>();
@@ -121,7 +121,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Living Trees";
-			Progress.SetProgress(currentStep++, totalSteps);
+			Progress.Set(currentStep++, totalSteps);
 			MahoganyTreeBiome mahoganyTreeBiome = configuration.CreateBiome<MahoganyTreeBiome>();
 			int random5 = Configuration.Get<WorldGenRange>("LivingTreeCount").GetRandom(WorldGen.genRand);
 			int num42 = 0;
@@ -136,7 +136,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Long Minecart Tracks";
-			Progress.SetProgress(currentStep++, totalSteps);
+			Progress.Set(currentStep++, totalSteps);
 			// Extra patch context.
 			TrackGenerator trackGenerator = new();
 			int random6 = Configuration.Get<WorldGenRange>("LongTrackCount").GetRandom(WorldGen.genRand);
@@ -162,7 +162,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Standard Minecart Tracks";
-			Progress.SetProgress(currentStep++, totalSteps);
+			Progress.Set(currentStep++, totalSteps);
 			random6 = Configuration.Get<WorldGenRange>("StandardTrackCount").GetRandom(WorldGen.genRand);
 			worldGenRange = Configuration.Get<WorldGenRange>("StandardTrackLength");
 			num45 = 0;
@@ -185,7 +185,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Lava Traps";
-			Progress.SetProgress(currentStep++, totalSteps);
+			Progress.Set(currentStep++, totalSteps);
 			if (!WorldGen.notTheBees)
 			{
 				double num48 = Main.maxTilesX * 0.02;
@@ -200,7 +200,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 				}
 			}
 
-			Progress.SetProgress(currentStep, totalSteps);
+			Progress.Set(currentStep, totalSteps);
 		}
 
 		public static Point RandomUnderSurfaceWorldPoint(int top = 0, int right = 0, int bottom = 0, int left = 0)

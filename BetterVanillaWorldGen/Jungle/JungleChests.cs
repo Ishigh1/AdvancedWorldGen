@@ -39,9 +39,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle
 			stepCount *= Main.maxTilesX / 4200f;
 			for (int step = 0; step < stepCount; step++)
 			{
-				Progress.SetProgress(step, stepCount);
-				int minX = Replacer.VanillaInterface.JungleMinX;
-				int maxX = Replacer.VanillaInterface.JungleMaxX;
+				Progress.Set(step, stepCount);
+				int minX = VanillaInterface.JungleMinX;
+				int maxX = VanillaInterface.JungleMaxX;
 				int x = WorldGen.genRand.Next(minX, maxX);
 
 				int y;

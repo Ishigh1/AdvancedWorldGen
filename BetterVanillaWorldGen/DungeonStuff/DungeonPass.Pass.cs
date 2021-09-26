@@ -12,7 +12,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 		protected override void ApplyPass()
 		{
 			Progress.Message = Language.GetTextValue("LegacyWorldGen.58");
-			int dungeonX = Replacer.VanillaInterface.DungeonLocation.Value;
+			int dungeonX = VanillaInterface.DungeonLocation.Value;
 			int dungeonY;
 			bool solidGround = false;
 			if (WorldGen.drunkWorldGen)

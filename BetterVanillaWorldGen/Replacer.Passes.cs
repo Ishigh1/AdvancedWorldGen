@@ -36,6 +36,9 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			index = genPasses.FindIndex(pass => pass.Name == "Jungle");
 			if (index != -1) genPasses[index] = new JunglePass();
 
+			index = genPasses.FindIndex(pass => pass.Name == "Floating Islands");
+			if (index != -1) genPasses[index] = new FloatingIslands();
+			
 			index = genPasses.FindIndex(pass => pass.Name == "Mushroom Patches");
 			if (index != -1) genPasses[index] = new MushroomPatches();
 

@@ -134,16 +134,16 @@ namespace AdvancedWorldGen.Base
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption2", Crimruption.Crimruption2));
 			}
 
-			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Guide");
+			passIndex = tasks.FindIndex(pass => pass.Name == "Guide");
 			if (passIndex != -1)
 				tasks[passIndex] = new PassLegacy("NPCs", HandleNpcs);
 
 			GenPass? liquidSettle = null;
-			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Settle Liquids Again");
+			passIndex = tasks.FindIndex(pass => pass.Name == "Settle Liquids Again");
 			if (passIndex != -1)
 				liquidSettle = tasks[passIndex];
 
-			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Tile Cleanup");
+			passIndex = tasks.FindIndex(pass => pass.Name == "Tile Cleanup");
 			if (passIndex != -1 && OptionsContains("Crimruption"))
 			{
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption3", Crimruption.Crimruption3));
@@ -151,7 +151,7 @@ namespace AdvancedWorldGen.Base
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption4", Crimruption.Crimruption4));
 			}
 
-			passIndex = tasks.FindIndex(passIndex, pass => pass.Name == "Micro Biomes");
+			passIndex = tasks.FindIndex(pass => pass.Name == "Micro Biomes");
 			if (passIndex != -1)
 				HalloweenCommon.InsertTasks(tasks, ref passIndex);
 

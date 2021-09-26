@@ -22,15 +22,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			List<Vector2> mushroomBiomesPosition = new();
 			const int spread = 100;
-			int jungleMinX = Math.Min(Replacer.VanillaInterface.JungleMinX - spread, spread);
-			int jungleSpread = Math.Max(Replacer.VanillaInterface.JungleMaxX + spread, Main.maxTilesX - spread) -
+			int jungleMinX = Math.Max(VanillaInterface.JungleMinX - spread, spread);
+			int jungleSpread = Math.Min(VanillaInterface.JungleMaxX + spread, Main.maxTilesX - spread) -
 			                   jungleMinX;
 			int xMax = Main.maxTilesX - jungleSpread - spread;
 
 			int tries = 0;
 			for (int numBiome = 0; numBiome < mushroomBiomes; numBiome++)
 			{
-				Progress.SetProgress(numBiome, mushroomBiomes, 0.5f);
+				Progress.Set(numBiome, mushroomBiomes, 0.5f);
 				bool isValid = false;
 				while (!isValid)
 				{
@@ -79,7 +79,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 			for (int x = 50; x < Main.maxTilesX - 50; x++)
 			{
-				Progress.SetProgress(x - 50, Main.maxTilesX - 100, 0.5f, 0.5f);
+				Progress.Set(x - 50, Main.maxTilesX - 100, 0.5f, 0.5f);
 				for (int y = (int) Main.worldSurface; y < Main.maxTilesY - 50; y++)
 				{
 					if (!Main.tile[x, y].IsActive)
