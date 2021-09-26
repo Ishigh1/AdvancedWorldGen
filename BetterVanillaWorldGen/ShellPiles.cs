@@ -10,7 +10,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 		{
 		}
 
-		protected override void ApplyPass()
+		public override void ApplyPass()
 		{
 			float worldSize = Main.maxTilesX < 4200 ? Main.maxTilesX / 4200f : 1;
 			if (WorldGen.genRand.Next(2) == 0)
