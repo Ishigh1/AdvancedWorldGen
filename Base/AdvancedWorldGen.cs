@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Terraria.ModLoader;
 using OnWorldGen = On.Terraria.WorldGen;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
-using OnUIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
+// using OnUIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
 using OnUserInterface = On.Terraria.UI.UserInterface;
 using OnUIWorldLoad = On.Terraria.GameContent.UI.States.UIWorldLoad;
 using OnWorldFile = On.Terraria.IO.WorldFile;
@@ -37,7 +37,7 @@ namespace AdvancedWorldGen.Base
 			Crimruption = new Crimruption();
 
 			OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
-			OnUIWorldListItem.ctor += UiChanger.CopySettingsButton;
+			//OnUIWorldListItem.ctor += UiChanger.CopySettingsButton; Removed until twld can be loaded in a reasonable time
 
 			ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
 			OnWorldFile.CreateMetadata += DedServUi.DedServOptions;
