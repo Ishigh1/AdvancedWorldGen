@@ -65,7 +65,6 @@ namespace AdvancedWorldGen.Base
 		public override void Unload()
 		{
 			OnUIWorldCreation.AddDescriptionPanel -= UiChanger.TweakWorldGenUi;
-			OnUIWorldListItem.ctor -= UiChanger.CopySettingsButton;
 			OnUIWorldLoad.ctor -= UiChanger.AddCancel;
 			OnWorldGen.worldGenCallback -= UiChanger.ThreadifyWorldGen;
 			ILWorldGen.GenerateWorld -= ModifiedWorld.OverrideWorldOptions;
