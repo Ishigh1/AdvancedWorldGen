@@ -16,8 +16,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			ILCursor cursor = new(il);
 
 			for (int i = 0; i < 3; i++)
-				if (!cursor.TryGotoNext(MoveType.Before, instruction => instruction.MatchLdsfld<WorldGen>("drunkWorldGen")))
-					return;
+				cursor.GotoNext(MoveType.Before, instruction => instruction.MatchLdsfld<WorldGen>("drunkWorldGen"));
 
 			OrOptionContainsCrimruption(cursor);
 		}

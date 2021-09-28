@@ -84,7 +84,7 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween
 		public static void PermanentGraveyard(ILContext il)
 		{
 			ILCursor cursor = new(il);
-			if (!cursor.TryGotoNext(MoveType.After, instruction => instruction.MatchStloc(0))) return;
+			cursor.GotoNext(MoveType.After, instruction => instruction.MatchStloc(0));
 
 			cursor.OptionContains("Spooky");
 			ILLabel label = cursor.DefineLabel();

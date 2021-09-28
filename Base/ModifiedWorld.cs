@@ -70,7 +70,7 @@ namespace AdvancedWorldGen.Base
 
 		public override void SaveWorldData(TagCompound tagCompound)
 		{
-			if(OptionHelper.Options.Count != 0)
+			if (OptionHelper.Options.Count != 0)
 				tagCompound["Options"] = OptionHelper.Options.ToList();
 		}
 
@@ -117,10 +117,10 @@ namespace AdvancedWorldGen.Base
 		public static void OverrideWorldOptions(ILContext il)
 		{
 			ILCursor cursor = new(il);
-			if (cursor.TryGotoNext(instruction => instruction.MatchLdcI4(0)))
-				while (!cursor.Next.MatchLdstr(
-					"Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}"))
-					cursor.Remove();
+			cursor.GotoNext(instruction => instruction.MatchLdcI4(0));
+			while (!cursor.Next.MatchLdstr(
+				"Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}"))
+				cursor.Remove();
 		}
 
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
@@ -158,7 +158,7 @@ namespace AdvancedWorldGen.Base
 			if (OptionHelper.OptionsContains("Santa", "Evil", "Random", "Painted"))
 			{
 				tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
-				if(liquidSettle != null)
+				if (liquidSettle != null)
 					tasks.Add(liquidSettle);
 			}
 		}
@@ -237,7 +237,7 @@ namespace AdvancedWorldGen.Base
 		{
 			if (OptionHelper.OptionsContains("Santa"))
 				new SnowReplacer().ReplaceTiles(progress, "SnowReplace");
-			
+
 			if (OptionHelper.OptionsContains("Evil"))
 				EvilReplacer.CorruptWorld(progress);
 

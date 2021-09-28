@@ -23,7 +23,7 @@ namespace AdvancedWorldGen.SpecialOptions
 		public static void ReduceTemple(ILContext il)
 		{
 			ILCursor cursor = new(il);
-			if (!cursor.TryGotoNext(instruction => instruction.MatchLdcI4(100))) return;
+			cursor.GotoNext(instruction => instruction.MatchLdcI4(100));
 
 			while (cursor.Next.OpCode != OpCodes.Ldsfld) cursor.Remove();
 
