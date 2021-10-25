@@ -171,7 +171,7 @@ namespace AdvancedWorldGen.UI
 			}
 #endif
 
-			Main.MenuUI.SetState(Base.AdvancedWorldGen.Instance.UiChanger.OptionsSelector);
+			Main.MenuUI.SetState(Base.AdvancedWorldGenMod.Instance.UiChanger.OptionsSelector);
 		}
 	}
 }

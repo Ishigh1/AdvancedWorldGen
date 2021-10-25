@@ -74,7 +74,7 @@ namespace AdvancedWorldGen.UI
 		public static void Continue(UIMouseEvent evt, UIElement listeningElement)
 		{
 			SoundEngine.PlaySound(SoundID.MenuClose);
-			Main.MenuUI.SetState(Base.AdvancedWorldGen.Instance.UiChanger.OptionsSelector);
+			Main.MenuUI.SetState(Base.AdvancedWorldGenMod.Instance.UiChanger.OptionsSelector);
 		}
 	}
 }

@@ -46,11 +46,6 @@ namespace AdvancedWorldGen.SpecialOptions
 			foreach (ModTile modTile in modTiles) NotReplaced.Add(modTile.Type);
 		}
 
-		public static void Unload()
-		{
-			NotReplaced = null!;
-		}
-
 		public void UpdateDictionary(int to, params int[] from)
 		{
 			foreach (int tile in from) DirectReplacements.Add(tile, to);

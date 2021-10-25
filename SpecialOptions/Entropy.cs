@@ -17,7 +17,6 @@ namespace AdvancedWorldGen.SpecialOptions
 		public int NewWall;
 		public int OldTile;
 		public int OldWall;
-		public OptionHelper OptionHelper;
 		public byte PaintTile;
 		public byte PaintWall;
 		public UnifiedRandom Rand;
@@ -27,9 +26,8 @@ namespace AdvancedWorldGen.SpecialOptions
 		public int X;
 		public int Y;
 
-		public Entropy(int squareSize, OptionHelper optionHelper)
+		public Entropy(int squareSize)
 		{
-			OptionHelper = optionHelper;
 			Tiles = new Dictionary<int, List<Tuple<int, int>>>();
 			Walls = new Dictionary<int, List<Tuple<int, int>>>();
 			Rand = new UnifiedRandom();
@@ -46,7 +44,6 @@ namespace AdvancedWorldGen.SpecialOptions
 
 		public Entropy(int squareSize, BinaryReader reader)
 		{
-			OptionHelper = null!;
 			Tiles = null!;
 			Walls = null!;
 			Rand = null!;
@@ -162,7 +159,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			if (Main.netMode == NetmodeID.Server &&
 			    (OldTile != -1 && NewTile != -1 || OldWall != 0 && NewWall != 0))
 			{
-				ModPacket modPacket = OptionHelper.AdvancedWorldGen.GetPacket();
+				ModPacket modPacket = AdvancedWorldGenMod.Instance.GetPacket();
 				modPacket.Write((byte) PacketId.SantaWaterFreezing);
 				modPacket.Write(NewTile);
 				modPacket.Write(NewWall);
@@ -234,7 +231,7 @@ namespace AdvancedWorldGen.SpecialOptions
 
 		public static void DoEntropy(object? o)
 		{
-			Entropy entropy = new(500, (OptionHelper) o!);
+			Entropy entropy = new(500);
 			entropy.ExtractData();
 			entropy.RandomizeTiles();
 			entropy.RandomizeWalls();

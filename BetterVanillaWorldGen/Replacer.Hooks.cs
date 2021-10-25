@@ -19,15 +19,6 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			OnDesertDescription.CreateFromPlacement += ReplaceDesertDescriptionCreation;
 		}
 
-		public static void UnReplace()
-		{
-			VanillaInterface = null!;
-
-			OnDesertHive.Place -= ReplaceDesertHive;
-			OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= ReplaceChest;
-			OnDesertDescription.CreateFromPlacement -= ReplaceDesertDescriptionCreation;
-		}
-
 		public static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
 			DesertDescription description)
 		{

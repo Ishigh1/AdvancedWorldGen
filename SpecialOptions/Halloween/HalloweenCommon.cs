@@ -28,15 +28,6 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween
 			ILPlayer.UpdateGraveyard += PermanentGraveyard;
 		}
 
-		public static void UnSetup()
-		{
-			OnMain.checkHalloween -= MainOnCheckHalloween;
-			OnNPC.SetDefaults -= HalloweenSwap;
-			OnPlayer.KillMe -= SpawnGhostOnPlayerDeath;
-			OnNPC.DoesntDespawnToInactivity -= NoGhostDespawn;
-			ILPlayer.UpdateGraveyard -= PermanentGraveyard;
-		}
-
 		public static void MainOnCheckHalloween(OnMain.orig_checkHalloween orig)
 		{
 			if (ModifiedWorld.OptionsContains("Spooky"))

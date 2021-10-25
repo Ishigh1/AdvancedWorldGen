@@ -20,11 +20,11 @@ using ILWorldGen = IL.Terraria.WorldGen;
 
 namespace AdvancedWorldGen.Base
 {
-	public class AdvancedWorldGen : Mod
+	public class AdvancedWorldGenMod : Mod
 	{
 		public Crimruption Crimruption = null!;
 		public UiChanger UiChanger = null!;
-		public static AdvancedWorldGen Instance => ModContent.GetInstance<AdvancedWorldGen>();
+		public static AdvancedWorldGenMod Instance => ModContent.GetInstance<AdvancedWorldGenMod>();
 
 		public override void Load()
 		{
@@ -60,31 +60,6 @@ namespace AdvancedWorldGen.Base
 			Replacer.Replace();
 
 			HalloweenCommon.Setup();
-		}
-
-		public override void Unload()
-		{
-			OnUIWorldCreation.AddDescriptionPanel -= UiChanger.TweakWorldGenUi;
-			OnUIWorldLoad.ctor -= UiChanger.AddCancel;
-			OnWorldGen.worldGenCallback -= UiChanger.ThreadifyWorldGen;
-			ILWorldGen.GenerateWorld -= ModifiedWorld.OverrideWorldOptions;
-			OnWorldFile.CreateMetadata -= DedServUi.DedServOptions;
-
-			OnWorldGen.NotTheBees -= ClassicOptions.SmallNotTheBees;
-			ILWorldGen.makeTemple -= ClassicOptions.ReduceTemple;
-
-			OnMain.UpdateTime_StartDay -= ModifiedWorld.Instance.OnDawn;
-			OnMain.UpdateTime_StartNight -= ModifiedWorld.Instance.OnDusk;
-			ILProjectile.Kill -= SnowWorld.RemoveSnowDropDuringChristmas;
-
-			ILWorldGen.MakeDungeon -= Crimruption.CrimruptionChest;
-
-			Replacer.UnReplace();
-
-			HalloweenCommon.UnSetup();
-
-			OptionsSelector.OptionDict = null!;
-			TileReplacer.Unload();
 		}
 
 		public override void HandlePacket(BinaryReader reader, int whoAmI)
