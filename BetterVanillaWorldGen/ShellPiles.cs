@@ -12,6 +12,32 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 
 		protected override void ApplyPass()
 		{
+			if (WorldGen.dontStarveWorldGen) {
+				int num515 = (int)(5f * (Main.maxTilesX / 4200f));
+				int num516 = 0;
+				const int num517 = 100;
+				int num518 = Main.maxTilesX / 2;
+				int num519 = num518 - num517;
+				int num520 = num518 + num517;
+				for (int num521 = 0; num521 < 80; num521++) {
+					int num522 = Random.Next(100, Main.maxTilesX - 100);
+					if (num522 >= num519 && num522 <= num520) {
+						num522 = Random.Next(100, Main.maxTilesX - 100);
+						if (num522 >= num519 && num522 <= num520)
+							continue;
+					}
+
+					int y11 = (int)Main.worldSurface / 2;
+					if (WorldGen.MarblePileWithStatues(num522, y11)) {
+						num516++;
+						if (num516 >= num515)
+							break;
+					}
+				}
+			}
+			
+			if(WorldGen.notTheBees)
+				return;
 			float worldSize = Main.maxTilesX < 4200 ? Main.maxTilesX / 4200f : 1;
 			if (WorldGen.genRand.Next(2) == 0)
 			{

@@ -283,5 +283,18 @@
         },
         "hidden": true,
         "internal_name": "StupidlyHugeTemple"
+    },
+    "TheConstant": {
+        "conflicts": {},
+        "description": {
+            "en-US": "The Don't Starve secret seed.",
+            "fr-FR": "La graine secr\u00e8te de Don't Starve."
+        },
+        "displayed_name": {
+            "en-US": "The Constant",
+            "fr-FR": "Le Constant"
+        },
+        "hidden": false,
+        "internal_name": "TheConstant"
     }
 }

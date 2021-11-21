@@ -4,14 +4,13 @@
       "commandName": "Executable",
       "executablePath": "dotnet.exe",
       "commandLineArgs": "$(tMLPath)",
-      "workingDirectory": "$(TerrariaSteamPath)",
-      "nativeDebugging": true
+      "workingDirectory": "$(tMLSteamPath)"
     },
     "TerrariaServer": {
       "commandName": "Executable",
-      "executablePath": "dotnet.exe",
+      "executablePath": "dotnet",
       "commandLineArgs": "$(tMLServerPath)",
-      "workingDirectory": "$(TerrariaSteamPath)"
+      "workingDirectory": "$(tMLSteamPath)"
     }
   }
 }

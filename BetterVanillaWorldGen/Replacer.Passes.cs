@@ -53,10 +53,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			
 			index = genPasses.FindIndex(pass => pass.Name == "Shell Piles");
 			if (index != -1)
-				if(!WorldGen.notTheBees)
-					genPasses[index] = new ShellPiles();
-				else
-					genPasses.RemoveAt(index);
+				genPasses[index] = new ShellPiles();
 
 			index = genPasses.FindIndex(pass => pass.Name == "Surface Ore and Stone");
 			if (index != -1) genPasses[index] = new SurfaceOreAndStone();

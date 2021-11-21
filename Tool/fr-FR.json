@@ -54,7 +54,8 @@
                 "StupidlyHugeTemple": {
                     "BigTemple": "Avoir deux modificateur de taille de temple ne fait rien.",
                     "StupidlyBigTemple": "Avoir deux modificateur de taille de temple ne fait rien."
-                }
+                },
+                "TheConstant": {}
             },
             "Crimruption": {
                 "$parentVal": "Carmruption",
@@ -107,6 +108,10 @@
             "StupidlyHugeTemple": {
                 "$parentVal": "Temple Stupidement Gigantesque",
                 "Description": "Rend le temple aussi grand que la jungle."
+            },
+            "TheConstant": {
+                "$parentVal": "Le Constant",
+                "Description": "La graine secr\u00e8te de Don't Starve."
             }
         }
     }

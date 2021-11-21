@@ -1,32 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../tModLoader.targets" />
+  <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
     <AssemblyName>AdvancedWorldGen</AssemblyName>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;SPECIALDEBUG</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Tool\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="Tool\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Tool\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Localization\Options" />
   </ItemGroup>
 </Project>

@@ -45,50 +45,50 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			VanillaInterface.SkipFramingDuringGen.Value = false;
 			if (WorldGen.genRand.NextBool(2))
 			{
+				WorldGen.SavedOreTiers.Copper = 7;
+				WorldGen.copperBar = 20;
+			}
+			else
+			{
 				VanillaInterface.Copper.Value = 166;
 				WorldGen.copperBar = 703;
 				WorldGen.SavedOreTiers.Copper = 166;
 			}
-			else
-			{
-				WorldGen.SavedOreTiers.Copper = 7;
-				WorldGen.copperBar = 20;
-			}
 
-			if (WorldGen.genRand.NextBool(2))
+			if (WorldGen.dontStarveWorldGen || WorldGen.genRand.NextBool(2))
+			{
+				WorldGen.SavedOreTiers.Iron = 6;
+				WorldGen.ironBar = 22;
+			}
+			else
 			{
 				VanillaInterface.Iron.Value = 167;
 				WorldGen.ironBar = 704;
 				WorldGen.SavedOreTiers.Iron = 167;
 			}
-			else
-			{
-				WorldGen.SavedOreTiers.Iron = 6;
-				WorldGen.ironBar = 22;
-			}
 
 			if (WorldGen.genRand.NextBool(2))
+			{
+				WorldGen.SavedOreTiers.Silver = 9;
+				WorldGen.silverBar = 21;
+			}
+			else
 			{
 				VanillaInterface.Silver.Value = 168;
 				WorldGen.silverBar = 705;
 				WorldGen.SavedOreTiers.Silver = 168;
 			}
-			else
-			{
-				WorldGen.SavedOreTiers.Silver = 9;
-				WorldGen.silverBar = 21;
-			}
 
-			if (WorldGen.genRand.NextBool(2))
+			if (WorldGen.dontStarveWorldGen || WorldGen.genRand.NextBool(2))
+			{
+				WorldGen.SavedOreTiers.Gold = 8;
+				WorldGen.goldBar = 19;
+			}
+			else
 			{
 				VanillaInterface.Gold.Value = 169;
 				WorldGen.goldBar = 706;
 				WorldGen.SavedOreTiers.Gold = 169;
-			}
-			else
-			{
-				WorldGen.SavedOreTiers.Gold = 8;
-				WorldGen.goldBar = 19;
 			}
 
 			WorldGen.crimson = WorldGen.WorldGenParam_Evil switch

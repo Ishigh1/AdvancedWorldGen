@@ -54,7 +54,8 @@
                 "StupidlyHugeTemple": {
                     "BigTemple": "Having a temple size modifier twice doesn't do anything.",
                     "StupidlyBigTemple": "Having a temple size modifier twice doesn't do anything."
-                }
+                },
+                "TheConstant": {}
             },
             "Crimruption": {
                 "$parentVal": "Crimruption",
@@ -107,6 +108,10 @@
             "StupidlyHugeTemple": {
                 "$parentVal": "Stupidly Huge Temple",
                 "Description": "Makes a temple that covers most of the jungle."
+            },
+            "TheConstant": {
+                "$parentVal": "The Constant",
+                "Description": "The Don't Starve secret seed."
             }
         }
     }

@@ -103,5 +103,10 @@
             "BigTemple",
             "StupidlyBigTemple"
         ]
+    },
+    "TheConstant": {
+        "Hidden": false,
+        "id": 11,
+        "Conflicts": []
     }
 }
