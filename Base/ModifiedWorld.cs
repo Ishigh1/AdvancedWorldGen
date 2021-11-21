@@ -110,8 +110,8 @@ namespace AdvancedWorldGen.Base
 			WorldGen.drunkWorldGen = Main.drunkWorld;
 			WorldGen.drunkWorldGenText = Main.drunkWorld;
 			Main.tenthAnniversaryWorld = OptionsContains("Celebrationmk10");
-			WorldGen.dontStarveWorldGen = OptionsContains("TheConstant");
-			Main.dontStarveWorld = WorldGen.dontStarveWorldGen;
+			Main.dontStarveWorld = OptionsContains("TheConstant");
+			WorldGen.dontStarveWorldGen = Main.dontStarveWorld;
 			if (!Main.dayTime) Main.time = 0;
 		}
 
