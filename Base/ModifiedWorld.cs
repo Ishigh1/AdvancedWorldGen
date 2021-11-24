@@ -103,13 +103,15 @@ namespace AdvancedWorldGen.Base
 
 		public override void PreWorldGen()
 		{
-			WorldGen.notTheBees = OptionsContains("NotTheBees", "SmallNotTheBees");
+			Main.notTheBeesWorld = OptionsContains("NotTheBees", "SmallNotTheBees");
+			WorldGen.notTheBees = Main.notTheBeesWorld;
 			Main.getGoodWorld = OptionsContains("ForTheWorthy");
 			WorldGen.getGoodWorldGen = Main.getGoodWorld;
 			Main.drunkWorld = OptionsContains("Drunk");
 			WorldGen.drunkWorldGen = Main.drunkWorld;
 			WorldGen.drunkWorldGenText = Main.drunkWorld;
 			Main.tenthAnniversaryWorld = OptionsContains("Celebrationmk10");
+			WorldGen.tenthAnniversaryWorldGen = Main.tenthAnniversaryWorld;
 			Main.dontStarveWorld = OptionsContains("TheConstant");
 			WorldGen.dontStarveWorldGen = Main.dontStarveWorld;
 			if (!Main.dayTime) Main.time = 0;
@@ -176,7 +178,7 @@ namespace AdvancedWorldGen.Base
 
 			if (WorldGen.drunkWorldGen) TryAddNpc(PartyGirl, availableNPCs, out _);
 
-			if (Main.tenthAnniversaryWorld)
+			if (WorldGen.tenthAnniversaryWorldGen)
 			{
 				BirthdayParty.GenuineParty = true;
 				BirthdayParty.PartyDaysOnCooldown = 5;

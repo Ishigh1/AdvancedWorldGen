@@ -300,7 +300,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 								break;
 						}
 
-						if (Main.tenthAnniversaryWorld && pyramid)
+						if (WorldGen.tenthAnniversaryWorldGen && pyramid)
 						{
 							chest.item[index++].SetDefaults(ItemID.PharaohsMask);
 							chest.item[index++].SetDefaults(ItemID.PharaohsRobe);

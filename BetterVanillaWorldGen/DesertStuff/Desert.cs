@@ -49,7 +49,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff
 
 			int surfaceBottomStart = (int) (surfaceMap.Average + surfaceMap.Bottom) / 2;
 			origin.Y = surfaceBottomStart + WorldGen.genRand.Next(40, 60);
-			int specialSeedModifier = Main.tenthAnniversaryWorld ? (int) (20f * worldSizeY) : 0;
+			int specialSeedModifier = WorldGen.tenthAnniversaryWorldGen ? (int) (20f * worldSizeY) : 0;
 
 			DesertDescription placement = (DesertDescription) ConstructorInfo.Invoke(Array.Empty<object>());
 			foreach (PropertyInfo propertyInfo in typeof(DesertDescription).GetProperties())

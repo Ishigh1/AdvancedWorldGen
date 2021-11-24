@@ -1,5 +1,5 @@
 displayName = Advanced World Generation
 author = Ishigh
-version = 2.5.3
+version = 2.5.3.2
 homepage = https://forums.terraria.org/index.php?threads/.97942/
 buildIgnore = Tool\*

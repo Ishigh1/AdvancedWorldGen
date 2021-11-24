@@ -157,8 +157,8 @@ namespace AdvancedWorldGen.UI
 			{
 				if (WorldSettings.SizeX < KnownLimits.NormalMinX)
 				{
-					Main.MenuUI.SetState(
-						new ErrorUI(Language.GetTextValue("Mods.AdvancedWorldGen.InvalidSizes.NormalMinX")));
+					Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
+						"Mods.AdvancedWorldGen.InvalidSizes.NormalMinX", KnownLimits.NormalMinX)));
 					return;
 				}
 
