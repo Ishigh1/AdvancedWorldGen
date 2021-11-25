@@ -46,6 +46,11 @@ namespace AdvancedWorldGen.SpecialOptions
 			foreach (ModTile modTile in modTiles) NotReplaced.Add(modTile.Type);
 		}
 
+		public static bool DontReplace(int type)
+		{
+			return !Main.tileSolid[type] || TileID.Sets.Platforms[type] || NotReplaced.Contains(type) || Main.tileFrameImportant[type];
+		}
+
 		public void UpdateDictionary(int to, params int[] from)
 		{
 			foreach (int tile in from) DirectReplacements.Add(tile, to);
@@ -79,15 +84,9 @@ namespace AdvancedWorldGen.SpecialOptions
 			}
 
 			if (tileType < -1)
-			{
 				tile.LiquidAmount = 0;
-				if (!NotReplaced.Contains(tile.type))
-					tile.IsActive = false;
-			}
 			else
-			{
 				tile.IsActive = false;
-			}
 
 			switch (type)
 			{
@@ -185,15 +184,12 @@ namespace AdvancedWorldGen.SpecialOptions
 					{
 						tile.type = type;
 					}
-					else if (Main.tileSolid[tile.type] && !TileID.Sets.Platforms[tile.type] &&
-					         !NotReplaced.Contains(tile.type))
+					else if (!DontReplace(type))
 					{
 						do
 						{
 							type = (ushort) WorldGen._genRand.Next(TileLoader.TileCount);
-						} while (!Main.tileSolid[type] || TileID.Sets.Platforms[type] ||
-						         NotReplaced.Contains(type) ||
-						         tileRandom.ContainsValue(type));
+						} while (DontReplace(type) || tileRandom.ContainsValue(type));
 
 						tileRandom[tile.type] = type;
 						tile.type = type;

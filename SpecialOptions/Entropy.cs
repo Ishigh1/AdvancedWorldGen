@@ -63,7 +63,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			for (int i = 0; i < SquareSize; i++)
 			{
 				int x = (i + X) % Main.maxTilesX;
-				for (int j = 0; j < SquareSize; j++)
+				for (int j = SquareSize - 1; j >= 0; j--)
 				{
 					int y = (j + Y) % Main.maxTilesY;
 					Tile tile = Framing.GetTileSafely(x, y);
@@ -72,8 +72,7 @@ namespace AdvancedWorldGen.SpecialOptions
 					if (tile.IsActive)
 					{
 						int type = tile.type;
-						if (Main.tileSolid[type] && !TileID.Sets.Platforms[type] &&
-						    !TileReplacer.NotReplaced.Contains(type))
+						if (!TileReplacer.DontReplace(type))
 						{
 							if (!Tiles.TryGetValue(type, out coords))
 							{
@@ -125,8 +124,7 @@ namespace AdvancedWorldGen.SpecialOptions
 			if (Tiles.Count != 0 && Tiles.Count != TileLoader.TileCount)
 			{
 				int c = 0;
-				while (++c < 10 && (OldTile == -1 || !Main.tileSolid[OldTile] || TileID.Sets.Platforms[OldTile] ||
-				                    TileReplacer.NotReplaced.Contains((ushort) OldTile)))
+				while (++c < 10 && (OldTile == -1 || TileReplacer.DontReplace(OldTile)))
 				{
 					int tile = Rand.Next(Tiles.Count);
 					OldTile = tile;
@@ -139,8 +137,7 @@ namespace AdvancedWorldGen.SpecialOptions
 				}
 
 				c = 0;
-				while (++c < 10 && (NewTile == -1 || !Main.tileSolid[NewTile] || TileID.Sets.Platforms[NewTile] ||
-				                    TileReplacer.NotReplaced.Contains((ushort) NewTile)))
+				while (++c < 10 && (NewTile == -1 || TileReplacer.DontReplace(NewTile)))
 				{
 					int tile = Rand.Next(TileLoader.TileCount - Tiles.Count);
 					NewTile = tile;
@@ -181,6 +178,7 @@ namespace AdvancedWorldGen.SpecialOptions
 					.Where(tuple => Framing.GetTileSafely(tuple.Item1, tuple.Item2).type == OldTile))
 				{
 					Framing.GetTileSafely(x, y).type = (ushort) NewTile;
+					WorldGen.DiamondTileFrame(x, y);
 					if (ModifiedWorld.OptionsContains("Painted"))
 						Framing.GetTileSafely(x, y).Color = PaintTile;
 				}
@@ -190,6 +188,7 @@ namespace AdvancedWorldGen.SpecialOptions
 					.Where(tuple => Framing.GetTileSafely(tuple.Item1, tuple.Item2).wall == OldWall))
 				{
 					Framing.GetTileSafely(x, y).wall = (ushort) NewWall;
+					WorldGen.SquareWallFrame(x, y);
 					if (ModifiedWorld.OptionsContains("Painted"))
 						Framing.GetTileSafely(x, y).WallColor = PaintWall;
 				}

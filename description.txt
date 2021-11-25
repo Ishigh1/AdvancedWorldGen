@@ -10,5 +10,3 @@ It slightly changes the worldgen, but makes it way faster, especially on large w
 A custom world size is also worked on, it's already works pretty fine except few graphic bugs from vanilla.
 The custom world option works better when the worldgen overhaul, and is even necessary in some cases.
 Note that if you have a X/Y ratio too different from vanilla, the generation might look weird (for now at least).
-
-Link to github : https://github.com/Ishigh1/AdvancedWorldGen/tree/1.4
