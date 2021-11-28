@@ -12,4 +12,4 @@ The custom world option works better when the worldgen overhaul, and is even nec
 Note that if you have a X/Y ratio too different from vanilla, the generation might look weird (for now at least).
 
 
-Also thanks to Exterminator for contributing to the code
+Also thanks to Exterminator for contributing to the code and Math!EW! for the mod icon
