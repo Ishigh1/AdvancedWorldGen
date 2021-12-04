@@ -36,7 +36,7 @@ Main tiles are inverted :
 * Everything but the floating blocks can fall if not held
 * Worldgen must verified to avoid floating things and some things should be added
 
-## Halloween :
+## Halloween (unfinished) :
 * Sneaky (but avoidable) traps (wires, pressure plates and pumps are invisible unless spectre googles are worn)
 * Some graveyard
 * Few mausoleum
@@ -44,9 +44,21 @@ Main tiles are inverted :
 * Tombstone and ground below need at least 45%(silver) pickaxe power (cant be blown up) or gravedigger
 * Bosses have a ghost attack
 
+### Purity world
+
 ### Hollow temple (hidden) :
 * The temple becomes just one room
 
 ### Bigger temple rooms
 
 ### Make custom sized tile framing work
+
+### Add more customized world options :
+* Choose the ore tier (can be both)
+* Choose temple/dungeon size modifier
+* Choose height of layers
+* Edit corruption size
+
+### Finish editable passes
+
+### Finish seed configuration (to only have part of a seed)
