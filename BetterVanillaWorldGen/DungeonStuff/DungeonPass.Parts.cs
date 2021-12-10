@@ -959,15 +959,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				direction = -1;
 
 			Vector2 delta = new(direction, -1);
-			if (WorldGen.genRand.Next(3) != 0)
+			if (WorldGen.genRand.NextBool(2, 3))
 				delta.X *= 1f + WorldGen.genRand.Next(0, 200) * 0.01f;
 			else if (WorldGen.genRand.NextBool(3))
 				delta.X *= WorldGen.genRand.Next(50, 76) * 0.01f;
 			else if (WorldGen.genRand.NextBool(6))
 				delta.Y *= 2f;
 
-			if (WorldGen.dungeonX < Main.maxTilesX / 2 && delta.X < 0f && delta.X < 0.5 ||
-			    WorldGen.dungeonX > Main.maxTilesX / 2 && delta.X > 0f && delta.X > 0.5)
+			if (WorldGen.dungeonX < Main.maxTilesX / 2 && delta.X < 0.5f ||
+			    WorldGen.dungeonX > Main.maxTilesX / 2 && delta.X > 0.5f)
 				delta.X = -0.5f;
 
 			if (WorldGen.drunkWorldGen)
@@ -1623,23 +1623,19 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				Main.tile[x1, y1].Clear(TileDataType.Slope);
 			}
 
-			double dungeonXStrength1 = DungeonXStrength1;
-			double dungeonYStrength1 = DungeonYStrength1;
-			DungeonMinY = (int) (y - (float) dungeonYStrength1 / 2f);
+			double dungeonXStrength = DungeonXStrength1;
+			double dungeonYStrength = DungeonYStrength1;
+			DungeonMinY = y - (int) (dungeonYStrength / 2f);
 			Vector2 vector = new(x, DungeonMinY);
-			int num4;
-			if (x > Main.maxTilesX / 2)
-				num4 = -1;
-			else
-				num4 = 1;
+			int num4 = x > Main.maxTilesX / 2 ? -1 : 1;
 
 			if (WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen)
 				num4 *= -1;
 
-			int xMin = (int) Math.Max(vector.X - dungeonXStrength1 * 0.6 - WorldGen.genRand.Next(2, 5), 0);
-			int xMax = (int) Math.Min(vector.X + dungeonXStrength1 * 0.6 + WorldGen.genRand.Next(2, 5), Main.maxTilesX);
-			int yMin = (int) Math.Max(vector.Y - dungeonYStrength1 * 0.6 - WorldGen.genRand.Next(2, 5), 0);
-			int yMax = (int) Math.Min(vector.Y + dungeonYStrength1 * 0.6 + WorldGen.genRand.Next(8, 16),
+			int xMin = (int) Math.Max(vector.X - dungeonXStrength * 0.6 - WorldGen.genRand.Next(2, 5), 0);
+			int xMax = (int) Math.Min(vector.X + dungeonXStrength * 0.6 + WorldGen.genRand.Next(2, 5), Main.maxTilesX);
+			int yMin = (int) Math.Max(vector.Y - dungeonYStrength * 0.6 - WorldGen.genRand.Next(2, 5), 0);
+			int yMax = (int) Math.Min(vector.Y + dungeonYStrength * 0.6 + WorldGen.genRand.Next(8, 16),
 				Main.maxTilesY);
 
 			for (int x1 = xMin; x1 < xMax; x1++)
@@ -1730,10 +1726,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				Main.tile[num22, num23].Clear(TileDataType.Slope);
 			}
 
-			xMin = (int) (vector.X - dungeonXStrength1 * 0.6);
-			xMax = (int) (vector.X + dungeonXStrength1 * 0.6);
-			yMin = (int) (vector.Y - dungeonYStrength1 * 0.6);
-			yMax = (int) (vector.Y + dungeonYStrength1 * 0.6);
+			xMin = (int) (vector.X - dungeonXStrength * 0.6);
+			xMax = (int) (vector.X + dungeonXStrength * 0.6);
+			yMin = (int) (vector.Y - dungeonYStrength * 0.6);
+			yMax = (int) (vector.Y + dungeonYStrength * 0.6);
 			if (xMin < 0)
 				xMin = 0;
 
@@ -1754,10 +1750,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				Main.tile[num24, num25].Clear(TileDataType.Slope);
 			}
 
-			xMin = (int) (vector.X - dungeonXStrength1 * 0.6 - 1.0);
-			xMax = (int) (vector.X + dungeonXStrength1 * 0.6 + 1.0);
-			yMin = (int) (vector.Y - dungeonYStrength1 * 0.6 - 1.0);
-			yMax = (int) (vector.Y + dungeonYStrength1 * 0.6 + 1.0);
+			xMin = (int) (vector.X - dungeonXStrength * 0.6 - 1.0);
+			xMax = (int) (vector.X + dungeonXStrength * 0.6 + 1.0);
+			yMin = (int) (vector.Y - dungeonYStrength * 0.6 - 1.0);
+			yMax = (int) (vector.Y + dungeonYStrength * 0.6 + 1.0);
 			if (xMin < 0)
 				xMin = 0;
 
@@ -1781,10 +1777,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				Main.tile[num26, num27].Clear(TileDataType.Slope);
 			}
 
-			xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
-			xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
-			yMin = (int) (vector.Y - dungeonYStrength1 * 0.5);
-			yMax = (int) (vector.Y + dungeonYStrength1 * 0.5);
+			xMin = (int) (vector.X - dungeonXStrength * 0.5);
+			xMax = (int) (vector.X + dungeonXStrength * 0.5);
+			yMin = (int) (vector.Y - dungeonYStrength * 0.5);
+			yMax = (int) (vector.Y + dungeonYStrength * 0.5);
 			if (xMin < 0)
 				xMin = 0;
 
@@ -1823,16 +1819,16 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			vector.X += (float) dungeonXStrength1 * 0.6f * num4;
-			vector.Y += (float) dungeonYStrength1 * 0.5f;
-			dungeonXStrength1 = DungeonXStrength2;
-			dungeonYStrength1 = DungeonYStrength2;
-			vector.X += (float) dungeonXStrength1 * 0.55f * num4;
-			vector.Y -= (float) dungeonYStrength1 * 0.5f;
-			xMin = (int) (vector.X - dungeonXStrength1 * 0.6 - WorldGen.genRand.Next(1, 3));
-			xMax = (int) (vector.X + dungeonXStrength1 * 0.6 + WorldGen.genRand.Next(1, 3));
-			yMin = (int) (vector.Y - dungeonYStrength1 * 0.6 - WorldGen.genRand.Next(1, 3));
-			yMax = (int) (vector.Y + dungeonYStrength1 * 0.6 + WorldGen.genRand.Next(6, 16));
+			vector.X += (float) dungeonXStrength * 0.6f * num4;
+			vector.Y += (float) dungeonYStrength * 0.5f;
+			dungeonXStrength = DungeonXStrength2;
+			dungeonYStrength = DungeonYStrength2;
+			vector.X += (float) dungeonXStrength * 0.55f * num4;
+			vector.Y -= (float) dungeonYStrength * 0.5f;
+			xMin = (int) (vector.X - dungeonXStrength * 0.6 - WorldGen.genRand.Next(1, 3));
+			xMax = (int) (vector.X + dungeonXStrength * 0.6 + WorldGen.genRand.Next(1, 3));
+			yMin = (int) (vector.Y - dungeonYStrength * 0.6 - WorldGen.genRand.Next(1, 3));
+			yMax = (int) (vector.Y + dungeonYStrength * 0.6 + WorldGen.genRand.Next(6, 16));
 			if (xMin < 0)
 				xMin = 0;
 
@@ -1855,10 +1851,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				bool flag = true;
 				if (num4 < 0)
 				{
-					if (num33 < vector.X - dungeonXStrength1 * 0.5)
+					if (num33 < vector.X - dungeonXStrength * 0.5)
 						flag = false;
 				}
-				else if (num33 > vector.X + dungeonXStrength1 * 0.5 - 1.0)
+				else if (num33 > vector.X + dungeonXStrength * 0.5 - 1.0)
 				{
 					flag = false;
 				}
@@ -1886,8 +1882,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				Main.tile[num35, num36].Clear(TileDataType.Slope);
 			}
 
-			xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
-			xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
+			xMin = (int) (vector.X - dungeonXStrength * 0.5);
+			xMax = (int) (vector.X + dungeonXStrength * 0.5);
 			num9 = xMin;
 			if (num4 < 0)
 				num9++;
@@ -1952,10 +1948,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			if (!WorldGen.drunkWorldGen)
 			{
-				xMin = (int) (vector.X - dungeonXStrength1 * 0.6);
-				xMax = (int) (vector.X + dungeonXStrength1 * 0.6);
-				yMin = (int) (vector.Y - dungeonYStrength1 * 0.6);
-				yMax = (int) (vector.Y + dungeonYStrength1 * 0.6);
+				xMin = (int) (vector.X - dungeonXStrength * 0.6);
+				xMax = (int) (vector.X + dungeonXStrength * 0.6);
+				yMin = (int) (vector.Y - dungeonYStrength * 0.6);
+				yMax = (int) (vector.Y + dungeonYStrength * 0.6);
 				if (xMin < 0)
 					xMin = 0;
 
@@ -1976,10 +1972,10 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
-			xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
-			yMin = (int) (vector.Y - dungeonYStrength1 * 0.5);
-			yMax = (int) (vector.Y + dungeonYStrength1 * 0.5);
+			xMin = (int) (vector.X - dungeonXStrength * 0.5);
+			xMax = (int) (vector.X + dungeonXStrength * 0.5);
+			yMin = (int) (vector.Y - dungeonYStrength * 0.5);
+			yMax = (int) (vector.Y + dungeonYStrength * 0.5);
 			if (xMin < 0)
 				xMin = 0;
 
@@ -2078,8 +2074,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			
 			num18 = 2 + WorldGen.genRand.Next(4);
 			num19 = 0;
-			xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
-			xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
+			xMin = (int) (vector.X - dungeonXStrength * 0.5);
+			xMax = (int) (vector.X + dungeonXStrength * 0.5);
 			if (WorldGen.drunkWorldGen)
 			{
 				if (num4 == 1)
@@ -2116,8 +2112,8 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 
 			if (WorldGen.drunkWorldGen)
 			{
-				xMin = (int) (vector.X - dungeonXStrength1 * 0.5);
-				xMax = (int) (vector.X + dungeonXStrength1 * 0.5);
+				xMin = (int) (vector.X - dungeonXStrength * 0.5);
+				xMax = (int) (vector.X + dungeonXStrength * 0.5);
 				if (num4 == 1)
 					xMin = xMax - 3;
 				else
@@ -2132,15 +2128,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 				}
 			}
 
-			vector.X -= (float) dungeonXStrength1 * 0.6f * num4;
-			vector.Y += (float) dungeonYStrength1 * 0.5f;
-			dungeonXStrength1 = 15.0;
-			dungeonYStrength1 = 3.0;
-			vector.Y -= (float) dungeonYStrength1 * 0.5f;
-			xMin = (int) Math.Max(vector.X - dungeonXStrength1 * 0.5, 0);
-			xMax = (int) Math.Min(vector.X + dungeonXStrength1 * 0.5, Main.maxTilesX);
-			yMin = (int) Math.Max(vector.Y - dungeonYStrength1 * 0.5, 0);
-			yMax = (int) Math.Min(vector.Y + dungeonYStrength1 * 0.5, Main.maxTilesY);
+			vector.X -= (float) dungeonXStrength * 0.6f * num4;
+			vector.Y += (float) dungeonYStrength * 0.5f;
+			dungeonXStrength = 15.0;
+			dungeonYStrength = 3.0;
+			vector.Y -= (float) dungeonYStrength * 0.5f;
+			xMin = (int) Math.Max(vector.X - dungeonXStrength * 0.5, 0);
+			xMax = (int) Math.Min(vector.X + dungeonXStrength * 0.5, Main.maxTilesX);
+			yMin = (int) Math.Max(vector.Y - dungeonYStrength * 0.5, 0);
+			yMax = (int) Math.Min(vector.Y + dungeonYStrength * 0.5, Main.maxTilesY);
 
 			for (int num60 = xMin; num60 < xMax; num60++)
 			for (int num61 = yMin; num61 < yMax; num61++)

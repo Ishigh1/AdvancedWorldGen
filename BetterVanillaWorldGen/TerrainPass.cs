@@ -33,6 +33,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			worldSurface *= WorldGen.genRand.Next(90, 110) * 0.005;
 			double rockLayer = Main.maxTilesY * 0.35;
 			rockLayer *= WorldGen.genRand.Next(90, 110) * 0.01;
+
 			if (rockLayer < worldSurface + Main.maxTilesY * 0.05)
 			{
 				if (worldSurface - rockLayer > Main.maxTilesY * 0.05)
@@ -119,7 +120,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen
 			}
 
 			Main.worldSurface = (int) (worldSurfaceHigh + 25.0);
-			Main.rockLayer = rockLayerHigh;
+			Main.rockLayer = Main.worldSurface + (rockLayerHigh - Main.worldSurface) / 6;
 			int waterLine = (int) (Main.rockLayer + Main.maxTilesY) / 2;
 			waterLine += WorldGen.genRand.Next(-100, 20);
 			int lavaLine = waterLine + WorldGen.genRand.Next(50, 80);
