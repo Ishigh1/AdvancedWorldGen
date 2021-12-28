@@ -8,7 +8,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
@@ -18,26 +17,25 @@ namespace AdvancedWorldGen.UI
 {
 	public class OptionsSelector : UIState
 	{
-		public static Dictionary<string, Option> OptionDict = null!;
 		public LocalizedText Description;
 
-		public UIWorldCreation UiWorldCreation;
+		public UIState PreviousState;
 
-		public OptionsSelector(UIWorldCreation uiWorldCreation)
+		public OptionsSelector(UIState previousState, Option? parent)
 		{
-			UiWorldCreation = uiWorldCreation;
+			PreviousState = previousState;
 			Description = Language.GetText("Mods.AdvancedWorldGen.NoneSelected.Description");
 
-			CreateOptionPanel();
+			CreateOptionPanel(parent);
 		}
 
 		public void GoBack(UIMouseEvent evt, UIElement listeningElement)
 		{
 			SoundEngine.PlaySound(SoundID.MenuClose);
-			Main.MenuUI.SetState(UiWorldCreation);
+			Main.MenuUI.SetState(PreviousState);
 		}
 
-		public void CreateOptionPanel()
+		public void CreateOptionPanel(Option? parent)
 		{
 			UIPanel uiPanel = new()
 			{
@@ -49,7 +47,7 @@ namespace AdvancedWorldGen.UI
 			};
 			Append(uiPanel);
 
-			UIText uiTitle = new("Seed options", 0.75f, true) {HAlign = 0.5f};
+			UIText uiTitle = new("Seed options", 0.75f, true) { HAlign = 0.5f };
 			uiTitle.Height = uiTitle.MinHeight;
 			uiPanel.Append(uiTitle);
 			uiPanel.Append(new UIHorizontalSeparator
@@ -59,9 +57,9 @@ namespace AdvancedWorldGen.UI
 				Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 			});
 
-			UIText uiDescription = new(Description, 0.75f) {HAlign = 0.5f, VAlign = 0.5f};
+			UIText uiDescription = new(Description, 0.75f) { HAlign = 0.5f, VAlign = 0.5f };
 
-			CreateSelectableOptions(uiPanel, uiDescription);
+			CreateSelectableOptions(uiPanel, uiDescription, parent);
 
 			uiPanel.Append(new UIHorizontalSeparator
 			{
@@ -115,7 +113,7 @@ namespace AdvancedWorldGen.UI
 			Main.MenuUI.SetState(ModifiedWorld.Instance.CustomSizeUI);
 		}
 
-		public void CreateSelectableOptions(UIElement uiPanel, UIText uiDescription)
+		public void CreateSelectableOptions(UIElement uiPanel, UIText uiDescription, Option? parent)
 		{
 			UIScrollbar uiScrollbar = new()
 			{
@@ -132,7 +130,7 @@ namespace AdvancedWorldGen.UI
 			uiList.SetScrollbar(uiScrollbar);
 			uiPanel.Append(uiScrollbar);
 			uiPanel.Append(uiList);
-			CreateOptionList(uiDescription, uiList, false);
+			CreateOptionList(uiDescription, uiList, parent, false);
 
 			bool showHidden = false;
 			LocalizedText showHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.ShowHidden.Description");
@@ -146,7 +144,7 @@ namespace AdvancedWorldGen.UI
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				showHidden = !showHidden;
 				uiImage.SetImage(showHidden ? TextureAssets.InventoryTickOn : TextureAssets.InventoryTickOff);
-				CreateOptionList(uiDescription, uiList, showHidden);
+				CreateOptionList(uiDescription, uiList, parent, showHidden);
 				uiDescription.SetText(showHidden ? hideHiddenDescription : showHiddenDescription);
 			};
 			uiImage.OnMouseOver += delegate
@@ -162,11 +160,11 @@ namespace AdvancedWorldGen.UI
 			uiPanel.Append(uiImage);
 		}
 
-		public void CreateOptionList(UIText uiDescription, UIList uiList, bool showHidden)
+		public void CreateOptionList(UIText uiDescription, UIList uiList, Option? parent, bool showHidden)
 		{
 			float currentHeight = 50;
 			uiList.Clear();
-			bool isLookingAtConflict = false;
+			bool isLookingAtSomething = false;
 
 			GroupOptionButton<bool> importButton = new(true,
 				Language.GetText("Mods.AdvancedWorldGen.Import"),
@@ -189,7 +187,7 @@ namespace AdvancedWorldGen.UI
 				{
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					ModifiedWorld.Instance.OptionHelper.Options = options;
-					CreateOptionList(uiDescription, uiList, showHidden);
+					CreateOptionList(uiDescription, uiList, parent, showHidden);
 				}
 			};
 			importButton.OnMouseOver += delegate { uiDescription.SetText(importButton.Description); };
@@ -201,13 +199,14 @@ namespace AdvancedWorldGen.UI
 
 			importButton.OnMouseOut += SetDefaultDescription;
 
-			foreach (KeyValuePair<string, Option> keyValuePair in OptionDict)
+			foreach ((_, Option? option) in Option.OptionDict)
 			{
-				if (keyValuePair.Value.Hidden && !showHidden) continue;
-				string option = keyValuePair.Key;
+				if (option.Hidden && !showHidden) continue;
+				if (option.Parent != parent) continue;
 				GroupOptionButton<bool> clickableText = new(true,
-					Language.GetText("Mods.AdvancedWorldGen." + option),
-					Language.GetText("Mods.AdvancedWorldGen." + option + ".Description"), Color.White, null)
+					Language.GetText("Mods.AdvancedWorldGen." + option.SimplifiedName),
+					Language.GetText("Mods.AdvancedWorldGen." + option.SimplifiedName + ".Description"), Color.White,
+					null)
 				{
 					HAlign = 0.5f,
 					Width = new StyleDimension(0f, 1f),
@@ -217,34 +216,66 @@ namespace AdvancedWorldGen.UI
 				currentHeight += 40;
 				uiList.Add(clickableText);
 
-				clickableText.SetCurrentOption(ModifiedWorld.Instance.OptionHelper.OptionsContains(option));
+				clickableText.SetCurrentOption(ModifiedWorld.Instance.OptionHelper.OptionsContains(option.FullName));
 				clickableText.OnMouseDown += delegate
 				{
+					if(Main.MenuUI.CurrentState != this)
+						return;
 					bool selected = clickableText.IsSelected;
 					if (selected)
-						ModifiedWorld.Instance.OptionHelper.Options.Remove(option);
+						option.Disable();
 					else
-						ModifiedWorld.Instance.OptionHelper.Options.Add(option);
+						option.Enable();
 
-					if (OptionDict[option].Conflicts
-						.Any(conflict => ModifiedWorld.Instance.OptionHelper.OptionsContains(conflict)))
-						CreateOptionList(uiDescription, uiList, showHidden);
+					if (option.Conflicts
+					    .Any(conflict => ModifiedWorld.Instance.OptionHelper.OptionsContains(conflict)))
+						CreateOptionList(uiDescription, uiList, parent, showHidden);
 					else
 						clickableText.SetCurrentOption(!selected);
 				};
 				clickableText.OnMouseOver += delegate
 				{
-					if (!isLookingAtConflict)
+					if (!isLookingAtSomething)
 						uiDescription.SetText(clickableText.Description);
 				};
 				clickableText.OnMouseOut += SetDefaultDescription;
 
-				if (ModifiedWorld.Instance.OptionHelper.OptionsContains(option))
-					foreach (string conflict in OptionDict[option].Conflicts)
+
+				if (option.Children.Count != 0)
+				{
+					LocalizedText downLevel = Language.GetText("Mods.AdvancedWorldGen.DownLevel");
+					UIImage uiImage = new(UiChanger.CopyOptionsTexture)
+					{
+						Left = new StyleDimension(-15, 0f),
+						HAlign = 1f,
+						VAlign = 0.5f
+					};
+					uiImage.OnMouseOver += delegate
+					{
+						SoundEngine.PlaySound(SoundID.MenuTick);
+						uiDescription.SetText(downLevel);
+						isLookingAtSomething = true;
+					};
+					uiImage.OnMouseOut += delegate
+					{
+						SoundEngine.PlaySound(SoundID.MenuTick);
+						uiDescription.SetText(clickableText.Description);
+						isLookingAtSomething = false;
+					};
+					uiImage.OnMouseDown += delegate
+					{
+						SoundEngine.PlaySound(SoundID.MenuOpen);
+						Main.MenuUI.SetState(new OptionsSelector(this, option));
+					};
+					clickableText.Append(uiImage);
+				}
+				else if (ModifiedWorld.Instance.OptionHelper.OptionsContains(option.FullName))
+					foreach (string conflict in Option.OptionDict[option.FullName].Conflicts)
 						if (ModifiedWorld.Instance.OptionHelper.OptionsContains(conflict))
 						{
 							LocalizedText conflictDescription =
-								Language.GetText("Mods.AdvancedWorldGen.Conflict." + option + "." + conflict);
+								Language.GetText("Mods.AdvancedWorldGen.Conflict." + option.SimplifiedName + "." +
+								                 Option.OptionDict[conflict].SimplifiedName);
 							UIImage uiImage = new(UICommon.ButtonErrorTexture)
 							{
 								Left = new StyleDimension(-15, 0f),
@@ -255,13 +286,13 @@ namespace AdvancedWorldGen.UI
 							{
 								SoundEngine.PlaySound(SoundID.MenuTick);
 								uiDescription.SetText(conflictDescription);
-								isLookingAtConflict = true;
+								isLookingAtSomething = true;
 							};
 							uiImage.OnMouseOut += delegate
 							{
 								SoundEngine.PlaySound(SoundID.MenuTick);
 								uiDescription.SetText(clickableText.Description);
-								isLookingAtConflict = false;
+								isLookingAtSomething = false;
 							};
 							clickableText.Append(uiImage);
 							break;
@@ -272,7 +303,7 @@ namespace AdvancedWorldGen.UI
 		public static HashSet<string> TextToOptions(string text)
 		{
 			HashSet<string> options = new();
-			foreach (string s in text.Split('|').Where(s => OptionDict.Keys.Contains(s)))
+			foreach (string s in text.Split('|').Where(s => Option.OptionDict.ContainsKey(s)))
 				options.Add(s);
 
 			return options;

@@ -82,12 +82,12 @@ namespace AdvancedWorldGen.Base
 			int id;
 			while ((id = reader.ReadUInt16()) != 0) list.Add(id);
 
-			foreach (KeyValuePair<string, Option> keyValuePair in OptionsSelector.OptionDict.Where(keyValuePair =>
-				list.Remove(keyValuePair.Value.Id)))
-			{
-				OptionHelper.Options.Add(keyValuePair.Key);
-				if (list.Count == 0) break;
-			}
+			foreach ((string? optionName, Option? option) in Option.OptionDict)
+				if (list.Remove(option.Id))
+				{
+					OptionHelper.Options.Add(optionName);
+					if (list.Count == 0) break;
+				}
 
 			Main.checkHalloween();
 			Main.checkXMas();
@@ -96,14 +96,14 @@ namespace AdvancedWorldGen.Base
 		public override void NetSend(BinaryWriter writer)
 		{
 			foreach (string seedHelperOption in OptionHelper.Options)
-				writer.Write(OptionsSelector.OptionDict[seedHelperOption].Id);
+				writer.Write(Option.OptionDict[seedHelperOption].Id);
 
 			writer.Write(0);
 		}
 
 		public override void PreWorldGen()
 		{
-			Main.notTheBeesWorld = OptionsContains("NotTheBees", "SmallNotTheBees");
+			Main.notTheBeesWorld = OptionsContains("NotTheBees");
 			WorldGen.notTheBees = Main.notTheBeesWorld;
 			Main.getGoodWorld = OptionsContains("ForTheWorthy");
 			WorldGen.getGoodWorldGen = Main.getGoodWorld;

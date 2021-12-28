@@ -29,7 +29,7 @@ namespace AdvancedWorldGen.Base
 
 		public bool OptionsContains(params string[] value)
 		{
-			return value.Any(s => Options.Contains(s));
+			return value.Any(s => Options.Contains(s) || Options.Contains(s + ".Base"));
 		}
 
 		public void OnTick()

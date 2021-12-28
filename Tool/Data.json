@@ -1,5 +1,6 @@
 {
     "BigTemple": {
+        "children": {},
         "conflicts": {
             "StupidlyBigTemple": {
                 "en-US": "Having a temple size modifier twice doesn't do anything.",
@@ -18,10 +19,10 @@
             "en-US": "Big Temple",
             "fr-FR": "Grand Temple"
         },
-        "hidden": true,
-        "internal_name": "BigTemple"
+        "hidden": true
     },
     "Celebrationmk10": {
+        "children": {},
         "conflicts": {},
         "description": {
             "en-US": "The tenth anniversary secret seed.",
@@ -31,10 +32,10 @@
             "en-US": "Celebration Mk 10",
             "fr-FR": "Celebration Mk 10"
         },
-        "hidden": false,
-        "internal_name": "Celebrationmk10"
+        "hidden": false
     },
     "Crimruption": {
+        "children": {},
         "conflicts": {
             "Drunk": {
                 "en-US": "Drunk already contains Crimruption",
@@ -49,10 +50,10 @@
             "en-US": "Crimruption",
             "fr-FR": "Carmruption"
         },
-        "hidden": false,
-        "internal_name": "Crimruption"
+        "hidden": false
     },
     "Drunk": {
+        "children": {},
         "conflicts": {
             "Crimruption": {
                 "en-US": "Drunk already contains Crimruption",
@@ -67,10 +68,10 @@
             "en-US": "Drunk",
             "fr-FR": "Ivre"
         },
-        "hidden": false,
-        "internal_name": "Drunk"
+        "hidden": false
     },
     "Entropy": {
+        "children": {},
         "conflicts": {},
         "description": {
             "en-US": "A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.",
@@ -80,12 +81,12 @@
             "en-US": "Entropy",
             "fr-FR": "Entropie"
         },
-        "hidden": true,
-        "internal_name": "Entropy"
+        "hidden": true
     },
     "Evil": {
+        "children": {},
         "conflicts": {
-            "NotTheBees": {
+            "NotTheBees.JungleWorld": {
                 "en-US": "Not The Bees leaves nearly no corruptible tile.",
                 "fr-FR": "Not The Bees ne laisse pas beaucoup de bloc corruptibles."
             },
@@ -102,10 +103,10 @@
             "en-US": "Evil",
             "fr-FR": "Mal\u00e9fique"
         },
-        "hidden": false,
-        "internal_name": "Evil"
+        "hidden": false
     },
     "ForTheWorthy": {
+        "children": {},
         "conflicts": {},
         "description": {
             "en-US": "The \"for the worthy\" secret seed.",
@@ -115,28 +116,38 @@
             "en-US": "For The Worthy",
             "fr-FR": "For The Worthy"
         },
-        "hidden": false,
-        "internal_name": "ForTheWorthy"
+        "hidden": false
     },
     "NotTheBees": {
-        "conflicts": {
-            "Evil": {
-                "en-US": "Not The Bees leaves nearly no corruptible tile.",
-                "fr-FR": "Not The Bees ne laisse pas beaucoup de bloc corruptibles."
-            },
-            "Random": {
-                "en-US": "Not The Bees only leaves a few blocks to be randomized.",
-                "fr-FR": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser."
-            },
-            "Santa": {
-                "en-US": "Santa will not have much effect on a Not The Bees world.",
-                "fr-FR": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees."
-            },
-            "SmallNotTheBees": {
-                "en-US": "Having Not The Bees twice doesn't do anything",
-                "fr-FR": "Avoir Not The Bees deux fois ne fait rien."
+        "children": {
+            "JungleWorld": {
+                "children": {},
+                "conflicts": {
+                    "Evil": {
+                        "en-US": "Not The Bees leaves nearly no corruptible tile.",
+                        "fr-FR": "Not The Bees ne laisse pas beaucoup de bloc corruptibles."
+                    },
+                    "Random": {
+                        "en-US": "Not The Bees only leaves a few blocks to be randomized.",
+                        "fr-FR": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser."
+                    },
+                    "Santa": {
+                        "en-US": "Santa will not have much effect on a Not The Bees world.",
+                        "fr-FR": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees."
+                    }
+                },
+                "description": {
+                    "en-US": "Makes the entire world a jungle.",
+                    "fr-FR": "Le monde entier est une jungle."
+                },
+                "displayed_name": {
+                    "en-US": "Jungle World",
+                    "fr-FR": "Monde Jungle"
+                },
+                "hidden": false
             }
         },
+        "conflicts": {},
         "description": {
             "en-US": "The Not The Bees secret seed.",
             "fr-FR": "La graine secr\u00e8te \"Not The Bees\"."
@@ -145,10 +156,10 @@
             "en-US": "Not The Bees",
             "fr-FR": "Not The Bees"
         },
-        "hidden": false,
-        "internal_name": "NotTheBees"
+        "hidden": false
     },
     "Painted": {
+        "children": {},
         "conflicts": {},
         "description": {
             "en-US": "A world where each block and wall type get a paint.",
@@ -158,16 +169,16 @@
             "en-US": "Painted",
             "fr-FR": "Peint"
         },
-        "hidden": false,
-        "internal_name": "Painted"
+        "hidden": false
     },
     "Random": {
+        "children": {},
         "conflicts": {
             "Evil": {
                 "en-US": "Evil only leaves a few blocks to be randomized.",
                 "fr-FR": "Mal\u00e9fique ne laisse que peu de blocs \u00e0 randomiser."
             },
-            "NotTheBees": {
+            "NotTheBees.JungleWorld": {
                 "en-US": "Not The Bees only leaves a few blocks to be randomized.",
                 "fr-FR": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser."
             },
@@ -184,12 +195,12 @@
             "en-US": "Random",
             "fr-FR": "Al\u00e9atoire"
         },
-        "hidden": false,
-        "internal_name": "Random"
+        "hidden": false
     },
     "Santa": {
+        "children": {},
         "conflicts": {
-            "NotTheBees": {
+            "NotTheBees.JungleWorld": {
                 "en-US": "Santa will not have much effect on a Not The Bees world.",
                 "fr-FR": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees."
             },
@@ -206,28 +217,10 @@
             "en-US": "Santa",
             "fr-FR": "No\u00ebl"
         },
-        "hidden": false,
-        "internal_name": "Santa"
-    },
-    "SmallNotTheBees": {
-        "conflicts": {
-            "NotTheBees": {
-                "en-US": "Having Not The Bees twice doesn't do anything",
-                "fr-FR": "Avoir Not The Bees deux fois ne fait rien."
-            }
-        },
-        "description": {
-            "en-US": "Like Not The Bees, but without the entire world being a jungle.",
-            "fr-FR": "Comme Not The Bees, mais sans transformer le monde entier en jungle."
-        },
-        "displayed_name": {
-            "en-US": "Small Not The Bees",
-            "fr-FR": "Petit Not The Bees"
-        },
-        "hidden": false,
-        "internal_name": "SmallNotTheBees"
+        "hidden": false
     },
     "Spooky": {
+        "children": {},
         "conflicts": {},
         "description": {
             "en-US": "An halloween themed world.",
@@ -237,10 +230,10 @@
             "en-US": "Spooky",
             "fr-FR": "Sinistre"
         },
-        "hidden": true,
-        "internal_name": "Spooky"
+        "hidden": true
     },
     "StupidlyBigTemple": {
+        "children": {},
         "conflicts": {
             "BigTemple": {
                 "en-US": "Having a temple size modifier twice doesn't do anything.",
@@ -259,10 +252,10 @@
             "en-US": "Stupidly Big Temple",
             "fr-FR": "Temple Stupidement Grand"
         },
-        "hidden": true,
-        "internal_name": "StupidlyBigTemple"
+        "hidden": true
     },
     "StupidlyHugeTemple": {
+        "children": {},
         "conflicts": {
             "BigTemple": {
                 "en-US": "Having a temple size modifier twice doesn't do anything.",
@@ -281,10 +274,10 @@
             "en-US": "Stupidly Huge Temple",
             "fr-FR": "Temple Stupidement Gigantesque"
         },
-        "hidden": true,
-        "internal_name": "StupidlyHugeTemple"
+        "hidden": true
     },
     "TheConstant": {
+        "children": {},
         "conflicts": {},
         "description": {
             "en-US": "The Don't Starve secret seed.",
@@ -294,7 +287,6 @@
             "en-US": "The Constant",
             "fr-FR": "Le Constant"
         },
-        "hidden": false,
-        "internal_name": "TheConstant"
+        "hidden": false
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,7 +29,7 @@ namespace AdvancedWorldGen.UI
 {
 	public class UiChanger
 	{
-		public readonly Asset<Texture2D> CopyOptionsTexture;
+		public static Asset<Texture2D> CopyOptionsTexture = null!;
 		public readonly Asset<Texture2D> OptionsTexture;
 		public UIText Description = null!;
 		public OptionsSelector OptionsSelector = null!;
@@ -38,12 +37,14 @@ namespace AdvancedWorldGen.UI
 
 		public UiChanger(Mod mod)
 		{
-			OptionsTexture = null!;
-			CopyOptionsTexture = null!;
 			if (!Main.dedServ)
 			{
 				OptionsTexture = mod.Assets.Request<Texture2D>("Images/WorldOptions");
 				CopyOptionsTexture = mod.Assets.Request<Texture2D>("Images/CopyWorldButton");
+			}
+			else
+			{
+				OptionsTexture = null!;
 			}
 		}
 
@@ -124,7 +125,7 @@ namespace AdvancedWorldGen.UI
 			container.Append(groupOptionButton);
 
 			ModifiedWorld.Instance.OptionHelper.Options.Clear();
-			OptionsSelector = new OptionsSelector(self);
+			OptionsSelector = new OptionsSelector(self, null);
 		}
 
 		public void ToOptionsMenu(UIMouseEvent evt, UIElement listeningElement)
@@ -153,7 +154,7 @@ namespace AdvancedWorldGen.UI
 			panel.BorderColor = Color.Black;
 		}
 
-		public void CopySettingsButton(OnUIWorldListItem.orig_ctor orig,
+		public static void CopySettingsButton(OnUIWorldListItem.orig_ctor orig,
 			UIWorldListItem self, WorldFileData data, int orderInList,
 			bool canBePlayed)
 		{

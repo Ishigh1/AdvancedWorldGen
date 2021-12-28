@@ -1,12 +1,9 @@
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
 using AdvancedWorldGen.SpecialOptions.Snow;
 using AdvancedWorldGen.UI;
-using Newtonsoft.Json;
 using Terraria.ModLoader;
 using OnWorldGen = On.Terraria.WorldGen;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
@@ -28,8 +25,8 @@ namespace AdvancedWorldGen.Base
 
 		public override void Load()
 		{
-			OptionsSelector.OptionDict = JsonConvert.DeserializeObject<Dictionary<string, Option>>(
-				Encoding.UTF8.GetString(GetFileBytes("Options.json")));
+			Option.InitializeDict(this);
+			
 			TileReplacer.Initialize();
 
 			UiChanger = new UiChanger(this);

@@ -53,7 +53,7 @@ namespace AdvancedWorldGen.UI
 			Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.NoneSelected.Description"));
 			int id = 1;
 			bool hidden = showHidden;
-			foreach ((string key, _) in from keyValuePair in OptionsSelector.OptionDict
+			foreach ((string key, _) in from keyValuePair in Option.OptionDict
 			                            where !keyValuePair.Value.Hidden || hidden
 			                            select keyValuePair)
 				Console.WriteLine(id++ + " : " + Language.GetTextValue("Mods.AdvancedWorldGen." + key) +
@@ -87,7 +87,7 @@ namespace AdvancedWorldGen.UI
 				for (int j = i; j < options.Count; j++)
 				{
 					string option2 = options[j];
-					if (OptionsSelector.OptionDict[option].Conflicts.Contains(option2))
+					if (Option.OptionDict[option].Conflicts.Contains(option2))
 					{
 						Console.WriteLine(
 							Language.GetTextValue("Mods.AdvancedWorldGen.Conflict." + options[i] + "." + options[j]));
@@ -125,9 +125,9 @@ namespace AdvancedWorldGen.UI
 
 		public static bool ConvertIdToOption(bool showHidden, ref int id)
 		{
-			for (int i = 0; i < OptionsSelector.OptionDict.Count; i++)
+			for (int i = 0; i < Option.OptionDict.Count; i++)
 			{
-				(string key, Option option) = OptionsSelector.OptionDict.ElementAt(i);
+				(string key, Option option) = Option.OptionDict.ElementAt(i);
 				if ((!option.Hidden || showHidden) && --id == 0)
 				{
 					if (ModifiedWorld.Instance.OptionHelper.OptionsContains(key))
