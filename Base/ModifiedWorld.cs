@@ -90,7 +90,7 @@ public class ModifiedWorld : ModSystem
 		foreach (string seedHelperOption in OptionHelper.Options)
 			writer.Write(Option.OptionDict[seedHelperOption].FullName);
 
-		writer.Write(0);
+		writer.Write("");
 	}
 
 	public override void PreWorldGen()
