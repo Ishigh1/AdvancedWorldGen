@@ -28,7 +28,8 @@
             "Abort": "Avorter",
             "NoOptions": "Monde sans options",
             "CopySettings": "Copier les options",
-            "OptionButton": "Choisissez vos options pour générer le monde"
+            "OptionButton": "Choisissez vos options pour générer le monde",
+            "DownLevel": "Modifiez quelles parties de cette option vont être utilisées"
         }
     }
 }
