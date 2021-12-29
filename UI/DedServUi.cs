@@ -52,14 +52,13 @@ public static class DedServUi
 	{
 		Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.NoneSelected.Description"));
 		int id = 1;
-		bool hidden = showHidden;
-		foreach ((string key, _) in from keyValuePair in Option.OptionDict
-		         where !keyValuePair.Value.Hidden || hidden
-		         select keyValuePair)
-			Console.WriteLine(id++ + " : " + Language.GetTextValue("Mods.AdvancedWorldGen." + key) +
-			                  (ModifiedWorld.Instance.OptionHelper.OptionsContains(key)
-				                  ? Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.Selected")
-				                  : ""));
+		foreach ((_, Option? option) in Option.OptionDict)
+			if (!option.Hidden || showHidden)
+				Console.WriteLine(id++ + " : " +
+				                  Language.GetTextValue("Mods." + option.ModName + "." + option.SimplifiedName) +
+				                  (ModifiedWorld.Instance.OptionHelper.OptionsContains(option.FullName)
+					                  ? Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.Selected")
+					                  : ""));
 
 		if (!showHidden) Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.ShowHidden"));
 
