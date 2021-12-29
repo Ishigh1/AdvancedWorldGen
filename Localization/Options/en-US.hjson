@@ -15,36 +15,32 @@
                     "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
                 },
                 "Celebrationmk10": {},
-                "Crimruption": {
-                    "Drunk": "Drunk already contains Crimruption"
-                },
                 "Drunk": {
-                    "Crimruption": "Drunk already contains Crimruption"
+                    "BothOres": {},
+                    "Crimruption": {}
                 },
                 "Entropy": {},
                 "Evil": {
-                    "NotTheBees": "Not The Bees leaves nearly no corruptible tile.",
+                    "NotTheBees.JungleWorld": "Not The Bees leaves nearly no corruptible tile.",
                     "Random": "Evil only leaves a few blocks to be randomized."
                 },
                 "ForTheWorthy": {},
                 "NotTheBees": {
-                    "Evil": "Not The Bees leaves nearly no corruptible tile.",
-                    "Random": "Not The Bees only leaves a few blocks to be randomized.",
-                    "Santa": "Santa will not have much effect on a Not The Bees world.",
-                    "SmallNotTheBees": "Having Not The Bees twice doesn't do anything"
+                    "JungleWorld": {
+                        "Evil": "Not The Bees leaves nearly no corruptible tile.",
+                        "Random": "Not The Bees only leaves a few blocks to be randomized.",
+                        "Santa": "Santa will not have much effect on a Not The Bees world."
+                    }
                 },
                 "Painted": {},
                 "Random": {
                     "Evil": "Evil only leaves a few blocks to be randomized.",
-                    "NotTheBees": "Not The Bees only leaves a few blocks to be randomized.",
+                    "NotTheBees.JungleWorld": "Not The Bees only leaves a few blocks to be randomized.",
                     "Santa": "Santa only leaves a few blocks to be randomized."
                 },
                 "Santa": {
-                    "NotTheBees": "Santa will not have much effect on a Not The Bees world.",
+                    "NotTheBees.JungleWorld": "Santa will not have much effect on a Not The Bees world.",
                     "Random": "Santa only leaves a few blocks to be randomized."
-                },
-                "SmallNotTheBees": {
-                    "NotTheBees": "Having Not The Bees twice doesn't do anything"
                 },
                 "Spooky": {},
                 "StupidlyBigTemple": {
@@ -57,12 +53,16 @@
                 },
                 "TheConstant": {}
             },
-            "Crimruption": {
-                "$parentVal": "Crimruption",
-                "Description": "Both Crimson and Corruption are in this world"
-            },
             "Drunk": {
                 "$parentVal": "Drunk",
+                "BothOres": {
+                    "$parentVal": "Both Ores",
+                    "Description": "Makes so both ores are generated"
+                },
+                "Crimruption": {
+                    "$parentVal": "Crimruption",
+                    "Description": "Both Crimson and Corruption are in this world"
+                },
                 "Description": "The ninth anniversary secret seed."
             },
             "Entropy": {
@@ -79,7 +79,11 @@
             },
             "NotTheBees": {
                 "$parentVal": "Not The Bees",
-                "Description": "The Not The Bees secret seed."
+                "Description": "The Not The Bees secret seed.",
+                "JungleWorld": {
+                    "$parentVal": "Jungle World",
+                    "Description": "Makes the entire world a jungle."
+                }
             },
             "Painted": {
                 "$parentVal": "Painted",
@@ -92,10 +96,6 @@
             "Santa": {
                 "$parentVal": "Santa",
                 "Description": "A christmas themed world."
-            },
-            "SmallNotTheBees": {
-                "$parentVal": "Small Not The Bees",
-                "Description": "Like Not The Bees, but without the entire world being a jungle."
             },
             "Spooky": {
                 "$parentVal": "Spooky",

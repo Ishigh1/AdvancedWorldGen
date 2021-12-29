@@ -82,12 +82,12 @@ namespace AdvancedWorldGen.Base
 			int id;
 			while ((id = reader.ReadUInt16()) != 0) list.Add(id);
 
-			foreach (KeyValuePair<string, Option> keyValuePair in OptionsSelector.OptionDict.Where(keyValuePair =>
-				list.Remove(keyValuePair.Value.Id)))
-			{
-				OptionHelper.Options.Add(keyValuePair.Key);
-				if (list.Count == 0) break;
-			}
+			foreach ((string? optionName, Option? option) in Option.OptionDict)
+				if (list.Remove(option.Id))
+				{
+					OptionHelper.Options.Add(optionName);
+					if (list.Count == 0) break;
+				}
 
 			Main.checkHalloween();
 			Main.checkXMas();
@@ -96,14 +96,14 @@ namespace AdvancedWorldGen.Base
 		public override void NetSend(BinaryWriter writer)
 		{
 			foreach (string seedHelperOption in OptionHelper.Options)
-				writer.Write(OptionsSelector.OptionDict[seedHelperOption].Id);
+				writer.Write(Option.OptionDict[seedHelperOption].Id);
 
 			writer.Write(0);
 		}
 
 		public override void PreWorldGen()
 		{
-			Main.notTheBeesWorld = OptionsContains("NotTheBees", "SmallNotTheBees");
+			Main.notTheBeesWorld = OptionsContains("NotTheBees");
 			WorldGen.notTheBees = Main.notTheBeesWorld;
 			Main.getGoodWorld = OptionsContains("ForTheWorthy");
 			WorldGen.getGoodWorldGen = Main.getGoodWorld;
@@ -130,8 +130,16 @@ namespace AdvancedWorldGen.Base
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
 			Replacer.ReplaceGenPasses(tasks);
-			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
-			if (passIndex != -1 && OptionsContains("Crimruption"))
+			int passIndex = tasks.FindIndex(pass => pass.Name == "Shinies");
+			if (passIndex != -1)
+			{
+				tasks.Insert(passIndex++, new PassLegacy("BothOres1", BothOres.BothOres1));
+				passIndex++;
+				tasks.Insert(passIndex++, new PassLegacy("BothOres2", BothOres.BothOres2));
+			}
+			
+			passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
+			if (passIndex != -1)
 			{
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption1", Crimruption.Crimruption1));
 				passIndex++;
@@ -148,7 +156,7 @@ namespace AdvancedWorldGen.Base
 				liquidSettle = tasks[passIndex];
 
 			passIndex = tasks.FindIndex(pass => pass.Name == "Tile Cleanup");
-			if (passIndex != -1 && OptionsContains("Crimruption"))
+			if (passIndex != -1 && OptionsContains("Drunk.Crimruption"))
 			{
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption3", Crimruption.Crimruption3));
 				passIndex++;

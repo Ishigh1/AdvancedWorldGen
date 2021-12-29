@@ -29,7 +29,7 @@ namespace AdvancedWorldGen.Base
 
 		public bool OptionsContains(params string[] value)
 		{
-			return value.Any(s => Options.Contains(s));
+			return value.Any(s => Options.Contains(s) || Options.Contains(s + ".Base"));
 		}
 
 		public void OnTick()
@@ -50,7 +50,7 @@ namespace AdvancedWorldGen.Base
 					NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, 0, 1f, Main.invasionType + 3);
 			}
 
-			if (OptionsContains("Crimruption") && !WorldGen.drunkWorldGen) WorldGen.crimson = !WorldGen.crimson;
+			if (OptionsContains("Drunk.Crimruption") && !WorldGen.drunkWorldGen) WorldGen.crimson = !WorldGen.crimson;
 		}
 
 		public void OnDusk()

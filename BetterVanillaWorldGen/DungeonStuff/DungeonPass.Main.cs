@@ -645,7 +645,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff
 			}
 
 			int evilChests = 5;
-			if (WorldGen.drunkWorldGen || ModifiedWorld.OptionsContains("Crimruption"))
+			if (ModifiedWorld.OptionsContains("Drunk.Crimruption"))
 				evilChests = 6;
 
 			for (int numChest = 0; numChest < evilChests; numChest++)

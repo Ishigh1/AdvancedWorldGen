@@ -1,3 +1,4 @@
+using AdvancedWorldGen.Base;
 using AdvancedWorldGen.Helper;
 using MonoMod.Cil;
 using Terraria;
@@ -10,7 +11,7 @@ namespace AdvancedWorldGen.SpecialOptions
 	{
 		public static bool WasDrunk;
 
-		//After IL_19af : || OptionContains("Crimruption")
+		//After IL_19af : OptionContains("Drunk.Crimruption")
 		public void CrimruptionChest(ILContext il)
 		{
 			ILCursor cursor = new(il);
@@ -24,13 +25,13 @@ namespace AdvancedWorldGen.SpecialOptions
 		public void OrOptionContainsCrimruption(ILCursor cursor)
 		{
 			cursor.Remove();
-			cursor.OptionContains("Crimruption", "Drunk");
+			cursor.OptionContains("Drunk.Crimruption");
 		}
 
 		public static void Crimruption1(GenerationProgress progress, GameConfiguration configuration)
 		{
 			WasDrunk = WorldGen.drunkWorldGen;
-			WorldGen.drunkWorldGen = true;
+			WorldGen.drunkWorldGen = ModifiedWorld.OptionsContains("Drunk.Crimruption");
 		}
 
 		public static void Crimruption2(GenerationProgress progress, GameConfiguration configuration)
@@ -41,7 +42,7 @@ namespace AdvancedWorldGen.SpecialOptions
 		public static void Crimruption3(GenerationProgress progress, GameConfiguration configuration)
 		{
 			WasDrunk = WorldGen.drunkWorldGen;
-			WorldGen.drunkWorldGen = true;
+			WorldGen.drunkWorldGen = ModifiedWorld.OptionsContains("Drunk.Crimruption");
 		}
 
 		public static void Crimruption4(GenerationProgress progress, GameConfiguration configuration)

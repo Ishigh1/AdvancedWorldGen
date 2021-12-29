@@ -24,12 +24,14 @@ while True:
         displayed_name = input("displayed name : ")
         option["displayed_name"] = string.capwords(displayed_name)
 
-        option["internal_name"] = input("internal name(empty for default) : ")
-        if option["internal_name"] == "":
-            option["internal_name"] = option["displayed_name"].replace(" ", "")
+        internal_name = input("internal name(empty for default) : ")
+        if internal_name == "":
+            internal_name = option["displayed_name"].replace(" ", "")
 
         option["description"] = input("description : ")
         option["conflicts"] = {}
+        option["children"] = {}
+
         conflict = input("conflict : ")
         while conflict != "":
             conflict = string.capwords(conflict).replace(" ", "")
@@ -38,9 +40,15 @@ while True:
             conflict = input("conflict : ")
         option["hidden"] = input("hidden : ") == "y"
 
-        if option["internal_name"] in options:
-            print("option already exists")
-            break
+        parents = []
+        known_name = internal_name
+        while True:
+            parent = input("parent : ")
+            if parent == "":
+                break
+            parents.append(parent)
+            known_name = parent + "." + known_name
+
         conflicts_not_found = option["conflicts"].copy()
         for o in options:
             if o == "None":
@@ -58,9 +66,12 @@ while True:
                 print("Conflict " + not_found + " wasn't found")
             break
 
-        options[option["internal_name"]] = option
+        list_to_put = options
+        for parent in parents:
+            list_to_put = list_to_put[parent]["children"]
+        list_to_put[internal_name] = option
         for conflict in option["conflicts"]:
-            options[conflict]["conflicts"][option["internal_name"]] = option["conflicts"][conflict]
+            options[conflict]["conflicts"][known_name] = option["conflicts"][conflict]
 
         file = open("Data.json", "w")
         json.dump(options, file, indent=4, sort_keys=True)
@@ -72,9 +83,6 @@ while True:
         else:
             continue
 
-        file = open("Data.json", "r")
-        options = json.load(file)
-        file.close()
         for key in options:
             option = options[key]
             option["displayed_name"] = translate(option["displayed_name"], language)

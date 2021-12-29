@@ -12,7 +12,13 @@ namespace AdvancedWorldGen.SpecialOptions
 	{
 		public static void SmallNotTheBees(OnWorldGen.orig_NotTheBees orig)
 		{
-			if (!ModifiedWorld.OptionsContains("SmallNotTheBees")) orig();
+			if (ModifiedWorld.OptionsContains("NotTheBees.JungleWorld"))
+			{
+				bool wasNotTheBees = WorldGen.notTheBees;
+				WorldGen.notTheBees = true;
+				orig();
+				WorldGen.notTheBees = wasNotTheBees;
+			}
 		}
 
 		/*

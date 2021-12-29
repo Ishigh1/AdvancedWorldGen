@@ -15,36 +15,32 @@
                     "StupidlyHugeTemple": "Avoir deux modificateur de taille de temple ne fait rien."
                 },
                 "Celebrationmk10": {},
-                "Crimruption": {
-                    "Drunk": "Ivre contient d\u00e9j\u00e0 Carmruption."
-                },
                 "Drunk": {
-                    "Crimruption": "Ivre contient d\u00e9j\u00e0 Carmruption."
+                    "BothOres": {},
+                    "Crimruption": {}
                 },
                 "Entropy": {},
                 "Evil": {
-                    "NotTheBees": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
+                    "NotTheBees.JungleWorld": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
                     "Random": "Mal\u00e9fique ne laisse que peu de blocs \u00e0 randomiser."
                 },
                 "ForTheWorthy": {},
                 "NotTheBees": {
-                    "Evil": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
-                    "Random": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser.",
-                    "Santa": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees.",
-                    "SmallNotTheBees": "Avoir Not The Bees deux fois ne fait rien."
+                    "JungleWorld": {
+                        "Evil": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
+                        "Random": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser.",
+                        "Santa": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees."
+                    }
                 },
                 "Painted": {},
                 "Random": {
                     "Evil": "Mal\u00e9fique ne laisse que peu de blocs \u00e0 randomiser.",
-                    "NotTheBees": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser.",
+                    "NotTheBees.JungleWorld": "Not The Bees ne laisse que peu de blocs \u00e0 randomiser.",
                     "Santa": "No\u00ebl ne laisse que peu de blocs \u00c3\u00a0 randomiser."
                 },
                 "Santa": {
-                    "NotTheBees": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees.",
+                    "NotTheBees.JungleWorld": "No\u00ebl n'aura pas beaucoup d'effets avec Not The Bees.",
                     "Random": "No\u00ebl ne laisse que peu de blocs \u00c3\u00a0 randomiser."
-                },
-                "SmallNotTheBees": {
-                    "NotTheBees": "Avoir Not The Bees deux fois ne fait rien."
                 },
                 "Spooky": {},
                 "StupidlyBigTemple": {
@@ -57,12 +53,16 @@
                 },
                 "TheConstant": {}
             },
-            "Crimruption": {
-                "$parentVal": "Carmruption",
-                "Description": "Le Carmin et la Corruption sont tous eux g\u00e9n\u00e9r\u00e9s."
-            },
             "Drunk": {
                 "$parentVal": "Ivre",
+                "BothOres": {
+                    "$parentVal": "Both Ores",
+                    "Description": "Makes so both ores are generated"
+                },
+                "Crimruption": {
+                    "$parentVal": "Carmruption",
+                    "Description": "Le Carmin et la Corruption sont tous eux g\u00e9n\u00e9r\u00e9s."
+                },
                 "Description": "La graine secr\u00e8te du neuvi\u00e8me anniversaire."
             },
             "Entropy": {
@@ -79,7 +79,11 @@
             },
             "NotTheBees": {
                 "$parentVal": "Not The Bees",
-                "Description": "La graine secr\u00e8te \"Not The Bees\"."
+                "Description": "La graine secr\u00e8te \"Not The Bees\".",
+                "JungleWorld": {
+                    "$parentVal": "Monde Jungle",
+                    "Description": "Le monde entier est une jungle."
+                }
             },
             "Painted": {
                 "$parentVal": "Peint",
@@ -92,10 +96,6 @@
             "Santa": {
                 "$parentVal": "No\u00ebl",
                 "Description": "Un monde sur le th\u00e8me de No\u00ebl."
-            },
-            "SmallNotTheBees": {
-                "$parentVal": "Petit Not The Bees",
-                "Description": "Comme Not The Bees, mais sans transformer le monde entier en jungle."
             },
             "Spooky": {
                 "$parentVal": "Sinistre",
