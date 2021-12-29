@@ -25,10 +25,8 @@ public class API
 	}
 
 	/// <summary>
-	/// 
+	/// Checks if at least one of the given options is enabled
 	/// </summary>
-	/// <param name="options"></param>
-	/// <returns></returns>
 	public static bool OptionsContains(params string[] options)
 	{
 		return ModifiedWorld.Instance.OptionHelper.OptionsContains(options);
