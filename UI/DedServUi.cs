@@ -101,7 +101,7 @@ public static class DedServUi
 
 	public static void HandleDedServId(string s, ref string errorMessage, bool showHidden)
 	{
-		if (int.TryParse(s, out int id) && (id <= 0 || !ConvertIdToOption(showHidden, ref id)))
+		if (int.TryParse(s, out int id) && (id <= 0 || !ConvertIdToOption(showHidden, id)))
 		{
 			errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidId");
 		}
@@ -123,7 +123,7 @@ public static class DedServUi
 		}
 	}
 
-	public static bool ConvertIdToOption(bool showHidden, ref int id)
+	public static bool ConvertIdToOption(bool showHidden, int id)
 	{
 		for (int i = 0; i < Option.OptionDict.Count; i++)
 		{
