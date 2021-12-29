@@ -4,31 +4,30 @@ using Terraria.IO;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
-namespace AdvancedWorldGen.BetterVanillaWorldGen
+namespace AdvancedWorldGen.BetterVanillaWorldGen;
+
+public abstract class ControlledWorldGenPass : GenPass
 {
-	public abstract class ControlledWorldGenPass : GenPass
+	public GameConfiguration Configuration = null!;
+	public GenerationProgress Progress = null!;
+	public UnifiedRandom Random;
+	public VanillaInterface VanillaInterface;
+
+	protected ControlledWorldGenPass(string name, float loadWeight) : base(name, loadWeight)
 	{
-		public UnifiedRandom Random;
-		public VanillaInterface VanillaInterface;
-		public GenerationProgress Progress = null!;
-		public GameConfiguration Configuration = null!;
-		
-		protected ControlledWorldGenPass(string name, float loadWeight) : base(name, loadWeight)
-		{
-			Random = new UnifiedRandom(WorldGen.genRand.Next());
-			VanillaInterface = Replacer.VanillaInterface;
-		}
+		Random = new UnifiedRandom(WorldGen.genRand.Next());
+		VanillaInterface = Replacer.VanillaInterface;
+	}
 
-		protected abstract void ApplyPass();
+	protected abstract void ApplyPass();
 
-		protected sealed override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
-		{
-			Progress = progress;
-			Configuration = configuration;
-			UnifiedRandom random = WorldGen.genRand;
-			WorldGen._genRand = Random;
-			ApplyPass();
-			WorldGen._genRand = random;
-		}
+	protected sealed override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+	{
+		Progress = progress;
+		Configuration = configuration;
+		UnifiedRandom random = WorldGen.genRand;
+		WorldGen._genRand = Random;
+		ApplyPass();
+		WorldGen._genRand = random;
 	}
 }

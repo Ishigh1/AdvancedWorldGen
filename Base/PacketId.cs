@@ -1,8 +1,7 @@
-namespace AdvancedWorldGen.Base
+namespace AdvancedWorldGen.Base;
+
+public enum PacketId
 {
-	public enum PacketId
-	{
-		SantaWaterFreezing,
-		EntropyHappening
-	}
+	SantaWaterFreezing,
+	EntropyHappening
 }

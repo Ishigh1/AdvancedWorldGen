@@ -15,84 +15,83 @@ using OnNPC = On.Terraria.NPC;
 using OnPlayer = On.Terraria.Player;
 using ILPlayer = IL.Terraria.Player;
 
-namespace AdvancedWorldGen.SpecialOptions.Halloween
+namespace AdvancedWorldGen.SpecialOptions.Halloween;
+
+public static class HalloweenCommon
 {
-	public static class HalloweenCommon
+	public static void Setup()
 	{
-		public static void Setup()
+		OnMain.checkHalloween += MainOnCheckHalloween;
+		OnNPC.SetDefaults += HalloweenSwap;
+		OnPlayer.KillMe += SpawnGhostOnPlayerDeath;
+		OnNPC.DoesntDespawnToInactivity += NoGhostDespawn;
+		ILPlayer.UpdateGraveyard += PermanentGraveyard;
+	}
+
+	public static void MainOnCheckHalloween(OnMain.orig_checkHalloween orig)
+	{
+		if (API.OptionsContains("Spooky"))
+			Main.halloween = true;
+		else
+			orig();
+	}
+
+	public static void HalloweenSwap(OnNPC.orig_SetDefaults orig, NPC self, int type,
+		NPCSpawnParams spawnParams)
+	{
+		orig(self, type, spawnParams);
+		if (!API.OptionsContains("Spooky")) return;
+		switch (self.aiStyle)
 		{
-			OnMain.checkHalloween += MainOnCheckHalloween;
-			OnNPC.SetDefaults += HalloweenSwap;
-			OnPlayer.KillMe += SpawnGhostOnPlayerDeath;
-			OnNPC.DoesntDespawnToInactivity += NoGhostDespawn;
-			ILPlayer.UpdateGraveyard += PermanentGraveyard;
+			case 1 when Main.hardMode && self.type != HoppinJack:
+				orig(self, HoppinJack, spawnParams);
+				break;
+			case 24:
+				orig(self, Raven, spawnParams);
+				break;
 		}
 
-		public static void MainOnCheckHalloween(OnMain.orig_checkHalloween orig)
-		{
-			if (ModifiedWorld.OptionsContains("Spooky"))
-				Main.halloween = true;
-			else
-				orig();
-		}
+		self.netUpdate = true;
+	}
 
-		public static void HalloweenSwap(OnNPC.orig_SetDefaults orig, NPC self, int type,
-			NPCSpawnParams spawnParams)
-		{
-			orig(self, type, spawnParams);
-			if (!ModifiedWorld.OptionsContains("Spooky")) return;
-			switch (self.aiStyle)
-			{
-				case 1 when Main.hardMode && self.type != HoppinJack:
-					orig(self, HoppinJack, spawnParams);
-					break;
-				case 24:
-					orig(self, Raven, spawnParams);
-					break;
-			}
+	public static void SpawnGhostOnPlayerDeath(OnPlayer.orig_KillMe orig, Player self,
+		PlayerDeathReason damageSource, double dmg, int hitDirection, bool pvp)
+	{
+		orig(self, damageSource, dmg, hitDirection, pvp);
+		if (Main.netMode == NetmodeID.MultiplayerClient ||
+		    !API.OptionsContains("Spooky")) return;
+		NPC npc = Main.npc[NPC.NewNPC(0, 0, Ghost)];
+		npc.position.X = self.position.X;
+		npc.position.Y = self.position.Y;
+		npc.netUpdate = true;
+	}
 
-			self.netUpdate = true;
-		}
+	public static bool NoGhostDespawn(OnNPC.orig_DoesntDespawnToInactivity orig, NPC self)
+	{
+		if (self.type == Ghost && API.OptionsContains("Spooky")) return true;
+		return orig(self);
+	}
 
-		public static void SpawnGhostOnPlayerDeath(OnPlayer.orig_KillMe orig, Player self,
-			PlayerDeathReason damageSource, double dmg, int hitDirection, bool pvp)
-		{
-			orig(self, damageSource, dmg, hitDirection, pvp);
-			if (Main.netMode == NetmodeID.MultiplayerClient ||
-			    !ModifiedWorld.OptionsContains("Spooky")) return;
-			NPC npc = Main.npc[NPC.NewNPC(0, 0, Ghost)];
-			npc.position.X = self.position.X;
-			npc.position.Y = self.position.Y;
-			npc.netUpdate = true;
-		}
+	public static void PermanentGraveyard(ILContext il)
+	{
+		ILCursor cursor = new(il);
+		cursor.GotoNext(MoveType.After, instruction => instruction.MatchStloc(0));
 
-		public static bool NoGhostDespawn(OnNPC.orig_DoesntDespawnToInactivity orig, NPC self)
-		{
-			if (self.type == Ghost && ModifiedWorld.OptionsContains("Spooky")) return true;
-			return orig(self);
-		}
+		cursor.OptionContains("Spooky");
+		ILLabel label = cursor.DefineLabel();
 
-		public static void PermanentGraveyard(ILContext il)
-		{
-			ILCursor cursor = new(il);
-			cursor.GotoNext(MoveType.After, instruction => instruction.MatchStloc(0));
+		cursor.Emit(OpCodes.Brfalse_S, label);
+		cursor.Emit(OpCodes.Ldc_R4, 1f);
+		cursor.Emit(OpCodes.Stloc_0);
 
-			cursor.OptionContains("Spooky");
-			ILLabel label = cursor.DefineLabel();
+		cursor.MarkLabel(label);
+	}
 
-			cursor.Emit(OpCodes.Brfalse_S, label);
-			cursor.Emit(OpCodes.Ldc_R4, 1f);
-			cursor.Emit(OpCodes.Stloc_0);
-
-			cursor.MarkLabel(label);
-		}
-
-		public static void InsertTasks(List<GenPass> tasks, ref int passIndex)
-		{
-			if (!ModifiedWorld.OptionsContains("Spooky"))
-				return;
-			tasks.Insert(++passIndex, new PassLegacy("Graveyards", Graveyards.GenerateStructures));
-			tasks.Insert(++passIndex, new PassLegacy("HalloweenTraps", Traps.PlaceTraps));
-		}
+	public static void InsertTasks(List<GenPass> tasks, ref int passIndex)
+	{
+		if (!API.OptionsContains("Spooky"))
+			return;
+		tasks.Insert(++passIndex, new PassLegacy("Graveyards", Graveyards.GenerateStructures));
+		tasks.Insert(++passIndex, new PassLegacy("HalloweenTraps", Traps.PlaceTraps));
 	}
 }

@@ -2,23 +2,24 @@ using System.ComponentModel;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
-namespace AdvancedWorldGen.BetterVanillaWorldGen
+namespace AdvancedWorldGen.BetterVanillaWorldGen;
+
+public class WorldgenSettings : ModConfig
 {
-	public class WorldgenSettings : ModConfig
-	{
-		[Label("$Mods.AdvancedWorldGen.Config.FasterWorldgen.Label")]
-		[Tooltip("$Mods.AdvancedWorldGen.Config.FasterWorldgen.Tooltip")]
-		[DefaultValue(false)] public bool FasterWorldgen;
+	[Label("$Mods.AdvancedWorldGen.Config.FasterWorldgen.Label")]
+	[Tooltip("$Mods.AdvancedWorldGen.Config.FasterWorldgen.Tooltip")]
+	[DefaultValue(false)]
+	public bool FasterWorldgen;
 
-		public static bool Revamped => ModContent.GetInstance<WorldgenSettings>().FasterWorldgen;
-		
-		
-		[Label("$Mods.AdvancedWorldGen.Config.SaveOnFail.Label")]
-		[Tooltip("$Mods.AdvancedWorldGen.Config.SaveOnFail.Tooltip")]
-		[DefaultValue(false)] public bool SaveOnFail;
 
-		public static bool AbortedSaving => ModContent.GetInstance<WorldgenSettings>().SaveOnFail;
+	[Label("$Mods.AdvancedWorldGen.Config.SaveOnFail.Label")]
+	[Tooltip("$Mods.AdvancedWorldGen.Config.SaveOnFail.Tooltip")]
+	[DefaultValue(false)]
+	public bool SaveOnFail;
 
-		public override ConfigScope Mode => ConfigScope.ClientSide;
-	}
+	public static bool Revamped => ModContent.GetInstance<WorldgenSettings>().FasterWorldgen;
+
+	public static bool AbortedSaving => ModContent.GetInstance<WorldgenSettings>().SaveOnFail;
+
+	public override ConfigScope Mode => ConfigScope.ClientSide;
 }

@@ -15,53 +15,52 @@ using OnMain = On.Terraria.Main;
 using ILProjectile = IL.Terraria.Projectile;
 using ILWorldGen = IL.Terraria.WorldGen;
 
-namespace AdvancedWorldGen.Base
+namespace AdvancedWorldGen.Base;
+
+public class AdvancedWorldGenMod : Mod
 {
-	public class AdvancedWorldGenMod : Mod
+	public Crimruption Crimruption = null!;
+	public UiChanger UiChanger = null!;
+	public static AdvancedWorldGenMod Instance => ModContent.GetInstance<AdvancedWorldGenMod>();
+
+	public override void Load()
 	{
-		public Crimruption Crimruption = null!;
-		public UiChanger UiChanger = null!;
-		public static AdvancedWorldGenMod Instance => ModContent.GetInstance<AdvancedWorldGenMod>();
+		Option.InitializeDict(this);
 
-		public override void Load()
-		{
-			Option.InitializeDict(this);
-			
-			TileReplacer.Initialize();
+		TileReplacer.Initialize();
 
-			UiChanger = new UiChanger(this);
+		UiChanger = new UiChanger(this);
 
-			Crimruption = new Crimruption();
+		Crimruption = new Crimruption();
 
-			OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
-			//OnUIWorldListItem.ctor += UiChanger.CopySettingsButton; Removed until twld can be loaded in a reasonable time
+		OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
+		//OnUIWorldListItem.ctor += UiChanger.CopySettingsButton; Removed until twld can be loaded in a reasonable time
 
-			ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
-			OnWorldFile.CreateMetadata += DedServUi.DedServOptions;
+		ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
+		OnWorldFile.CreateMetadata += DedServUi.DedServOptions;
 
-			OnUIWorldLoad.ctor += UiChanger.AddCancel;
-			OnWorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
+		OnUIWorldLoad.ctor += UiChanger.AddCancel;
+		OnWorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
 
-			OnUserInterface.SetState += ModifiedWorld.Instance.ResetSettings;
+		OnUserInterface.SetState += ModifiedWorld.Instance.ResetSettings;
 
-			OnWorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
-			ILWorldGen.makeTemple += ClassicOptions.ReduceTemple;
+		OnWorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
+		ILWorldGen.makeTemple += ClassicOptions.ReduceTemple;
 
-			OnMain.UpdateTime_StartDay += ModifiedWorld.Instance.OnDawn;
-			OnMain.UpdateTime_StartNight += ModifiedWorld.Instance.OnDusk;
-			OnMain.checkXMas += SnowWorld.MainOnCheckXMas;
-			ILProjectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
+		OnMain.UpdateTime_StartDay += ModifiedWorld.Instance.OnDawn;
+		OnMain.UpdateTime_StartNight += ModifiedWorld.Instance.OnDusk;
+		OnMain.checkXMas += SnowWorld.MainOnCheckXMas;
+		ILProjectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
 
-			ILWorldGen.MakeDungeon += Crimruption.CrimruptionChest;
+		ILWorldGen.MakeDungeon += Crimruption.CrimruptionChest;
 
-			Replacer.Replace();
+		Replacer.Replace();
 
-			HalloweenCommon.Setup();
-		}
+		HalloweenCommon.Setup();
+	}
 
-		public override void HandlePacket(BinaryReader reader, int whoAmI)
-		{
-			OptionHelper.HandlePacket(reader);
-		}
+	public override void HandlePacket(BinaryReader reader, int whoAmI)
+	{
+		OptionHelper.HandlePacket(reader);
 	}
 }

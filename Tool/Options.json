@@ -1,7 +1,6 @@
 {
     "BigTemple": {
         "Hidden": true,
-        "id": 101,
         "Conflicts": [
             "StupidlyBigTemple",
             "StupidlyHugeTemple"
@@ -11,27 +10,23 @@
     },
     "Celebrationmk10": {
         "Hidden": false,
-        "id": 1,
         "Conflicts": [],
         "Name": "Celebrationmk10",
         "Children": []
     },
     "Drunk": {
         "Hidden": false,
-        "id": 2,
         "Conflicts": [],
         "Name": "Drunk",
         "Children": [
             {
                 "Hidden": false,
-                "id": 3,
                 "Conflicts": [],
                 "Name": "BothOres",
                 "Children": []
             },
             {
                 "Hidden": false,
-                "id": 4,
                 "Conflicts": [],
                 "Name": "Crimruption",
                 "Children": []
@@ -40,14 +35,12 @@
     },
     "Entropy": {
         "Hidden": true,
-        "id": 102,
         "Conflicts": [],
         "Name": "Entropy",
         "Children": []
     },
     "Evil": {
         "Hidden": false,
-        "id": 5,
         "Conflicts": [
             "NotTheBees.JungleWorld",
             "Random"
@@ -57,20 +50,17 @@
     },
     "ForTheWorthy": {
         "Hidden": false,
-        "id": 6,
         "Conflicts": [],
         "Name": "ForTheWorthy",
         "Children": []
     },
     "NotTheBees": {
         "Hidden": false,
-        "id": 7,
         "Conflicts": [],
         "Name": "NotTheBees",
         "Children": [
             {
                 "Hidden": false,
-                "id": 8,
                 "Conflicts": [
                     "Evil",
                     "Random",
@@ -83,14 +73,12 @@
     },
     "Painted": {
         "Hidden": false,
-        "id": 9,
         "Conflicts": [],
         "Name": "Painted",
         "Children": []
     },
     "Random": {
         "Hidden": false,
-        "id": 10,
         "Conflicts": [
             "Evil",
             "NotTheBees.JungleWorld",
@@ -101,7 +89,6 @@
     },
     "Santa": {
         "Hidden": false,
-        "id": 11,
         "Conflicts": [
             "NotTheBees.JungleWorld",
             "Random"
@@ -111,14 +98,12 @@
     },
     "Spooky": {
         "Hidden": true,
-        "id": 103,
         "Conflicts": [],
         "Name": "Spooky",
         "Children": []
     },
     "StupidlyBigTemple": {
         "Hidden": true,
-        "id": 104,
         "Conflicts": [
             "BigTemple",
             "StupidlyHugeTemple"
@@ -128,7 +113,6 @@
     },
     "StupidlyHugeTemple": {
         "Hidden": true,
-        "id": 105,
         "Conflicts": [
             "BigTemple",
             "StupidlyBigTemple"
@@ -138,7 +122,6 @@
     },
     "TheConstant": {
         "Hidden": false,
-        "id": 12,
         "Conflicts": [],
         "Name": "TheConstant",
         "Children": []

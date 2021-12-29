@@ -10,92 +10,90 @@ using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader;
 
-namespace AdvancedWorldGen.Base
+namespace AdvancedWorldGen.Base;
+
+public class OptionHelper
 {
-	public class OptionHelper
+	public HashSet<string> Options;
+	public SnowWorld SnowWorld;
+	public WorldSettings WorldSettings;
+
+	public OptionHelper()
 	{
-		public HashSet<string> Options;
-		public SnowWorld SnowWorld;
-		public WorldSettings WorldSettings;
+		Options = new HashSet<string>();
+		WorldSettings = new WorldSettings();
+		SnowWorld = new SnowWorld(this);
+	}
 
-		public OptionHelper()
+	public bool OptionsContains(params string[] options)
+	{
+		return options.Any(option => Options.Contains(option) || Options.Contains(option + ".Base"));
+	}
+
+	public void OnTick()
+	{
+		SnowWorld.FallSnow();
+	}
+
+	public void OnDawn()
+	{
+		Entropy.StartEntropy(this);
+		if (OptionsContains("Santa") &&
+		    Main.hardMode && Main.invasionType == 0 && (!NPC.downedFrost && Main.rand.NextBool(20) ||
+		                                                NPC.downedFrost && Main.rand.NextBool(60)))
 		{
-			Options = new HashSet<string>();
-			WorldSettings = new WorldSettings();
-			SnowWorld = new SnowWorld(this);
+			Main.invasionDelay = 0;
+			Main.StartInvasion(InvasionID.SnowLegion);
+			if (Main.netMode == NetmodeID.Server)
+				NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, 0, 1f, Main.invasionType + 3);
 		}
 
-		public bool OptionsContains(params string[] value)
-		{
-			return value.Any(s => Options.Contains(s) || Options.Contains(s + ".Base"));
-		}
+		if (OptionsContains("Drunk.Crimruption") && !WorldGen.drunkWorldGen) WorldGen.crimson = !WorldGen.crimson;
+	}
 
-		public void OnTick()
+	public void OnDusk()
+	{
+		Entropy.StartEntropy(this);
+		if (OptionsContains("Santa") && NPC.downedFishron &&
+		    (!NPC.downedChristmasIceQueen && Main.rand.NextBool(20) ||
+		     NPC.downedChristmasIceQueen && Main.rand.NextBool(60)))
 		{
-			SnowWorld.FallSnow();
-		}
-
-		public void OnDawn()
-		{
-			Entropy.StartEntropy(this);
-			if (OptionsContains("Santa") &&
-			    Main.hardMode && Main.invasionType == 0 && (!NPC.downedFrost && Main.rand.NextBool(20) ||
-			                                                NPC.downedFrost && Main.rand.NextBool(60)))
+			if (Main.netMode == NetmodeID.SinglePlayer)
 			{
-				Main.invasionDelay = 0;
-				Main.StartInvasion(InvasionID.SnowLegion);
-				if (Main.netMode == NetmodeID.Server)
-					NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, 0, 1f, Main.invasionType + 3);
+				Main.NewText(Language.GetTextValue("LegacyMisc.34"), 50, 255, 130);
+				Main.startSnowMoon();
 			}
-
-			if (OptionsContains("Drunk.Crimruption") && !WorldGen.drunkWorldGen) WorldGen.crimson = !WorldGen.crimson;
-		}
-
-		public void OnDusk()
-		{
-			Entropy.StartEntropy(this);
-			if (OptionsContains("Santa") && NPC.downedFishron &&
-			    (!NPC.downedChristmasIceQueen && Main.rand.NextBool(20) ||
-			     NPC.downedChristmasIceQueen && Main.rand.NextBool(60)))
+			else
 			{
-				if (Main.netMode == NetmodeID.SinglePlayer)
-				{
-					Main.NewText(Language.GetTextValue("LegacyMisc.34"), 50, 255, 130);
-					Main.startSnowMoon();
-				}
-				else
-				{
-					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.34"),
-						new Color(50, 255, 130));
+				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.34"),
+					new Color(50, 255, 130));
 
-					Main.startSnowMoon();
-					NetMessage.SendData(MessageID.WorldData);
-					NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, 0, 1f, 1f, 1f);
-				}
+				Main.startSnowMoon();
+				NetMessage.SendData(MessageID.WorldData);
+				NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, 0, 1f, 1f, 1f);
 			}
 		}
+	}
 
-		public static void HandlePacket(BinaryReader reader)
+	public static void HandlePacket(BinaryReader reader)
+	{
+		PacketId packetId = (PacketId)reader.ReadByte();
+		switch (packetId)
 		{
-			PacketId packetId = (PacketId) reader.ReadByte();
-			switch (packetId)
-			{
-				case PacketId.SantaWaterFreezing:
-					int x = reader.Read();
-					int y = reader.Read();
-					Tile tile = Main.tile[x, y];
-					tile.LiquidAmount = 0;
-					tile.IsActive = true;
-					tile.type = TileID.BreakableIce;
-					break;
-				case PacketId.EntropyHappening:
-					new Entropy(500, reader).TreatTiles();
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(packetId));
-			}
+			case PacketId.SantaWaterFreezing:
+				int x = reader.Read();
+				int y = reader.Read();
+				Tile tile = Main.tile[x, y];
+				tile.LiquidAmount = 0;
+				tile.IsActive = true;
+				tile.type = TileID.BreakableIce;
+				break;
+			case PacketId.EntropyHappening:
+				new Entropy(500, reader).TreatTiles();
+				break;
+			default:
+				throw new ArgumentOutOfRangeException(nameof(packetId));
 		}
 	}
 }

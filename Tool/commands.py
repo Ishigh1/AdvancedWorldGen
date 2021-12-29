@@ -2,8 +2,6 @@ import json
 
 
 def make(language):
-    global current_hidden_id
-    global current_id
     file = open("Data.json", "r")
     options = json.load(file)
     file.close()
@@ -20,8 +18,6 @@ def make(language):
     file.close()
 
     json_text = {}
-    current_id = 1
-    current_hidden_id = 101
     make_options(json_text, options)
 
     file = open("Options.json", "w")
@@ -30,21 +26,13 @@ def make(language):
 
 
 def make_options(json_text, options):
-    global current_hidden_id
-    global current_id
     for key in options:
         option = options[key]
-        o = {}
-        if option["hidden"]:
-            o["Hidden"] = True
-            o["id"] = current_hidden_id
-            current_hidden_id += 1
-        else:
-            o["Hidden"] = False
-            o["id"] = current_id
-            current_id += 1
-        o["Conflicts"] = list(option["conflicts"].keys())
-        o["Name"] = key
+        o = {
+            "Hidden": option["hidden"],
+            "Conflicts": list(option["conflicts"].keys()),
+            "Name": key
+        }
         children = []
         make_options(children, option["children"])
         o["Children"] = children

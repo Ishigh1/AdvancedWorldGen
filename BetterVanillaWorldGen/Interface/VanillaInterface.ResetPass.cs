@@ -3,69 +3,68 @@ using AdvancedWorldGen.Helper;
 using Terraria.GameContent.Generation;
 using Terraria.WorldBuilding;
 
-namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
+namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface;
+
+public partial class VanillaInterface
 {
-	public partial class VanillaInterface
+	public readonly VanillaAccessor<int> Copper;
+	public readonly VanillaAccessor<int> DungeonLocation;
+
+	public readonly VanillaAccessor<int> DungeonSide;
+	public readonly VanillaAccessor<int> Gold;
+	public readonly VanillaAccessor<int> Iron;
+
+	public readonly VanillaAccessor<int> JungleOriginX;
+
+	public readonly VanillaAccessor<int> LeftBeachEnd;
+	public readonly VanillaAccessor<int> RightBeachStart;
+
+	public readonly VanillaAccessor<int> ShellStartXLeft;
+	public readonly VanillaAccessor<int> ShellStartXRight;
+	public readonly VanillaAccessor<int> ShellStartYLeft;
+	public readonly VanillaAccessor<int> ShellStartYRight;
+	public readonly VanillaAccessor<int> Silver;
+	public readonly VanillaAccessor<int> SnowBottom;
+	public readonly VanillaAccessor<int[]> SnowMaxX;
+	public readonly VanillaAccessor<int[]> SnowMinX;
+
+	public readonly VanillaAccessor<int> SnowOriginLeft;
+	public readonly VanillaAccessor<int> SnowOriginRight;
+	public readonly VanillaAccessor<int> SnowTop;
+
+	public VanillaInterface(GenPass vanillaResetPass)
 	{
-		public readonly VanillaAccessor<int> Copper;
-		public readonly VanillaAccessor<int> Iron;
-		public readonly VanillaAccessor<int> Silver;
-		public readonly VanillaAccessor<int> Gold;
+		VanillaAccessor<WorldGenLegacyMethod> methodAccessor = new(typeof(PassLegacy), "_method", vanillaResetPass);
+		WorldGenLegacyMethod method = methodAccessor.Value;
 
-		public readonly VanillaAccessor<int> DungeonSide;
-		public readonly VanillaAccessor<int> DungeonLocation;
+		VanillaAccessor<object> dataAccessor = new(method.GetType(), "_target", method);
+		object vanillaData = dataAccessor.Value;
 
-		public readonly VanillaAccessor<int> JungleOriginX;
+		FieldInfo[] fieldInfos = vanillaData.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
 
-		public readonly VanillaAccessor<int> SnowOriginLeft;
-		public readonly VanillaAccessor<int> SnowOriginRight;
-		public readonly VanillaAccessor<int[]> SnowMinX;
-		public readonly VanillaAccessor<int[]> SnowMaxX;
-		public readonly VanillaAccessor<int> SnowTop;
-		public readonly VanillaAccessor<int> SnowBottom;
+		Copper = new VanillaAccessor<int>(fieldInfos, "copper", vanillaData);
+		Iron = new VanillaAccessor<int>(fieldInfos, "iron", vanillaData);
+		Silver = new VanillaAccessor<int>(fieldInfos, "silver", vanillaData);
+		Gold = new VanillaAccessor<int>(fieldInfos, "gold", vanillaData);
 
-		public readonly VanillaAccessor<int> LeftBeachEnd;
-		public readonly VanillaAccessor<int> RightBeachStart;
+		DungeonSide = new VanillaAccessor<int>(fieldInfos, "dungeonSide", vanillaData);
+		DungeonLocation = new VanillaAccessor<int>(fieldInfos, "dungeonLocation", vanillaData);
 
-		public readonly VanillaAccessor<int> ShellStartXLeft;
-		public readonly VanillaAccessor<int> ShellStartYLeft;
-		public readonly VanillaAccessor<int> ShellStartXRight;
-		public readonly VanillaAccessor<int> ShellStartYRight;
+		JungleOriginX = new VanillaAccessor<int>(fieldInfos, "jungleOriginX", vanillaData);
 
-		public VanillaInterface(GenPass vanillaResetPass)
-		{
-			VanillaAccessor<WorldGenLegacyMethod> methodAccessor = new(typeof(PassLegacy), "_method", vanillaResetPass);
-			WorldGenLegacyMethod method = methodAccessor.Value;
+		SnowOriginLeft = new VanillaAccessor<int>(fieldInfos, "snowOriginLeft", vanillaData);
+		SnowOriginRight = new VanillaAccessor<int>(fieldInfos, "snowOriginRight", vanillaData);
+		SnowMinX = new VanillaAccessor<int[]>(fieldInfos, "snowMinX", vanillaData);
+		SnowMaxX = new VanillaAccessor<int[]>(fieldInfos, "snowMaxX", vanillaData);
+		SnowTop = new VanillaAccessor<int>(fieldInfos, "snowTop", vanillaData);
+		SnowBottom = new VanillaAccessor<int>(fieldInfos, "snowBottom", vanillaData);
 
-			VanillaAccessor<object> dataAccessor = new(method.GetType(), "_target", method);
-			object vanillaData = dataAccessor.Value;
+		LeftBeachEnd = new VanillaAccessor<int>(fieldInfos, "leftBeachEnd", vanillaData);
+		RightBeachStart = new VanillaAccessor<int>(fieldInfos, "rightBeachStart", vanillaData);
 
-			FieldInfo[] fieldInfos = vanillaData.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
-
-			Copper = new VanillaAccessor<int>(fieldInfos, "copper", vanillaData);
-			Iron = new VanillaAccessor<int>(fieldInfos, "iron", vanillaData);
-			Silver = new VanillaAccessor<int>(fieldInfos, "silver", vanillaData);
-			Gold = new VanillaAccessor<int>(fieldInfos, "gold", vanillaData);
-
-			DungeonSide = new VanillaAccessor<int>(fieldInfos, "dungeonSide", vanillaData);
-			DungeonLocation = new VanillaAccessor<int>(fieldInfos, "dungeonLocation", vanillaData);
-
-			JungleOriginX = new VanillaAccessor<int>(fieldInfos, "jungleOriginX", vanillaData);
-
-			SnowOriginLeft = new VanillaAccessor<int>(fieldInfos, "snowOriginLeft", vanillaData);
-			SnowOriginRight = new VanillaAccessor<int>(fieldInfos, "snowOriginRight", vanillaData);
-			SnowMinX = new VanillaAccessor<int[]>(fieldInfos, "snowMinX", vanillaData);
-			SnowMaxX = new VanillaAccessor<int[]>(fieldInfos, "snowMaxX", vanillaData);
-			SnowTop = new VanillaAccessor<int>(fieldInfos, "snowTop", vanillaData);
-			SnowBottom = new VanillaAccessor<int>(fieldInfos, "snowBottom", vanillaData);
-
-			LeftBeachEnd = new VanillaAccessor<int>(fieldInfos, "leftBeachEnd", vanillaData);
-			RightBeachStart = new VanillaAccessor<int>(fieldInfos, "rightBeachStart", vanillaData);
-
-			ShellStartXLeft = new VanillaAccessor<int>(fieldInfos, "shellStartXLeft", vanillaData);
-			ShellStartYLeft = new VanillaAccessor<int>(fieldInfos, "shellStartYLeft", vanillaData);
-			ShellStartXRight = new VanillaAccessor<int>(fieldInfos, "shellStartXRight", vanillaData);
-			ShellStartYRight = new VanillaAccessor<int>(fieldInfos, "shellStartYRight", vanillaData);
-		}
+		ShellStartXLeft = new VanillaAccessor<int>(fieldInfos, "shellStartXLeft", vanillaData);
+		ShellStartYLeft = new VanillaAccessor<int>(fieldInfos, "shellStartYLeft", vanillaData);
+		ShellStartXRight = new VanillaAccessor<int>(fieldInfos, "shellStartXRight", vanillaData);
+		ShellStartYRight = new VanillaAccessor<int>(fieldInfos, "shellStartYRight", vanillaData);
 	}
 }

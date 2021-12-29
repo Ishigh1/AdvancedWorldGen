@@ -3,29 +3,28 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace AdvancedWorldGen.CustomSized
+namespace AdvancedWorldGen.CustomSized;
+
+public class OverhauledWorld : ModSystem
 {
-	public class OverhauledWorld : ModSystem
+	public override void LoadWorldData(TagCompound tag)
 	{
-		public override void LoadWorldData(TagCompound tag)
-		{
-			if (tag.TryGetValue("ocean", out int value)) WorldGen.oceanDistance = value;
-			if (tag.TryGetValue("beach", out value)) WorldGen.beachDistance = value;
-		}
+		if (tag.TryGetValue("ocean", out int value)) WorldGen.oceanDistance = value;
+		if (tag.TryGetValue("beach", out value)) WorldGen.beachDistance = value;
+	}
 
-		public override void SaveWorldData(TagCompound tagCompound)
+	public override void SaveWorldData(TagCompound tagCompound)
+	{
+		if (Main.maxTilesX < 2400)
 		{
-			if (Main.maxTilesX < 2400)
-			{
-				tagCompound["ocean"] = WorldGen.oceanDistance;
-				tagCompound["beach"] = WorldGen.beachDistance;
-			}
+			tagCompound["ocean"] = WorldGen.oceanDistance;
+			tagCompound["beach"] = WorldGen.beachDistance;
 		}
+	}
 
-		public override void OnWorldUnload()
-		{
-			WorldGen.oceanDistance = 250;
-			WorldGen.beachDistance = 380;
-		}
+	public override void OnWorldUnload()
+	{
+		WorldGen.oceanDistance = 250;
+		WorldGen.beachDistance = 380;
 	}
 }

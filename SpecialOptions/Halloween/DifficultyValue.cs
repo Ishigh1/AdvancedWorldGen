@@ -1,29 +1,28 @@
 using Terraria;
 
-namespace AdvancedWorldGen.SpecialOptions.Halloween
+namespace AdvancedWorldGen.SpecialOptions.Halloween;
+
+public class DifficultyValue<T>
 {
-	public class DifficultyValue<T>
+	public T ExpertMode;
+	public T MasterMode;
+	public T NormalMode;
+
+	public DifficultyValue(T normalMode, T expertMode, T masterMode)
 	{
-		public T NormalMode;
-		public T ExpertMode;
-		public T MasterMode;
+		NormalMode = normalMode;
+		ExpertMode = expertMode;
+		MasterMode = masterMode;
+	}
 
-		public DifficultyValue(T normalMode, T expertMode, T masterMode)
-		{
-			NormalMode = normalMode;
-			ExpertMode = expertMode;
-			MasterMode = masterMode;
-		}
+	public T GetCurrentValue()
+	{
+		if (Main.masterMode)
+			return MasterMode;
 
-		public T GetCurrentValue()
-		{
-			if (Main.masterMode)
-				return MasterMode;
+		if (Main.expertMode)
+			return ExpertMode;
 
-			if (Main.expertMode)
-				return ExpertMode;
-
-			return NormalMode;
-		}
+		return NormalMode;
 	}
 }

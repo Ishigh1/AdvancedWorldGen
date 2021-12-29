@@ -1,8 +1,7 @@
-namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface
+namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface;
+
+public partial class VanillaInterface
 {
-	public partial class VanillaInterface
-	{
-		public int JungleMinX;
-		public int JungleMaxX;
-	}
+	public int JungleMaxX;
+	public int JungleMinX;
 }
