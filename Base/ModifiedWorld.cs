@@ -130,8 +130,16 @@ namespace AdvancedWorldGen.Base
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
 			Replacer.ReplaceGenPasses(tasks);
-			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
-			if (passIndex != -1 && OptionsContains("Crimruption"))
+			int passIndex = tasks.FindIndex(pass => pass.Name == "Shinies");
+			if (passIndex != -1)
+			{
+				tasks.Insert(passIndex++, new PassLegacy("BothOres1", BothOres.BothOres1));
+				passIndex++;
+				tasks.Insert(passIndex++, new PassLegacy("BothOres2", BothOres.BothOres2));
+			}
+			
+			passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
+			if (passIndex != -1)
 			{
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption1", Crimruption.Crimruption1));
 				passIndex++;
@@ -148,7 +156,7 @@ namespace AdvancedWorldGen.Base
 				liquidSettle = tasks[passIndex];
 
 			passIndex = tasks.FindIndex(pass => pass.Name == "Tile Cleanup");
-			if (passIndex != -1 && OptionsContains("Crimruption"))
+			if (passIndex != -1 && OptionsContains("Drunk.Crimruption"))
 			{
 				tasks.Insert(passIndex++, new PassLegacy("Crimruption3", Crimruption.Crimruption3));
 				passIndex++;

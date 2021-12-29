@@ -165,39 +165,42 @@ namespace AdvancedWorldGen.UI
 			float currentHeight = 50;
 			uiList.Clear();
 			bool isLookingAtSomething = false;
-
-			GroupOptionButton<bool> importButton = new(true,
-				Language.GetText("Mods.AdvancedWorldGen.Import"),
-				Language.GetText("Mods.AdvancedWorldGen.Import.Description"), Color.White, null)
-			{
-				HAlign = 0.5f,
-				Width = new StyleDimension(0f, 1f),
-				Height = new StyleDimension(40f, 0f),
-				Top = new StyleDimension(currentHeight, 0f)
-			};
-			currentHeight += 40;
-			uiList.Add(importButton);
-
-			importButton.SetCurrentOption(false);
-			importButton.OnMouseDown += delegate
-			{
-				string optionText = Platform.Get<IClipboard>().Value;
-				HashSet<string> options = TextToOptions(optionText);
-				if (options.Count != 0)
-				{
-					SoundEngine.PlaySound(SoundID.MenuOpen);
-					ModifiedWorld.Instance.OptionHelper.Options = options;
-					CreateOptionList(uiDescription, uiList, parent, showHidden);
-				}
-			};
-			importButton.OnMouseOver += delegate { uiDescription.SetText(importButton.Description); };
-
+			
 			void SetDefaultDescription(UIMouseEvent evt, UIElement listeningElement)
 			{
 				uiDescription.SetText(Description);
 			}
+			
+			if (parent == null)
+			{
+				GroupOptionButton<bool> importButton = new(true,
+					Language.GetText("Mods.AdvancedWorldGen.Import"),
+					Language.GetText("Mods.AdvancedWorldGen.Import.Description"), Color.White, null)
+				{
+					HAlign = 0.5f,
+					Width = new StyleDimension(0f, 1f),
+					Height = new StyleDimension(40f, 0f),
+					Top = new StyleDimension(currentHeight, 0f)
+				};
+				currentHeight += 40;
+				uiList.Add(importButton);
 
-			importButton.OnMouseOut += SetDefaultDescription;
+				importButton.SetCurrentOption(false);
+				importButton.OnMouseDown += delegate
+				{
+					string optionText = Platform.Get<IClipboard>().Value;
+					HashSet<string> options = TextToOptions(optionText);
+					if (options.Count != 0)
+					{
+						SoundEngine.PlaySound(SoundID.MenuOpen);
+						ModifiedWorld.Instance.OptionHelper.Options = options;
+						CreateOptionList(uiDescription, uiList, parent, showHidden);
+					}
+				};
+				importButton.OnMouseOver += delegate { uiDescription.SetText(importButton.Description); };
+
+				importButton.OnMouseOut += SetDefaultDescription;
+			}
 
 			foreach ((_, Option? option) in Option.OptionDict)
 			{

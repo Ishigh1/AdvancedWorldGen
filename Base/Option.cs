@@ -36,6 +36,8 @@ namespace AdvancedWorldGen.Base
 			Enabled = false;
 			if (Children.Count == 0)
 				ModifiedWorld.Instance.OptionHelper.Options.Remove(FullName);
+			else
+				foreach (Option child in Children) child.Disable();
 			if (Parent?.Children.TrueForAll(child => !child.Enabled) == true)
 				Parent.Disable();
 		}

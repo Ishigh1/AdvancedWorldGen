@@ -12,7 +12,7 @@ namespace AdvancedWorldGen.SpecialOptions
 		public static void CorruptWorld(GenerationProgress progress)
 		{
 			progress.Message = Language.GetTextValue("Mods.AdvancedWorldGen.WorldGenMessage.Evil");
-			bool isDrunk = WorldGen.drunkWorldGen || ModifiedWorld.OptionsContains("Crimruption");
+			bool isDrunk = WorldGen.drunkWorldGen || ModifiedWorld.OptionsContains("Drunk.Crimruption");
 			bool corruptOnLeft = isDrunk;
 			if (isDrunk)
 				for (int x = WorldGen.beachDistance; x < Main.maxTilesX - WorldGen.beachDistance; x++)

@@ -40,9 +40,15 @@ while True:
             conflict = input("conflict : ")
         option["hidden"] = input("hidden : ") == "y"
 
-        if internal_name in options:
-            print("option already exists")
-            break
+        parents = []
+        known_name = internal_name
+        while True:
+            parent = input("parent : ")
+            if parent == "":
+                break
+            parents.append(parent)
+            known_name = parent + "." + known_name
+
         conflicts_not_found = option["conflicts"].copy()
         for o in options:
             if o == "None":
@@ -60,9 +66,12 @@ while True:
                 print("Conflict " + not_found + " wasn't found")
             break
 
-        options[internal_name] = option
+        list_to_put = options
+        for parent in parents:
+            list_to_put = list_to_put[parent]["children"]
+        list_to_put[internal_name] = option
         for conflict in option["conflicts"]:
-            options[conflict]["conflicts"][internal_name] = option["conflicts"][conflict]
+            options[conflict]["conflicts"][known_name] = option["conflicts"][conflict]
 
         file = open("Data.json", "w")
         json.dump(options, file, indent=4, sort_keys=True)

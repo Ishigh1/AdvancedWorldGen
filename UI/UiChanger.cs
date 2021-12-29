@@ -176,7 +176,7 @@ namespace AdvancedWorldGen.UI
 			uiText.Left.Pixels += 24f;
 			self.Append(copyOptionButton);
 
-			data.DrunkWorld = data.DrunkWorld || options.Contains("Crimruption");
+			data.DrunkWorld = data.DrunkWorld || options.Contains("Drunk.Crimruption");
 		}
 
 		public static List<string> GetOptionsFromData(WorldFileData data)

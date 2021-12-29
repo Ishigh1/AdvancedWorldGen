@@ -15,11 +15,9 @@
                     "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
                 },
                 "Celebrationmk10": {},
-                "Crimruption": {
-                    "Drunk": "Drunk already contains Crimruption"
-                },
                 "Drunk": {
-                    "Crimruption": "Drunk already contains Crimruption"
+                    "BothOres": {},
+                    "Crimruption": {}
                 },
                 "Entropy": {},
                 "Evil": {
@@ -55,12 +53,16 @@
                 },
                 "TheConstant": {}
             },
-            "Crimruption": {
-                "$parentVal": "Crimruption",
-                "Description": "Both Crimson and Corruption are in this world"
-            },
             "Drunk": {
                 "$parentVal": "Drunk",
+                "BothOres": {
+                    "$parentVal": "Both Ores",
+                    "Description": "Makes so both ores are generated"
+                },
+                "Crimruption": {
+                    "$parentVal": "Crimruption",
+                    "Description": "Both Crimson and Corruption are in this world"
+                },
                 "Description": "The ninth anniversary secret seed."
             },
             "Entropy": {

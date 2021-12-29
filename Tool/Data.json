@@ -34,32 +34,30 @@
         },
         "hidden": false
     },
-    "Crimruption": {
-        "children": {},
-        "conflicts": {
-            "Drunk": {
-                "en-US": "Drunk already contains Crimruption",
-                "fr-FR": "Ivre contient d\u00e9j\u00e0 Carmruption."
-            }
-        },
-        "description": {
-            "en-US": "Both Crimson and Corruption are in this world",
-            "fr-FR": "Le Carmin et la Corruption sont tous eux g\u00e9n\u00e9r\u00e9s."
-        },
-        "displayed_name": {
-            "en-US": "Crimruption",
-            "fr-FR": "Carmruption"
-        },
-        "hidden": false
-    },
     "Drunk": {
-        "children": {},
-        "conflicts": {
+        "children": {
+        "BothOres": {
+            "children": {},
+            "conflicts": {},
+            "description": "Makes so both ores are generated",
+            "displayed_name": "Both Ores",
+            "hidden": false
+        },
             "Crimruption": {
-                "en-US": "Drunk already contains Crimruption",
-                "fr-FR": "Ivre contient d\u00e9j\u00e0 Carmruption."
+                "children": {},
+                "conflicts": {},
+                "description": {
+                    "en-US": "Both Crimson and Corruption are in this world",
+                    "fr-FR": "Le Carmin et la Corruption sont tous eux g\u00e9n\u00e9r\u00e9s."
+                },
+                "displayed_name": {
+                    "en-US": "Crimruption",
+                    "fr-FR": "Carmruption"
+                },
+                "hidden": false
             }
         },
+        "conflicts": {},
         "description": {
             "en-US": "The ninth anniversary secret seed.",
             "fr-FR": "La graine secr\u00e8te du neuvi\u00e8me anniversaire."

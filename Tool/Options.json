@@ -16,23 +16,27 @@
         "Name": "Celebrationmk10",
         "Children": []
     },
-    "Crimruption": {
-        "Hidden": false,
-        "id": 2,
-        "Conflicts": [
-            "Drunk"
-        ],
-        "Name": "Crimruption",
-        "Children": []
-    },
     "Drunk": {
         "Hidden": false,
-        "id": 3,
-        "Conflicts": [
-            "Crimruption"
-        ],
+        "id": 2,
+        "Conflicts": [],
         "Name": "Drunk",
-        "Children": []
+        "Children": [
+            {
+                "Hidden": false,
+                "id": 3,
+                "Conflicts": [],
+                "Name": "BothOres",
+                "Children": []
+            },
+            {
+                "Hidden": false,
+                "id": 4,
+                "Conflicts": [],
+                "Name": "Crimruption",
+                "Children": []
+            }
+        ]
     },
     "Entropy": {
         "Hidden": true,
@@ -43,7 +47,7 @@
     },
     "Evil": {
         "Hidden": false,
-        "id": 4,
+        "id": 5,
         "Conflicts": [
             "NotTheBees.JungleWorld",
             "Random"
@@ -53,20 +57,20 @@
     },
     "ForTheWorthy": {
         "Hidden": false,
-        "id": 5,
+        "id": 6,
         "Conflicts": [],
         "Name": "ForTheWorthy",
         "Children": []
     },
     "NotTheBees": {
         "Hidden": false,
-        "id": 6,
+        "id": 7,
         "Conflicts": [],
         "Name": "NotTheBees",
         "Children": [
             {
                 "Hidden": false,
-                "id": 7,
+                "id": 8,
                 "Conflicts": [
                     "Evil",
                     "Random",
@@ -79,14 +83,14 @@
     },
     "Painted": {
         "Hidden": false,
-        "id": 8,
+        "id": 9,
         "Conflicts": [],
         "Name": "Painted",
         "Children": []
     },
     "Random": {
         "Hidden": false,
-        "id": 9,
+        "id": 10,
         "Conflicts": [
             "Evil",
             "NotTheBees.JungleWorld",
@@ -97,7 +101,7 @@
     },
     "Santa": {
         "Hidden": false,
-        "id": 10,
+        "id": 11,
         "Conflicts": [
             "NotTheBees.JungleWorld",
             "Random"
@@ -134,7 +138,7 @@
     },
     "TheConstant": {
         "Hidden": false,
-        "id": 11,
+        "id": 12,
         "Conflicts": [],
         "Name": "TheConstant",
         "Children": []
