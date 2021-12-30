@@ -1,19 +1,11 @@
 {
     "Mods": {
         "AdvancedWorldGen": {
-            "BigTemple": {
-                "$parentVal": "Grand Temple",
-                "Description": "Rend le temple plus grand."
-            },
             "Celebrationmk10": {
                 "$parentVal": "Celebration Mk 10",
                 "Description": "La graine secr\u00c3\u00a8te du dixi\u00e8me anniversaire."
             },
             "Conflict": {
-                "BigTemple": {
-                    "StupidlyBigTemple": "Avoir deux modificateur de taille de temple ne fait rien.",
-                    "StupidlyHugeTemple": "Avoir deux modificateur de taille de temple ne fait rien."
-                },
                 "Celebrationmk10": {},
                 "Drunk": {
                     "BothOres": {},
@@ -43,14 +35,6 @@
                     "Random": "No\u00ebl ne laisse que peu de blocs \u00c3\u00a0 randomiser."
                 },
                 "Spooky": {},
-                "StupidlyBigTemple": {
-                    "BigTemple": "Avoir deux modificateur de taille de temple ne fait rien.",
-                    "StupidlyHugeTemple": "Avoir deux modificateur de taille de temple ne fait rien."
-                },
-                "StupidlyHugeTemple": {
-                    "BigTemple": "Avoir deux modificateur de taille de temple ne fait rien.",
-                    "StupidlyBigTemple": "Avoir deux modificateur de taille de temple ne fait rien."
-                },
                 "TheConstant": {}
             },
             "Drunk": {
@@ -100,14 +84,6 @@
             "Spooky": {
                 "$parentVal": "Sinistre",
                 "Description": "Un monde sur le th\u00e8me d'Halloween."
-            },
-            "StupidlyBigTemple": {
-                "$parentVal": "Temple Stupidement Grand",
-                "Description": "Rend le temple vraiment grand."
-            },
-            "StupidlyHugeTemple": {
-                "$parentVal": "Temple Stupidement Gigantesque",
-                "Description": "Rend le temple aussi grand que la jungle."
             },
             "TheConstant": {
                 "$parentVal": "Le Constant",

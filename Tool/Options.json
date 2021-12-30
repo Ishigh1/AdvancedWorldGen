@@ -1,13 +1,4 @@
 {
-    "BigTemple": {
-        "Hidden": true,
-        "Conflicts": [
-            "StupidlyBigTemple",
-            "StupidlyHugeTemple"
-        ],
-        "Name": "BigTemple",
-        "Children": []
-    },
     "Celebrationmk10": {
         "Hidden": false,
         "Conflicts": [],
@@ -100,24 +91,6 @@
         "Hidden": true,
         "Conflicts": [],
         "Name": "Spooky",
-        "Children": []
-    },
-    "StupidlyBigTemple": {
-        "Hidden": true,
-        "Conflicts": [
-            "BigTemple",
-            "StupidlyHugeTemple"
-        ],
-        "Name": "StupidlyBigTemple",
-        "Children": []
-    },
-    "StupidlyHugeTemple": {
-        "Hidden": true,
-        "Conflicts": [
-            "BigTemple",
-            "StupidlyBigTemple"
-        ],
-        "Name": "StupidlyHugeTemple",
         "Children": []
     },
     "TheConstant": {

@@ -1,26 +1,4 @@
 {
-    "BigTemple": {
-        "children": {},
-        "conflicts": {
-            "StupidlyBigTemple": {
-                "en-US": "Having a temple size modifier twice doesn't do anything.",
-                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
-            },
-            "StupidlyHugeTemple": {
-                "en-US": "Having a temple size modifier twice doesn't do anything.",
-                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
-            }
-        },
-        "description": {
-            "en-US": "Makes the temple bigger.",
-            "fr-FR": "Rend le temple plus grand."
-        },
-        "displayed_name": {
-            "en-US": "Big Temple",
-            "fr-FR": "Grand Temple"
-        },
-        "hidden": true
-    },
     "Celebrationmk10": {
         "children": {},
         "conflicts": {},
@@ -227,50 +205,6 @@
         "displayed_name": {
             "en-US": "Spooky",
             "fr-FR": "Sinistre"
-        },
-        "hidden": true
-    },
-    "StupidlyBigTemple": {
-        "children": {},
-        "conflicts": {
-            "BigTemple": {
-                "en-US": "Having a temple size modifier twice doesn't do anything.",
-                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
-            },
-            "StupidlyHugeTemple": {
-                "en-US": "Having a temple size modifier twice doesn't do anything.",
-                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
-            }
-        },
-        "description": {
-            "en-US": "Make the temple really big.",
-            "fr-FR": "Rend le temple vraiment grand."
-        },
-        "displayed_name": {
-            "en-US": "Stupidly Big Temple",
-            "fr-FR": "Temple Stupidement Grand"
-        },
-        "hidden": true
-    },
-    "StupidlyHugeTemple": {
-        "children": {},
-        "conflicts": {
-            "BigTemple": {
-                "en-US": "Having a temple size modifier twice doesn't do anything.",
-                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
-            },
-            "StupidlyBigTemple": {
-                "en-US": "Having a temple size modifier twice doesn't do anything.",
-                "fr-FR": "Avoir deux modificateur de taille de temple ne fait rien."
-            }
-        },
-        "description": {
-            "en-US": "Makes a temple that covers most of the jungle.",
-            "fr-FR": "Rend le temple aussi grand que la jungle."
-        },
-        "displayed_name": {
-            "en-US": "Stupidly Huge Temple",
-            "fr-FR": "Temple Stupidement Gigantesque"
         },
         "hidden": true
     },

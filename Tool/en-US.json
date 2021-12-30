@@ -1,19 +1,11 @@
 {
     "Mods": {
         "AdvancedWorldGen": {
-            "BigTemple": {
-                "$parentVal": "Big Temple",
-                "Description": "Makes the temple bigger."
-            },
             "Celebrationmk10": {
                 "$parentVal": "Celebration Mk 10",
                 "Description": "The tenth anniversary secret seed."
             },
             "Conflict": {
-                "BigTemple": {
-                    "StupidlyBigTemple": "Having a temple size modifier twice doesn't do anything.",
-                    "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
-                },
                 "Celebrationmk10": {},
                 "Drunk": {
                     "BothOres": {},
@@ -43,14 +35,6 @@
                     "Random": "Santa only leaves a few blocks to be randomized."
                 },
                 "Spooky": {},
-                "StupidlyBigTemple": {
-                    "BigTemple": "Having a temple size modifier twice doesn't do anything.",
-                    "StupidlyHugeTemple": "Having a temple size modifier twice doesn't do anything."
-                },
-                "StupidlyHugeTemple": {
-                    "BigTemple": "Having a temple size modifier twice doesn't do anything.",
-                    "StupidlyBigTemple": "Having a temple size modifier twice doesn't do anything."
-                },
                 "TheConstant": {}
             },
             "Drunk": {
@@ -100,14 +84,6 @@
             "Spooky": {
                 "$parentVal": "Spooky",
                 "Description": "An halloween themed world."
-            },
-            "StupidlyBigTemple": {
-                "$parentVal": "Stupidly Big Temple",
-                "Description": "Make the temple really big."
-            },
-            "StupidlyHugeTemple": {
-                "$parentVal": "Stupidly Huge Temple",
-                "Description": "Makes a temple that covers most of the jungle."
             },
             "TheConstant": {
                 "$parentVal": "The Constant",

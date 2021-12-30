@@ -63,6 +63,7 @@ public class ModifiedWorld : ModSystem
 		if (list != null)
 		{
 			OptionHelper.Options = new HashSet<string>(list);
+			Legacy.ReplaceOldOptions(OptionHelper.Options);
 			Main.checkHalloween();
 			Main.checkXMas();
 		}
@@ -88,7 +89,7 @@ public class ModifiedWorld : ModSystem
 	public override void NetSend(BinaryWriter writer)
 	{
 		foreach (string seedHelperOption in OptionHelper.Options)
-			writer.Write(Option.OptionDict[seedHelperOption].FullName);
+			writer.Write(seedHelperOption);
 
 		writer.Write("");
 	}

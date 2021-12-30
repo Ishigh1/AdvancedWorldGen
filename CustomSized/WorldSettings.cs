@@ -16,6 +16,7 @@ public class WorldSettings
 {
 	public int SizeX;
 	public int SizeY;
+	public int TempleMultiplier;
 	public UIWorldCreation UIWorldCreation = null!;
 
 	public WorldSettings()
@@ -33,6 +34,7 @@ public class WorldSettings
 	{
 		orig(self);
 		UIWorldCreation = self;
+		TempleMultiplier = 1;
 		SetSizeTo(0);
 	}
 

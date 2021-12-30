@@ -64,13 +64,17 @@ public class CustomSizeUI : UIState
 			Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 		});
 
-		ConfigElement sizeXInput = MakeIntInputLine(nameof(WorldSettings.SizeX), 100);
+		ConfigElement sizeXInput = MakeIntInputLine(nameof(WorldSettings.SizeX), 100, 500000, 100);
 		sizeXInput.Top.Pixels = 50;
 		uiPanel.Append(sizeXInput);
 
-		ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 100);
+		ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 100, 500000, 100);
 		sizeYInput.Top.Pixels = sizeXInput.Top.Pixels + sizeXInput.Height.Pixels + 4;
 		uiPanel.Append(sizeYInput);
+
+		ConfigElement templeModifier = MakeIntInputLine(nameof(WorldSettings.TempleMultiplier), 1, 30, 1);
+		templeModifier.Top.Pixels = sizeYInput.Top.Pixels + sizeYInput.Height.Pixels + 4;
+		uiPanel.Append(templeModifier);
 
 		UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 		{
@@ -84,13 +88,13 @@ public class CustomSizeUI : UIState
 		Append(goBack);
 	}
 
-	public ConfigElement MakeIntInputLine(string fieldName, int min)
+	public ConfigElement MakeIntInputLine(string fieldName, int min, int max, int increment)
 	{
 		ConfigElement intInputElement = (ConfigElement)IntInputElementConstructorInfo.Invoke(null);
 
 		IntInputElementMinField.SetValue(intInputElement, min);
-		IntInputElementMaxField.SetValue(intInputElement, 500000);
-		IntInputElementIncrementField.SetValue(intInputElement, 100);
+		IntInputElementMaxField.SetValue(intInputElement, max);
+		IntInputElementIncrementField.SetValue(intInputElement, increment);
 
 		FieldInfo fieldInfo = typeof(WorldSettings).GetField(fieldName, BindingFlags.Instance | BindingFlags.Public)!;
 		intInputElement.Bind(new PropertyFieldWrapper(fieldInfo), WorldSettings, null, -1);

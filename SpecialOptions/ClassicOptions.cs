@@ -1,5 +1,6 @@
 using System;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.CustomSized;
 using Microsoft.Xna.Framework;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -49,18 +50,10 @@ public class ClassicOptions
 
 	public static int GetTempleRooms(ref int y, float worldSize)
 	{
-		int templeSize;
-		if (API.OptionsContains("StupidlyHugeTemple"))
-			templeSize = 25;
-		else if (API.OptionsContains("StupidlyBigTemple"))
-			templeSize = 20;
-		else if (API.OptionsContains("BigTemple"))
-			templeSize = 15;
-		else if (WorldGen.getGoodWorldGen && WorldGen.drunkWorldGen)
-			templeSize = 6;
-		else if (WorldGen.getGoodWorldGen || WorldGen.drunkWorldGen) templeSize = 3;
-		else
-			templeSize = 1;
+		int templeSize = ModifiedWorld.Instance.OptionHelper.WorldSettings.TempleMultiplier;
+		if (WorldGen.getGoodWorldGen && WorldGen.drunkWorldGen)
+			templeSize *= 6;
+		else if (WorldGen.getGoodWorldGen || WorldGen.drunkWorldGen) templeSize *= 3;
 
 		if (templeSize > 10)
 		{
@@ -69,6 +62,6 @@ public class ClassicOptions
 		}
 
 		return WorldGen.genRand.Next((int)(10 * worldSize * templeSize),
-			(int)(16 * worldSize * templeSize));
+			(int)(16f * worldSize * templeSize));
 	}
 }

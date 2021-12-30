@@ -193,6 +193,7 @@ public class OptionsSelector : UIState
 				if (options.Count != 0)
 				{
 					SoundEngine.PlaySound(SoundID.MenuOpen);
+					Legacy.ReplaceOldOptions(options);
 					ModifiedWorld.Instance.OptionHelper.Options = options;
 					CreateOptionList(uiDescription, uiList, parent, showHidden);
 				}
