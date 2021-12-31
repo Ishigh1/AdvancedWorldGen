@@ -1,5 +1,5 @@
 displayName = Advanced World Generation
 author = Ishigh
-version = 2.6.1
+version = 2.6.1.1
 homepage = https://github.com/Ishigh1/AdvancedWorldGen
 buildIgnore = Tool\*

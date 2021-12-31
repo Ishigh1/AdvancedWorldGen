@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -48,16 +49,41 @@ public class UiChanger
 		}
 	}
 
-	public void ThreadifyWorldGen(OnWorldGen.orig_worldGenCallback orig, object threadContext)
+	public void ThreadifyWorldGen(OnWorldGen.orig_do_worldGenCallBack orig, object threadContext)
 	{
 		if (!Main.dedServ)
 		{
-			Thread = new Thread(() => { orig(threadContext); }) { Name = "WorldGen" };
+			Thread = new Thread(() =>
+			{
+				try
+				{
+					orig(threadContext);
+				}
+				catch (Exception)
+				{
+					if (Main.tile != null) EmergencySaving(false);
+				}
+			}) { Name = "WorldGen" };
 			Thread.Start();
 		}
 		else
 		{
 			orig(threadContext);
+		}
+	}
+
+	public static void EmergencySaving(bool aborted)
+	{
+		if (WorldgenSettings.AbortedSaving)
+		{
+			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
+			Main.worldName += aborted ? "_Aborted" : "_Failed";
+			if (Main.spawnTileX == 0)
+			{
+				Main.spawnTileX = Main.maxTilesX / 2;
+				Main.spawnTileY = Main.maxTilesY / 2;
+			}
+			WorldFile.SaveWorld();
 		}
 	}
 
@@ -87,12 +113,7 @@ public class UiChanger
 		Thread.Join();
 		Main.tile = tiles;
 
-		if (WorldgenSettings.AbortedSaving)
-		{
-			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
-			Main.worldName += "_Aborted";
-			WorldFile.SaveWorld();
-		}
+		EmergencySaving(true);
 	}
 
 	public void TweakWorldGenUi(OnUIWorldCreation.orig_AddDescriptionPanel origAddDescriptionPanel,

@@ -102,13 +102,12 @@ public partial class DungeonPass
 		DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 		for (int room = 0; room < maxRooms; room++)
 		{
-			if (WorldGen.dungeonX < DungeonMinX) DungeonMinX = WorldGen.dungeonX;
-
-			if (WorldGen.dungeonX > DungeonMaxX) DungeonMaxX = WorldGen.dungeonX;
-
-			if (WorldGen.dungeonY > DungeonMaxY) DungeonMaxY = WorldGen.dungeonY;
-
-			if (--num6 == 0 && WorldGen.genRand.NextBool(3))
+			DungeonMinX = Math.Min(DungeonMinX, WorldGen.dungeonX);
+			DungeonMaxX = Math.Max(DungeonMaxX, WorldGen.dungeonX);
+			DungeonMaxY = Math.Max(DungeonMaxY, WorldGen.dungeonY);
+			
+			Progress.Set(room, maxRooms, 0.6f);
+			if (--num6 <= 0 && WorldGen.genRand.NextBool(3))
 			{
 				num6 = 5;
 				if (WorldGen.genRand.NextBool(2))

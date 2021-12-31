@@ -40,7 +40,7 @@ public class AdvancedWorldGenMod : Mod
 		OnWorldFile.CreateMetadata += DedServUi.DedServOptions;
 
 		OnUIWorldLoad.ctor += UiChanger.AddCancel;
-		OnWorldGen.worldGenCallback += UiChanger.ThreadifyWorldGen;
+		OnWorldGen.do_worldGenCallBack += UiChanger.ThreadifyWorldGen;
 
 		OnUserInterface.SetState += ModifiedWorld.Instance.ResetSettings;
 
