@@ -89,7 +89,7 @@ public static class DedServUi
 				if (Option.OptionDict[option].Conflicts.Contains(option2))
 				{
 					Console.WriteLine(
-						Language.GetTextValue("Mods.AdvancedWorldGen.Conflict." + options[i] + "." + options[j]));
+						Language.GetTextValue("Mods.AdvancedWorldGen." + options[i] + ".Conflicts." + options[j]));
 					conflict = true;
 				}
 			}

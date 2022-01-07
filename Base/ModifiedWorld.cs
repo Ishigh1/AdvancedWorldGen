@@ -171,54 +171,56 @@ public class ModifiedWorld : ModSystem
 	public void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
 	{
 		List<int> availableNPCs = NPCs.ToList();
-		if (OptionHelper.OptionsContains("Painted")) TryAddNpc(Painter, availableNPCs, out _);
+		int alreadyPlaced = 0;
+		if (OptionHelper.OptionsContains("Painted")) TryAddNpc(availableNPCs, Painter, ref alreadyPlaced, out _);
 
-		if (WorldGen.notTheBees) TryAddNpc(Merchant, availableNPCs, out _);
+		if (WorldGen.notTheBees) TryAddNpc(availableNPCs, Merchant, ref alreadyPlaced, out _);
 
-		if (WorldGen.getGoodWorldGen) TryAddNpc(Demolitionist, availableNPCs, out _);
+		if (WorldGen.getGoodWorldGen) TryAddNpc(availableNPCs, Demolitionist, ref alreadyPlaced, out _);
 
-		if (WorldGen.drunkWorldGen) TryAddNpc(PartyGirl, availableNPCs, out _);
+		if (WorldGen.drunkWorldGen) TryAddNpc(availableNPCs, PartyGirl, ref alreadyPlaced, out _);
 
 		if (WorldGen.tenthAnniversaryWorldGen)
 		{
 			BirthdayParty.GenuineParty = true;
 			BirthdayParty.PartyDaysOnCooldown = 5;
 
-			if (TryAddNpc(Princess, availableNPCs, out NPC? princess))
+			if (TryAddNpc(availableNPCs, Princess, ref alreadyPlaced, out NPC? princess))
 			{
 				princess.GivenName = Language.GetTextValue("PrincessNames.Yorai");
 				BirthdayParty.CelebratingNPCs.Add(princess.whoAmI);
 			}
 
-			if (TryAddNpc(Steampunker, availableNPCs, out NPC? steampunker))
+			if (TryAddNpc(availableNPCs, Steampunker, ref alreadyPlaced, out NPC? steampunker))
 			{
 				steampunker.GivenName = Language.GetTextValue("SteampunkerNames.Whitney");
 				BirthdayParty.CelebratingNPCs.Add(steampunker.whoAmI);
 			}
 
-			if (TryAddNpc(Guide, availableNPCs, out NPC? guide))
+			if (TryAddNpc(availableNPCs, Guide, ref alreadyPlaced, out NPC? guide))
 			{
 				guide.GivenName = Language.GetTextValue("GuideNames.Andrew");
 				BirthdayParty.CelebratingNPCs.Add(guide.whoAmI);
 			}
 
-			TryAddNpc(PartyGirl, availableNPCs, out _);
+			TryAddNpc(availableNPCs, PartyGirl, ref alreadyPlaced, out _);
 
-			if (TryAddNpc(TownBunny, availableNPCs, out NPC? bunny))
+			if (TryAddNpc(availableNPCs, TownBunny, ref alreadyPlaced, out NPC? bunny))
 			{
 				bunny.townNpcVariationIndex = 1;
 				NPC.boughtBunny = true;
 			}
 		}
 
-		if (OptionHelper.OptionsContains("Santa")) TryAddNpc(SantaClaus, availableNPCs, out _);
+		if (OptionHelper.OptionsContains("Santa")) TryAddNpc(availableNPCs, SantaClaus, ref alreadyPlaced, out _);
 
-		if (OptionHelper.OptionsContains("Random")) TryAddNpc(RandomNpc(availableNPCs), availableNPCs, out _);
+		if (OptionHelper.OptionsContains("Random")) TryAddNpc(availableNPCs, RandomNpc(availableNPCs), ref alreadyPlaced, out _);
 
-		if (availableNPCs.Count == NPCs.Count) TryAddNpc(Guide, availableNPCs, out _);
+		if (availableNPCs.Count == NPCs.Count) TryAddNpc(availableNPCs, Guide, ref alreadyPlaced, out _);
 	}
 
-	public static bool TryAddNpc(int npcType, List<int> availableNPCs, [NotNullWhen(true)] out NPC? npc)
+	public static bool TryAddNpc(List<int> availableNPCs, int npcType,
+		ref int alreadyPlaced, [NotNullWhen(true)] out NPC? npc)
 	{
 		if (!availableNPCs.Contains(npcType))
 		{
@@ -226,12 +228,15 @@ public class ModifiedWorld : ModSystem
 			return npc != null;
 		}
 
-		npc = Main.npc[NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, npcType)];
-		npc.homeTileX = Main.spawnTileX;
+		int spawnPointX = Main.spawnTileX * 16 + (alreadyPlaced % 2 == 0 ? alreadyPlaced : -(alreadyPlaced + 1));
+		npc = Main.npc[NPC.NewNPC(spawnPointX, Main.spawnTileY * 16, npcType)];
+		npc.homeTileX = spawnPointX;
 		npc.homeTileY = Main.spawnTileY;
-		npc.direction = WorldGen._genRand.NextBool(2) ? 1 : -1;
+		npc.direction = alreadyPlaced % 2 == 0 ? 1 : -1;
 		npc.homeless = true;
-		availableNPCs.RemoveAll(i => i == npcType);
+		availableNPCs.Remove(npcType);
+		
+		alreadyPlaced++;
 
 		return true;
 	}

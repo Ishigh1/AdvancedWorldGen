@@ -9,9 +9,7 @@ def make(language):
     translation = {}
     base = {"Mods": {"AdvancedWorldGen": translation}}
 
-    translation["Conflict"] = {}
-    conflicts = translation["Conflict"]
-    make_trans(conflicts, language, options, translation)
+    make_trans(language, options, translation)
 
     file = open(language + ".json", "w")
     json.dump(base, file, indent=4, sort_keys=True)
@@ -42,7 +40,7 @@ def make_options(json_text, options):
             json_text[key] = o
 
 
-def make_trans(conflicts, language, options, translation, prefix=""):
+def make_trans(language, options, translation, prefix=""):
     for key in options:
         option = options[key]
 
@@ -54,21 +52,27 @@ def make_trans(conflicts, language, options, translation, prefix=""):
         if type(description) is dict:
             description = description[language]
 
-        usual_translation = {"$parentVal": name, "Description": description}
+        conflicts = {}
+        usual_translation = {"$parentVal": name, "Description": description, "Conflicts": conflicts}
         translation[key] = usual_translation
         conflicts_dict = option["conflicts"]
-        internal_conflicts = {}
-        conflicts[key] = internal_conflicts
         for conflict_key in conflicts_dict:
             description = conflicts_dict[conflict_key]
             if type(description) is dict:
                 description = description[language]
-            internal_conflicts[conflict_key] = description
+
+            split_key = conflict_key.split(".")
+            internal_conflicts = conflicts
+            for part_key in split_key:
+                if part_key not in internal_conflicts:
+                    internal_conflicts[part_key] = {}
+                internal_conflicts = internal_conflicts[part_key]
+            internal_conflicts["$parentVal"] = description
 
         if prefix == "":
-            make_trans(internal_conflicts, language, option["children"], usual_translation, key)
+            make_trans(language, option["children"], usual_translation, key)
         else:
-            make_trans(internal_conflicts, language, option["children"], usual_translation, prefix + "." + key)
+            make_trans(language, option["children"], usual_translation, prefix + "." + key)
 
 
 def translate(initial, language):

@@ -35,6 +35,7 @@ public static class DesertHive
 			Cluster cluster = clusters[index];
 			for (int x = cluster[0].x - spreadX; x <= cluster[0].x + spreadX; x++)
 			for (int y = cluster[0].y - spreadY; y <= cluster[0].y + spreadY; y++)
+			{
 				if (WorldGen.InWorld(x, y, 1))
 				{
 					if (!registerInterestingTiles.TryGetValue((x, y), out List<int>? clusterList))
@@ -45,6 +46,10 @@ public static class DesertHive
 
 					clusterList.Add(index);
 				}
+
+				Chest.DesertTop = Math.Min(y, Chest.DesertTop);
+				Chest.DesertBottom = Math.Max(y, Chest.DesertBottom);
+			}
 		}
 
 		return registerInterestingTiles;

@@ -13,8 +13,8 @@ public static class Chest
 	public static int HellChest;
 	public static List<int> HellChestItem = null!;
 	public static bool GeneratedShadowKey;
-	public static int SandstoneUp;
-	public static int SandstoneDown;
+	public static int DesertTop;
+	public static int DesertBottom;
 
 	public static void ShuffleChests(UnifiedRandom unifiedRandom)
 	{
@@ -30,8 +30,8 @@ public static class Chest
 					(HellChestItem[indexToExchange], HellChestItem[index]);
 		}
 
-		SandstoneUp = -1;
-		SandstoneDown = -1;
+		DesertTop = int.MaxValue;
+		DesertBottom = -1;
 	}
 
 	public static bool AddBuriedChest(int chestRightX, int groundY, int contain = 0,
@@ -118,7 +118,7 @@ public static class Chest
 			desertBiome = true;
 			outStyle = 10;
 			chestTileType = TileID.Containers2;
-			contain = y <= (SandstoneUp * 3 + SandstoneDown * 4) / 7
+			contain = y <= (DesertTop * 3 + DesertBottom * 4) / 7
 				? Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
 					ItemID.MysticCoilSnake, ItemID.MagicConch)
 				: Utils.SelectRandom(WorldGen.genRand, ItemID.ThunderSpear, ItemID.ThunderStaff,
@@ -251,12 +251,6 @@ public static class Chest
 		int chestIndex, int style, bool pyramid, bool water, bool livingWood, bool dungeon,
 		bool glowingMushroomBiome, bool desertBiome, bool iceBiome, bool jungleBiome, bool underworld)
 	{
-		if (desertBiome)
-		{
-			SandstoneUp = SandstoneUp == 1 ? x - 1 : Math.Min(SandstoneUp, x - 1);
-			SandstoneDown = Math.Max(x, SandstoneDown);
-		}
-
 		if (shadowChest)
 		{
 			HellChest++;

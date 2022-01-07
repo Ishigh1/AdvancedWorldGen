@@ -279,7 +279,7 @@ public class OptionsSelector : UIState
 					if (ModifiedWorld.Instance.OptionHelper.OptionsContains(conflict))
 					{
 						LocalizedText conflictDescription =
-							Language.GetText("Mods.AdvancedWorldGen.Conflict." + option.SimplifiedName + "." +
+							Language.GetText("Mods.AdvancedWorldGen." + option.SimplifiedName + ".Conflicts." +
 							                 Option.OptionDict[conflict].SimplifiedName);
 						UIImage uiImage = new(UICommon.ButtonErrorTexture)
 						{
