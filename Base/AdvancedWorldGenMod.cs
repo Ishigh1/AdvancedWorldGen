@@ -25,8 +25,6 @@ public class AdvancedWorldGenMod : Mod
 
 	public override void Load()
 	{
-		Option.InitializeDict(this);
-
 		TileReplacer.Initialize();
 
 		UiChanger = new UiChanger(this);

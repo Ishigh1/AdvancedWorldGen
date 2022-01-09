@@ -21,7 +21,7 @@ public static class DedServUi
 		bool showHidden = false;
 		string errorMessage = "";
 
-		ModifiedWorld.Instance.OptionHelper.Options.Clear();
+		ModifiedWorld.Instance.OptionHelper.ClearAll();
 
 		while (!finished)
 		{
@@ -52,11 +52,11 @@ public static class DedServUi
 	{
 		Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.NoneSelected.Description"));
 		int id = 1;
-		foreach ((_, Option? option) in Option.OptionDict)
-			if (!option.Hidden || showHidden)
+		foreach ((_, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
+			if ((option.Children.Count == 0) && (!option.Hidden || showHidden))
 				Console.WriteLine(id++ + " : " +
 				                  Language.GetTextValue("Mods." + option.ModName + "." + option.SimplifiedName) +
-				                  (ModifiedWorld.Instance.OptionHelper.OptionsContains(option.FullName)
+				                  (option.Enabled
 					                  ? Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.Selected")
 					                  : ""));
 
@@ -79,21 +79,18 @@ public static class DedServUi
 	public static void PrintConflicts()
 	{
 		bool conflict = false;
-		List<string> options = ModifiedWorld.Instance.OptionHelper.Options.ToList();
-		for (int i = 0; i < options.Count; i++)
-		{
-			string option = options[i];
-			for (int j = i; j < options.Count; j++)
-			{
-				string option2 = options[j];
-				if (Option.OptionDict[option].Conflicts.Contains(option2))
-				{
-					Console.WriteLine(
-						Language.GetTextValue("Mods.AdvancedWorldGen." + options[i] + ".Conflicts." + options[j]));
-					conflict = true;
-				}
-			}
-		}
+
+		foreach ((string? _, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
+			if (option.Enabled && (option.Children.Count == 0))
+				foreach (string conflictName in option.Conflicts)
+					if (string.Compare(option.SimplifiedName, conflictName, StringComparison.Ordinal) < 0 &&
+					    API.OptionsContains(conflictName))
+					{
+						Console.WriteLine(
+							Language.GetTextValue("Mods.AdvancedWorldGen." + option.SimplifiedName + ".Conflicts." +
+							                      option.SimplifiedName));
+						conflict = true;
+					}
 
 		if (conflict) Console.WriteLine();
 	}
@@ -109,11 +106,11 @@ public static class DedServUi
 			string[] strings = s.Split(' ');
 			if (strings.Length == 2 && strings[0] == "i")
 			{
-				HashSet<string> options = OptionsSelector.TextToOptions(strings[1]);
+				HashSet<string> options = new(strings[1].Split("|"));
 				if (options.Count == 0)
 					errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidImport");
 				else
-					ModifiedWorld.Instance.OptionHelper.Options = options;
+					ModifiedWorld.Instance.OptionHelper.Import(options);
 			}
 			else
 			{
@@ -124,15 +121,15 @@ public static class DedServUi
 
 	public static bool ConvertIdToOption(bool showHidden, int id)
 	{
-		for (int i = 0; i < Option.OptionDict.Count; i++)
+		for (int i = 0; i < ModifiedWorld.Instance.OptionHelper.OptionDict.Count; i++)
 		{
-			(string key, Option option) = Option.OptionDict.ElementAt(i);
-			if ((!option.Hidden || showHidden) && --id == 0)
+			(string _, Option option) = ModifiedWorld.Instance.OptionHelper.OptionDict.ElementAt(i);
+			if ((!option.Hidden || showHidden) && option.Children.Count == 0 && --id == 0)
 			{
-				if (ModifiedWorld.Instance.OptionHelper.OptionsContains(key))
-					ModifiedWorld.Instance.OptionHelper.Options.Remove(key);
+				if (option.Enabled)
+					option.Disable();
 				else
-					ModifiedWorld.Instance.OptionHelper.Options.Add(key);
+					option.WeakEnable();
 
 				return true;
 			}

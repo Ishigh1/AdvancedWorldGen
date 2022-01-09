@@ -107,7 +107,7 @@ public class TileReplacer
 		}
 	}
 
-	public static void RandomizeWorld(GenerationProgress progress, OptionHelper optionHelper)
+	public static void RandomizeWorld(GenerationProgress progress)
 	{
 		Dictionary<ushort, ushort> tileRandom = new();
 		Dictionary<ushort, ushort> wallRandom = new();
@@ -123,9 +123,9 @@ public class TileReplacer
 				Tile tile = Main.tile[x, y];
 				if (tile != null)
 				{
-					if (tile.IsActive) RandomizeTile(optionHelper, tile, tileRandom, paintRandom);
+					if (tile.IsActive) RandomizeTile(tile, tileRandom, paintRandom);
 
-					if (tile.wall != 0) RandomizeWall(optionHelper, wallRandom, tile, paintWallRandom);
+					if (tile.wall != 0) RandomizeWall(wallRandom, tile, paintWallRandom);
 				}
 			}
 		}
@@ -175,10 +175,10 @@ public class TileReplacer
 		}
 	}
 
-	public static void RandomizeTile(OptionHelper optionHelper, Tile tile, Dictionary<ushort, ushort> tileRandom,
+	public static void RandomizeTile(Tile tile, Dictionary<ushort, ushort> tileRandom,
 		Dictionary<ushort, byte> paintRandom)
 	{
-		if (optionHelper.OptionsContains("Random"))
+		if (API.OptionsContains("Random"))
 			if (Main.tileSolid[tile.type])
 			{
 				if (tileRandom.TryGetValue(tile.type, out ushort type))
@@ -197,7 +197,7 @@ public class TileReplacer
 				}
 			}
 
-		if (optionHelper.OptionsContains("Painted"))
+		if (API.OptionsContains("Painted"))
 		{
 			if (!paintRandom.TryGetValue(tile.type, out byte paint))
 			{
@@ -209,10 +209,10 @@ public class TileReplacer
 		}
 	}
 
-	public static void RandomizeWall(OptionHelper optionHelper, Dictionary<ushort, ushort> wallRandom, Tile tile,
+	public static void RandomizeWall(Dictionary<ushort, ushort> wallRandom, Tile tile,
 		Dictionary<ushort, byte> paintWallRandom)
 	{
-		if (optionHelper.OptionsContains("Random"))
+		if (API.OptionsContains("Random"))
 		{
 			if (wallRandom.TryGetValue(tile.wall, out ushort type))
 			{
@@ -230,7 +230,7 @@ public class TileReplacer
 			}
 		}
 
-		if (optionHelper.OptionsContains("Painted"))
+		if (API.OptionsContains("Painted"))
 		{
 			if (!paintWallRandom.TryGetValue(tile.wall, out byte paint))
 			{

@@ -4,7 +4,7 @@ namespace AdvancedWorldGen.Base;
 
 public class Legacy
 {
-	public static void ReplaceOldOptions(HashSet<string> options)
+	public static void ReplaceOldOptions(ICollection<string> options)
 	{
 		#region 2.6, 29/12/2021
 

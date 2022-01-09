@@ -15,7 +15,7 @@ public class API
 	/// <param name="hidden">Set to true if you don't want this option to be shown by default</param>
 	public static void RegisterOption(Mod mod, string internalName, bool hidden = false)
 	{
-		Option.OptionDict.Add(internalName, new Option
+		ModifiedWorld.Instance.OptionHelper.OptionDict.Add(internalName, new Option
 		{
 			Children = new List<Option>(),
 			Conflicts = new List<string>(),

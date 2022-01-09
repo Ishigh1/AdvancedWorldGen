@@ -41,8 +41,8 @@ public class FloatingIslands : ControlledWorldGenPass
 						(int)(Main.maxTilesX * 0.9));
 
 				for (int num822 = 0; num822 < numIslandHouses; num822++)
-					if (x > VanillaInterface.floatingIslandHouseX.Value[num822] - 180 &&
-					    x < VanillaInterface.floatingIslandHouseX.Value[num822] + 180)
+					if (x > VanillaInterface.FloatingIslandHouseX.Value[num822] - 180 &&
+					    x < VanillaInterface.FloatingIslandHouseX.Value[num822] + 180)
 					{
 						flag54 = false;
 						break;
@@ -67,12 +67,12 @@ public class FloatingIslands : ControlledWorldGenPass
 						int y = genRand.Next(Math.Max(50, Math.Min(90, (int)worldSurfaceLow - 50)), num823 - 100);
 						if (islandsMade >= skyIslands)
 						{
-							VanillaInterface.skyLake.Value[numIslandHouses] = true;
+							VanillaInterface.SkyLake.Value[numIslandHouses] = true;
 							CloudLake(x, y);
 						}
 						else
 						{
-							VanillaInterface.skyLake.Value[numIslandHouses] = false;
+							VanillaInterface.SkyLake.Value[numIslandHouses] = false;
 							if (drunkWorldGen)
 							{
 								if (genRand.Next(2) == 0)
@@ -98,9 +98,9 @@ public class FloatingIslands : ControlledWorldGenPass
 							}
 						}
 
-						VanillaInterface.floatingIslandHouseX.Value[numIslandHouses] = x;
-						VanillaInterface.floatingIslandHouseY.Value[numIslandHouses] = y;
-						VanillaInterface.floatingIslandStyle.Value[numIslandHouses] = num825;
+						VanillaInterface.FloatingIslandHouseX.Value[numIslandHouses] = x;
+						VanillaInterface.FloatingIslandHouseY.Value[numIslandHouses] = y;
+						VanillaInterface.FloatingIslandStyle.Value[numIslandHouses] = num825;
 						numIslandHouses++;
 						islandsMade++;
 					}

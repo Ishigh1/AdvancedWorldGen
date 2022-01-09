@@ -19,8 +19,8 @@ public partial class VanillaInterface
 
 	//Island stuff
 	public static readonly VanillaAccessor<int> NumIslandHouses = new(typeof(WorldGen), "numIslandHouses");
-	public static readonly VanillaAccessor<int[]> floatingIslandHouseX = new(typeof(WorldGen), "floatingIslandHouseX");
-	public static readonly VanillaAccessor<int[]> floatingIslandHouseY = new(typeof(WorldGen), "floatingIslandHouseY");
-	public static readonly VanillaAccessor<int[]> floatingIslandStyle = new(typeof(WorldGen), "floatingIslandStyle");
-	public static readonly VanillaAccessor<bool[]> skyLake = new(typeof(WorldGen), "skyLake");
+	public static readonly VanillaAccessor<int[]> FloatingIslandHouseX = new(typeof(WorldGen), "floatingIslandHouseX");
+	public static readonly VanillaAccessor<int[]> FloatingIslandHouseY = new(typeof(WorldGen), "floatingIslandHouseY");
+	public static readonly VanillaAccessor<int[]> FloatingIslandStyle = new(typeof(WorldGen), "floatingIslandStyle");
+	public static readonly VanillaAccessor<bool[]> SkyLake = new(typeof(WorldGen), "skyLake");
 }

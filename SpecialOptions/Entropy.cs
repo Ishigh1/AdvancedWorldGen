@@ -221,14 +221,14 @@ public class Entropy
 		return s;
 	}
 
-	public static void StartEntropy(OptionHelper optionHelper)
+	public static void StartEntropy()
 	{
-		if (!optionHelper.OptionsContains("Entropy")) return;
+		if (!API.OptionsContains("Entropy")) return;
 		Thread thread = new(DoEntropy) { Priority = ThreadPriority.Lowest };
-		thread.Start(optionHelper);
+		thread.Start();
 	}
 
-	public static void DoEntropy(object? o)
+	public static void DoEntropy()
 	{
 		Entropy entropy = new(500);
 		entropy.ExtractData();

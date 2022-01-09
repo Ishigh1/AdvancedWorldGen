@@ -189,12 +189,12 @@ public class OptionsSelector : UIState
 			importButton.OnMouseDown += delegate
 			{
 				string optionText = Platform.Get<IClipboard>().Value;
-				HashSet<string> options = TextToOptions(optionText);
+				HashSet<string> options = new(optionText.Split('|'));
 				if (options.Count != 0)
 				{
+					ModifiedWorld.Instance.OptionHelper.Import(options);
 					SoundEngine.PlaySound(SoundID.MenuOpen);
-					Legacy.ReplaceOldOptions(options);
-					ModifiedWorld.Instance.OptionHelper.Options = options;
+
 					CreateOptionList(uiDescription, uiList, parent, showHidden);
 				}
 			};
@@ -203,7 +203,7 @@ public class OptionsSelector : UIState
 			importButton.OnMouseOut += SetDefaultDescription;
 		}
 
-		foreach ((_, Option? option) in Option.OptionDict)
+		foreach ((_, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
 		{
 			if (option.Hidden && !showHidden) continue;
 			if (option.Parent != parent) continue;
@@ -220,7 +220,7 @@ public class OptionsSelector : UIState
 			currentHeight += 40;
 			uiList.Add(clickableText);
 
-			clickableText.SetCurrentOption(ModifiedWorld.Instance.OptionHelper.OptionsContains(option.FullName));
+			clickableText.SetCurrentOption(option.Enabled);
 			clickableText.OnMouseDown += delegate
 			{
 				if (Main.MenuUI.CurrentState != this)
@@ -232,7 +232,7 @@ public class OptionsSelector : UIState
 					option.Enable();
 
 				if (option.Conflicts
-				    .Any(conflict => ModifiedWorld.Instance.OptionHelper.OptionsContains(conflict)))
+				    .Any(conflict => API.OptionsContains(conflict)))
 					CreateOptionList(uiDescription, uiList, parent, showHidden);
 				else
 					clickableText.SetCurrentOption(!selected);
@@ -273,14 +273,14 @@ public class OptionsSelector : UIState
 				};
 				clickableText.Append(uiImage);
 			}
-			else if (ModifiedWorld.Instance.OptionHelper.OptionsContains(option.FullName))
+			else if (option.Enabled)
 			{
-				foreach (string conflict in Option.OptionDict[option.FullName].Conflicts)
-					if (ModifiedWorld.Instance.OptionHelper.OptionsContains(conflict))
+				foreach (string conflict in option.Conflicts)
+					if (API.OptionsContains(conflict))
 					{
 						LocalizedText conflictDescription =
 							Language.GetText("Mods.AdvancedWorldGen." + option.SimplifiedName + ".Conflicts." +
-							                 Option.OptionDict[conflict].SimplifiedName);
+							                 conflict);
 						UIImage uiImage = new(UICommon.ButtonErrorTexture)
 						{
 							Left = new StyleDimension(-15, 0f),
@@ -304,14 +304,5 @@ public class OptionsSelector : UIState
 					}
 			}
 		}
-	}
-
-	public static HashSet<string> TextToOptions(string text)
-	{
-		HashSet<string> options = new();
-		foreach (string s in text.Split('|').Where(s => Option.OptionDict.ContainsKey(s)))
-			options.Add(s);
-
-		return options;
 	}
 }

@@ -42,7 +42,7 @@ public class ModifiedWorld : ModSystem
 
 	public override void OnModLoad()
 	{
-		OptionHelper = new OptionHelper();
+		OptionHelper = new OptionHelper(Mod);
 		if (!Main.dedServ)
 			CustomSizeUI = new CustomSizeUI(OptionHelper.WorldSettings);
 	}
@@ -54,7 +54,7 @@ public class ModifiedWorld : ModSystem
 
 	public override void OnWorldLoad()
 	{
-		OptionHelper.Options.Clear();
+		OptionHelper.ClearAll();
 	}
 
 	public override void LoadWorldData(TagCompound tag)
@@ -62,8 +62,7 @@ public class ModifiedWorld : ModSystem
 		IList<string> list = tag.GetList<string>("Options");
 		if (list != null)
 		{
-			OptionHelper.Options = new HashSet<string>(list);
-			Legacy.ReplaceOldOptions(OptionHelper.Options);
+			OptionHelper.Import(list);
 			Main.checkHalloween();
 			Main.checkXMas();
 		}
@@ -71,16 +70,19 @@ public class ModifiedWorld : ModSystem
 
 	public override void SaveWorldData(TagCompound tagCompound)
 	{
-		if (OptionHelper.Options.Count != 0)
-			tagCompound["Options"] = OptionHelper.Options.ToList();
+		List<string> options = new();
+		OptionHelper.Export(options);
+		if (options.Count > 0)
+			tagCompound.Add("Options", options);
 	}
 
 	public override void NetReceive(BinaryReader reader)
 	{
-		OptionHelper.Options.Clear();
-
+		List<string> options = new();
 		string optionName;
-		while ((optionName = reader.ReadString()) != "") OptionHelper.Options.Add(optionName);
+		while ((optionName = reader.ReadString()) != "") options.Add(optionName);
+		
+		OptionHelper.Import(options);
 
 		Main.checkHalloween();
 		Main.checkXMas();
@@ -88,8 +90,10 @@ public class ModifiedWorld : ModSystem
 
 	public override void NetSend(BinaryWriter writer)
 	{
-		foreach (string seedHelperOption in OptionHelper.Options)
-			writer.Write(seedHelperOption);
+		List<string> optionNames = new();
+		OptionHelper.Export(optionNames);
+		foreach (string optionName in optionNames)
+			writer.Write(optionName);
 
 		writer.Write("");
 	}
@@ -160,7 +164,7 @@ public class ModifiedWorld : ModSystem
 		if (passIndex != -1)
 			HalloweenCommon.InsertTasks(tasks, ref passIndex);
 
-		if (OptionHelper.OptionsContains("Santa", "Evil", "Random", "Painted"))
+		if (API.OptionsContains("Santa", "Evil", "Random", "Painted"))
 		{
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
 			if (liquidSettle != null)
@@ -172,7 +176,7 @@ public class ModifiedWorld : ModSystem
 	{
 		List<int> availableNPCs = NPCs.ToList();
 		int alreadyPlaced = 0;
-		if (OptionHelper.OptionsContains("Painted")) TryAddNpc(availableNPCs, Painter, ref alreadyPlaced, out _);
+		if (API.OptionsContains("Painted")) TryAddNpc(availableNPCs, Painter, ref alreadyPlaced, out _);
 
 		if (WorldGen.notTheBees) TryAddNpc(availableNPCs, Merchant, ref alreadyPlaced, out _);
 
@@ -212,9 +216,9 @@ public class ModifiedWorld : ModSystem
 			}
 		}
 
-		if (OptionHelper.OptionsContains("Santa")) TryAddNpc(availableNPCs, SantaClaus, ref alreadyPlaced, out _);
+		if (API.OptionsContains("Santa")) TryAddNpc(availableNPCs, SantaClaus, ref alreadyPlaced, out _);
 
-		if (OptionHelper.OptionsContains("Random")) TryAddNpc(availableNPCs, RandomNpc(availableNPCs), ref alreadyPlaced, out _);
+		if (API.OptionsContains("Random")) TryAddNpc(availableNPCs, RandomNpc(availableNPCs), ref alreadyPlaced, out _);
 
 		if (availableNPCs.Count == NPCs.Count) TryAddNpc(availableNPCs, Guide, ref alreadyPlaced, out _);
 	}
@@ -246,15 +250,13 @@ public class ModifiedWorld : ModSystem
 		return WorldGen._genRand.NextFromList(availableNPCs.ToArray());
 	}
 
-	public void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
+	public static void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
 	{
-		if (OptionHelper.OptionsContains("Santa"))
-			new SnowReplacer().ReplaceTiles(progress, "SnowReplace");
+		if (API.OptionsContains("Santa")) new SnowReplacer().ReplaceTiles(progress, "SnowReplace");
 
-		if (OptionHelper.OptionsContains("Evil"))
-			EvilReplacer.CorruptWorld(progress);
+		if (API.OptionsContains("Evil")) EvilReplacer.CorruptWorld(progress);
 
-		if (OptionHelper.OptionsContains("Random", "Painted")) TileReplacer.RandomizeWorld(progress, OptionHelper);
+		if (API.OptionsContains("Random", "Painted")) TileReplacer.RandomizeWorld(progress);
 	}
 
 	public override void PostUpdateTime()
@@ -279,7 +281,7 @@ public class ModifiedWorld : ModSystem
 		orig(self, state);
 		if (state is UIWorldSelect)
 		{
-			OptionHelper.Options = new HashSet<string>();
+			OptionHelper.ClearAll();
 			OptionHelper.WorldSettings.SetSizeTo(-1);
 		}
 	}
