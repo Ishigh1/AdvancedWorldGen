@@ -19,13 +19,11 @@ namespace AdvancedWorldGen.Base;
 public class OptionHelper
 {
 	public Dictionary<string, Option> OptionDict = null!;
-	public SnowWorld SnowWorld;
 	public WorldSettings WorldSettings;
 
 	public OptionHelper(Mod mod)
 	{
 		WorldSettings = new WorldSettings();
-		SnowWorld = new SnowWorld(this);
 		InitializeDict(mod);
 	}
 
@@ -89,7 +87,8 @@ public class OptionHelper
 	{
 		return optionNames.Any(optionName =>
 		{
-			Option option = OptionDict[optionName];
+			if (!OptionDict.TryGetValue(optionName, out Option? option))
+				return false;
 			return option.Children.Count == 0 ? option.Enabled : option.Children[0].Enabled;
 		});
 	}

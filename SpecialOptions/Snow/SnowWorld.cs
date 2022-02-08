@@ -14,13 +14,6 @@ namespace AdvancedWorldGen.SpecialOptions.Snow;
 
 public class SnowWorld
 {
-	public OptionHelper OptionHelper;
-
-	public SnowWorld(OptionHelper optionHelper)
-	{
-		OptionHelper = optionHelper;
-	}
-
 	public static void FallSnow()
 	{
 		if (!API.OptionsContains("Santa")) return;

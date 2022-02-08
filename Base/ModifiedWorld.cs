@@ -220,7 +220,7 @@ public class ModifiedWorld : ModSystem
 
 		if (API.OptionsContains("Random")) TryAddNpc(availableNPCs, RandomNpc(availableNPCs), ref alreadyPlaced, out _);
 
-		if (availableNPCs.Count == NPCs.Count) TryAddNpc(availableNPCs, Guide, ref alreadyPlaced, out _);
+		if (alreadyPlaced == 0) TryAddNpc(availableNPCs, Guide, ref alreadyPlaced, out _);
 	}
 
 	public static bool TryAddNpc(List<int> availableNPCs, int npcType,
@@ -232,8 +232,8 @@ public class ModifiedWorld : ModSystem
 			return npc != null;
 		}
 
-		int spawnPointX = Main.spawnTileX * 16 + (alreadyPlaced % 2 == 0 ? alreadyPlaced : -(alreadyPlaced + 1));
-		npc = Main.npc[NPC.NewNPC(spawnPointX, Main.spawnTileY * 16, npcType)];
+		int spawnPointX = Main.spawnTileX + (alreadyPlaced % 2 == 0 ? alreadyPlaced : -(alreadyPlaced + 1));
+		npc = Main.npc[NPC.NewNPC(spawnPointX * 16, Main.spawnTileY * 16, npcType)];
 		npc.homeTileX = spawnPointX;
 		npc.homeTileY = Main.spawnTileY;
 		npc.direction = alreadyPlaced % 2 == 0 ? 1 : -1;
