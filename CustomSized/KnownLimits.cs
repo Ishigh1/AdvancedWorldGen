@@ -11,12 +11,12 @@ public static class KnownLimits
 
 	public static bool WillCrashMissingEwe(int sizeX, int sizeY)
 	{
-		const int wireLoad = 8;
-		const int tileMapLoad = 4;
+		const int dataLoad = 8;
+		const int mapLoad = 4;
 		const int liquidLoad = 2;
 		const int wallLoad = 2;
 		const int tileLoad = 2;
-		const int eweLoad = wireLoad + tileMapLoad + liquidLoad + wallLoad + tileLoad;
+		const int eweLoad = dataLoad + mapLoad + liquidLoad + wallLoad + tileLoad;
 		return sizeX * sizeY * eweLoad > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes;
 	}
 }
