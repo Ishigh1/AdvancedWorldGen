@@ -53,7 +53,7 @@ public static class DedServUi
 		Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.NoneSelected.Description"));
 		int id = 1;
 		foreach ((_, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
-			if ((option.Children.Count == 0) && (!option.Hidden || showHidden))
+			if (option.Children.Count == 0 && (!option.Hidden || showHidden))
 				Console.WriteLine(id++ + " : " +
 				                  Language.GetTextValue("Mods." + option.ModName + "." + option.SimplifiedName) +
 				                  (option.Enabled
@@ -81,7 +81,7 @@ public static class DedServUi
 		bool conflict = false;
 
 		foreach ((string? _, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
-			if (option.Enabled && (option.Children.Count == 0))
+			if (option.Enabled && option.Children.Count == 0)
 				foreach (string conflictName in option.Conflicts)
 					if (string.Compare(option.SimplifiedName, conflictName, StringComparison.Ordinal) < 0 &&
 					    API.OptionsContains(conflictName))

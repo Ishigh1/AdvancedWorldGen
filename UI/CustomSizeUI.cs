@@ -68,7 +68,7 @@ public class CustomSizeUI : UIState
 		sizeXInput.Top.Pixels = 50;
 		uiPanel.Append(sizeXInput);
 
-		ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 100,  ushort.MaxValue, 100);
+		ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 100, ushort.MaxValue, 100);
 		sizeYInput.Top.Pixels = sizeXInput.Top.Pixels + sizeXInput.Height.Pixels + 4;
 		uiPanel.Append(sizeYInput);
 
@@ -127,8 +127,8 @@ public class CustomSizeUI : UIState
 			setCurrentOptionMethod.Invoke(groupOptionButton, new object[] { size });
 
 #if !SPECIALDEBUG
-		int oldSizeX = Main.tile.GetLength(0);
-		int oldSizeY = Main.tile.GetLength(1);
+		int oldSizeX = Main.tile.Width;
+		int oldSizeY = Main.tile.Height;
 		if (oldSizeX < WorldSettings.SizeX || oldSizeY < WorldSettings.SizeY)
 		{
 			int newSizeX = Math.Max(WorldSettings.SizeX, oldSizeX);

@@ -94,7 +94,7 @@ public class JunglePass : ControlledWorldGenPass
 
 	public Point CreateStartPoint()
 	{
-		return new(JungleOriginX, (int)(Main.maxTilesY + Main.rockLayer) / 2);
+		return new Point(JungleOriginX, (int)(Main.maxTilesY + Main.rockLayer) / 2);
 	}
 
 	public void ApplyRandomMovement(ref int x, ref int y, int xRange, int yRange)

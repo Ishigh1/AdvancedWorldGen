@@ -26,7 +26,7 @@ public class API
 	}
 
 	/// <summary>
-	/// Checks if at least one of the given options is enabled
+	///     Checks if at least one of the given options is enabled
 	/// </summary>
 	public static bool OptionsContains(params string[] options)
 	{

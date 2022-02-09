@@ -83,6 +83,7 @@ public class UiChanger
 				Main.spawnTileX = Main.maxTilesX / 2;
 				Main.spawnTileY = Main.maxTilesY / 2;
 			}
+
 			WorldFile.SaveWorld();
 		}
 	}

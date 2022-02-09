@@ -248,7 +248,8 @@ public partial class DungeonPass
 			while (!WorldGen.SolidTile(num, num2) && num2 > 10) num2--;
 
 			num2++;
-			if (!Main.wallDungeon[Main.tile[num, num2].WallType] || Main.tile[num, num2 - 1].TileType == TileID.Spikes ||
+			if (!Main.wallDungeon[Main.tile[num, num2].WallType] ||
+			    Main.tile[num, num2 - 1].TileType == TileID.Spikes ||
 			    Main.tile[num, num2].HasTile || Main.tile[num, num2 + 1].HasTile ||
 			    Main.tile[num, num2 + 2].HasTile || Main.tile[num, num2 + 3].HasTile)
 				continue;
@@ -1078,7 +1079,8 @@ public partial class DungeonPass
 			}
 		}
 
-		if (!Main.wallDungeon[Main.tile[i - offX, num2].WallType] || !Main.wallDungeon[Main.tile[i + offX, num2].WallType])
+		if (!Main.wallDungeon[Main.tile[i - offX, num2].WallType] ||
+		    !Main.wallDungeon[Main.tile[i + offX, num2].WallType])
 			return false;
 
 		for (int l = num2; l < num2 + depth; l++)

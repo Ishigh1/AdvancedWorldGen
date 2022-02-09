@@ -105,7 +105,7 @@ public partial class DungeonPass
 			DungeonMinX = Math.Min(DungeonMinX, WorldGen.dungeonX);
 			DungeonMaxX = Math.Max(DungeonMaxX, WorldGen.dungeonX);
 			DungeonMaxY = Math.Max(DungeonMaxY, WorldGen.dungeonY);
-			
+
 			Progress.Set(room, maxRooms, 0.6f);
 			if (--num6 <= 0 && WorldGen.genRand.NextBool(3))
 			{
@@ -245,7 +245,7 @@ public partial class DungeonPass
 					int num25 = WorldGen.genRand.Next(5, 13);
 					Tile tile = Main.tile[x0, y0 - num24];
 					Tile tile1 = Main.tile[x0, y0 - num24 * 2];
-					
+
 					while (Main.tile[x0 - 1, y0].HasTile &&
 					       Main.tile[x0 - 1, y0].TileType != CrackedType &&
 					       Main.tile[x0, y0 + num24].HasTile && Main.tile[x0, y0].HasTile &&
@@ -273,7 +273,7 @@ public partial class DungeonPass
 					x0 = num23 + 1;
 					tile = Main.tile[x0, y0 - num24];
 					tile1 = Main.tile[x0, y0 - num24 * 2];
-					
+
 					while (Main.tile[x0 + 1, y0].HasTile &&
 					       Main.tile[x0 + 1, y0].TileType != CrackedType &&
 					       Main.tile[x0, y0 + num24].HasTile && Main.tile[x0, y0].HasTile &&
@@ -334,7 +334,7 @@ public partial class DungeonPass
 					int num30 = WorldGen.genRand.Next(5, 13);
 					Tile tile = Main.tile[x - num29, y];
 					Tile tile1 = Main.tile[x - num29 * 2, y];
-					
+
 					while (Main.tile[x, y - 1].HasTile &&
 					       Main.tile[x, y - 1].TileType != CrackedType &&
 					       Main.tile[x + num29, y].HasTile && Main.tile[x, y].HasTile &&

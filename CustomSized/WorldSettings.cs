@@ -112,7 +112,7 @@ public class WorldSettings
 
 			ConstructorInfo constructorInfo = typeof(Tilemap).GetConstructor(
 				BindingFlags.NonPublic | BindingFlags.Instance, new[] { typeof(ushort), typeof(ushort) })!;
-			Main.tile = (Tilemap)constructorInfo.Invoke(new object?[] {(ushort) newSizeX, (ushort) newSizeY});
+			Main.tile = (Tilemap)constructorInfo.Invoke(new object?[] { (ushort)newSizeX, (ushort)newSizeY });
 		}
 
 		int newWidth = Main.maxTilesX / Main.textureMaxWidth + 1;

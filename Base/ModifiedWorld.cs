@@ -81,7 +81,7 @@ public class ModifiedWorld : ModSystem
 		List<string> options = new();
 		string optionName;
 		while ((optionName = reader.ReadString()) != "") options.Add(optionName);
-		
+
 		OptionHelper.Import(options);
 
 		Main.checkHalloween();
@@ -239,7 +239,7 @@ public class ModifiedWorld : ModSystem
 		npc.direction = alreadyPlaced % 2 == 0 ? 1 : -1;
 		npc.homeless = true;
 		availableNPCs.Remove(npcType);
-		
+
 		alreadyPlaced++;
 
 		return true;

@@ -79,10 +79,10 @@ public class OptionHelper
 	public void Export(ICollection<string> collection)
 	{
 		foreach ((string? _, Option? option) in OptionDict)
-			if(option.Enabled && option.Children.Count == 0)
+			if (option.Enabled && option.Children.Count == 0)
 				collection.Add(option.FullName);
 	}
-	
+
 	public bool OptionsContains(params string[] optionNames)
 	{
 		return optionNames.Any(optionName =>
