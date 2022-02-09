@@ -19,9 +19,9 @@ public static class EvilReplacer
 			for (int y = (int)Main.worldSurface; y < Main.rockLayer; y++)
 			{
 				Tile tile = Main.tile[x, y];
-				if (!tile.IsActive)
+				if (!tile.HasTile)
 					continue;
-				ushort tileType = tile.type;
+				ushort tileType = tile.TileType;
 				if (TileID.Sets.Corrupt[tileType])
 				{
 					corruptOnLeft = x < Main.maxTilesX / 2;

@@ -148,8 +148,8 @@ public class OptionHelper
 				int y = reader.Read();
 				Tile tile = Main.tile[x, y];
 				tile.LiquidAmount = 0;
-				tile.IsActive = true;
-				tile.type = TileID.BreakableIce;
+				tile.HasTile = true;
+				tile.TileType = TileID.BreakableIce;
 				break;
 			case PacketId.EntropyHappening:
 				new Entropy(500, reader).TreatTiles();

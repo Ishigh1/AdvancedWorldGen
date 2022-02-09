@@ -61,20 +61,20 @@ public class GenerateIceBiome : ControlledWorldGenPass
 			for (int num845 = snowLeft; num845 < snowRight; num845++)
 				if (num844 < num840)
 				{
-					if (Main.tile[num845, num844].wall == 2)
-						Main.tile[num845, num844].wall = 40;
+					if (Main.tile[num845, num844].WallType == 2)
+						Main.tile[num845, num844].WallType = 40;
 
-					switch (Main.tile[num845, num844].type)
+					switch (Main.tile[num845, num844].TileType)
 					{
 						case 0:
 						case 2:
 						case 23:
 						case 40:
 						case 53:
-							Main.tile[num845, num844].type = 147;
+							Main.tile[num845, num844].TileType = 147;
 							break;
 						case 1:
-							Main.tile[num845, num844].type = 161;
+							Main.tile[num845, num844].TileType = 161;
 							break;
 					}
 				}
@@ -95,20 +95,20 @@ public class GenerateIceBiome : ControlledWorldGenPass
 
 					for (int num846 = num844; num846 < num844 + num843; num846++)
 					{
-						if (Main.tile[num845, num846].wall == 2)
-							Main.tile[num845, num846].wall = 40;
+						if (Main.tile[num845, num846].WallType == 2)
+							Main.tile[num845, num846].WallType = 40;
 
-						switch (Main.tile[num845, num846].type)
+						switch (Main.tile[num845, num846].TileType)
 						{
 							case 0:
 							case 2:
 							case 23:
 							case 40:
 							case 53:
-								Main.tile[num845, num846].type = 147;
+								Main.tile[num845, num846].TileType = 147;
 								break;
 							case 1:
-								Main.tile[num845, num846].type = 161;
+								Main.tile[num845, num846].TileType = 161;
 								break;
 						}
 					}

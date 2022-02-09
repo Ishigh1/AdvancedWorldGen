@@ -59,7 +59,7 @@ public static class HardmodeConversion
 
 				if (good)
 				{
-					switch (Main.tile[m, n].wall)
+					switch (Main.tile[m, n].WallType)
 					{
 						case 63:
 						case 65:
@@ -67,205 +67,205 @@ public static class HardmodeConversion
 						case 68:
 						case 69:
 						case 81:
-							Main.tile[m, n].wall = 70;
+							Main.tile[m, n].WallType = 70;
 							break;
 						case 216:
-							Main.tile[m, n].wall = 219;
+							Main.tile[m, n].WallType = 219;
 							break;
 						case 187:
-							Main.tile[m, n].wall = 222;
+							Main.tile[m, n].WallType = 222;
 							break;
 					}
 
-					if (Main.tile[m, n].wall is 3 or 83)
-						Main.tile[m, n].wall = 28;
+					if (Main.tile[m, n].WallType is 3 or 83)
+						Main.tile[m, n].WallType = 28;
 
-					switch (Main.tile[m, n].type)
+					switch (Main.tile[m, n].TileType)
 					{
 						case 225 when WorldGen.notTheBees:
-							Main.tile[m, n].type = 117;
+							Main.tile[m, n].TileType = 117;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 230 when WorldGen.notTheBees:
-							Main.tile[m, n].type = 402;
+							Main.tile[m, n].TileType = 402;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 2:
-							Main.tile[m, n].type = 109;
+							Main.tile[m, n].TileType = 109;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 1:
-							Main.tile[m, n].type = 117;
+							Main.tile[m, n].TileType = 117;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 53:
 						case 123:
-							Main.tile[m, n].type = 116;
+							Main.tile[m, n].TileType = 116;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 23:
 						case 199:
-							Main.tile[m, n].type = 109;
+							Main.tile[m, n].TileType = 109;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 25:
 						case 203:
-							Main.tile[m, n].type = 117;
+							Main.tile[m, n].TileType = 117;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 112:
 						case 234:
-							Main.tile[m, n].type = 116;
+							Main.tile[m, n].TileType = 116;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 161:
 						case 163:
 						case 200:
-							Main.tile[m, n].type = 164;
+							Main.tile[m, n].TileType = 164;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 396:
-							Main.tile[m, n].type = 403;
+							Main.tile[m, n].TileType = 403;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 397:
-							Main.tile[m, n].type = 402;
+							Main.tile[m, n].TileType = 402;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 					}
 				}
 				else if (WorldGen.crimson)
 				{
-					switch (Main.tile[m, n].wall)
+					switch (Main.tile[m, n].WallType)
 					{
 						case 63:
 						case 65:
 						case 66:
 						case 68:
-							Main.tile[m, n].wall = 81;
+							Main.tile[m, n].WallType = 81;
 							break;
 						case 216:
-							Main.tile[m, n].wall = 218;
+							Main.tile[m, n].WallType = 218;
 							break;
 						case 187:
-							Main.tile[m, n].wall = 221;
+							Main.tile[m, n].WallType = 221;
 							break;
 					}
 
-					switch (Main.tile[m, n].type)
+					switch (Main.tile[m, n].TileType)
 					{
 						case 225 when WorldGen.notTheBees:
-							Main.tile[m, n].type = 203;
+							Main.tile[m, n].TileType = 203;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 230 when WorldGen.notTheBees:
-							Main.tile[m, n].type = 399;
+							Main.tile[m, n].TileType = 399;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 2:
-							Main.tile[m, n].type = 199;
+							Main.tile[m, n].TileType = 199;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 1:
-							Main.tile[m, n].type = 203;
+							Main.tile[m, n].TileType = 203;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 53:
 						case 123:
-							Main.tile[m, n].type = 234;
+							Main.tile[m, n].TileType = 234;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 109:
-							Main.tile[m, n].type = 199;
+							Main.tile[m, n].TileType = 199;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 117:
-							Main.tile[m, n].type = 203;
+							Main.tile[m, n].TileType = 203;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 116:
-							Main.tile[m, n].type = 234;
+							Main.tile[m, n].TileType = 234;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 161:
 						case 164:
-							Main.tile[m, n].type = 200;
+							Main.tile[m, n].TileType = 200;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 396:
-							Main.tile[m, n].type = 401;
+							Main.tile[m, n].TileType = 401;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 397:
-							Main.tile[m, n].type = 399;
+							Main.tile[m, n].TileType = 399;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 					}
 				}
 				else
 				{
-					switch (Main.tile[m, n].wall)
+					switch (Main.tile[m, n].WallType)
 					{
 						case 63:
 						case 65:
 						case 66:
 						case 68:
-							Main.tile[m, n].wall = 69;
+							Main.tile[m, n].WallType = 69;
 							break;
 						case 216:
-							Main.tile[m, n].wall = 217;
+							Main.tile[m, n].WallType = 217;
 							break;
 						case 187:
-							Main.tile[m, n].wall = 220;
+							Main.tile[m, n].WallType = 220;
 							break;
 					}
 
-					switch (Main.tile[m, n].type)
+					switch (Main.tile[m, n].TileType)
 					{
 						case 225 when WorldGen.notTheBees:
-							Main.tile[m, n].type = 25;
+							Main.tile[m, n].TileType = 25;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 230 when WorldGen.notTheBees:
-							Main.tile[m, n].type = 398;
+							Main.tile[m, n].TileType = 398;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 2:
-							Main.tile[m, n].type = 23;
+							Main.tile[m, n].TileType = 23;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 1:
-							Main.tile[m, n].type = 25;
+							Main.tile[m, n].TileType = 25;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 53:
 						case 123:
-							Main.tile[m, n].type = 112;
+							Main.tile[m, n].TileType = 112;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 109:
-							Main.tile[m, n].type = 23;
+							Main.tile[m, n].TileType = 23;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 117:
-							Main.tile[m, n].type = 25;
+							Main.tile[m, n].TileType = 25;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 116:
-							Main.tile[m, n].type = 112;
+							Main.tile[m, n].TileType = 112;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 161:
 						case 164:
-							Main.tile[m, n].type = 163;
+							Main.tile[m, n].TileType = 163;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 396:
-							Main.tile[m, n].type = 400;
+							Main.tile[m, n].TileType = 400;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 						case 397:
-							Main.tile[m, n].type = 398;
+							Main.tile[m, n].TileType = 398;
 							WorldGen.SquareTileFrame(m, n);
 							break;
 					}

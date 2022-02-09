@@ -54,7 +54,7 @@ public class MushroomPatches : ControlledWorldGenPass
 
 				for (int x2 = x - spread; x2 < x + spread && isValid; x2 += 10)
 				for (int y2 = y - spread; y2 < y + spread && isValid; y2 += 10)
-					if (Main.tile[x2, y2].type is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce or
+					if (Main.tile[x2, y2].TileType is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce or
 					    TileID.JungleGrass or TileID.Granite or TileID.Marble)
 						isValid = false;
 					else if (WorldGen.UndergroundDesertLocation.Contains(new Point(x2, y2))) isValid = false;
@@ -82,50 +82,50 @@ public class MushroomPatches : ControlledWorldGenPass
 			Progress.Set(x - 50, Main.maxTilesX - 100, 0.5f, 0.5f);
 			for (int y = (int)Main.worldSurface; y < Main.maxTilesY - 50; y++)
 			{
-				if (!Main.tile[x, y].IsActive)
+				if (!Main.tile[x, y].HasTile)
 					continue;
 				WorldGen.SpreadGrass(x, y, TileID.Mud, TileID.MushroomGrass, false);
-				if (Main.tile[x, y].type == TileID.MushroomGrass)
+				if (Main.tile[x, y].TileType == TileID.MushroomGrass)
 				{
 					const int type = TileID.Mud;
 					for (int x2 = x - 1; x2 <= x + 1; x2++)
 					for (int y2 = y - 1; y2 <= y + 1; y2++)
-						if (Main.tile[x2, y2].IsActive)
+						if (Main.tile[x2, y2].HasTile)
 						{
-							if (!Main.tile[x2 - 1, y2].IsActive &&
-							    !Main.tile[x2 + 1, y2].IsActive)
+							if (!Main.tile[x2 - 1, y2].HasTile &&
+							    !Main.tile[x2 + 1, y2].HasTile)
 								WorldGen.KillTile(x2, y2);
-							else if (!Main.tile[x2, y2 - 1].IsActive &&
-							         !Main.tile[x2, y2 + 1].IsActive)
+							else if (!Main.tile[x2, y2 - 1].HasTile &&
+							         !Main.tile[x2, y2 + 1].HasTile)
 								WorldGen.KillTile(x2, y2);
 						}
-						else if (Main.tile[x2 - 1, y2].IsActive &&
-						         Main.tile[x2 + 1, y2].IsActive)
+						else if (Main.tile[x2 - 1, y2].HasTile &&
+						         Main.tile[x2 + 1, y2].HasTile)
 						{
 							WorldGen.PlaceTile(x2, y2, type);
-							if (Main.tile[x2 - 1, y].type == 70)
-								Main.tile[x2 - 1, y].type = 59;
+							if (Main.tile[x2 - 1, y].TileType == 70)
+								Main.tile[x2 - 1, y].TileType = 59;
 
-							if (Main.tile[x2 + 1, y].type == 70)
-								Main.tile[x2 + 1, y].type = 59;
+							if (Main.tile[x2 + 1, y].TileType == 70)
+								Main.tile[x2 + 1, y].TileType = 59;
 						}
-						else if (Main.tile[x2, y2 - 1].IsActive &&
-						         Main.tile[x2, y2 + 1].IsActive)
+						else if (Main.tile[x2, y2 - 1].HasTile &&
+						         Main.tile[x2, y2 + 1].HasTile)
 						{
 							WorldGen.PlaceTile(x2, y2, type);
-							if (Main.tile[x2, y - 1].type == 70)
-								Main.tile[x2, y - 1].type = 59;
+							if (Main.tile[x2, y - 1].TileType == 70)
+								Main.tile[x2, y - 1].TileType = 59;
 
-							if (Main.tile[x2, y + 1].type == 70)
-								Main.tile[x2, y + 1].type = 59;
+							if (Main.tile[x2, y + 1].TileType == 70)
+								Main.tile[x2, y + 1].TileType = 59;
 						}
 
 					if (WorldGen.genRand.NextBool(4))
 					{
 						int num814 = x + WorldGen.genRand.Next(-20, 21);
 						int num815 = y + WorldGen.genRand.Next(-20, 21);
-						if (Main.tile[num814, num815].type == 59)
-							Main.tile[num814, num815].type = 70;
+						if (Main.tile[num814, num815].TileType == 59)
+							Main.tile[num814, num815].TileType = 70;
 					}
 				}
 			}
@@ -175,23 +175,24 @@ public class MushroomPatches : ControlledWorldGenPass
 				float num10 = Math.Abs(x - vector.X);
 				float num11 = Math.Abs((y - vector.Y) * 2.3f);
 				double num12 = Math.Sqrt(num10 * num10 + num11 * num11);
-				if (num12 < num5 * 0.8 && Main.tile[x, y].LiquidType == LiquidID.Lava)
-					Main.tile[x, y].LiquidAmount = 0;
+				Tile tile = Main.tile[x, y];
+				if (num12 < num5 * 0.8 && tile.LiquidType == LiquidID.Lava)
+					tile.LiquidAmount = 0;
 
 				if (num12 < num5 * 0.2 && y < vector.Y)
 				{
-					Main.tile[x, y].IsActive = false;
-					if (Main.tile[x, y].wall > 0)
-						Main.tile[x, y].wall = 80;
+					tile.HasTile = false;
+					if (tile.WallType > 0)
+						tile.WallType = 80;
 				}
 				else if (num12 < num5 * 0.4 * (0.95 + WorldGen.genRand.NextFloat() * 0.1))
 				{
-					Main.tile[x, y].type = 59;
+					tile.TileType = 59;
 					if (num2 == num4 && y > vector.Y)
-						Main.tile[x, y].IsActive = true;
+						tile.HasTile = true;
 
-					if (Main.tile[x, y].wall > 0)
-						Main.tile[x, y].wall = 80;
+					if (tile.WallType > 0)
+						tile.WallType = 80;
 				}
 			}
 
@@ -223,7 +224,7 @@ public class MushroomPatches : ControlledWorldGenPass
 			{
 				x = (int)vector.X + WorldGen.genRand.Next(-20, 20);
 				y = (int)vector.Y + WorldGen.genRand.Next(0, 20);
-				(x, y) = TileFinder.SpiralSearch(x, y, (i1, i2) => Main.tile[i1, i2].IsActive);
+				(x, y) = TileFinder.SpiralSearch(x, y, (i1, i2) => Main.tile[i1, i2].HasTile);
 
 				int strength = WorldGen.genRand.Next(10, 20);
 				int steps = WorldGen.genRand.Next(10, 20);

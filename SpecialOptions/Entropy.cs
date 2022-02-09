@@ -69,9 +69,9 @@ public class Entropy
 				Tile tile = Framing.GetTileSafely(x, y);
 				if (tile == null) continue;
 				List<Tuple<int, int>>? coords;
-				if (tile.IsActive)
+				if (tile.HasTile)
 				{
-					int type = tile.type;
+					int type = tile.TileType;
 					if (!TileReplacer.DontReplace(type))
 					{
 						if (!Tiles.TryGetValue(type, out coords))
@@ -84,7 +84,7 @@ public class Entropy
 					}
 				}
 
-				ushort wall = tile.wall;
+				ushort wall = tile.WallType;
 				if (wall != 0)
 				{
 					if (!Walls.TryGetValue(wall, out coords))
@@ -175,22 +175,24 @@ public class Entropy
 	{
 		if (OldTile != -1 && NewTile != -1)
 			foreach ((int x, int y) in Tiles[OldTile]
-				         .Where(tuple => Framing.GetTileSafely(tuple.Item1, tuple.Item2).type == OldTile))
+				         .Where(tuple => Framing.GetTileSafely(tuple.Item1, tuple.Item2).TileType == OldTile))
 			{
-				Framing.GetTileSafely(x, y).type = (ushort)NewTile;
+				Tile tileSafely = Framing.GetTileSafely(x, y);
+				tileSafely.TileType = (ushort)NewTile;
 				WorldGen.DiamondTileFrame(x, y);
 				if (API.OptionsContains("Painted"))
-					Framing.GetTileSafely(x, y).Color = PaintTile;
+					tileSafely.TileColor = PaintTile;
 			}
 
 		if (OldWall != 0 && NewWall != 0)
 			foreach ((int x, int y) in Walls[OldWall]
-				         .Where(tuple => Framing.GetTileSafely(tuple.Item1, tuple.Item2).wall == OldWall))
+				         .Where(tuple => Framing.GetTileSafely(tuple.Item1, tuple.Item2).WallType == OldWall))
 			{
-				Framing.GetTileSafely(x, y).wall = (ushort)NewWall;
+				Tile tileSafely = Framing.GetTileSafely(x, y);
+				tileSafely.WallType = (ushort)NewWall;
 				WorldGen.SquareWallFrame(x, y);
 				if (API.OptionsContains("Painted"))
-					Framing.GetTileSafely(x, y).WallColor = PaintWall;
+					tileSafely.WallColor = PaintWall;
 			}
 	}
 
@@ -248,15 +250,15 @@ public class Entropy
 				int y = (j + Y) % Main.maxTilesY;
 				Tile tile = Framing.GetTileSafely(x, y);
 				if (tile == null) continue;
-				if (tile.type == OldTile && NewTile != -1)
+				if (tile.TileType == OldTile && NewTile != -1)
 				{
-					tile.type = (ushort)NewTile;
-					tile.Color = PaintTile;
+					tile.TileType = (ushort)NewTile;
+					tile.TileColor = PaintTile;
 				}
 
-				if (tile.wall == OldWall && NewTile != 0)
+				if (tile.WallType == OldWall && NewTile != 0)
 				{
-					tile.wall = (ushort)NewWall;
+					tile.WallType = (ushort)NewWall;
 					tile.WallColor = PaintWall;
 				}
 			}

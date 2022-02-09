@@ -60,12 +60,14 @@ public static class Chest
 		WorldGen.KillTile(chestLeftX, chestBottomY);
 		WorldGen.KillTile(chestRightX, chestBottomY);
 
-		if (Main.tile[chestLeftX, chestTopY].IsActive || Main.tile[chestRightX, chestTopY].IsActive ||
-		    Main.tile[chestLeftX, chestBottomY].IsActive || Main.tile[chestRightX, chestBottomY].IsActive)
+		if (Main.tile[chestLeftX, chestTopY].HasTile || Main.tile[chestRightX, chestTopY].HasTile ||
+		    Main.tile[chestLeftX, chestBottomY].HasTile || Main.tile[chestRightX, chestBottomY].HasTile)
 			return false;
 
-		Main.tile[chestLeftX, groundY].Slope = SlopeType.Solid;
-		Main.tile[chestRightX, groundY].Slope = SlopeType.Solid;
+		Tile leftTile = Main.tile[chestLeftX, groundY];
+		leftTile.Slope = SlopeType.Solid;
+		Tile rightTile = Main.tile[chestRightX, groundY];
+		rightTile.Slope = SlopeType.Solid;
 
 		PreLoot(chestRightX, groundY,
 			ref contain, style,
@@ -135,7 +137,7 @@ public static class Chest
 		if (chestTileType == TileID.Containers && (outStyle == 11 || contain == ItemID.None &&
 			    y >= Main.worldSurface + 25.0 &&
 			    y <= Main.maxTilesY - 205 &&
-			    Main.tile[x, y].type is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce))
+			    Main.tile[x, y].TileType is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce))
 		{
 			iceBiome = true;
 			outStyle = 11;
@@ -1228,7 +1230,7 @@ public static class Chest
 					break;
 			}
 
-			if (Main.wallDungeon[Main.tile[x, y].wall] && WorldGen.genRand.NextBool(8))
+			if (Main.wallDungeon[Main.tile[x, y].WallType] && WorldGen.genRand.NextBool(8))
 			{
 				chest.item[index].SetDefaults(ItemID.BoneWelder);
 				index++;

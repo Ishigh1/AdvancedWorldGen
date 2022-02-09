@@ -175,13 +175,13 @@ public static class AltarSmash
 			int xx = Terraria.WorldGen.genRand.Next(100, Main.maxTilesX - 100);
 			int yy = Terraria.WorldGen.genRand.Next((int)Main.rockLayer + 50, Main.maxTilesY - 300);
 			Tile tile = Main.tile[xx, yy];
-			if (!tile.IsActive || tile.type != TileID.Stone)
+			if (!tile.HasTile || tile.TileType != TileID.Stone)
 				continue;
 
 			if (num9 == 0)
-				tile.type = Terraria.WorldGen.crimson ? TileID.Crimstone : TileID.Ebonstone;
+				tile.TileType = Terraria.WorldGen.crimson ? TileID.Crimstone : TileID.Ebonstone;
 			else
-				tile.type = TileID.Pearlstone;
+				tile.TileType = TileID.Pearlstone;
 
 			if (Main.netMode == NetmodeID.Server)
 				NetMessage.SendTileSquare(-1, xx, yy);

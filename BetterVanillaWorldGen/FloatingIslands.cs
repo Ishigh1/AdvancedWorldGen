@@ -53,7 +53,7 @@ public class FloatingIslands : ControlledWorldGenPass
 					flag54 = false;
 					int num823 = 0;
 					for (int num824 = 200; num824 < Main.worldSurface; num824++)
-						if (Main.tile[x, num824].IsActive)
+						if (Main.tile[x, num824].HasTile)
 						{
 							num823 = num824;
 							flag54 = true;

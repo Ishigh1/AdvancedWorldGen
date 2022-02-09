@@ -42,7 +42,8 @@ public static class Traps
 		WorldGen.PlaceTile(x, y, PressurePlates, plr: -1, style: 3);
 		WorldGen.KillTile(explosiveX, explosiveY);
 		WorldGen.PlaceTile(explosiveX, explosiveY, Explosives, plr: -1);
-		Main.tile[explosiveX, explosiveY].Color = PaintID.ShadowPaint;
+		Tile tile = Main.tile[explosiveX, explosiveY];
+		tile.TileColor = PaintID.ShadowPaint;
 		WorldUtils.WireLine(new Point(x, y), new Point(explosiveX, explosiveY));
 	}
 
@@ -62,14 +63,18 @@ public static class Traps
 				case 2:
 					PlaceCloudTrap(x, (x1, y1) =>
 					{
-						Main.tile[x1, y1].LiquidAmount = byte.MaxValue;
-						Main.tile[x1, y1].LiquidType = LiquidID.Lava;
-						Main.tile[x1, y1 - 1].LiquidAmount = byte.MaxValue;
-						Main.tile[x1, y1 - 1].LiquidType = LiquidID.Lava;
-						Main.tile[x1 - 1, y1].LiquidAmount = byte.MaxValue;
-						Main.tile[x1 - 1, y1].LiquidType = LiquidID.Lava;
-						Main.tile[x1 - 1, y1 - 1].LiquidAmount = byte.MaxValue;
-						Main.tile[x1 - 1, y1 - 1].LiquidType = LiquidID.Lava;
+						Tile tile = Main.tile[x1, y1];
+						tile.LiquidAmount = byte.MaxValue;
+						tile.LiquidType = LiquidID.Lava;
+						Tile tile1 = Main.tile[x1, y1 - 1];
+						tile1.LiquidAmount = byte.MaxValue;
+						tile1.LiquidType = LiquidID.Lava;
+						Tile tile2 = Main.tile[x1 - 1, y1];
+						tile2.LiquidAmount = byte.MaxValue;
+						tile2.LiquidType = LiquidID.Lava;
+						Tile tile3 = Main.tile[x1 - 1, y1 - 1];
+						tile3.LiquidAmount = byte.MaxValue;
+						tile3.LiquidType = LiquidID.Lava;
 					});
 					break;
 				case 3:
@@ -95,9 +100,11 @@ public static class Traps
 		if (y - cloudDistanceY <= 40)
 		{
 			WorldUtils.WireLine(new Point(x, y), new Point(x, y - cloudDistanceY));
-			Main.tile[x, 40].HasActuator = true;
-			Main.tile[x + direction, 40].RedWire = true;
-			Main.tile[x + direction, 40].HasActuator = true;
+			Tile tile = Main.tile[x, 40];
+			tile.HasActuator = true;
+			Tile tile1 = Main.tile[x + direction, 40];
+			tile1.RedWire = true;
+			tile1.HasActuator = true;
 			WorldGen.PlaceTile(x, 40, TileID.Cloud);
 			WorldGen.PlaceTile(x + direction, 40, TileID.Cloud);
 			WorldGen.PlaceTile(x + 2 * direction, 39, TileID.Cloud);
@@ -133,10 +140,12 @@ public static class Traps
 						WorldUtils.WireLine(new Point(x, y), new Point(x, y - cloudDistanceY));
 						for (int i = 0; i < depth - 1; i++)
 						{
-							Main.tile[x, y - cloudDistanceY - i].RedWire = true;
-							Main.tile[x, y - cloudDistanceY - i].HasActuator = true;
-							Main.tile[x + direction, y - cloudDistanceY - i].RedWire = true;
-							Main.tile[x + direction, y - cloudDistanceY - i].HasActuator = true;
+							Tile tile = Main.tile[x, y - cloudDistanceY - i];
+							tile.RedWire = true;
+							tile.HasActuator = true;
+							Tile tile1 = Main.tile[x + direction, y - cloudDistanceY - i];
+							tile1.RedWire = true;
+							tile1.HasActuator = true;
 						}
 					}
 					else
@@ -168,37 +177,39 @@ public static class Traps
 		for (int i = 0; i < width; i++)
 		{
 			int tempX = cloudX + i;
-			if (Main.tile[tempX, cloudY].IsActive || Main.tile[tempX, cloudY].LiquidAmount != 0) continue;
+			Tile tile = Main.tile[tempX, cloudY];
+			if (tile.HasTile || tile.LiquidAmount != 0) continue;
 			WorldGen.PlaceTile(tempX, cloudY, TileID.Cloud);
+			Tile tile1 = Main.tile[tempX, cloudY + 1];
 			if (width <= 2)
 			{
-				Main.tile[tempX, cloudY].IsHalfBlock = true;
-				Main.tile[tempX, cloudY + 1].Slope = SlopeType.Solid;
+				tile.IsHalfBlock = true;
+				tile1.Slope = SlopeType.Solid;
 			}
 			else if (i == 0)
 			{
 				if (enlarging)
 				{
-					if (!Main.tile[tempX, cloudY + 1].IsActive)
-						Main.tile[tempX, cloudY].Slope = SlopeType.Solid;
+					if (!tile1.HasTile)
+						tile.Slope = SlopeType.Solid;
 				}
 				else
 				{
-					Main.tile[tempX, cloudY].Slope = SlopeType.SlopeDownRight;
-					Main.tile[tempX, cloudY + 1].Slope = SlopeType.Solid;
+					tile.Slope = SlopeType.SlopeDownRight;
+					tile1.Slope = SlopeType.Solid;
 				}
 			}
 			else if (i == width - 1)
 			{
 				if (enlarging)
 				{
-					if (!Main.tile[tempX, cloudY + 1].IsActive)
-						Main.tile[tempX, cloudY].Slope = SlopeType.SlopeUpLeft;
+					if (!tile1.HasTile)
+						tile.Slope = SlopeType.SlopeUpLeft;
 				}
 				else
 				{
-					Main.tile[tempX, cloudY].Slope = SlopeType.SlopeDownLeft;
-					Main.tile[tempX, cloudY + 1].Slope = SlopeType.Solid;
+					tile.Slope = SlopeType.SlopeDownLeft;
+					tile1.Slope = SlopeType.Solid;
 				}
 			}
 		}

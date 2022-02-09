@@ -18,8 +18,8 @@ public class RandomGems : ControlledWorldGenPass
 			int x = WorldGen.genRand.Next(20, Main.maxTilesX - 20);
 			int y = WorldGen.genRand.Next((int)Main.rockLayer, yMax);
 			Tile tile = Main.tile[x, y];
-			if (!tile.IsActive && tile.LiquidType != LiquidID.Lava &&
-			    !Main.wallDungeon[tile.wall] && tile.wall != WallID.Planked)
+			if (!tile.HasTile && tile.LiquidType != LiquidID.Lava &&
+			    !Main.wallDungeon[tile.WallType] && tile.WallType != WallID.Planked)
 			{
 				int style = WorldGen.genRand.Next(12) switch
 				{
@@ -39,8 +39,8 @@ public class RandomGems : ControlledWorldGenPass
 			int x = WorldGen.genRand.Next(20, Main.maxTilesX - 20);
 			int y = WorldGen.genRand.Next((int)Main.worldSurface, yMax);
 			Tile tile = Main.tile[x, y];
-			if (!tile.IsActive && tile.LiquidType != LiquidID.Lava &&
-			    tile.wall is WallID.HardenedSand or WallID.Sandstone)
+			if (!tile.HasTile && tile.LiquidType != LiquidID.Lava &&
+			    tile.WallType is WallID.HardenedSand or WallID.Sandstone)
 			{
 				int num169 = WorldGen.genRand.Next(1, 4);
 				int num170 = WorldGen.genRand.Next(1, 4);
@@ -48,7 +48,7 @@ public class RandomGems : ControlledWorldGenPass
 				int num172 = WorldGen.genRand.Next(1, 4);
 				for (int xx = x - num169; xx < x + num170; xx++)
 				for (int yy = y - num171; yy < y + num172; yy++)
-					if (!Main.tile[xx, yy].IsActive)
+					if (!Main.tile[xx, yy].HasTile)
 						WorldGen.PlaceTile(xx, yy, TileID.ExposedGems, true, false, -1, 6);
 			}
 		}

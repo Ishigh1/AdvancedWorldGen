@@ -22,13 +22,13 @@ public class SnowWorld
 		int x = Main.rand.Next(Main.maxTilesX);
 		int y = Main.rand.Next((int)Main.worldSurface);
 		Tile tile = Main.tile[x, y];
-		if (tile.IsActive || tile.wall != 0) return;
+		if (tile.HasTile || tile.WallType != 0) return;
 		if (tile.LiquidAmount > 0)
 		{
 			if (tile.LiquidType != LiquidID.Water) return;
 			tile.LiquidAmount = 0;
-			tile.IsActive = true;
-			tile.type = BreakableIce;
+			tile.HasTile = true;
+			tile.TileType = BreakableIce;
 
 			if (Main.netMode == NetmodeID.Server)
 			{

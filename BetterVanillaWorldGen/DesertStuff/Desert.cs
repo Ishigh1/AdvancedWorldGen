@@ -27,7 +27,7 @@ public static class Desert
 		const int spread = 15;
 		for (int i = x - spread; i <= x + spread; i += 10)
 		for (int j = y - spread; j <= y + spread; j += 10)
-			if (Main.tile[i, j].wall is 187 or 216)
+			if (Main.tile[i, j].WallType is 187 or 216)
 				return true;
 
 		return false;
@@ -86,7 +86,7 @@ public static class Desert
 		int xMin = Math.Max(startX, 0);
 		int xMax = Math.Min(startX + width, Main.maxTilesX);
 		for (int x = xMin; x < xMax; x += 3)
-			switch (Main.tile[x, startY].type)
+			switch (Main.tile[x, startY].TileType)
 			{
 				case TileID.Mud:
 				case TileID.JungleGrass:

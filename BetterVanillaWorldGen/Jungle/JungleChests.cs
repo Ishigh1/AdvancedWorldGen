@@ -60,17 +60,19 @@ public class JungleChests : ControlledWorldGenPass
 			for (int xx = x - width - 1; xx <= x + width + 1; xx++)
 			for (int yy = y - height - 1; yy <= y + height + 1; yy++)
 			{
-				Main.tile[xx, yy].IsActive = true;
-				Main.tile[xx, yy].type = tileType;
-				Main.tile[xx, yy].LiquidAmount = 0;
-				Main.tile[xx, yy].LiquidType = LiquidID.Water;
+				Tile tile = Main.tile[xx, yy];
+				tile.HasTile = true;
+				tile.TileType = tileType;
+				tile.LiquidAmount = 0;
+				tile.LiquidType = LiquidID.Water;
 			}
 
 			for (int xx = x - width; xx <= x + width; xx++)
 			for (int yy = y - height; yy <= y + height; yy++)
 			{
-				Main.tile[xx, yy].IsActive = false;
-				Main.tile[xx, yy].wall = wallType;
+				Tile tile = Main.tile[xx, yy];
+				tile.HasTile = false;
+				tile.WallType = wallType;
 			}
 
 			bool torchPlaced = false;
@@ -81,28 +83,36 @@ public class JungleChests : ControlledWorldGenPass
 				int xx = WorldGen.genRand.Next(x - width, x + width + 1);
 				int yy = WorldGen.genRand.Next(y - height, y + height - 2);
 				WorldGen.PlaceTile(xx, yy, TileID.Torches, true, false, -1, 3);
-				if (TileID.Sets.Torch[Main.tile[xx, yy].type])
+				if (TileID.Sets.Torch[Main.tile[xx, yy].TileType])
 					torchPlaced = true;
 			}
 
 			for (int xx = x - width - 1; xx <= x + width + 1; xx++)
 			for (int yy = y + height - 2; yy <= y + height; yy++)
-				Main.tile[xx, yy].IsActive = false;
+			{
+				Tile tile = Main.tile[xx, yy];
+				tile.HasTile = false;
+			}
 
 			for (int xx = x - width - 1; xx <= x + width + 1; xx++)
 			for (int yy = y + height - 2; yy <= y + height - 1; yy++)
-				Main.tile[xx, yy].IsActive = false;
+			{
+				Tile tile = Main.tile[xx, yy];
+				tile.HasTile = false;
+			}
 
 			for (int xx = x - width - 1; xx <= x + width + 1; xx++)
 			{
 				int num556 = 4;
 				int yy = y + height + 2;
-				while (!Main.tile[xx, yy].IsActive && yy < Main.maxTilesY && num556 > 0)
+				Tile tile = Main.tile[xx, yy];
+				while (!tile.HasTile && yy < Main.maxTilesY && num556 > 0)
 				{
-					Main.tile[xx, yy].IsActive = true;
-					Main.tile[xx, yy].type = 59;
+					tile.HasTile = true;
+					tile.TileType = 59;
 					yy++;
 					num556--;
+					tile = Main.tile[xx, yy];
 				}
 			}
 
@@ -112,8 +122,9 @@ public class JungleChests : ControlledWorldGenPass
 			{
 				for (int i = x - width - 1; i <= x + width + 1; i++)
 				{
-					Main.tile[i, j].IsActive = true;
-					Main.tile[i, j].type = tileType;
+					Tile tile = Main.tile[i, j];
+					tile.HasTile = true;
+					tile.TileType = tileType;
 				}
 
 				width -= WorldGen.genRand.Next(1, 3);
@@ -135,7 +146,7 @@ public class JungleChests : ControlledWorldGenPass
 
 	public static bool IsValid(int x, int y)
 	{
-		if (Main.tile[x, y].type == 60)
+		if (Main.tile[x, y].TileType == 60)
 		{
 			const int spread = 30;
 			int xMin = Math.Max(x - spread, 10);
@@ -145,10 +156,10 @@ public class JungleChests : ControlledWorldGenPass
 			for (int x1 = xMin; x1 < xMax; x1 += 3)
 			for (int y1 = yMin; y1 < yMax; y1 += 3)
 			{
-				if (Main.tile[x1, y1].IsActive && Main.tile[x1, y1].type is 225 or 229 or 226 or 119 or 120)
+				if (Main.tile[x1, y1].HasTile && Main.tile[x1, y1].TileType is 225 or 229 or 226 or 119 or 120)
 					return true;
 
-				if (Main.tile[x1, y1].wall is WallID.HiveUnsafe or WallID.LihzahrdBrickUnsafe)
+				if (Main.tile[x1, y1].WallType is WallID.HiveUnsafe or WallID.LihzahrdBrickUnsafe)
 					return true;
 			}
 		}

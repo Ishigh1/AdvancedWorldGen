@@ -97,25 +97,25 @@ public static class DesertHive
 			if (score > 3.5f)
 			{
 				tile.ClearEverything();
-				tile.wall = 187;
+				tile.WallType = 187;
 				if (closestCluster % 15 == 2)
 					tile.ResetToType(404);
 			}
 			else if (score > 1.8f)
 			{
-				tile.wall = 187;
+				tile.WallType = 187;
 				if (y < Main.worldSurface)
 					tile.LiquidAmount = 0;
 				else
 					tile.LiquidType = LiquidID.Lava;
 
-				if (tile.IsActive) tile.ResetToType(396);
+				if (tile.HasTile) tile.ResetToType(396);
 			}
 			else if (score > 0.7f)
 			{
-				tile.wall = 216;
+				tile.WallType = 216;
 				tile.LiquidAmount = 0;
-				if (tile.IsActive) tile.ResetToType(type);
+				if (tile.HasTile) tile.ResetToType(type);
 			}
 			else if (score > 0.25f)
 			{
@@ -123,13 +123,13 @@ public static class DesertHive
 				float num8 = (score - 0.25f) / 0.45f;
 				if (fastRandom2.NextFloat() < num8)
 				{
-					tile.wall = 187;
+					tile.WallType = 187;
 					if (y < Main.worldSurface)
 						tile.LiquidAmount = 0;
 					else
 						tile.LiquidType = LiquidID.Lava;
 
-					if (tile.IsActive) tile.ResetToType(type);
+					if (tile.HasTile) tile.ResetToType(type);
 				}
 			}
 		}
@@ -147,20 +147,20 @@ public static class DesertHive
 			Tile tile = Main.tile[x, y];
 			Tile testTile = Main.tile[x, y + 1];
 			Tile testTile2 = Main.tile[x, y + 2];
-			if (tile.type == 53 && (!WorldGen.SolidTile(testTile) || !WorldGen.SolidTile(testTile2)))
-				tile.type = 397;
+			if (tile.TileType == 53 && (!WorldGen.SolidTile(testTile) || !WorldGen.SolidTile(testTile2)))
+				tile.TileType = 397;
 		}
 
 		for (int x = xMin; x < xMax; x++)
 		for (int y = yMin; y < yMax; y++)
 		{
 			Tile tile2 = Main.tile[x, y];
-			if (!tile2.IsActive || tile2.type != 396)
+			if (!tile2.HasTile || tile2.TileType != 396)
 				continue;
 
 			bool flag = true;
 			for (int num5 = -1; num5 >= -3; num5--)
-				if (Main.tile[x, y + num5].IsActive)
+				if (Main.tile[x, y + num5].HasTile)
 				{
 					flag = false;
 					break;
@@ -168,7 +168,7 @@ public static class DesertHive
 
 			bool flag2 = true;
 			for (int m = 1; m <= 3; m++)
-				if (Main.tile[x, y + m].IsActive)
+				if (Main.tile[x, y + m].HasTile)
 				{
 					flag2 = false;
 					break;

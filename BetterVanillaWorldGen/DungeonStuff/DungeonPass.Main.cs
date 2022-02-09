@@ -42,7 +42,7 @@ public partial class DungeonPass
 		if (x < 0 || x > Main.maxTilesX)
 			return false;
 
-		return Main.wallDungeon[Main.tile[x, y].wall];
+		return Main.wallDungeon[Main.tile[x, y].WallType];
 	}
 
 	public static void DungeonInit()
@@ -180,28 +180,28 @@ public partial class DungeonPass
 		for (int k = 0; k < DungeonRoomPos.Count; k++)
 		{
 			for (int l = DungeonRoomL[k]; l <= DungeonRoomR[k]; l++)
-				if (!Main.tile[l, DungeonRoomT[k] - 1].IsActive)
+				if (!Main.tile[l, DungeonRoomT[k] - 1].HasTile)
 				{
 					DungeonPlatforms.Add((l, DungeonRoomT[k] - 1));
 					break;
 				}
 
 			for (int m = DungeonRoomL[k]; m <= DungeonRoomR[k]; m++)
-				if (!Main.tile[m, DungeonRoomB[k] + 1].IsActive)
+				if (!Main.tile[m, DungeonRoomB[k] + 1].HasTile)
 				{
 					DungeonPlatforms.Add((m, DungeonRoomT[k] + 1));
 					break;
 				}
 
 			for (int n = DungeonRoomT[k]; n <= DungeonRoomB[k]; n++)
-				if (!Main.tile[DungeonRoomL[k] - 1, n].IsActive)
+				if (!Main.tile[DungeonRoomL[k] - 1, n].HasTile)
 				{
 					Doors.Add((DungeonRoomL[k] - 1, n, -1));
 					break;
 				}
 
 			for (int num16 = DungeonRoomT[k]; num16 <= DungeonRoomB[k]; num16++)
-				if (!Main.tile[DungeonRoomR[k] + 1, num16].IsActive)
+				if (!Main.tile[DungeonRoomR[k] + 1, num16].HasTile)
 				{
 					Doors.Add((DungeonRoomL[k] + 1, num16, 1));
 					break;
@@ -227,64 +227,74 @@ public partial class DungeonPass
 				y0 = WorldGen.genRand.Next((int)Main.worldSurface + 25, DungeonMaxY);
 
 			int num23 = x0;
-			if (Main.tile[x0, y0].wall == wallType && !Main.tile[x0, y0].IsActive)
+			if (Main.tile[x0, y0].WallType == wallType && !Main.tile[x0, y0].HasTile)
 			{
 				int num24 = 1;
 				if (WorldGen.genRand.NextBool(2))
 					num24 = -1;
 
-				for (; !Main.tile[x0, y0].IsActive; y0 += num24)
+				for (; !Main.tile[x0, y0].HasTile; y0 += num24)
 				{
 				}
 
-				if (Main.tile[x0 - 1, y0].IsActive && Main.tile[x0 + 1, y0].IsActive &&
-				    Main.tile[x0 - 1, y0].type != CrackedType &&
-				    !Main.tile[x0 - 1, y0 - num24].IsActive && !Main.tile[x0 + 1, y0 - num24].IsActive)
+				if (Main.tile[x0 - 1, y0].HasTile && Main.tile[x0 + 1, y0].HasTile &&
+				    Main.tile[x0 - 1, y0].TileType != CrackedType &&
+				    !Main.tile[x0 - 1, y0 - num24].HasTile && !Main.tile[x0 + 1, y0 - num24].HasTile)
 				{
 					num19++;
 					int num25 = WorldGen.genRand.Next(5, 13);
-					while (Main.tile[x0 - 1, y0].IsActive &&
-					       Main.tile[x0 - 1, y0].type != CrackedType &&
-					       Main.tile[x0, y0 + num24].IsActive && Main.tile[x0, y0].IsActive &&
-					       !Main.tile[x0, y0 - num24].IsActive && num25 > 0)
+					Tile tile = Main.tile[x0, y0 - num24];
+					Tile tile1 = Main.tile[x0, y0 - num24 * 2];
+					
+					while (Main.tile[x0 - 1, y0].HasTile &&
+					       Main.tile[x0 - 1, y0].TileType != CrackedType &&
+					       Main.tile[x0, y0 + num24].HasTile && Main.tile[x0, y0].HasTile &&
+					       !tile.HasTile && num25 > 0)
 					{
-						Main.tile[x0, y0].type = TileID.Spikes;
-						if (!Main.tile[x0 - 1, y0 - num24].IsActive &&
-						    !Main.tile[x0 + 1, y0 - num24].IsActive)
+						Main.tile[x0, y0].TileType = TileID.Spikes;
+						if (!Main.tile[x0 - 1, y0 - num24].HasTile &&
+						    !Main.tile[x0 + 1, y0 - num24].HasTile)
 						{
-							Main.tile[x0, y0 - num24].Clear(TileDataType.Slope);
-							Main.tile[x0, y0 - num24].type = TileID.Spikes;
-							Main.tile[x0, y0 - num24].IsActive = true;
-							Main.tile[x0, y0 - num24 * 2].Clear(TileDataType.Slope);
-							Main.tile[x0, y0 - num24 * 2].type = TileID.Spikes;
-							Main.tile[x0, y0 - num24 * 2].IsActive = true;
+							tile.Clear(TileDataType.Slope);
+							tile.TileType = TileID.Spikes;
+							tile.HasTile = true;
+							tile1.Clear(TileDataType.Slope);
+							tile1.TileType = TileID.Spikes;
+							tile1.HasTile = true;
 						}
 
 						x0--;
 						num25--;
+						tile = Main.tile[x0, y0 - num24];
+						tile1 = Main.tile[x0, y0 - num24 * 2];
 					}
 
 					num25 = WorldGen.genRand.Next(5, 13);
 					x0 = num23 + 1;
-					while (Main.tile[x0 + 1, y0].IsActive &&
-					       Main.tile[x0 + 1, y0].type != CrackedType &&
-					       Main.tile[x0, y0 + num24].IsActive && Main.tile[x0, y0].IsActive &&
-					       !Main.tile[x0, y0 - num24].IsActive && num25 > 0)
+					tile = Main.tile[x0, y0 - num24];
+					tile1 = Main.tile[x0, y0 - num24 * 2];
+					
+					while (Main.tile[x0 + 1, y0].HasTile &&
+					       Main.tile[x0 + 1, y0].TileType != CrackedType &&
+					       Main.tile[x0, y0 + num24].HasTile && Main.tile[x0, y0].HasTile &&
+					       !tile.HasTile && num25 > 0)
 					{
-						Main.tile[x0, y0].type = TileID.Spikes;
-						if (!Main.tile[x0 - 1, y0 - num24].IsActive &&
-						    !Main.tile[x0 + 1, y0 - num24].IsActive)
+						Main.tile[x0, y0].TileType = TileID.Spikes;
+						if (!Main.tile[x0 - 1, y0 - num24].HasTile &&
+						    !Main.tile[x0 + 1, y0 - num24].HasTile)
 						{
-							Main.tile[x0, y0 - num24].Clear(TileDataType.Slope);
-							Main.tile[x0, y0 - num24].type = TileID.Spikes;
-							Main.tile[x0, y0 - num24].IsActive = true;
-							Main.tile[x0, y0 - num24 * 2].Clear(TileDataType.Slope);
-							Main.tile[x0, y0 - num24 * 2].type = TileID.Spikes;
-							Main.tile[x0, y0 - num24 * 2].IsActive = true;
+							tile.Clear(TileDataType.Slope);
+							tile.TileType = TileID.Spikes;
+							tile.HasTile = true;
+							tile1.Clear(TileDataType.Slope);
+							tile1.TileType = TileID.Spikes;
+							tile1.HasTile = true;
 						}
 
 						x0++;
 						num25--;
+						tile = Main.tile[x0, y0 - num24];
+						tile1 = Main.tile[x0, y0 - num24 * 2];
 					}
 				}
 			}
@@ -306,64 +316,73 @@ public partial class DungeonPass
 			int x = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
 			int y = WorldGen.genRand.Next((int)Main.worldSurface + 25, DungeonMaxY);
 			int num28 = y;
-			if (Main.tile[x, y].wall == wallType && !Main.tile[x, y].IsActive)
+			if (Main.tile[x, y].WallType == wallType && !Main.tile[x, y].HasTile)
 			{
 				int num29 = 1;
 				if (WorldGen.genRand.NextBool(2))
 					num29 = -1;
 
-				for (; x > 5 && x < Main.maxTilesX - 5 && !Main.tile[x, y].IsActive; x += num29)
+				for (; x > 5 && x < Main.maxTilesX - 5 && !Main.tile[x, y].HasTile; x += num29)
 				{
 				}
 
-				if (Main.tile[x, y - 1].IsActive && Main.tile[x, y + 1].IsActive &&
-				    Main.tile[x, y - 1].type != CrackedType &&
-				    !Main.tile[x - num29, y - 1].IsActive && !Main.tile[x - num29, y + 1].IsActive)
+				if (Main.tile[x, y - 1].HasTile && Main.tile[x, y + 1].HasTile &&
+				    Main.tile[x, y - 1].TileType != CrackedType &&
+				    !Main.tile[x - num29, y - 1].HasTile && !Main.tile[x - num29, y + 1].HasTile)
 				{
 					num19++;
 					int num30 = WorldGen.genRand.Next(5, 13);
-					while (Main.tile[x, y - 1].IsActive &&
-					       Main.tile[x, y - 1].type != CrackedType &&
-					       Main.tile[x + num29, y].IsActive && Main.tile[x, y].IsActive &&
-					       !Main.tile[x - num29, y].IsActive && num30 > 0)
+					Tile tile = Main.tile[x - num29, y];
+					Tile tile1 = Main.tile[x - num29 * 2, y];
+					
+					while (Main.tile[x, y - 1].HasTile &&
+					       Main.tile[x, y - 1].TileType != CrackedType &&
+					       Main.tile[x + num29, y].HasTile && Main.tile[x, y].HasTile &&
+					       !tile.HasTile && num30 > 0)
 					{
-						Main.tile[x, y].type = TileID.Spikes;
-						if (!Main.tile[x - num29, y - 1].IsActive &&
-						    !Main.tile[x - num29, y + 1].IsActive)
+						Main.tile[x, y].TileType = TileID.Spikes;
+						if (!Main.tile[x - num29, y - 1].HasTile &&
+						    !Main.tile[x - num29, y + 1].HasTile)
 						{
-							Main.tile[x - num29, y].type = TileID.Spikes;
-							Main.tile[x - num29, y].IsActive = true;
-							Main.tile[x - num29, y].Clear(TileDataType.Slope);
-							Main.tile[x - num29 * 2, y].type = TileID.Spikes;
-							Main.tile[x - num29 * 2, y].IsActive = true;
-							Main.tile[x - num29 * 2, y].Clear(TileDataType.Slope);
+							tile.TileType = TileID.Spikes;
+							tile.HasTile = true;
+							tile.Clear(TileDataType.Slope);
+							tile1.TileType = TileID.Spikes;
+							tile1.HasTile = true;
+							tile1.Clear(TileDataType.Slope);
 						}
 
 						y--;
 						num30--;
+						tile = Main.tile[x - num29, y];
+						tile1 = Main.tile[x - num29 * 2, y];
 					}
 
 					num30 = WorldGen.genRand.Next(5, 13);
 					y = num28 + 1;
-					while (Main.tile[x, y + 1].IsActive &&
-					       Main.tile[x, y + 1].type != CrackedType &&
-					       Main.tile[x + num29, y].IsActive && Main.tile[x, y].IsActive &&
-					       !Main.tile[x - num29, y].IsActive && num30 > 0)
+					tile = Main.tile[x - num29, y];
+					tile1 = Main.tile[x - num29 * 2, y];
+					while (Main.tile[x, y + 1].HasTile &&
+					       Main.tile[x, y + 1].TileType != CrackedType &&
+					       Main.tile[x + num29, y].HasTile && Main.tile[x, y].HasTile &&
+					       !tile.HasTile && num30 > 0)
 					{
-						Main.tile[x, y].type = TileID.Spikes;
-						if (!Main.tile[x - num29, y - 1].IsActive &&
-						    !Main.tile[x - num29, y + 1].IsActive)
+						Main.tile[x, y].TileType = TileID.Spikes;
+						if (!Main.tile[x - num29, y - 1].HasTile &&
+						    !Main.tile[x - num29, y + 1].HasTile)
 						{
-							Main.tile[x - num29, y].type = TileID.Spikes;
-							Main.tile[x - num29, y].IsActive = true;
-							Main.tile[x - num29, y].Clear(TileDataType.Slope);
-							Main.tile[x - num29 * 2, y].type = TileID.Spikes;
-							Main.tile[x - num29 * 2, y].IsActive = true;
-							Main.tile[x - num29 * 2, y].Clear(TileDataType.Slope);
+							tile.TileType = TileID.Spikes;
+							tile.HasTile = true;
+							tile.Clear(TileDataType.Slope);
+							tile1.TileType = TileID.Spikes;
+							tile1.HasTile = true;
+							tile1.Clear(TileDataType.Slope);
 						}
 
 						y++;
 						num30--;
+						tile = Main.tile[x - num29, y];
+						tile1 = Main.tile[x - num29 * 2, y];
 					}
 				}
 			}
@@ -384,17 +403,17 @@ public partial class DungeonPass
 			{
 				bool flag = true;
 				int y = doorY;
-				while (y > 10 && !Main.tile[x, y].IsActive) y--;
+				while (y > 10 && !Main.tile[x, y].HasTile) y--;
 
-				if (!Main.tileDungeon[Main.tile[x, y].type])
+				if (!Main.tileDungeon[Main.tile[x, y].TileType])
 					flag = false;
 
 				int oldY = y;
-				for (y = doorY; !Main.tile[x, y].IsActive; y++)
+				for (y = doorY; !Main.tile[x, y].HasTile; y++)
 				{
 				}
 
-				if (!Main.tileDungeon[Main.tile[x, y].type])
+				if (!Main.tileDungeon[Main.tile[x, y].TileType])
 					flag = false;
 
 				if (y - oldY < 3)
@@ -402,7 +421,7 @@ public partial class DungeonPass
 
 				for (int xx = x - 20; xx < x + 20; xx++)
 				for (int yy = y - 10; yy < y + 10; yy++)
-					if (Main.tile[xx, yy].IsActive && Main.tile[xx, yy].type == TileID.ClosedDoor)
+					if (Main.tile[xx, yy].HasTile && Main.tile[xx, yy].TileType == TileID.ClosedDoor)
 					{
 						flag = false;
 						break;
@@ -411,7 +430,7 @@ public partial class DungeonPass
 				if (flag)
 					for (int yy = y - 3; yy < y; yy++)
 					for (int xx = x - 3; xx <= x + 3; xx++)
-						if (Main.tile[xx, yy].IsActive)
+						if (Main.tile[xx, yy].HasTile)
 						{
 							flag = false;
 							break;
@@ -432,17 +451,23 @@ public partial class DungeonPass
 			int x0 = num35;
 			int y0 = doorY;
 			int num50 = y0;
-			for (; !Main.tile[x0, y0].IsActive; y0++) Main.tile[x0, y0].IsActive = false;
+			Tile tile = Main.tile[x0, y0];
+			for (; !Main.tile[x0, y0].HasTile; y0++)
+			{
+				tile = Main.tile[x0, y0];
+				tile.HasTile = false;
+			}
 
-			while (!Main.tile[x0, num50].IsActive) num50--;
+			while (!Main.tile[x0, num50].HasTile) num50--;
 
 			y0--;
 			num50++;
 			for (int num51 = num50; num51 < y0 - 2; num51++)
 			{
-				Main.tile[x0, num51].Clear(TileDataType.Slope);
-				Main.tile[x0, num51].IsActive = true;
-				Main.tile[x0, num51].type = tileType;
+				Tile tile1 = Main.tile[x0, num51];
+				tile1.Clear(TileDataType.Slope);
+				tile1.HasTile = true;
+				tile1.TileType = tileType;
 			}
 
 			int style = 13;
@@ -458,36 +483,40 @@ public partial class DungeonPass
 			WorldGen.PlaceTile(x0, y0, TileID.ClosedDoor, true, false, -1, style);
 			x0--;
 			int num52 = y0 - 3;
-			while (!Main.tile[x0, num52].IsActive) num52--;
+			while (!Main.tile[x0, num52].HasTile) num52--;
 
-			if (y0 - num52 < y0 - num50 + 5 && Main.tileDungeon[Main.tile[x0, num52].type])
+			if (y0 - num52 < y0 - num50 + 5 && Main.tileDungeon[Main.tile[x0, num52].TileType])
 				for (int num53 = y0 - 4 - WorldGen.genRand.Next(3); num53 > num52; num53--)
 				{
-					Main.tile[x0, num53].Clear(TileDataType.Slope);
-					Main.tile[x0, num53].IsActive = true;
-					Main.tile[x0, num53].type = tileType;
+					Tile tile1 = Main.tile[x0, num53];
+					tile1.Clear(TileDataType.Slope);
+					tile1.HasTile = true;
+					tile1.TileType = tileType;
 				}
 
 			x0 += 2;
 			num52 = y0 - 3;
-			while (!Main.tile[x0, num52].IsActive) num52--;
+			while (!Main.tile[x0, num52].HasTile) num52--;
 
-			if (y0 - num52 < y0 - num50 + 5 && Main.tileDungeon[Main.tile[x0, num52].type])
+			if (y0 - num52 < y0 - num50 + 5 && Main.tileDungeon[Main.tile[x0, num52].TileType])
 				for (int num54 = y0 - 4 - WorldGen.genRand.Next(3); num54 > num52; num54--)
 				{
-					Main.tile[x0, num54].IsActive = true;
-					Main.tile[x0, num54].Clear(TileDataType.Slope);
-					Main.tile[x0, num54].type = tileType;
+					Tile tile1 = Main.tile[x0, num54];
+					tile1.HasTile = true;
+					tile1.Clear(TileDataType.Slope);
+					tile1.TileType = tileType;
 				}
 
 			y0++;
 			x0--;
-			Main.tile[x0 - 1, y0].IsActive = true;
-			Main.tile[x0 - 1, y0].type = tileType;
-			Main.tile[x0 - 1, y0].Clear(TileDataType.Slope);
-			Main.tile[x0 + 1, y0].IsActive = true;
-			Main.tile[x0 + 1, y0].type = tileType;
-			Main.tile[x0 + 1, y0].Clear(TileDataType.Slope);
+			Tile tile2 = Main.tile[x0 - 1, y0];
+			tile2.HasTile = true;
+			tile2.TileType = tileType;
+			tile2.Clear(TileDataType.Slope);
+			Tile tile3 = Main.tile[x0 + 1, y0];
+			tile3.HasTile = true;
+			tile3.TileType = tileType;
+			tile3.Clear(TileDataType.Slope);
 		}
 
 		int[] wallTypes = wallType switch
@@ -525,7 +554,7 @@ public partial class DungeonPass
 					float distX = Math.Abs(randX - x);
 					float distY = Math.Abs(randY - y);
 					if (Math.Sqrt(distX * distX + distY * distY) < range * 0.4 &&
-					    Main.wallDungeon[Main.tile[x, y].wall])
+					    Main.wallDungeon[Main.tile[x, y].WallType])
 						WorldGen.Spread.WallDungeon(x, y, wallTypes[i]);
 				}
 		}
@@ -542,13 +571,13 @@ public partial class DungeonPass
 			{
 				int x1 = platformX;
 				int x2 = platformX;
-				if (!Main.tile[x1, y1].IsActive)
+				if (!Main.tile[x1, y1].HasTile)
 				{
 					bool flag3 = false;
-					while (!Main.tile[x1, y1].IsActive)
+					while (!Main.tile[x1, y1].HasTile)
 					{
 						x1--;
-						if (!Main.tileDungeon[Main.tile[x1, y1].type] || x1 == 0)
+						if (!Main.tileDungeon[Main.tile[x1, y1].TileType] || x1 == 0)
 						{
 							flag3 = true;
 							break;
@@ -558,10 +587,10 @@ public partial class DungeonPass
 					if (flag3)
 						continue;
 
-					while (!Main.tile[x2, y1].IsActive)
+					while (!Main.tile[x2, y1].HasTile)
 					{
 						x2++;
-						if (!Main.tileDungeon[Main.tile[x2, y1].type] || x2 == Main.maxTilesX - 1)
+						if (!Main.tileDungeon[Main.tile[x2, y1].TileType] || x2 == Main.maxTilesX - 1)
 						{
 							flag3 = true;
 							break;
@@ -583,7 +612,7 @@ public partial class DungeonPass
 				for (int xx = platformX - offX / 2 - 2; xx <= platformX + offX / 2 + 2; xx++)
 				{
 					for (int yy = y1 - 5; yy <= y1 + 5; yy++)
-						if (Main.tile[xx, yy].IsActive && Main.tile[xx, yy].type == TileID.Platforms)
+						if (Main.tile[xx, yy].HasTile && Main.tile[xx, yy].TileType == TileID.Platforms)
 						{
 							flag4 = false;
 							break;
@@ -594,7 +623,7 @@ public partial class DungeonPass
 				}
 
 				for (int yy = y1 + 3; yy >= y1 - 5; yy--)
-					if (Main.tile[platformX, yy].IsActive)
+					if (Main.tile[platformX, yy].HasTile)
 					{
 						flag4 = false;
 						break;
@@ -612,12 +641,13 @@ public partial class DungeonPass
 
 			int x = platformX;
 			// Place to the left
-			while (!Main.tile[x, y].IsActive)
+			Tile tile = Main.tile[x, y];
+			while (!tile.HasTile)
 			{
-				Main.tile[x, y].IsActive = true;
-				Main.tile[x, y].type = TileID.Platforms;
-				Main.tile[x, y].Clear(TileDataType.Slope);
-				Main.tile[x, y].frameY = wallType switch
+				tile.HasTile = true;
+				tile.TileType = TileID.Platforms;
+				tile.Clear(TileDataType.Slope);
+				tile.TileFrameY = wallType switch
 				{
 					WallID.BlueDungeonUnsafe => 6 * 18,
 					WallID.GreenDungeonUnsafe => 8 * 18,
@@ -626,16 +656,19 @@ public partial class DungeonPass
 
 				WorldGen.TileFrame(x, y);
 				x--;
+				tile = Main.tile[x, y];
 			}
 
 			x = platformX + 1;
+			tile = Main.tile[x, y];
 			// Place to the right
-			for (; !Main.tile[x, y].IsActive; x++)
+			for (; !tile.HasTile; x++)
 			{
-				Main.tile[x, y].IsActive = true;
-				Main.tile[x, y].type = TileID.Platforms;
-				Main.tile[x, y].Clear(TileDataType.Slope);
-				Main.tile[x, y].frameY = wallType switch
+				tile = Main.tile[x, y];
+				tile.HasTile = true;
+				tile.TileType = TileID.Platforms;
+				tile.Clear(TileDataType.Slope);
+				tile.TileFrameY = wallType switch
 				{
 					WallID.BlueDungeonUnsafe => 108,
 					WallID.GreenDungeonUnsafe => 144,
@@ -657,7 +690,7 @@ public partial class DungeonPass
 			{
 				int randX = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
 				int randY = WorldGen.genRand.Next((int)Main.worldSurface, DungeonMaxY);
-				if (!Main.wallDungeon[Main.tile[randX, randY].wall] || Main.tile[randX, randY].IsActive)
+				if (!Main.wallDungeon[Main.tile[randX, randY].WallType] || Main.tile[randX, randY].HasTile)
 					continue;
 
 				ushort chestTileType = TileID.Containers;
@@ -737,45 +770,45 @@ public partial class DungeonPass
 			int x = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
 			int y = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
 			bool flag6 = true;
-			if (Main.wallDungeon[Main.tile[x, y].wall] && !Main.tile[x, y].IsActive)
+			if (Main.wallDungeon[Main.tile[x, y].WallType] && !Main.tile[x, y].HasTile)
 			{
 				int direction = 1;
 				if (WorldGen.genRand.NextBool(2))
 					direction = -1;
 
-				while (flag6 && !Main.tile[x, y].IsActive)
+				while (flag6 && !Main.tile[x, y].HasTile)
 				{
 					x -= direction;
 					if (x < 5 || x > Main.maxTilesX - 5)
 						flag6 = false;
-					else if (Main.tile[x, y].IsActive && !Main.tileDungeon[Main.tile[x, y].type])
+					else if (Main.tile[x, y].HasTile && !Main.tileDungeon[Main.tile[x, y].TileType])
 						flag6 = false;
 				}
 
 				if (flag6 &&
-				    Main.tile[x, y].IsActive && Main.tileDungeon[Main.tile[x, y].type] &&
-				    Main.tile[x, y - 1].IsActive && Main.tileDungeon[Main.tile[x, y - 1].type] &&
-				    Main.tile[x, y + 1].IsActive && Main.tileDungeon[Main.tile[x, y + 1].type])
+				    Main.tile[x, y].HasTile && Main.tileDungeon[Main.tile[x, y].TileType] &&
+				    Main.tile[x, y - 1].HasTile && Main.tileDungeon[Main.tile[x, y - 1].TileType] &&
+				    Main.tile[x, y + 1].HasTile && Main.tileDungeon[Main.tile[x, y + 1].TileType])
 				{
 					x += direction;
 					for (int xx = x - 3; xx <= x + 3; xx++)
 					for (int yy = y - 3; yy <= y + 3; yy++)
-						if (Main.tile[xx, yy].IsActive && Main.tile[xx, yy].type == TileID.Platforms)
+						if (Main.tile[xx, yy].HasTile && Main.tile[xx, yy].TileType == TileID.Platforms)
 						{
 							flag6 = false;
 							break;
 						}
 
-					if (flag6 && !Main.tile[x, y - 1].IsActive && !Main.tile[x, y - 2].IsActive &&
-					    !Main.tile[x, y - 3].IsActive)
+					if (flag6 && !Main.tile[x, y - 1].HasTile && !Main.tile[x, y - 2].HasTile &&
+					    !Main.tile[x, y - 3].HasTile)
 					{
 						int distX = x;
 						int oldX = x;
 						for (;
 						     distX > DungeonMinX && distX < DungeonMaxX &&
-						     !Main.tile[distX, y].IsActive &&
-						     !Main.tile[distX, y - 1].IsActive &&
-						     !Main.tile[distX, y + 1].IsActive;
+						     !Main.tile[distX, y].HasTile &&
+						     !Main.tile[distX, y - 1].HasTile &&
+						     !Main.tile[distX, y + 1].HasTile;
 						     distX += direction)
 						{
 						}
@@ -787,15 +820,16 @@ public partial class DungeonPass
 						{
 							for (int _ = WorldGen.genRand.Next(1, 4); _ > 0; _--)
 							{
-								Main.tile[x, y].IsActive = true;
-								Main.tile[x, y].Clear(TileDataType.Slope);
-								Main.tile[x, y].type = TileID.Platforms;
-								if (Main.tile[x, y].wall == wallTypes[0])
-									Main.tile[x, y].frameY = (short)(18 * frameMult[0]);
-								else if (Main.tile[x, y].wall == wallTypes[1])
-									Main.tile[x, y].frameY = (short)(18 * frameMult[1]);
+								Tile tile = Main.tile[x, y];
+								tile.HasTile = true;
+								tile.Clear(TileDataType.Slope);
+								tile.TileType = TileID.Platforms;
+								if (tile.WallType == wallTypes[0])
+									tile.TileFrameY = (short)(18 * frameMult[0]);
+								else if (tile.WallType == wallTypes[1])
+									tile.TileFrameY = (short)(18 * frameMult[1]);
 								else
-									Main.tile[x, y].frameY = (short)(18 * frameMult[2]);
+									tile.TileFrameY = (short)(18 * frameMult[2]);
 
 								WorldGen.TileFrame(x, y);
 								if (books)
@@ -803,8 +837,8 @@ public partial class DungeonPass
 									WorldGen.PlaceTile(x, y - 1, TileID.Books, true);
 									if (WorldGen.genRand.NextBool(50) &&
 									    y > (Main.worldSurface + Main.rockLayer) / 2.0 &&
-									    Main.tile[x, y - 1].type == TileID.Books)
-										Main.tile[x, y - 1].frameX = 90;
+									    Main.tile[x, y - 1].TileType == TileID.Books)
+										Main.tile[x, y - 1].TileFrameX = 90;
 								}
 
 								x += direction;
@@ -828,12 +862,12 @@ public partial class DungeonPass
 								};
 
 								WorldGen.PlaceTile(x, y, type, true);
-								if (Main.tile[x, y].type == TileID.Bottles)
+								if (Main.tile[x, y].TileType == TileID.Bottles)
 								{
 									if (WorldGen.genRand.NextBool(2))
-										Main.tile[x, y].frameX = 18;
+										Main.tile[x, y].TileFrameX = 18;
 									else
-										Main.tile[x, y].frameX = 36;
+										Main.tile[x, y].TileFrameX = 36;
 								}
 							}
 						}

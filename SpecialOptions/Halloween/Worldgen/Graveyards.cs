@@ -83,7 +83,7 @@ public static class Graveyards
 			y = Utilities.FindGround(i);
 			if (yMin == -1 || y < yMin)
 			{
-				tileType = Main.tile[i, y].type;
+				tileType = Main.tile[i, y].TileType;
 				yMin = y;
 				xAtMin = i;
 				if (tileType == TileID.LeafBlock)
@@ -109,8 +109,9 @@ public static class Graveyards
 			if (Main.rand.NextBool(5))
 				goalY++;
 
-			Main.tile[i, y].Slope = SlopeType.Solid;
-			Main.tile[i, y].IsHalfBlock = false;
+			Tile tile = Main.tile[i, y];
+			tile.Slope = SlopeType.Solid;
+			tile.IsHalfBlock = false;
 			for (int j = y - 1; j >= goalY; j--)
 			{
 				WorldGen.KillTile(i, j);
@@ -136,8 +137,9 @@ public static class Graveyards
 			if (Main.rand.NextBool(5))
 				goalY++;
 
-			Main.tile[i, y].Slope = SlopeType.Solid;
-			Main.tile[i, y].IsHalfBlock = false;
+			Tile tile = Main.tile[i, y];
+			tile.Slope = SlopeType.Solid;
+			tile.IsHalfBlock = false;
 			for (int j = y - 1; j >= goalY; j--)
 			{
 				WorldGen.KillTile(i, j);
@@ -167,35 +169,37 @@ public static class Graveyards
 			{
 				yCurrent = yPrev;
 				Utilities.GoAtTop(i, ref yCurrent);
-				if (yCurrent < yPrev && Main.tile[i, yCurrent].Slope == SlopeType.Solid)
+				Tile tile = Main.tile[i, yCurrent];
+				if (yCurrent < yPrev && tile.Slope == SlopeType.Solid)
 				{
-					Main.tile[i, yCurrent].IsHalfBlock = true;
+					tile.IsHalfBlock = true;
 				}
 				else if (yCurrent > yPrev && Main.tile[i, yPrev].Slope == SlopeType.Solid)
 				{
-					Main.tile[--i, yPrev].IsHalfBlock = true;
+					Tile tile1 = Main.tile[--i, yPrev];
+					tile1.IsHalfBlock = true;
 					yPrev = yCurrent;
 				}
 			}
 
 			Tile currentTile = Main.tile[i, yPrev];
-			switch (currentTile.type)
+			switch (currentTile.TileType)
 			{
 				case TileID.Mud:
-					currentTile.type = TileID.JungleGrass;
+					currentTile.TileType = TileID.JungleGrass;
 					goto case TileID.JungleGrass;
 				case TileID.Dirt:
-					currentTile.type = TileID.CrimsonGrass;
+					currentTile.TileType = TileID.CrimsonGrass;
 					goto case TileID.CrimsonGrass;
 				case TileID.JungleGrass:
-					currentTile.Color = PaintID.OrangePaint;
+					currentTile.TileColor = PaintID.OrangePaint;
 					if (yCurrent == yPrev)
 						PaintTree(i, yPrev - 1, PaintID.OrangePaint);
 					break;
 				case TileID.Grass:
 				case TileID.CrimsonGrass:
 				case TileID.CorruptGrass:
-					currentTile.Color = PaintID.YellowPaint;
+					currentTile.TileColor = PaintID.YellowPaint;
 					if (yCurrent == yPrev)
 						PaintTree(i, yPrev - 1, PaintID.YellowPaint);
 					break;
@@ -220,14 +224,14 @@ public static class Graveyards
 		for (int i = -1; i <= 1; i++)
 		{
 			Tile currentTile = Main.tile[x + i, y];
-			switch (currentTile.type)
+			switch (currentTile.TileType)
 			{
 				case TileID.Trees:
 				case TileID.Cactus:
 				case TileID.PalmTree:
 				case TileID.VanityTreeSakura:
 				case TileID.VanityTreeYellowWillow:
-					currentTile.Color = paint;
+					currentTile.TileColor = paint;
 					if (i == 0)
 						PaintTree(x, y - 1, paint);
 					break;
@@ -300,8 +304,10 @@ public static class Graveyards
 				int npcId = Main.rand.Next(npcs + pets);
 				npcId = npcId < npcs ? ModifiedWorld.NPCs[npcId] : petList[npcId - npcs];
 
-				NPC tmpNPC = new();
-				tmpNPC.type = npcId;
+				NPC tmpNPC = new()
+				{
+					type = npcId
+				};
 				if (TownNPCProfiles.Instance.GetProfile(npcId, out ITownNPCProfile profile))
 				{
 					tmpNPC.townNpcVariationIndex = profile.RollVariation();

@@ -64,11 +64,11 @@ public class CustomSizeUI : UIState
 			Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 		});
 
-		ConfigElement sizeXInput = MakeIntInputLine(nameof(WorldSettings.SizeX), 100, 500000, 100);
+		ConfigElement sizeXInput = MakeIntInputLine(nameof(WorldSettings.SizeX), 100, ushort.MaxValue, 100);
 		sizeXInput.Top.Pixels = 50;
 		uiPanel.Append(sizeXInput);
 
-		ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 100, 500000, 100);
+		ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 100,  ushort.MaxValue, 100);
 		sizeYInput.Top.Pixels = sizeXInput.Top.Pixels + sizeXInput.Height.Pixels + 4;
 		uiPanel.Append(sizeYInput);
 

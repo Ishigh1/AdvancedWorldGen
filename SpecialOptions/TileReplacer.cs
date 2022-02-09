@@ -67,7 +67,7 @@ public class TileReplacer
 			{
 				Tile tile = Main.tile[x, y];
 				if (tile == null) continue;
-				if (tile.IsActive) HandleReplacement(tile.type, x, y, tile);
+				if (tile.HasTile) HandleReplacement(tile.TileType, x, y, tile);
 
 				if (tile.LiquidAmount > 0)
 					HandleReplacement(-tile.LiquidType - 2, x, y, tile);
@@ -87,15 +87,15 @@ public class TileReplacer
 		if (tileType < -1)
 			tile.LiquidAmount = 0;
 		else
-			tile.IsActive = false;
+			tile.HasTile = false;
 
 		switch (type)
 		{
 			case > -1:
-				if (!tile.IsActive)
+				if (!tile.HasTile)
 				{
-					tile.IsActive = true;
-					tile.type = (ushort)type;
+					tile.HasTile = true;
+					tile.TileType = (ushort)type;
 					WorldGen.DiamondTileFrame(x, y);
 				}
 
@@ -123,9 +123,9 @@ public class TileReplacer
 				Tile tile = Main.tile[x, y];
 				if (tile != null)
 				{
-					if (tile.IsActive) RandomizeTile(tile, tileRandom, paintRandom);
+					if (tile.HasTile) RandomizeTile(tile, tileRandom, paintRandom);
 
-					if (tile.wall != 0) RandomizeWall(wallRandom, tile, paintWallRandom);
+					if (tile.WallType != 0) RandomizeWall(wallRandom, tile, paintWallRandom);
 				}
 			}
 		}
@@ -137,22 +137,22 @@ public class TileReplacer
 			for (int y = Main.maxTilesY - 1; y >= 1; y--)
 			{
 				Tile tile = Main.tile[x, y];
-				if (!tile.IsActive)
+				if (!tile.HasTile)
 					continue;
-				if (tile.type == TileID.Cactus)
+				if (tile.TileType == TileID.Cactus)
 				{
 					WorldGen.CheckCactus(x, y);
 					continue;
 				}
 
 				if (previousBlock != 0 && y != previousBlock - 1 &&
-				    TileID.Sets.Falling[tile.type])
+				    TileID.Sets.Falling[tile.TileType])
 				{
 					Tile tileAbove = Main.tile[x, y - 1];
-					if (tileAbove.IsActive && !Main.tileSolid[tileAbove.type])
+					if (tileAbove.HasTile && !Main.tileSolid[tileAbove.TileType])
 					{
 						WorldGen.KillTile(x, y - 1);
-						if (!tileAbove.IsActive)
+						if (!tileAbove.HasTile)
 						{
 							previousBlock = y;
 							continue;
@@ -160,11 +160,11 @@ public class TileReplacer
 					}
 
 					Tile newPos = Main.tile[x, previousBlock - 1];
-					newPos.IsActive = true;
-					newPos.type = tile.type;
+					newPos.HasTile = true;
+					newPos.TileType = tile.TileType;
 					newPos.IsHalfBlock = tile.IsHalfBlock;
 					newPos.Slope = tile.Slope;
-					tile.IsActive = false;
+					tile.HasTile = false;
 					previousBlock--;
 				}
 				else
@@ -179,11 +179,11 @@ public class TileReplacer
 		Dictionary<ushort, byte> paintRandom)
 	{
 		if (API.OptionsContains("Random"))
-			if (Main.tileSolid[tile.type])
+			if (Main.tileSolid[tile.TileType])
 			{
-				if (tileRandom.TryGetValue(tile.type, out ushort type))
+				if (tileRandom.TryGetValue(tile.TileType, out ushort type))
 				{
-					tile.type = type;
+					tile.TileType = type;
 				}
 				else if (!DontReplace(type))
 				{
@@ -192,20 +192,20 @@ public class TileReplacer
 						type = (ushort)WorldGen._genRand.Next(TileLoader.TileCount);
 					} while (DontReplace(type) || tileRandom.ContainsValue(type));
 
-					tileRandom[tile.type] = type;
-					tile.type = type;
+					tileRandom[tile.TileType] = type;
+					tile.TileType = type;
 				}
 			}
 
 		if (API.OptionsContains("Painted"))
 		{
-			if (!paintRandom.TryGetValue(tile.type, out byte paint))
+			if (!paintRandom.TryGetValue(tile.TileType, out byte paint))
 			{
 				paint = (byte)WorldGen._genRand.Next(PaintID.IlluminantPaint + 1);
-				paintRandom[tile.type] = paint;
+				paintRandom[tile.TileType] = paint;
 			}
 
-			tile.Color = paint;
+			tile.TileColor = paint;
 		}
 	}
 
@@ -214,9 +214,9 @@ public class TileReplacer
 	{
 		if (API.OptionsContains("Random"))
 		{
-			if (wallRandom.TryGetValue(tile.wall, out ushort type))
+			if (wallRandom.TryGetValue(tile.WallType, out ushort type))
 			{
-				tile.wall = type;
+				tile.WallType = type;
 			}
 			else
 			{
@@ -225,17 +225,17 @@ public class TileReplacer
 					type = (ushort)WorldGen._genRand.Next(1, WallLoader.WallCount);
 				} while (wallRandom.ContainsValue(type));
 
-				wallRandom[tile.wall] = type;
-				tile.wall = type;
+				wallRandom[tile.WallType] = type;
+				tile.WallType = type;
 			}
 		}
 
 		if (API.OptionsContains("Painted"))
 		{
-			if (!paintWallRandom.TryGetValue(tile.wall, out byte paint))
+			if (!paintWallRandom.TryGetValue(tile.WallType, out byte paint))
 			{
 				paint = (byte)WorldGen._genRand.Next(PaintID.IlluminantPaint + 1);
-				paintWallRandom[tile.wall] = paint;
+				paintWallRandom[tile.WallType] = paint;
 			}
 
 			tile.WallColor = paint;

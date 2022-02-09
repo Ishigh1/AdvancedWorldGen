@@ -26,10 +26,10 @@ public class JungleTemple : ControlledWorldGenPass
 	public static bool IsValid(int x, int y)
 	{
 		Tile tile = Main.tile[x, y];
-		if (tile.IsActive && tile.type == TileID.JungleGrass)
+		if (tile.HasTile && tile.TileType == TileID.JungleGrass)
 			return true;
 
-		return tile.wall is WallID.Jungle or WallID.JungleUnsafe or WallID.JungleUnsafe1 or WallID.JungleUnsafe2
+		return tile.WallType is WallID.Jungle or WallID.JungleUnsafe or WallID.JungleUnsafe1 or WallID.JungleUnsafe2
 			or WallID.JungleUnsafe3 or WallID.JungleUnsafe4;
 	}
 
@@ -173,11 +173,12 @@ public class JungleTemple : ControlledWorldGenPass
 					int num22 = num17;
 					for (int num23 = num18; num23 < num19; num23++)
 					{
-						Main.tile[num22, num23].IsActive = true;
-						Main.tile[num22, num23].type = TileID.LihzahrdBrick;
-						Main.tile[num22, num23].LiquidAmount = 0;
-						Main.tile[num22, num23].Slope = SlopeType.Solid;
-						Main.tile[num22, num23].IsHalfBlock = false;
+						Tile tile = Main.tile[num22, num23];
+						tile.HasTile = true;
+						tile.TileType = TileID.LihzahrdBrick;
+						tile.LiquidAmount = 0;
+						tile.Slope = SlopeType.Solid;
+						tile.IsHalfBlock = false;
 					}
 				}
 			}
@@ -189,11 +190,12 @@ public class JungleTemple : ControlledWorldGenPass
 			for (int num25 = rooms[num24].X; num25 < rooms[num24].X + rooms[num24].Width; num25++)
 			for (int num26 = rooms[num24].Y; num26 < rooms[num24].Y + rooms[num24].Height; num26++)
 			{
-				Main.tile[num25, num26].IsActive = true;
-				Main.tile[num25, num26].type = TileID.LihzahrdBrick;
-				Main.tile[num25, num26].LiquidAmount = 0;
-				Main.tile[num25, num26].Slope = SlopeType.Solid;
-				Main.tile[num25, num26].IsHalfBlock = false;
+				Tile tile = Main.tile[num25, num26];
+				tile.HasTile = true;
+				tile.TileType = TileID.LihzahrdBrick;
+				tile.LiquidAmount = 0;
+				tile.Slope = SlopeType.Solid;
+				tile.IsHalfBlock = false;
 			}
 
 			int x2 = rooms[num24].X;
@@ -251,8 +253,9 @@ public class JungleTemple : ControlledWorldGenPass
 
 				if (num35 >= num29 && num35 < num30 && num36 >= num31 && num36 <= num32)
 				{
-					Main.tile[num35, num36].IsActive = false;
-					Main.tile[num35, num36].wall = 87;
+					Tile tile = Main.tile[num35, num36];
+					tile.HasTile = false;
+					tile.WallType = 87;
 				}
 			}
 
@@ -297,8 +300,9 @@ public class JungleTemple : ControlledWorldGenPass
 
 				if (num38 >= num29 && num38 < num30 && num37 >= num31 && num37 <= num32)
 				{
-					Main.tile[num38, num37].IsActive = false;
-					Main.tile[num38, num37].wall = 87;
+					Tile tile = Main.tile[num38, num37];
+					tile.HasTile = false;
+					tile.WallType = 87;
 				}
 			}
 		}
@@ -458,63 +462,68 @@ public class JungleTemple : ControlledWorldGenPass
 			flag3 = false;
 			for (int num67 = (int)vector.Y - num63; num67 < vector.Y + num63; num67++)
 			{
-				if (Main.tile[num66, num67].wall == 87 ||
-				    Main.tile[num66, num67].IsActive && Main.tile[num66, num67].type == 226)
+				Tile tile = Main.tile[num66, num67];
+				if (tile.WallType == 87 ||
+				    tile.HasTile && tile.TileType == 226)
 					flag3 = true;
 
-				if (Main.tile[num66, num67].IsActive && Main.tile[num66, num67].type == 226)
+				if (tile.HasTile && tile.TileType == 226)
 				{
-					Main.tile[num66, num67].IsActive = false;
-					Main.tile[num66, num67].wall = 87;
+					tile.HasTile = false;
+					tile.WallType = 87;
 				}
 			}
 		}
 
 		int num68 = templeX;
 		int num69;
-		for (num69 = templeY; !Main.tile[num68, num69].IsActive; num69++)
+		for (num69 = templeY; !Main.tile[num68, num69].HasTile; num69++)
 		{
 		}
 
 		num69 -= 4;
 		int num70 = num69;
-		while (Main.tile[num68, num70].IsActive && Main.tile[num68, num70].type == 226 ||
-		       Main.tile[num68, num70].wall == 87) num70--;
+		while (Main.tile[num68, num70].HasTile && Main.tile[num68, num70].TileType == 226 ||
+		       Main.tile[num68, num70].WallType == 87) num70--;
 
 		num70 += 2;
 		for (int num71 = num68 - 1; num71 <= num68 + 1; num71++)
 		for (int num72 = num70; num72 <= num69; num72++)
 		{
-			Main.tile[num71, num72].IsActive = true;
-			Main.tile[num71, num72].type = TileID.LihzahrdBrick;
-			Main.tile[num71, num72].LiquidAmount = 0;
-			Main.tile[num71, num72].Slope = SlopeType.Solid;
-			Main.tile[num71, num72].IsHalfBlock = false;
+			Tile tile = Main.tile[num71, num72];
+			tile.HasTile = true;
+			tile.TileType = TileID.LihzahrdBrick;
+			tile.LiquidAmount = 0;
+			tile.Slope = SlopeType.Solid;
+			tile.IsHalfBlock = false;
 		}
 
 		for (int num73 = num68 - 4; num73 <= num68 + 4; num73++)
 		for (int num74 = num69 - 1; num74 < num69 + 3; num74++)
 		{
-			Main.tile[num73, num74].IsActive = false;
-			Main.tile[num73, num74].wall = 87;
+			Tile tile = Main.tile[num73, num74];
+			tile.HasTile = false;
+			tile.WallType = 87;
 		}
 
 		for (int num75 = num68 - 1; num75 <= num68 + 1; num75++)
 		for (int num76 = num69 - 5; num76 <= num69 + 8; num76++)
 		{
-			Main.tile[num75, num76].IsActive = true;
-			Main.tile[num75, num76].type = TileID.LihzahrdBrick;
-			Main.tile[num75, num76].LiquidAmount = 0;
-			Main.tile[num75, num76].Slope = SlopeType.Solid;
-			Main.tile[num75, num76].IsHalfBlock = false;
+			Tile tile = Main.tile[num75, num76];
+			tile.HasTile = true;
+			tile.TileType = TileID.LihzahrdBrick;
+			tile.LiquidAmount = 0;
+			tile.Slope = SlopeType.Solid;
+			tile.IsHalfBlock = false;
 		}
 
 		for (int num77 = num68 - 3; num77 <= num68 + 3; num77++)
 		for (int num78 = num69 - 2; num78 < num69 + 3; num78++)
 			if (num78 >= num69 || num77 < templeX - 1 || num77 > templeX + 1)
 			{
-				Main.tile[num77, num78].IsActive = false;
-				Main.tile[num77, num78].wall = 87;
+				Tile tile = Main.tile[num77, num78];
+				tile.HasTile = false;
+				tile.WallType = 87;
 			}
 
 		WorldGen.PlaceTile(num68, num69, 10, true, false, -1, 11);
@@ -538,15 +547,15 @@ public class JungleTemple : ControlledWorldGenPass
 				bool flag4 = true;
 				for (int num85 = num83 - 1; flag4 && num85 <= num83 + 1; num85++)
 				for (int num86 = num84 - 1; num86 <= num84 + 1; num86++)
-					if ((!Main.tile[num85, num86].IsActive || Main.tile[num85, num86].type != 226) &&
-					    Main.tile[num85, num86].wall != 87)
+					if ((!Main.tile[num85, num86].HasTile || Main.tile[num85, num86].TileType != 226) &&
+					    Main.tile[num85, num86].WallType != 87)
 					{
 						flag4 = false;
 						break;
 					}
 
 				if (flag4)
-					Main.tile[num83, num84].wall = 87;
+					Main.tile[num83, num84].WallType = 87;
 			}
 		}
 
@@ -560,10 +569,10 @@ public class JungleTemple : ControlledWorldGenPass
 			int x = rectangle3.X + num88 + 15 - WorldGen.genRand.Next(30);
 			int y = rectangle3.Y + num89 + 15 - WorldGen.genRand.Next(30);
 			WorldGen.PlaceTile(x, y, TileID.LihzahrdAltar);
-			if (Main.tile[x, y].type == TileID.LihzahrdAltar)
+			if (Main.tile[x, y].TileType == TileID.LihzahrdAltar)
 			{
-				int lAltarX = x - Main.tile[x, y].frameX / 18;
-				int lAltarY = y - Main.tile[x, y].frameY / 18;
+				int lAltarX = x - Main.tile[x, y].TileFrameX / 18;
+				int lAltarY = y - Main.tile[x, y].TileFrameY / 18;
 				VanillaInterface.LAltarX.Value = lAltarX;
 				VanillaInterface.LAltarY.Value = lAltarY;
 				break;
@@ -575,22 +584,25 @@ public class JungleTemple : ControlledWorldGenPass
 			x = rectangle3.X + num88;
 			y = rectangle3.Y + num89;
 			x += WorldGen.genRand.Next(-10, 11);
-			for (y += WorldGen.genRand.Next(-10, 11); !Main.tile[x, y].IsActive; y++)
+			for (y += WorldGen.genRand.Next(-10, 11); !Main.tile[x, y].HasTile; y++)
 			{
 			}
 
-			Main.tile[x - 1, y].IsActive = true;
-			Main.tile[x - 1, y].Slope = SlopeType.Solid;
-			Main.tile[x - 1, y].IsHalfBlock = false;
-			Main.tile[x - 1, y].type = TileID.LihzahrdBrick;
-			Main.tile[x, y].IsActive = true;
-			Main.tile[x, y].Slope = SlopeType.Solid;
-			Main.tile[x, y].IsHalfBlock = false;
-			Main.tile[x, y].type = TileID.LihzahrdBrick;
-			Main.tile[x + 1, y].IsActive = true;
-			Main.tile[x + 1, y].Slope = SlopeType.Solid;
-			Main.tile[x + 1, y].IsHalfBlock = false;
-			Main.tile[x + 1, y].type = TileID.LihzahrdBrick;
+			Tile tile = Main.tile[x - 1, y];
+			tile.HasTile = true;
+			tile.Slope = SlopeType.Solid;
+			tile.IsHalfBlock = false;
+			tile.TileType = TileID.LihzahrdBrick;
+			Tile tile1 = Main.tile[x, y];
+			tile1.HasTile = true;
+			tile1.Slope = SlopeType.Solid;
+			tile1.IsHalfBlock = false;
+			tile1.TileType = TileID.LihzahrdBrick;
+			Tile tile2 = Main.tile[x + 1, y];
+			tile2.HasTile = true;
+			tile2.Slope = SlopeType.Solid;
+			tile2.IsHalfBlock = false;
+			tile2.TileType = TileID.LihzahrdBrick;
 			y -= 2;
 			x--;
 			for (int num92 = -1; num92 <= 3; num92++)
@@ -598,7 +610,8 @@ public class JungleTemple : ControlledWorldGenPass
 			{
 				templeX = x + num92;
 				y += num93;
-				Main.tile[templeX, y].IsActive = false;
+				Tile tile3 = Main.tile[templeX, y];
+				tile3.HasTile = false;
 			}
 
 			int lAltarX2 = x;
@@ -610,10 +623,11 @@ public class JungleTemple : ControlledWorldGenPass
 			{
 				templeX = x + num94;
 				y += num95;
-				Main.tile[templeX, y].IsActive = true;
-				Main.tile[templeX, y].type = TileID.LihzahrdAltar;
-				Main.tile[templeX, y].frameX = (short)(num94 * 18);
-				Main.tile[templeX, y].frameY = (short)(num95 * 18);
+				Tile tile3 = Main.tile[templeX, y];
+				tile3.HasTile = true;
+				tile3.TileType = TileID.LihzahrdAltar;
+				tile3.TileFrameX = (short)(num94 * 18);
+				tile3.TileFrameY = (short)(num95 * 18);
 			}
 
 			for (int num96 = 0; num96 <= 2; num96++)
@@ -639,7 +653,7 @@ public class JungleTemple : ControlledWorldGenPass
 			int roomIndex = WorldGen.genRand.Next(templeRoomCount);
 			int x = WorldGen.genRand.Next(rooms[roomIndex].X, rooms[roomIndex].X + rooms[roomIndex].Width);
 			int y = WorldGen.genRand.Next(rooms[roomIndex].Y, rooms[roomIndex].Y + rooms[roomIndex].Height);
-			if (Main.tile[x, y].wall == WallID.LihzahrdBrickUnsafe && !Main.tile[x, y].IsActive)
+			if (Main.tile[x, y].WallType == WallID.LihzahrdBrickUnsafe && !Main.tile[x, y].HasTile)
 			{
 				bool flag5 = false;
 				if (WorldGen.genRand.NextBool(2))
@@ -648,7 +662,7 @@ public class JungleTemple : ControlledWorldGenPass
 					if (WorldGen.genRand.NextBool(2))
 						directionY = -1;
 
-					for (; !Main.tile[x, y].IsActive; y += directionY)
+					for (; !Main.tile[x, y].HasTile; y += directionY)
 					{
 					}
 
@@ -659,8 +673,8 @@ public class JungleTemple : ControlledWorldGenPass
 					for (int xx = x - range; xx < x + range; xx++)
 					{
 						for (int yy = y - range; yy < y + range; yy++)
-							if (Main.tile[xx, yy].IsActive &&
-							    Main.tile[xx, yy].type is TileID.ClosedDoor or TileID.LihzahrdAltar)
+							if (Main.tile[xx, yy].HasTile &&
+							    Main.tile[xx, yy].TileType is TileID.ClosedDoor or TileID.LihzahrdAltar)
 							{
 								found = false;
 								break;
@@ -675,30 +689,34 @@ public class JungleTemple : ControlledWorldGenPass
 						for (int yy = y - range; yy < y + range; yy++)
 						{
 							if (!WorldGen.SolidTile(xx, yy) ||
-							    Main.tile[xx, yy].type == TileID.WoodenSpikes ||
+							    Main.tile[xx, yy].TileType == TileID.WoodenSpikes ||
 							    WorldGen.SolidTile(xx, yy - directionY))
 								continue;
 
-							Main.tile[xx, yy].type = TileID.WoodenSpikes;
+							Main.tile[xx, yy].TileType = TileID.WoodenSpikes;
 							flag5 = true;
 							if (num104)
 							{
-								Main.tile[xx, yy - 1].type = TileID.WoodenSpikes;
-								Main.tile[xx, yy - 1].IsActive = true;
+								Tile tile = Main.tile[xx, yy - 1];
+								tile.TileType = TileID.WoodenSpikes;
+								tile.HasTile = true;
 								if (WorldGen.drunkWorldGen)
 								{
-									Main.tile[xx, yy - 2].type = TileID.WoodenSpikes;
-									Main.tile[xx, yy - 2].IsActive = true;
+									Tile tile1 = Main.tile[xx, yy - 2];
+									tile1.TileType = TileID.WoodenSpikes;
+									tile1.HasTile = true;
 								}
 							}
 							else
 							{
-								Main.tile[xx, yy + 1].type = TileID.WoodenSpikes;
-								Main.tile[xx, yy + 1].IsActive = true;
+								Tile tile = Main.tile[xx, yy + 1];
+								tile.TileType = TileID.WoodenSpikes;
+								tile.HasTile = true;
 								if (WorldGen.drunkWorldGen)
 								{
-									Main.tile[xx, yy + 2].type = TileID.WoodenSpikes;
-									Main.tile[xx, yy + 2].IsActive = true;
+									Tile tile1 = Main.tile[xx, yy + 2];
+									tile1.TileType = TileID.WoodenSpikes;
+									tile1.HasTile = true;
 								}
 							}
 
@@ -717,7 +735,7 @@ public class JungleTemple : ControlledWorldGenPass
 					if (WorldGen.genRand.NextBool(2))
 						directionX = -1;
 
-					for (; !Main.tile[x, y].IsActive; x += directionX)
+					for (; !Main.tile[x, y].HasTile; x += directionX)
 					{
 					}
 
@@ -727,7 +745,7 @@ public class JungleTemple : ControlledWorldGenPass
 					bool flag7 = true;
 					for (int xx = x - range; xx < x + range; xx++)
 					for (int yy = y - range; yy < y + range; yy++)
-						if (Main.tile[xx, yy].IsActive && Main.tile[xx, yy].type == 10)
+						if (Main.tile[xx, yy].HasTile && Main.tile[xx, yy].TileType == 10)
 						{
 							flag7 = false;
 							break;
@@ -738,31 +756,30 @@ public class JungleTemple : ControlledWorldGenPass
 						for (int yy = y - range; yy < y + range; yy++)
 						{
 							if (!WorldGen.SolidTile(xx, yy) ||
-							    Main.tile[xx, yy].type == TileID.WoodenSpikes ||
+							    Main.tile[xx, yy].TileType == TileID.WoodenSpikes ||
 							    WorldGen.SolidTile(xx - directionX, yy))
 								continue;
 
-							Main.tile[xx, yy].type = TileID.WoodenSpikes;
+							Main.tile[xx, yy].TileType = TileID.WoodenSpikes;
 							flag5 = true;
 							if (num111)
 							{
-								Main.tile[xx - 1, yy].type = TileID.WoodenSpikes;
-								Main.tile[xx - 1, yy].IsActive = true;
-								if (WorldGen.drunkWorldGen)
-								{
-									Main.tile[xx - 2, yy].type = TileID.WoodenSpikes;
-									Main.tile[xx - 2, yy].IsActive = true;
-								}
+								Tile tile = Main.tile[xx - 1, yy];
+								tile.TileType = TileID.WoodenSpikes;
+								tile.HasTile = true;
 							}
 							else
 							{
-								Main.tile[xx + 1, yy].type = TileID.WoodenSpikes;
-								Main.tile[xx + 1, yy].IsActive = true;
-								if (WorldGen.drunkWorldGen)
-								{
-									Main.tile[xx - 2, yy].type = TileID.WoodenSpikes;
-									Main.tile[xx - 2, yy].IsActive = true;
-								}
+								Tile tile = Main.tile[xx + 1, yy];
+								tile.TileType = TileID.WoodenSpikes;
+								tile.HasTile = true;
+							}
+
+							if (WorldGen.drunkWorldGen)
+							{
+								Tile tile1 = Main.tile[xx - 2, yy];
+								tile1.TileType = TileID.WoodenSpikes;
+								tile1.HasTile = true;
 							}
 
 							num111 = !num111;

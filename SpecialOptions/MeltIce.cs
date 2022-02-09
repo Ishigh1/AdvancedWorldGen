@@ -12,8 +12,9 @@ public class MeltIce : GlobalTile
 	{
 		if (type == BreakableIce && !fail && API.OptionsContains("Santa"))
 		{
-			Main.tile[i, j].LiquidAmount = byte.MaxValue;
-			Main.tile[i, j].LiquidType = LiquidID.Water;
+			Tile tile = Main.tile[i, j];
+			tile.LiquidAmount = byte.MaxValue;
+			tile.LiquidType = LiquidID.Water;
 		}
 	}
 }

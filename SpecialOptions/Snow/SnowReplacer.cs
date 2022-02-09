@@ -21,16 +21,16 @@ public class SnowReplacer : TileReplacer
 			TileID.Plants2, TileID.CrimsonPlants, TileID.CrimsonVines, TileID.VineFlowers, TileID.CorruptThorns,
 			TileID.CrimsonThorns);
 		SpecialCases.Add(TileID.ImmatureHerbs, new SpecialCase(None,
-			(_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6));
+			(_, _, tile) => tile.TileFrameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6));
 		SpecialCases.Add(TileID.MatureHerbs, new SpecialCase(None,
-			(_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6));
+			(_, _, tile) => tile.TileFrameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6));
 		SpecialCases.Add(TileID.BloomingHerbs, new SpecialCase(None,
-			(_, _, tile) => tile.frameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6));
+			(_, _, tile) => tile.TileFrameX is 0 or 32 or 32 * 2 or 32 * 3 or 32 * 6));
 		SpecialCases.Add(TileID.Cattail, new SpecialCase(None,
-			(_, _, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4));
+			(_, _, tile) => tile.TileFrameY is 0 or 32 * 3 or 32 * 4));
 		SpecialCases.Add(TileID.LilyPad, new SpecialCase(None,
-			(_, _, tile) => tile.frameY is 0 or 32 * 3 or 32 * 4));
+			(_, _, tile) => tile.TileFrameY is 0 or 32 * 3 or 32 * 4));
 		SpecialCases.Add(TileID.DyePlants, new SpecialCase(None,
-			(_, _, tile) => tile.frameX is 32 * 3 or 32 * 4 or 32 * 7));
+			(_, _, tile) => tile.TileFrameX is 32 * 3 or 32 * 4 or 32 * 7));
 	}
 }

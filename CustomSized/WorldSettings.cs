@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework.Graphics;
@@ -92,8 +93,8 @@ public class WorldSettings
 			Main.maxTilesY = SizeY;
 		}
 
-		int oldSizeX = Main.tile.GetLength(0);
-		int oldSizeY = Main.tile.GetLength(1);
+		int oldSizeX = Main.tile.Width;
+		int oldSizeY = Main.tile.Height;
 		if (oldSizeX < Main.maxTilesX || oldSizeY < Main.maxTilesY)
 		{
 			int newSizeX = Math.Max(Main.maxTilesX, oldSizeX);
@@ -109,7 +110,9 @@ public class WorldSettings
 
 			Main.Map = new WorldMap(newSizeX, newSizeY);
 
-			Main.tile = new Tile[newSizeX, newSizeY];
+			ConstructorInfo constructorInfo = typeof(Tilemap).GetConstructor(
+				BindingFlags.NonPublic | BindingFlags.Instance, new[] { typeof(ushort), typeof(ushort) })!;
+			Main.tile = (Tilemap)constructorInfo.Invoke(new object?[] {(ushort) newSizeX, (ushort) newSizeY});
 		}
 
 		int newWidth = Main.maxTilesX / Main.textureMaxWidth + 1;

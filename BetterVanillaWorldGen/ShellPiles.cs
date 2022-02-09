@@ -61,9 +61,9 @@ public class ShellPiles : ControlledWorldGenPass
 				Tile tile = Main.tile[x, y];
 				Tile tileAbove = Main.tile[x, y - 1];
 				Tile tileLeft = Main.tile[x - 1, y];
-				if (tile.IsActive && tile.type == TileID.Sand &&
-				    !tileAbove.IsActive && tileAbove.LiquidAmount == 0 &&
-				    !tileLeft.IsActive && tileLeft.LiquidAmount > 0)
+				if (tile.HasTile && tile.TileType == TileID.Sand &&
+				    !tileAbove.HasTile && tileAbove.LiquidAmount == 0 &&
+				    !tileLeft.HasTile && tileLeft.LiquidAmount > 0)
 				{
 					shellStartXLeft = x;
 					shellStartYLeft = y;
@@ -116,9 +116,9 @@ public class ShellPiles : ControlledWorldGenPass
 				Tile tile = Main.tile[x, y];
 				Tile tileAbove = Main.tile[x, y - 1];
 				Tile tileRight = Main.tile[x + 1, y];
-				if (tile.IsActive && tile.type == TileID.Sand &&
-				    !tileAbove.IsActive && tileAbove.LiquidAmount == 0 &&
-				    !tileRight.IsActive && tileRight.LiquidAmount > 0)
+				if (tile.HasTile && tile.TileType == TileID.Sand &&
+				    !tileAbove.HasTile && tileAbove.LiquidAmount == 0 &&
+				    !tileRight.HasTile && tileRight.LiquidAmount > 0)
 				{
 					shellStartXRight = x;
 					shellStartYRight = y;

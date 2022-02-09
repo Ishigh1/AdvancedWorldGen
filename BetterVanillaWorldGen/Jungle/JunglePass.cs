@@ -133,12 +133,12 @@ public class JunglePass : ControlledWorldGenPass
 				if (value2 < 5)
 					value2 = 5;
 
-				if (Main.tile[value, value2].wall == 0 && !Main.tile[value, value2].IsActive &&
-				    Main.tile[value, value2 - 3].wall == 0 && !Main.tile[value, value2 - 3].IsActive &&
-				    Main.tile[value, value2 - 1].wall == 0 && !Main.tile[value, value2 - 1].IsActive &&
-				    Main.tile[value, value2 - 4].wall == 0 && !Main.tile[value, value2 - 4].IsActive &&
-				    Main.tile[value, value2 - 2].wall == 0 && !Main.tile[value, value2 - 2].IsActive &&
-				    Main.tile[value, value2 - 5].wall == 0 && !Main.tile[value, value2 - 5].IsActive)
+				if (Main.tile[value, value2].WallType == 0 && !Main.tile[value, value2].HasTile &&
+				    Main.tile[value, value2 - 3].WallType == 0 && !Main.tile[value, value2 - 3].HasTile &&
+				    Main.tile[value, value2 - 1].WallType == 0 && !Main.tile[value, value2 - 1].HasTile &&
+				    Main.tile[value, value2 - 4].WallType == 0 && !Main.tile[value, value2 - 4].HasTile &&
+				    Main.tile[value, value2 - 2].WallType == 0 && !Main.tile[value, value2 - 2].HasTile &&
+				    Main.tile[value, value2 - 5].WallType == 0 && !Main.tile[value, value2 - 5].HasTile)
 					flag = false;
 			}
 
@@ -207,7 +207,7 @@ public class JunglePass : ControlledWorldGenPass
 		{
 			int x = WorldGen.genRand.Next(minX, maxX);
 			int y = WorldGen.genRand.Next((int)WorldSurface + 10, Main.UnderworldLayer);
-			if (Main.tile[x, y].wall is WallID.JungleUnsafe or WallID.MudUnsafe)
+			if (Main.tile[x, y].WallType is WallID.JungleUnsafe or WallID.MudUnsafe)
 				WorldGen.MudWallRunner(x, y);
 		}
 	}
@@ -225,11 +225,11 @@ public class JunglePass : ControlledWorldGenPass
 			tile1 = Main.tile[currentX, y];
 			tile2 = Main.tile[currentX, y - 10];
 			tile3 = Main.tile[currentX, y + 10];
-			if (tile1.IsActive || tile2.IsActive || tile3.IsActive) importantX = currentX;
+			if (tile1.HasTile || tile2.HasTile || tile3.HasTile) importantX = currentX;
 			currentX--;
-		} while (!tile1.IsActive || tile1.type is TileID.Mud ||
-		         !tile2.IsActive || tile2.type is TileID.Mud ||
-		         !tile3.IsActive || tile3.type is TileID.Mud);
+		} while (!tile1.HasTile || tile1.TileType is TileID.Mud ||
+		         !tile2.HasTile || tile2.TileType is TileID.Mud ||
+		         !tile3.HasTile || tile3.TileType is TileID.Mud);
 
 		VanillaInterface.JungleMinX = importantX + 1;
 
@@ -239,11 +239,11 @@ public class JunglePass : ControlledWorldGenPass
 			tile1 = Main.tile[currentX, y];
 			tile2 = Main.tile[currentX, y - 10];
 			tile3 = Main.tile[currentX, y + 10];
-			if (tile1.IsActive || tile2.IsActive || tile3.IsActive) importantX = currentX;
+			if (tile1.HasTile || tile2.HasTile || tile3.HasTile) importantX = currentX;
 			currentX++;
-		} while (!tile1.IsActive || tile1.type is TileID.Mud ||
-		         !tile2.IsActive || tile2.type is TileID.Mud ||
-		         !tile3.IsActive || tile3.type is TileID.Mud);
+		} while (!tile1.HasTile || tile1.TileType is TileID.Mud ||
+		         !tile2.HasTile || tile2.TileType is TileID.Mud ||
+		         !tile3.HasTile || tile3.TileType is TileID.Mud);
 
 		VanillaInterface.JungleMaxX = importantX - 1;
 	}
@@ -267,7 +267,7 @@ public class JunglePass : ControlledWorldGenPass
 			x = oldX + WorldGen.genRand.Next((int)(-600f * worldScale), (int)(600f * worldScale));
 			y = oldY + WorldGen.genRand.Next((int)(-200f * worldScale), (int)(200f * worldScale));
 			while (x < 1 || x >= Main.maxTilesX - 1 || y < 1 || y >= Main.maxTilesY - 1 ||
-			       Main.tile[x, y].type != 59)
+			       Main.tile[x, y].TileType != 59)
 			{
 				x = oldX + WorldGen.genRand.Next((int)(-600f * worldScale), (int)(600f * worldScale));
 				y = oldY + WorldGen.genRand.Next((int)(-200f * worldScale), (int)(200f * worldScale));
@@ -290,7 +290,7 @@ public class JunglePass : ControlledWorldGenPass
 			x = oldX + WorldGen.genRand.Next((int)(-600f * worldScale), (int)(600f * worldScale));
 			y = oldY + WorldGen.genRand.Next((int)(-200f * worldScale), (int)(200f * worldScale));
 			while (x < 1 || x >= Main.maxTilesX - 1 || y < 1 || y >= Main.maxTilesY - 1 ||
-			       Main.tile[x, y].type != 59)
+			       Main.tile[x, y].TileType != 59)
 			{
 				x = oldX + WorldGen.genRand.Next((int)(-600f * worldScale), (int)(600f * worldScale));
 				y = oldY + WorldGen.genRand.Next((int)(-200f * worldScale), (int)(200f * worldScale));

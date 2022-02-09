@@ -61,7 +61,7 @@ public class UiChanger
 				}
 				catch (Exception)
 				{
-					if (Main.tile != null) EmergencySaving(false);
+					if (Main.tile.Width > 0) EmergencySaving(false);
 				}
 			}) { Name = "WorldGen" };
 			Thread.Start();
@@ -107,8 +107,8 @@ public class UiChanger
 	public void Abort(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		Tile[,] tiles = Main.tile;
-		Main.tile = null;
+		Tilemap tiles = Main.tile;
+		Main.tile = new Tilemap();
 		WorldGen._genRand = null;
 		Thread.Join();
 		Main.tile = tiles;

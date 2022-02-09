@@ -156,45 +156,53 @@ public class TerrainPass : ControlledWorldGenPass
 	{
 		for (int i = 0; i < worldSurface; i++)
 		{
-			Main.tile[x, i].IsActive = false;
-			Main.tile[x, i].frameX = -1;
-			Main.tile[x, i].frameY = -1;
+			Tile tile = Main.tile[x, i];
+			tile.HasTile = false;
+			tile.TileFrameX = -1;
+			tile.TileFrameY = -1;
 		}
 
 		for (int j = (int)worldSurface; j < Main.maxTilesY; j++)
+		{
+			Tile tile = Main.tile[x, j];
 			if (j < rockLayer)
 			{
-				Main.tile[x, j].IsActive = true;
-				Main.tile[x, j].type = 0;
-				Main.tile[x, j].frameX = -1;
-				Main.tile[x, j].frameY = -1;
+				tile.HasTile = true;
+				tile.TileType = 0;
+				tile.TileFrameX = -1;
+				tile.TileFrameY = -1;
 			}
 			else
 			{
-				Main.tile[x, j].IsActive = true;
-				Main.tile[x, j].type = 1;
-				Main.tile[x, j].frameX = -1;
-				Main.tile[x, j].frameY = -1;
+				tile.HasTile = true;
+				tile.TileType = 1;
+				tile.TileFrameX = -1;
+				tile.TileFrameY = -1;
 			}
+		}
 	}
 
 	public static void RetargetColumn(int x, double worldSurface)
 	{
 		for (int i = 0; i < worldSurface; i++)
 		{
-			Main.tile[x, i].IsActive = false;
-			Main.tile[x, i].frameX = -1;
-			Main.tile[x, i].frameY = -1;
+			Tile tile = Main.tile[x, i];
+			tile.HasTile = false;
+			tile.TileFrameX = -1;
+			tile.TileFrameY = -1;
 		}
 
 		for (int j = (int)worldSurface; j < Main.maxTilesY; j++)
-			if (Main.tile[x, j].type != 1 || !Main.tile[x, j].IsActive)
+		{
+			Tile tile = Main.tile[x, j];
+			if (tile.TileType != 1 || !tile.HasTile)
 			{
-				Main.tile[x, j].IsActive = true;
-				Main.tile[x, j].type = 0;
-				Main.tile[x, j].frameX = -1;
-				Main.tile[x, j].frameY = -1;
+				tile.HasTile = true;
+				tile.TileType = 0;
+				tile.TileFrameX = -1;
+				tile.TileFrameY = -1;
 			}
+		}
 	}
 
 	public double GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
