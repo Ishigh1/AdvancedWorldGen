@@ -15,13 +15,13 @@ namespace AdvancedWorldGen.CustomSized;
 
 public class WorldSettings
 {
-	public int SizeX;
-	public int SizeY;
-	public int TempleMultiplier;
+	public Params Params;
+	
 	public UIWorldCreation UIWorldCreation = null!;
 
 	public WorldSettings()
 	{
+		Params = new Params();
 		OnUIWorldCreation.SetDefaultOptions += ResetSize;
 		OnUIWorldCreation.ClickSizeOption += SetSize;
 		OnWorldGen.setWorldSize += SetWorldSize;
@@ -35,7 +35,6 @@ public class WorldSettings
 	{
 		orig(self);
 		UIWorldCreation = self;
-		TempleMultiplier = 1;
 		SetSizeTo(0);
 	}
 
@@ -53,20 +52,17 @@ public class WorldSettings
 	{
 		switch (sizeId)
 		{
-			case -1:
-				SizeX = 0;
-				break;
 			case 0:
-				SizeX = 4200;
-				SizeY = 1200;
+				Params.SizeX = 4200;
+				Params.SizeY = 1200;
 				break;
 			case 1:
-				SizeX = 6400;
-				SizeY = 1800;
+				Params.SizeX = 6400;
+				Params.SizeY = 1800;
 				break;
 			case 2:
-				SizeX = 8400;
-				SizeY = 2400;
+				Params.SizeX = 8400;
+				Params.SizeY = 2400;
 				break;
 		}
 	}
@@ -87,10 +83,10 @@ public class WorldSettings
 
 	public void SetWorldSize()
 	{
-		if (SizeX != 0)
+		if (Params.SizeX != -1)
 		{
-			Main.maxTilesX = SizeX;
-			Main.maxTilesY = SizeY;
+			Main.maxTilesX = Params.SizeX;
+			Main.maxTilesY = Params.SizeY;
 		}
 
 		int oldSizeX = Main.tile.Width;

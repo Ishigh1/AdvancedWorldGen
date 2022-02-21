@@ -68,7 +68,7 @@ public class ErrorUI : UIState
 	public static void GoBack(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		Main.MenuUI.SetState(ModifiedWorld.Instance.CustomSizeUI);
+		Main.MenuUI.SetState(new CustomSizeUI());
 	}
 
 	public static void Continue(UIMouseEvent evt, UIElement listeningElement)

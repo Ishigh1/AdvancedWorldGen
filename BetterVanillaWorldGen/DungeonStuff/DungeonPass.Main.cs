@@ -151,9 +151,7 @@ public partial class DungeonPass
 
 		while (!DungeonSurface)
 		{
-			num6--;
-
-			if (num6 == 0 && WorldGen.genRand.NextBool(5) && WorldGen.dungeonY > Main.worldSurface + 100.0)
+			if (--num6 <= 0 && WorldGen.genRand.NextBool(5) && WorldGen.dungeonY > Main.worldSurface + 100.0)
 			{
 				num6 = 10;
 				int num11 = WorldGen.dungeonX;

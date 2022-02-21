@@ -107,10 +107,10 @@ public class OptionsSelector : UIState
 		Append(customSize);
 	}
 
-	public void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
+	public static void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Main.MenuUI.SetState(ModifiedWorld.Instance.CustomSizeUI);
+		Main.MenuUI.SetState(new CustomSizeUI());
 	}
 
 	public void CreateSelectableOptions(UIElement uiPanel, UIText uiDescription, Option? parent)

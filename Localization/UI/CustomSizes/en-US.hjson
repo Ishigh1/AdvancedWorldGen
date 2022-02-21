@@ -1,0 +1,13 @@
+{
+    "Mods": {
+        "AdvancedWorldGen": {
+            "UI":{
+                "CustomSizes": {
+                    "SizeX": "Horizontal size :",
+                    "SizeY": "Vertical size :",
+                    "TempleMultiplier": "Temple size multiplier :"
+                }
+            }
+        }
+    }
+}

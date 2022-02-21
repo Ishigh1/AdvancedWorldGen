@@ -49,7 +49,7 @@ public class ClassicOptions
 
 	public static int GetTempleRooms(ref int y, float worldSize)
 	{
-		int templeSize = ModifiedWorld.Instance.OptionHelper.WorldSettings.TempleMultiplier;
+		float templeSize = ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.TempleMultiplier;
 		if (WorldGen.getGoodWorldGen && WorldGen.drunkWorldGen)
 			templeSize *= 6;
 		else if (WorldGen.getGoodWorldGen || WorldGen.drunkWorldGen) templeSize *= 3;
@@ -61,6 +61,6 @@ public class ClassicOptions
 		}
 
 		return WorldGen.genRand.Next((int)(10 * worldSize * templeSize),
-			(int)(16f * worldSize * templeSize));
+			(int)(16f * templeSize * worldSize));
 	}
 }

@@ -5,13 +5,13 @@ using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.CustomSized;
 using AdvancedWorldGen.Helper;
+using AdvancedWorldGen.UI.InputUI;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -19,26 +19,11 @@ namespace AdvancedWorldGen.UI;
 
 public class CustomSizeUI : UIState
 {
-	private static readonly Type IntInputElementType =
-		typeof(Main).Assembly.GetType("Terraria.ModLoader.Config.UI.IntInputElement")!;
-
-	private static readonly ConstructorInfo IntInputElementConstructorInfo =
-		IntInputElementType.GetConstructor(Array.Empty<Type>())!;
-
-	private static readonly FieldInfo IntInputElementMinField =
-		IntInputElementType.GetField("min", BindingFlags.Public | BindingFlags.Instance)!;
-
-	private static readonly FieldInfo IntInputElementMaxField =
-		IntInputElementType.GetField("max", BindingFlags.Public | BindingFlags.Instance)!;
-
-	private static readonly FieldInfo IntInputElementIncrementField =
-		IntInputElementType.GetField("increment", BindingFlags.Public | BindingFlags.Instance)!;
-
 	public WorldSettings WorldSettings;
 
-	public CustomSizeUI(WorldSettings worldSettings)
+	public CustomSizeUI()
 	{
-		WorldSettings = worldSettings;
+		WorldSettings = ModifiedWorld.Instance.OptionHelper.WorldSettings;
 		CreateCustomSizeUI();
 	}
 
@@ -64,15 +49,15 @@ public class CustomSizeUI : UIState
 			Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 		});
 
-		ConfigElement sizeXInput = MakeIntInputLine(nameof(WorldSettings.SizeX), 100, ushort.MaxValue, 100);
+		NumberTextBox<int> sizeXInput = new(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue);
 		sizeXInput.Top.Pixels = 50;
 		uiPanel.Append(sizeXInput);
 
-		ConfigElement sizeYInput = MakeIntInputLine(nameof(WorldSettings.SizeY), 100, ushort.MaxValue, 100);
+		NumberTextBox<int> sizeYInput = new(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue);
 		sizeYInput.Top.Pixels = sizeXInput.Top.Pixels + sizeXInput.Height.Pixels + 4;
 		uiPanel.Append(sizeYInput);
 
-		ConfigElement templeModifier = MakeIntInputLine(nameof(WorldSettings.TempleMultiplier), 1, 30, 1);
+		NumberTextBox<float> templeModifier = new(WorldSettings.Params, nameof(Params.TempleMultiplier), 0, 30);
 		templeModifier.Top.Pixels = sizeYInput.Top.Pixels + sizeYInput.Height.Pixels + 4;
 		uiPanel.Append(templeModifier);
 
@@ -88,29 +73,14 @@ public class CustomSizeUI : UIState
 		Append(goBack);
 	}
 
-	public ConfigElement MakeIntInputLine(string fieldName, int min, int max, int increment)
-	{
-		ConfigElement intInputElement = (ConfigElement)IntInputElementConstructorInfo.Invoke(null);
-
-		IntInputElementMinField.SetValue(intInputElement, min);
-		IntInputElementMaxField.SetValue(intInputElement, max);
-		IntInputElementIncrementField.SetValue(intInputElement, increment);
-
-		FieldInfo fieldInfo = typeof(WorldSettings).GetField(fieldName, BindingFlags.Instance | BindingFlags.Public)!;
-		intInputElement.Bind(new PropertyFieldWrapper(fieldInfo), WorldSettings, null, -1);
-		intInputElement.OnBind();
-		intInputElement.Recalculate();
-		return intInputElement;
-	}
-
 	public void GoBack(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		int size = WorldSettings.SizeX switch
+		int size = WorldSettings.Params.SizeX switch
 		{
-			4200 when WorldSettings.SizeY == 1200 => 0,
-			6400 when WorldSettings.SizeY == 1800 => 1,
-			8400 when WorldSettings.SizeY == 2400 => 2,
+			4200 when WorldSettings.Params.SizeY == 1200 => 0,
+			6400 when WorldSettings.Params.SizeY == 1800 => 1,
+			8400 when WorldSettings.Params.SizeY == 2400 => 2,
 			_ => -1
 		};
 
@@ -129,10 +99,10 @@ public class CustomSizeUI : UIState
 #if !SPECIALDEBUG
 		int oldSizeX = Main.tile.Width;
 		int oldSizeY = Main.tile.Height;
-		if (oldSizeX < WorldSettings.SizeX || oldSizeY < WorldSettings.SizeY)
+		if (oldSizeX < WorldSettings.Params.SizeX || oldSizeY < WorldSettings.Params.SizeY)
 		{
-			int newSizeX = Math.Max(WorldSettings.SizeX, oldSizeX);
-			int newSizeY = Math.Max(WorldSettings.SizeY, oldSizeY);
+			int newSizeX = Math.Max(WorldSettings.Params.SizeX, oldSizeX);
+			int newSizeY = Math.Max(WorldSettings.Params.SizeY, oldSizeY);
 
 			if ((long)newSizeX * newSizeY * 44 > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)
 			{
@@ -144,14 +114,14 @@ public class CustomSizeUI : UIState
 
 		if (WorldgenSettings.Revamped)
 		{
-			if (WorldSettings.SizeX < KnownLimits.OverhauledMinX)
+			if (WorldSettings.Params.SizeX < KnownLimits.OverhauledMinX)
 			{
 				Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.OverhauledMinX", KnownLimits.OverhauledMinX)));
 				return;
 			}
 
-			if (WorldSettings.SizeY < KnownLimits.OverhauledMinY)
+			if (WorldSettings.Params.SizeY < KnownLimits.OverhauledMinY)
 			{
 				Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.OverhauledMinY", KnownLimits.OverhauledMinY)));
@@ -160,14 +130,14 @@ public class CustomSizeUI : UIState
 		}
 		else
 		{
-			if (WorldSettings.SizeX < KnownLimits.NormalMinX)
+			if (WorldSettings.Params.SizeX < KnownLimits.NormalMinX)
 			{
 				Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.NormalMinX", KnownLimits.NormalMinX)));
 				return;
 			}
 
-			if (WorldSettings.SizeY > KnownLimits.ComfortNormalMaxX)
+			if (WorldSettings.Params.SizeY > KnownLimits.ComfortNormalMaxX)
 			{
 				Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.ComfortNormalMaxX")));

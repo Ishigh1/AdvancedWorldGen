@@ -34,8 +34,6 @@ public class ModifiedWorld : ModSystem
 		TaxCollector, DD2Bartender, Golfer, BestiaryGirl, Princess, TownBunny, TownDog
 	};
 
-	public CustomSizeUI CustomSizeUI = null!;
-
 	public OptionHelper OptionHelper = null!;
 
 	public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
@@ -43,8 +41,6 @@ public class ModifiedWorld : ModSystem
 	public override void OnModLoad()
 	{
 		OptionHelper = new OptionHelper(Mod);
-		if (!Main.dedServ)
-			CustomSizeUI = new CustomSizeUI(OptionHelper.WorldSettings);
 	}
 
 	public override void Unload()
@@ -282,7 +278,7 @@ public class ModifiedWorld : ModSystem
 		if (state is UIWorldSelect)
 		{
 			OptionHelper.ClearAll();
-			OptionHelper.WorldSettings.SetSizeTo(-1);
+			OptionHelper.WorldSettings.Params.Wipe();
 		}
 	}
 }

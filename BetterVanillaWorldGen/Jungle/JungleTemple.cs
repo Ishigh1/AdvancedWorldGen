@@ -559,86 +559,89 @@ public class JungleTemple : ControlledWorldGenPass
 			}
 		}
 
-		int tries = 0;
-		Rectangle rectangle3 = rooms[templeRoomCount - 1];
-		int num88 = rectangle3.Width / 2;
-		int num89 = rectangle3.Height / 2;
-		while (true)
+		if (templeRoomCount > 0)
 		{
-			tries++;
-			int x = rectangle3.X + num88 + 15 - WorldGen.genRand.Next(30);
-			int y = rectangle3.Y + num89 + 15 - WorldGen.genRand.Next(30);
-			WorldGen.PlaceTile(x, y, TileID.LihzahrdAltar);
-			if (Main.tile[x, y].TileType == TileID.LihzahrdAltar)
+			int tries = 0;
+			Rectangle rectangle3 = rooms[templeRoomCount - 1];
+			int num88 = rectangle3.Width / 2;
+			int num89 = rectangle3.Height / 2;
+			while (true)
 			{
-				int lAltarX = x - Main.tile[x, y].TileFrameX / 18;
-				int lAltarY = y - Main.tile[x, y].TileFrameY / 18;
-				VanillaInterface.LAltarX.Value = lAltarX;
-				VanillaInterface.LAltarY.Value = lAltarY;
+				tries++;
+				int x = rectangle3.X + num88 + 15 - WorldGen.genRand.Next(30);
+				int y = rectangle3.Y + num89 + 15 - WorldGen.genRand.Next(30);
+				WorldGen.PlaceTile(x, y, TileID.LihzahrdAltar);
+				if (Main.tile[x, y].TileType == TileID.LihzahrdAltar)
+				{
+					int lAltarX = x - Main.tile[x, y].TileFrameX / 18;
+					int lAltarY = y - Main.tile[x, y].TileFrameY / 18;
+					VanillaInterface.LAltarX.Value = lAltarX;
+					VanillaInterface.LAltarY.Value = lAltarY;
+					break;
+				}
+
+				if (tries < 1000)
+					continue;
+
+				x = rectangle3.X + num88;
+				y = rectangle3.Y + num89;
+				x += WorldGen.genRand.Next(-10, 11);
+				for (y += WorldGen.genRand.Next(-10, 11); !Main.tile[x, y].HasTile; y++)
+				{
+				}
+
+				Tile tile = Main.tile[x - 1, y];
+				tile.HasTile = true;
+				tile.Slope = SlopeType.Solid;
+				tile.IsHalfBlock = false;
+				tile.TileType = TileID.LihzahrdBrick;
+				Tile tile1 = Main.tile[x, y];
+				tile1.HasTile = true;
+				tile1.Slope = SlopeType.Solid;
+				tile1.IsHalfBlock = false;
+				tile1.TileType = TileID.LihzahrdBrick;
+				Tile tile2 = Main.tile[x + 1, y];
+				tile2.HasTile = true;
+				tile2.Slope = SlopeType.Solid;
+				tile2.IsHalfBlock = false;
+				tile2.TileType = TileID.LihzahrdBrick;
+				y -= 2;
+				x--;
+				for (int num92 = -1; num92 <= 3; num92++)
+				for (int num93 = -1; num93 <= 1; num93++)
+				{
+					templeX = x + num92;
+					y += num93;
+					Tile tile3 = Main.tile[templeX, y];
+					tile3.HasTile = false;
+				}
+
+				int lAltarX2 = x;
+				int lAltarY2 = y;
+				VanillaInterface.LAltarX.Value = lAltarX2;
+				VanillaInterface.LAltarY.Value = lAltarY2;
+				for (int num94 = 0; num94 <= 2; num94++)
+				for (int num95 = 0; num95 <= 1; num95++)
+				{
+					templeX = x + num94;
+					y += num95;
+					Tile tile3 = Main.tile[templeX, y];
+					tile3.HasTile = true;
+					tile3.TileType = TileID.LihzahrdAltar;
+					tile3.TileFrameX = (short)(num94 * 18);
+					tile3.TileFrameY = (short)(num95 * 18);
+				}
+
+				for (int num96 = 0; num96 <= 2; num96++)
+				for (int num97 = 0; num97 <= 1; num97++)
+				{
+					templeX = x + num96;
+					y += num97;
+					WorldGen.SquareTileFrame(templeX, y);
+				}
+
 				break;
 			}
-
-			if (tries < 1000)
-				continue;
-
-			x = rectangle3.X + num88;
-			y = rectangle3.Y + num89;
-			x += WorldGen.genRand.Next(-10, 11);
-			for (y += WorldGen.genRand.Next(-10, 11); !Main.tile[x, y].HasTile; y++)
-			{
-			}
-
-			Tile tile = Main.tile[x - 1, y];
-			tile.HasTile = true;
-			tile.Slope = SlopeType.Solid;
-			tile.IsHalfBlock = false;
-			tile.TileType = TileID.LihzahrdBrick;
-			Tile tile1 = Main.tile[x, y];
-			tile1.HasTile = true;
-			tile1.Slope = SlopeType.Solid;
-			tile1.IsHalfBlock = false;
-			tile1.TileType = TileID.LihzahrdBrick;
-			Tile tile2 = Main.tile[x + 1, y];
-			tile2.HasTile = true;
-			tile2.Slope = SlopeType.Solid;
-			tile2.IsHalfBlock = false;
-			tile2.TileType = TileID.LihzahrdBrick;
-			y -= 2;
-			x--;
-			for (int num92 = -1; num92 <= 3; num92++)
-			for (int num93 = -1; num93 <= 1; num93++)
-			{
-				templeX = x + num92;
-				y += num93;
-				Tile tile3 = Main.tile[templeX, y];
-				tile3.HasTile = false;
-			}
-
-			int lAltarX2 = x;
-			int lAltarY2 = y;
-			VanillaInterface.LAltarX.Value = lAltarX2;
-			VanillaInterface.LAltarY.Value = lAltarY2;
-			for (int num94 = 0; num94 <= 2; num94++)
-			for (int num95 = 0; num95 <= 1; num95++)
-			{
-				templeX = x + num94;
-				y += num95;
-				Tile tile3 = Main.tile[templeX, y];
-				tile3.HasTile = true;
-				tile3.TileType = TileID.LihzahrdAltar;
-				tile3.TileFrameX = (short)(num94 * 18);
-				tile3.TileFrameY = (short)(num95 * 18);
-			}
-
-			for (int num96 = 0; num96 <= 2; num96++)
-			for (int num97 = 0; num97 <= 1; num97++)
-			{
-				templeX = x + num96;
-				y += num97;
-				WorldGen.SquareTileFrame(templeX, y);
-			}
-
-			break;
 		}
 
 		float num98 = templeRoomCount * 1.1f;
