@@ -82,13 +82,11 @@ public class EditableText<T> : UIElement, IEditableText where T : IConvertible, 
 
 	public void Focus()
 	{
-		if (CurrentFocus == null)
-		{
-			CurrentContent = ParentBox.Value.ToString();
-			CurrentFocus = this;
-			Shift = 0;
-			Main.clrInput();
-		}
+		CurrentFocus?.Unfocus();
+		CurrentContent = ParentBox.Value.ToString();
+		CurrentFocus = this;
+		Shift = 0;
+		Main.clrInput();
 	}
 
 	public void Unfocus()
