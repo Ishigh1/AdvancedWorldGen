@@ -90,10 +90,6 @@ public class TempleWorld : ControlledWorldGenPass
 			Main.npc[id].homeTileY = Main.dungeonY;
 			break;
 		}
-
-		Main.hardMode = true;
-		NPC.downedBoss3 = true;
-		NPC.downedGolemBoss = true;
 	}
 
 	public void AllocateRooms(out int templeRoomCount, List<Rectangle> rooms, int direction, out int templeX,
