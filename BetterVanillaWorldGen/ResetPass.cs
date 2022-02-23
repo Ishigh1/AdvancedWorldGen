@@ -1,17 +1,18 @@
 using System;
 using System.Reflection;
+using AdvancedWorldGen.Base;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using Microsoft.Xna.Framework;
 using Terraria;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
-public class Reset : ControlledWorldGenPass
+public class ResetPass : ControlledWorldGenPass
 {
 	private static readonly MethodInfo ResetGenerator =
 		typeof(WorldGen).GetMethod("ResetGenerator", BindingFlags.Static | BindingFlags.NonPublic)!;
 
-	public Reset() : base("Reset", 0.9667f)
+	public ResetPass() : base("Reset", 0.9667f)
 	{
 	}
 
@@ -129,6 +130,7 @@ public class Reset : ControlledWorldGenPass
 		VanillaInterface.SnowOriginLeft.Value = snowOriginLeft;
 		VanillaInterface.SnowOriginRight.Value = snowOriginRight;
 
+		worldSize *= ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier;
 		int beachSandDungeonExtraWidth = (int)(40 * worldSize);
 		int beachSandJungleExtraWidth = (int)(20 * worldSize);
 		int beachBordersWidth = (int)(275 * worldSize);
@@ -139,6 +141,23 @@ public class Reset : ControlledWorldGenPass
 			WorldGen.oceanDistance = beachBordersWidth - 25;
 			WorldGen.beachDistance = beachSandRandomCenter + beachSandDungeonExtraWidth + beachSandJungleExtraWidth;
 		}
+		else
+		{
+			WorldGen.oceanDistance = (int)(WorldGen.oceanDistance *
+			                               ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier);
+			WorldGen.beachDistance = (int)(WorldGen.beachDistance *
+			                               ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier);
+		}
+
+		VanillaInterface.OceanWaterStartRandomMin.Value = (int)(VanillaInterface.OceanWaterStartRandomMin.Value *
+		                                                        ModifiedWorld.Instance.OptionHelper.WorldSettings.Params
+			                                                        .BeachMultiplier);
+		VanillaInterface.OceanWaterStartRandomMax.Value = (int)(VanillaInterface.OceanWaterStartRandomMax.Value *
+		                                                        ModifiedWorld.Instance.OptionHelper.WorldSettings.Params
+			                                                        .BeachMultiplier);
+		VanillaInterface.OceanWaterForcedJungleLength.Value =
+			(int)(VanillaInterface.OceanWaterForcedJungleLength.Value *
+			      ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier);
 
 		int leftBeachEnd = beachSandRandomCenter +
 		                   WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);

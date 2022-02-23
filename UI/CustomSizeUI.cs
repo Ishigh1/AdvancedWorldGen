@@ -49,17 +49,30 @@ public class CustomSizeUI : UIState
 			Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 		});
 
+		float top = 50;
 		NumberTextBox<int> sizeXInput = new(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue);
-		sizeXInput.Top.Pixels = 50;
+		sizeXInput.Top.Pixels = top;
+		top += sizeXInput.Height.Pixels + 4;
 		uiPanel.Append(sizeXInput);
 
 		NumberTextBox<int> sizeYInput = new(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue);
-		sizeYInput.Top.Pixels = sizeXInput.Top.Pixels + sizeXInput.Height.Pixels + 4;
+		sizeYInput.Top.Pixels = top;
+		top += sizeYInput.Height.Pixels + 4;
 		uiPanel.Append(sizeYInput);
 
 		NumberTextBox<float> templeModifier = new(WorldSettings.Params, nameof(Params.TempleMultiplier), 0, float.PositiveInfinity);
-		templeModifier.Top.Pixels = sizeYInput.Top.Pixels + sizeYInput.Height.Pixels + 4;
+		templeModifier.Top.Pixels = top;
+		top += templeModifier.Height.Pixels + 4;
 		uiPanel.Append(templeModifier);
+
+		if (WorldgenSettings.Revamped)
+		{
+			NumberTextBox<float> beachModifier = new(WorldSettings.Params, nameof(Params.BeachMultiplier), 0,
+				float.PositiveInfinity);
+			beachModifier.Top.Pixels = top;
+			top += beachModifier.Height.Pixels + 4;
+			uiPanel.Append(beachModifier);
+		}
 
 		UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 		{

@@ -24,6 +24,12 @@ public class Params
 		set => Data[nameof(TempleMultiplier)] = value;
 	}
 
+	public float BeachMultiplier
+	{
+		get => (float)Data[nameof(BeachMultiplier)];
+		set => Data[nameof(BeachMultiplier)] = value;
+	}
+
 	public Params()
 	{
 		Initialize();
@@ -40,5 +46,6 @@ public class Params
 		SizeX = -1;
 		SizeY = -1;
 		TempleMultiplier = 1;
+		BeachMultiplier = 1;
 	}
 }

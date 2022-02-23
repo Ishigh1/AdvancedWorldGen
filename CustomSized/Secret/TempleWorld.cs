@@ -24,13 +24,18 @@ public class TempleWorld : ControlledWorldGenPass
 		int direction = WorldGen.genRand.NextBool(2) ? 1 : -1;
 		Main.worldSurface = 100;
 
-		for (int x = 39; x < Main.maxTilesX - 39; x++)
-		for (int y = 39; y < Main.maxTilesY - 39; y++)
+		for (int x = 5; x < Main.maxTilesX - 5; x++)
+		for (int y = 5; y < Main.maxTilesY - 5; y++)
 		{
 			Tile tile = Main.tile[x, y];
-			tile.HasTile = true;
-			tile.TileType = TileID.LihzahrdBrick;
-			tile.WallType = WallID.LihzahrdBrickUnsafe;
+			if (x >= 39 && x < Main.maxTilesX - 39 && y >= 39 && y < Main.maxTilesY - 39)
+			{
+				tile.HasTile = true;
+				tile.TileType = TileID.LihzahrdBrick;
+				tile.WallType = WallID.LihzahrdBrickUnsafe;
+			}
+			else
+				tile.WallType = WallID.LihzahrdBrick;
 		}
 
 		AllocateRooms(out int templeRoomCount, rooms, direction, out int templeX, out int templeY);

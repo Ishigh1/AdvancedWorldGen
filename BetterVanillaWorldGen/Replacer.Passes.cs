@@ -19,7 +19,7 @@ public static partial class Replacer
 		if (index != -1)
 		{
 			VanillaInterface = new VanillaInterface(genPasses[index]);
-			genPasses[index] = new Reset();
+			genPasses[index] = new ResetPass();
 		}
 		else
 		{

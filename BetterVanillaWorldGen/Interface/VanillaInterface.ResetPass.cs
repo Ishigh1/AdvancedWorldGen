@@ -32,6 +32,10 @@ public partial class VanillaInterface
 	public readonly VanillaAccessor<int> SnowOriginRight;
 	public readonly VanillaAccessor<int> SnowTop;
 
+	public readonly VanillaAccessor<int> OceanWaterStartRandomMin;
+	public readonly VanillaAccessor<int> OceanWaterStartRandomMax;
+	public readonly VanillaAccessor<int> OceanWaterForcedJungleLength;
+
 	public VanillaInterface(GenPass vanillaResetPass)
 	{
 		VanillaAccessor<WorldGenLegacyMethod> methodAccessor = new(typeof(PassLegacy), "_method", vanillaResetPass);
@@ -66,5 +70,10 @@ public partial class VanillaInterface
 		ShellStartYLeft = new VanillaAccessor<int>(fieldInfos, "shellStartYLeft", vanillaData);
 		ShellStartXRight = new VanillaAccessor<int>(fieldInfos, "shellStartXRight", vanillaData);
 		ShellStartYRight = new VanillaAccessor<int>(fieldInfos, "shellStartYRight", vanillaData);
+
+		OceanWaterStartRandomMin = new VanillaAccessor<int>(fieldInfos, "oceanWaterStartRandomMin", vanillaData);
+		OceanWaterStartRandomMax = new VanillaAccessor<int>(fieldInfos, "oceanWaterStartRandomMax", vanillaData);
+		OceanWaterForcedJungleLength =
+			new VanillaAccessor<int>(fieldInfos, "oceanWaterForcedJungleLength", vanillaData);
 	}
 }
