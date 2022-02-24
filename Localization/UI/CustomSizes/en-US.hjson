@@ -5,7 +5,8 @@
                 "CustomSizes": {
                     "SizeX": "Horizontal size :",
                     "SizeY": "Vertical size :",
-                    "TempleMultiplier": "Temple size multiplier :"
+                    "TempleMultiplier": "Temple size multiplier :",
+                    "BeachMultiplier": "Beach size multiplier :"
                 }
             }
         }
