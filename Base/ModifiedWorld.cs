@@ -9,6 +9,7 @@ using AdvancedWorldGen.SpecialOptions.Halloween;
 using AdvancedWorldGen.SpecialOptions.Snow;
 using MonoMod.Cil;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Events;
 using Terraria.GameContent.Generation;
 using Terraria.GameContent.UI.States;
@@ -229,7 +230,7 @@ public class ModifiedWorld : ModSystem
 		}
 
 		int spawnPointX = Main.spawnTileX + (alreadyPlaced % 2 == 0 ? alreadyPlaced : -(alreadyPlaced + 1));
-		npc = Main.npc[NPC.NewNPC(spawnPointX * 16, Main.spawnTileY * 16, npcType)];
+		npc = Main.npc[NPC.NewNPC(new EntitySource_WorldGen(), spawnPointX * 16, Main.spawnTileY * 16, npcType)];
 		npc.homeTileX = spawnPointX;
 		npc.homeTileY = Main.spawnTileY;
 		npc.direction = alreadyPlaced % 2 == 0 ? 1 : -1;

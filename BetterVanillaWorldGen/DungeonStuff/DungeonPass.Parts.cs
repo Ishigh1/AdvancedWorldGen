@@ -2031,10 +2031,10 @@ public partial class DungeonPass
 
 		Main.dungeonX = (int)vector.X;
 		Main.dungeonY = yMax;
-		int num47 = NPC.NewNPC(Main.dungeonX * 16 + 8, Main.dungeonY * 16, 37);
-		Main.npc[num47].homeless = false;
-		Main.npc[num47].homeTileX = Main.dungeonX;
-		Main.npc[num47].homeTileY = Main.dungeonY;
+		int oldManId = NPC.NewNPC(new EntitySource_WorldGen(), Main.dungeonX * 16 + 8, Main.dungeonY * 16, NPCID.OldMan);
+		Main.npc[oldManId].homeless = false;
+		Main.npc[oldManId].homeTileX = Main.dungeonX;
+		Main.npc[oldManId].homeTileY = Main.dungeonY;
 		if (WorldGen.drunkWorldGen)
 		{
 			int num48 = (int)Main.worldSurface;

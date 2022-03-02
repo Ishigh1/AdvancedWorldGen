@@ -5,6 +5,7 @@ using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.Localization;
@@ -89,7 +90,7 @@ public class TempleWorld : ControlledWorldGenPass
 
 			Main.dungeonX = x;
 			Main.dungeonY = y;
-			int id = NPC.NewNPC(x * 16, y * 16, NPCID.OldMan);
+			int id = NPC.NewNPC(new EntitySource_WorldGen(), x * 16, y * 16, NPCID.OldMan);
 			Main.npc[id].homeless = false;
 			Main.npc[id].homeTileX = Main.dungeonX;
 			Main.npc[id].homeTileY = Main.dungeonY;

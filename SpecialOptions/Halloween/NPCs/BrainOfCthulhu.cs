@@ -48,7 +48,7 @@ public static class BrainOfCthulhu
 					float y = npc.Center.Y;
 					x += Main.rand.Next(-npc.width, npc.width);
 					y += Main.rand.Next(-npc.height, npc.height);
-					int id = NPC.NewNPC((int)x, (int)y, 267,
+					int id = NPC.NewNPC(npc.GetSpawnSourceForNPCFromNPCAI(), (int)x, (int)y, NPCID.Creeper,
 						ai3: Main.netMode == NetmodeID.Server ? CreeperServerAI : CreeperInitAI);
 					Main.npc[id].velocity = new Vector2(Main.rand.Next(-30, 31) * 0.1f,
 						Main.rand.Next(-30, 31) * 0.1f);

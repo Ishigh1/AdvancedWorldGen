@@ -20,7 +20,7 @@ public static class Chest
 		GeneratedShadowKey = false;
 		HellChest = 0;
 
-		HellChestItem = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
+		HellChestItem = new List<int> { 0, 1, 2, 3, 4, 5, 6 };
 		for (int index = 0; index < HellChestItem.Count - 1; index++)
 		{
 			int indexToExchange = unifiedRandom.Next(HellChestItem.Count - index);
@@ -433,14 +433,14 @@ public static class Chest
 					index++;
 				}
 
-				if (WorldGen.genRand.Next(3) != 0)
+				if (!WorldGen.genRand.NextBool(3))
 				{
 					chest.item[index].SetDefaults(ItemID.RecallPotion);
 					chest.item[index].stack = WorldGen.genRand.Next(3, 6);
 					index++;
 				}
 
-				if (WorldGen.genRand.Next(3) > 0)
+				if (!WorldGen.genRand.NextBool(3))
 				{
 					switch (WorldGen.genRand.Next(6))
 					{
@@ -480,7 +480,7 @@ public static class Chest
 							break;
 					}
 
-					chest.item[index].stack = WorldGen.genRand.Next(11) + 10;
+					chest.item[index].stack = WorldGen.genRand.Next(10, 21);
 					index++;
 				}
 

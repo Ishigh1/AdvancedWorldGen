@@ -32,7 +32,7 @@ public class HalloweenGlobalNPC : GlobalNPC
 		                                                    npc.type != Ghost && npc.type != Wraith &&
 		                                                    Main.rand.NextBool(20)))
 		{
-			NPC newNPC = Main.npc[NPC.NewNPC(0, 0, Ghost)];
+			NPC newNPC = Main.npc[NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), 0, 0, Ghost)];
 			newNPC.position.X = npc.position.X;
 			newNPC.position.Y = npc.position.Y;
 			newNPC.netUpdate = true;

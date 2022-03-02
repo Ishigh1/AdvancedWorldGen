@@ -3,6 +3,7 @@ using AdvancedWorldGen.Base;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Chat;
+using Terraria.DataStructures;
 using Terraria.Localization;
 using OnMain = On.Terraria.Main;
 using Terraria.ModLoader;
@@ -62,7 +63,7 @@ public class Special : ModSystem
 			orig();
 			if (WorldGen.prioritizedTownNPCType != 0)
 			{
-				int id = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, WorldGen.prioritizedTownNPCType);
+				int id = NPC.NewNPC(NPC.GetSpawnSourceForTownSpawn(), Main.spawnTileX * 16, Main.spawnTileY * 16, WorldGen.prioritizedTownNPCType);
 				Main.npc[id].netUpdate = true;
 				string fullName = Main.npc[id].FullName;
 				switch (Main.netMode)
