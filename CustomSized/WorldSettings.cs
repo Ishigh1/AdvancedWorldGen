@@ -16,7 +16,7 @@ namespace AdvancedWorldGen.CustomSized;
 public class WorldSettings
 {
 	public Params Params;
-	
+
 	public UIWorldCreation UIWorldCreation = null!;
 
 	public WorldSettings()

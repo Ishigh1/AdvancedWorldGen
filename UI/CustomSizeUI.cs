@@ -60,7 +60,8 @@ public class CustomSizeUI : UIState
 		top += sizeYInput.Height.Pixels + 4;
 		uiPanel.Append(sizeYInput);
 
-		NumberTextBox<float> templeModifier = new(WorldSettings.Params, nameof(Params.TempleMultiplier), 0, float.PositiveInfinity);
+		NumberTextBox<float> templeModifier =
+			new(WorldSettings.Params, nameof(Params.TempleMultiplier), 0, float.PositiveInfinity);
 		templeModifier.Top.Pixels = top;
 		top += templeModifier.Height.Pixels + 4;
 		uiPanel.Append(templeModifier);

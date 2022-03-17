@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using AdvancedWorldGen.BetterVanillaWorldGen;
-using AdvancedWorldGen.CustomSized.Secret;
 using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
 using AdvancedWorldGen.SpecialOptions.Snow;

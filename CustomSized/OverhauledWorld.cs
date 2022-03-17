@@ -9,7 +9,7 @@ public class OverhauledWorld : ModSystem
 {
 	public const int BaseOceanDistance = 250;
 	public const int BaseBeachDistance = 380;
-	
+
 	public override void LoadWorldData(TagCompound tag)
 	{
 		if (tag.TryGetValue("ocean", out int value)) WorldGen.oceanDistance = value;
@@ -18,9 +18,9 @@ public class OverhauledWorld : ModSystem
 
 	public override void SaveWorldData(TagCompound tagCompound)
 	{
-		if(WorldGen.oceanDistance != BaseOceanDistance)
+		if (WorldGen.oceanDistance != BaseOceanDistance)
 			tagCompound["ocean"] = WorldGen.oceanDistance;
-		if(WorldGen.beachDistance != BaseBeachDistance)
+		if (WorldGen.beachDistance != BaseBeachDistance)
 			tagCompound["beach"] = WorldGen.beachDistance;
 	}
 

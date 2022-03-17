@@ -36,7 +36,9 @@ public class TempleWorld : ControlledWorldGenPass
 				tile.WallType = WallID.LihzahrdBrickUnsafe;
 			}
 			else
+			{
 				tile.WallType = WallID.LihzahrdBrick;
+			}
 		}
 
 		AllocateRooms(out int templeRoomCount, rooms, direction, out int templeX, out int templeY);
@@ -54,33 +56,34 @@ public class TempleWorld : ControlledWorldGenPass
 		WorldGen.tTop = 50;
 		WorldGen.tBottom = Main.maxTilesY - 50;
 		WorldGen.tRooms = templeRoomCount;
-		
+
 		WorldGen.templePart2();
-		
+
 		for (int x = 40; x < Main.maxTilesX - 40; x++)
 		for (int y = 40; y < Main.maxTilesY - 40; y++)
 			if (WorldGen.genRand.NextBool(1000))
 				WorldGen.AddLifeCrystal(x, y);
 			else if (WorldGen.genRand.NextBool(10))
-				WorldGen.PlacePot(x, y, style:WorldGen.genRand.Next(28, 31));
+				WorldGen.PlacePot(x, y, style: WorldGen.genRand.Next(28, 31));
 
 		while (WorldGen.SolidTile(Main.spawnTileX, Main.spawnTileY--))
 		{
 		}
 
 		Main.spawnTileY++;
-	
+
 		while (true)
 		{
 			Rectangle randomRoom = rooms[WorldGen.genRand.Next(rooms.Count)];
 			int x = WorldGen.genRand.Next(randomRoom.Left, randomRoom.Right + 1);
 			int y = randomRoom.Bottom;
-			
+
 			while (WorldGen.SolidTile(x, y--))
 			{
 			}
+
 			y++;
-			
+
 			if (y < 10 || WorldGen.SolidTile(Main.tile[x, y - 10]))
 				continue;
 
@@ -114,7 +117,8 @@ public class TempleWorld : ControlledWorldGenPass
 		Rectangle room = default;
 		while (y < Main.maxTilesY - 75)
 		{
-			Progress.Set(y * Main.maxTilesX + Main.maxTilesX / 2 - direction * x, Main.maxTilesX * Main.maxTilesY, 3/12f);
+			Progress.Set(y * Main.maxTilesX + Main.maxTilesX / 2 - direction * x, Main.maxTilesX * Main.maxTilesY,
+				3 / 12f);
 			int width = WorldGen.genRand.Next(35, 60);
 			int height = WorldGen.genRand.Next(30, 45);
 			if (height > width)

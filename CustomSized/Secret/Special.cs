@@ -3,19 +3,19 @@ using AdvancedWorldGen.Base;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Chat;
-using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.Localization;
-using OnMain = On.Terraria.Main;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
-using Terraria.ID;
+using OnMain = On.Terraria.Main;
 
 namespace AdvancedWorldGen.CustomSized.Secret;
 
 public class Special : ModSystem
 {
 	public static bool TempleWorld;
+
 	public override void Load()
 	{
 		OnMain.UpdateTime_SpawnTownNPCs += HandleNotHousableWorlds;
@@ -56,14 +56,17 @@ public class Special : ModSystem
 	public static void HandleNotHousableWorlds(OnMain.orig_UpdateTime_SpawnTownNPCs orig)
 	{
 		if (!TempleWorld)
+		{
 			orig();
+		}
 		else
 		{
 			WorldGen.prioritizedTownNPCType = 0;
 			orig();
 			if (WorldGen.prioritizedTownNPCType != 0)
 			{
-				int id = NPC.NewNPC(NPC.GetSpawnSourceForTownSpawn(), Main.spawnTileX * 16, Main.spawnTileY * 16, WorldGen.prioritizedTownNPCType);
+				int id = NPC.NewNPC(NPC.GetSpawnSourceForTownSpawn(), Main.spawnTileX * 16, Main.spawnTileY * 16,
+					WorldGen.prioritizedTownNPCType);
 				Main.npc[id].netUpdate = true;
 				string fullName = Main.npc[id].FullName;
 				switch (Main.netMode)
@@ -72,9 +75,12 @@ public class Special : ModSystem
 						Main.NewText(Language.GetTextValue("Announcement.HasArrived", fullName), 50, 125);
 						break;
 					case NetmodeID.Server:
-						ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", Main.npc[id].GetFullNetName()), new Color(50, 125, 255));
+						ChatHelper.BroadcastChatMessage(
+							NetworkText.FromKey("Announcement.HasArrived", Main.npc[id].GetFullNetName()),
+							new Color(50, 125, 255));
 						break;
 				}
+
 				WorldGen.prioritizedTownNPCType = 0;
 			}
 		}

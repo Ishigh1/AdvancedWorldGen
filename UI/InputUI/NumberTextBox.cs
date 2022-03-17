@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using AdvancedWorldGen.CustomSized;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -9,16 +8,10 @@ namespace AdvancedWorldGen.UI.InputUI;
 
 public class NumberTextBox<T> : UIElement where T : IConvertible, IComparable
 {
-	public Params Params;
-	public T Min;
 	public T Max;
+	public T Min;
 	public string Name;
-
-	public T Value
-	{
-		get => (T)Params.Data[Name];
-		set => Params.Data[Name] = value;
-	}
+	public Params Params;
 
 	public NumberTextBox(Params @params, string name, T min, T max)
 	{
@@ -28,6 +21,12 @@ public class NumberTextBox<T> : UIElement where T : IConvertible, IComparable
 		Name = name;
 
 		CreateUIElement();
+	}
+
+	public T Value
+	{
+		get => (T)Params.Data[Name];
+		set => Params.Data[Name] = value;
 	}
 
 	public void CreateUIElement()
@@ -59,7 +58,7 @@ public class NumberTextBox<T> : UIElement where T : IConvertible, IComparable
 			VAlign = 0.5f
 		};
 		background.Append(title);
-			
+
 		EditableText<T> editableText = new(this)
 		{
 			VAlign = 0.5f,

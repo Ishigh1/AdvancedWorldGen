@@ -844,11 +844,11 @@ public class JungleTemple : ControlledWorldGenPass
 
 				if (!flag)
 					rooms.Add(rectangle);
-				
+
 				if (WorldGen.genRand.NextBool(100))
 					num16++;
 			}
-			
+
 			if (roomsInTheSameLine > lineLimit)
 			{
 				lineLimit++;

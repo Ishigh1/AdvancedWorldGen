@@ -1,7 +1,7 @@
 {
     "Mods": {
         "AdvancedWorldGen": {
-            "UI":{
+            "UI": {
                 "CustomSizes": {
                     "SizeX": "Horizontal size :",
                     "SizeY": "Vertical size :",

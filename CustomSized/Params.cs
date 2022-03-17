@@ -6,6 +6,11 @@ public class Params
 {
 	public Dictionary<string, object> Data = new();
 
+	public Params()
+	{
+		Initialize();
+	}
+
 	public int SizeX
 	{
 		get => (int)Data[nameof(SizeX)];
@@ -28,11 +33,6 @@ public class Params
 	{
 		get => (float)Data[nameof(BeachMultiplier)];
 		set => Data[nameof(BeachMultiplier)] = value;
-	}
-
-	public Params()
-	{
-		Initialize();
 	}
 
 	public void Wipe()

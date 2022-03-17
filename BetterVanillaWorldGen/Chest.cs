@@ -12,8 +12,6 @@ public static class Chest
 	public static int HellChest;
 	public static List<int> HellChestItem = null!;
 	public static bool GeneratedShadowKey;
-	public static int DesertTop;
-	public static int DesertBottom;
 
 	public static void ShuffleChests(UnifiedRandom unifiedRandom)
 	{
@@ -28,9 +26,6 @@ public static class Chest
 				(HellChestItem[index], HellChestItem[indexToExchange]) =
 					(HellChestItem[indexToExchange], HellChestItem[index]);
 		}
-
-		DesertTop = int.MaxValue;
-		DesertBottom = -1;
 	}
 
 	public static bool AddBuriedChest(int chestRightX, int groundY, int contain = 0,
@@ -119,18 +114,15 @@ public static class Chest
 			desertBiome = true;
 			outStyle = 10;
 			chestTileType = TileID.Containers2;
-			contain = y <= (DesertTop * 3 + DesertBottom * 4) / 7
-				? Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
-					ItemID.MysticCoilSnake, ItemID.MagicConch)
-				: Utils.SelectRandom(WorldGen.genRand, ItemID.ThunderSpear, ItemID.ThunderStaff,
-					ItemID.DripplerFlail);
-
-			Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
-				ItemID.MysticCoilSnake, ItemID.MagicConch, ItemID.ThunderSpear, ItemID.ThunderStaff,
-				ItemID.DripplerFlail);
 
 			if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
 				contain = ItemID.AngelStatue;
+			else
+				contain = y <= (WorldGen.desertHiveHigh * 3 + WorldGen.desertHiveLow * 4) / 7
+					? Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
+						ItemID.MysticCoilSnake, ItemID.MagicConch)
+					: Utils.SelectRandom(WorldGen.genRand, ItemID.ThunderSpear, ItemID.ThunderStaff,
+						ItemID.DripplerFlail);
 		}
 
 		if (chestTileType == TileID.Containers && (outStyle == 11 || contain == ItemID.None &&

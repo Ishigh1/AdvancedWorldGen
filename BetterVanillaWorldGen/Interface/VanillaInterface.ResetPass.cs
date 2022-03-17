@@ -17,6 +17,10 @@ public partial class VanillaInterface
 	public readonly VanillaAccessor<int> JungleOriginX;
 
 	public readonly VanillaAccessor<int> LeftBeachEnd;
+	public readonly VanillaAccessor<int> OceanWaterForcedJungleLength;
+	public readonly VanillaAccessor<int> OceanWaterStartRandomMax;
+
+	public readonly VanillaAccessor<int> OceanWaterStartRandomMin;
 	public readonly VanillaAccessor<int> RightBeachStart;
 
 	public readonly VanillaAccessor<int> ShellStartXLeft;
@@ -31,10 +35,6 @@ public partial class VanillaInterface
 	public readonly VanillaAccessor<int> SnowOriginLeft;
 	public readonly VanillaAccessor<int> SnowOriginRight;
 	public readonly VanillaAccessor<int> SnowTop;
-
-	public readonly VanillaAccessor<int> OceanWaterStartRandomMin;
-	public readonly VanillaAccessor<int> OceanWaterStartRandomMax;
-	public readonly VanillaAccessor<int> OceanWaterForcedJungleLength;
 
 	public VanillaInterface(GenPass vanillaResetPass)
 	{

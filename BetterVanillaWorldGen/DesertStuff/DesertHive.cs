@@ -33,22 +33,21 @@ public static class DesertHive
 		for (int index = 0; index < clusters.Count; index++)
 		{
 			Cluster cluster = clusters[index];
-			for (int x = cluster[0].x - spreadX; x <= cluster[0].x + spreadX; x++)
-			for (int y = cluster[0].y - spreadY; y <= cluster[0].y + spreadY; y++)
+			int minX = Math.Max(cluster[0].x - spreadX, 5);
+			int maxX = Math.Min(cluster[0].x + spreadX, Main.maxTilesX - 5);
+			int minY = Math.Max(cluster[0].y - spreadY, 5);
+			int maxY = Math.Min(cluster[0].y + spreadY, Main.UnderworldLayer);
+			for (int x = minX; x <= maxX; x++)
+			for (int y = minY; y <= maxY; y++)
 			{
-				if (WorldGen.InWorld(x, y, 1))
+				if (!registerInterestingTiles.TryGetValue((x, y), out List<int>? clusterList))
 				{
-					if (!registerInterestingTiles.TryGetValue((x, y), out List<int>? clusterList))
-					{
-						clusterList = new List<int>();
-						registerInterestingTiles[(x, y)] = clusterList;
-					}
-
-					clusterList.Add(index);
+					clusterList = new List<int>();
+					registerInterestingTiles[(x, y)] = clusterList;
 				}
 
-				Chest.DesertTop = Math.Min(y, Chest.DesertTop);
-				Chest.DesertBottom = Math.Max(y, Chest.DesertBottom);
+				clusterList.Add(index);
+				WorldGen.UpdateDesertHiveBounds(x, y);
 			}
 		}
 
@@ -94,43 +93,42 @@ public static class DesertHive
 
 			float score = distanceToClosestCenter + distanceToSecondClosestCenter;
 			Tile tile = Main.tile[x, y];
-			if (score > 3.5f)
+			switch (score)
 			{
-				tile.ClearEverything();
-				tile.WallType = 187;
-				if (closestCluster % 15 == 2)
-					tile.ResetToType(404);
-			}
-			else if (score > 1.8f)
-			{
-				tile.WallType = 187;
-				if (y < Main.worldSurface)
-					tile.LiquidAmount = 0;
-				else
-					tile.LiquidType = LiquidID.Lava;
-
-				if (tile.HasTile) tile.ResetToType(396);
-			}
-			else if (score > 0.7f)
-			{
-				tile.WallType = 216;
-				tile.LiquidAmount = 0;
-				if (tile.HasTile) tile.ResetToType(type);
-			}
-			else if (score > 0.25f)
-			{
-				FastRandom fastRandom2 = fastRandom.WithModifier(x, y);
-				float num8 = (score - 0.25f) / 0.45f;
-				if (fastRandom2.NextFloat() < num8)
-				{
+				case > 3.5f:
+					tile.ClearEverything();
+					tile.WallType = 187;
+					if (closestCluster % 15 == 2)
+						tile.ResetToType(404);
+					break;
+				case > 1.8f:
 					tile.WallType = 187;
 					if (y < Main.worldSurface)
 						tile.LiquidAmount = 0;
 					else
 						tile.LiquidType = LiquidID.Lava;
 
+					if (tile.HasTile) tile.ResetToType(TileID.Sandstone);
+					break;
+				case > 0.7f:
+					tile.WallType = 216;
+					tile.LiquidAmount = 0;
 					if (tile.HasTile) tile.ResetToType(type);
-				}
+					break;
+				case > 0.25f:
+					float num8 = (score - 0.25f) / 0.45f;
+					if (fastRandom.NextFloat() < num8)
+					{
+						tile.WallType = 187;
+						if (y < Main.worldSurface)
+							tile.LiquidAmount = 0;
+						else
+							tile.LiquidType = LiquidID.Lava;
+
+						if (tile.HasTile) tile.ResetToType(type);
+					}
+
+					break;
 			}
 		}
 	}
@@ -174,20 +172,22 @@ public static class DesertHive
 					break;
 				}
 
-			if (flag && WorldGen.genRand.NextBool(20))
+			switch (flag)
 			{
-				WorldGen.PlaceTile(x, y - 1, 485, true, true, -1, WorldGen.genRand.Next(4));
-			}
-			else if (flag && WorldGen.genRand.NextBool(5))
-			{
-				WorldGen.PlaceTile(x, y - 1, 484, true, true);
-			}
-			else
-			{
-				if (flag ^ flag2 && WorldGen.genRand.NextBool(5))
-					WorldGen.PlaceTile(x, y + (!flag ? 1 : -1), 165, true, true);
-				else if (flag && WorldGen.genRand.NextBool(5))
-					WorldGen.PlaceTile(x, y - 1, 187, true, true, -1, 29 + WorldGen.genRand.Next(6));
+				case true when WorldGen.genRand.NextBool(20):
+					WorldGen.PlaceTile(x, y - 1, 485, true, true, -1, WorldGen.genRand.Next(4));
+					break;
+				case true when WorldGen.genRand.NextBool(5):
+					WorldGen.PlaceTile(x, y - 1, 484, true, true);
+					break;
+				default:
+				{
+					if (flag ^ flag2 && WorldGen.genRand.NextBool(5))
+						WorldGen.PlaceTile(x, y + (!flag ? 1 : -1), 165, true, true);
+					else if (flag && WorldGen.genRand.NextBool(5))
+						WorldGen.PlaceTile(x, y - 1, 187, true, true, -1, 29 + WorldGen.genRand.Next(6));
+					break;
+				}
 			}
 		}
 	}

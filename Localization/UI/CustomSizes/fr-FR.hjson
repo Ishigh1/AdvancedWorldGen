@@ -1,11 +1,11 @@
 {
     "Mods": {
         "AdvancedWorldGen": {
-            "UI":{
+            "UI": {
                 "CustomSizes": {
                     "SizeX": "Taille horizontale :",
                     "SizeY": "Taille verticale :",
-                    "TempleMultiplier": "Multiplicateur de taille de temple :" ,
+                    "TempleMultiplier": "Multiplicateur de taille de temple :",
                     "BeachMultiplier": "Multiplicateur de taille de plage :"
                 }
             }

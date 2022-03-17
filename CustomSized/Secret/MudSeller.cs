@@ -11,10 +11,10 @@ public class MudSeller : GlobalNPC
 		if (Special.TempleWorld && type == NPCID.Dryad)
 		{
 			shop.item[nextSlot].SetDefaults(ItemID.MudBlock);
-			shop.item[nextSlot++].shopCustomPrice = Item.buyPrice(gold:20);
-			
+			shop.item[nextSlot++].shopCustomPrice = Item.buyPrice(gold: 20);
+
 			shop.item[nextSlot].SetDefaults(ItemID.WaterBucket);
-			shop.item[nextSlot++].shopCustomPrice = Item.buyPrice(platinum:5);
+			shop.item[nextSlot++].shopCustomPrice = Item.buyPrice(5);
 		}
 	}
 }

@@ -2031,32 +2031,31 @@ public partial class DungeonPass
 
 		Main.dungeonX = (int)vector.X;
 		Main.dungeonY = yMax;
-		int oldManId = NPC.NewNPC(new EntitySource_WorldGen(), Main.dungeonX * 16 + 8, Main.dungeonY * 16, NPCID.OldMan);
+		int oldManId = NPC.NewNPC(new EntitySource_WorldGen(), Main.dungeonX * 16 + 8, Main.dungeonY * 16,
+			NPCID.OldMan);
 		Main.npc[oldManId].homeless = false;
 		Main.npc[oldManId].homeTileX = Main.dungeonX;
 		Main.npc[oldManId].homeTileY = Main.dungeonY;
 		if (WorldGen.drunkWorldGen)
 		{
-			int num48 = (int)Main.worldSurface;
-			while (Main.tile[WorldGen.dungeonX, num48].HasTile || Main.tile[WorldGen.dungeonX, num48].WallType > 0 ||
-			       Main.tile[WorldGen.dungeonX, num48 - 1].HasTile ||
-			       Main.tile[WorldGen.dungeonX, num48 - 1].WallType > 0 ||
-			       Main.tile[WorldGen.dungeonX, num48 - 2].HasTile ||
-			       Main.tile[WorldGen.dungeonX, num48 - 2].WallType > 0 ||
-			       Main.tile[WorldGen.dungeonX, num48 - 3].HasTile ||
-			       Main.tile[WorldGen.dungeonX, num48 - 3].WallType > 0 ||
-			       Main.tile[WorldGen.dungeonX, num48 - 4].HasTile ||
-			       Main.tile[WorldGen.dungeonX, num48 - 4].WallType > 0)
-			{
-				num48--;
-				if (num48 < 50)
-					break;
-			}
+			int y1 = (int)Main.worldSurface;
+			for (y1 = (int)Main.worldSurface;
+			     !(y1 < 50) && (Main.tile[WorldGen.dungeonX, y1].HasTile ||
+			                    Main.tile[WorldGen.dungeonX, y1].WallType > 0 ||
+			                    Main.tile[WorldGen.dungeonX, y1 - 1].HasTile ||
+			                    Main.tile[WorldGen.dungeonX, y1 - 1].WallType > 0 ||
+			                    Main.tile[WorldGen.dungeonX, y1 - 2].HasTile ||
+			                    Main.tile[WorldGen.dungeonX, y1 - 2].WallType > 0 ||
+			                    Main.tile[WorldGen.dungeonX, y1 - 3].HasTile ||
+			                    Main.tile[WorldGen.dungeonX, y1 - 3].WallType > 0 ||
+			                    Main.tile[WorldGen.dungeonX, y1 - 4].HasTile ||
+			                    Main.tile[WorldGen.dungeonX, y1 - 4].WallType > 0);
+			     y1--)
+				;
 
-			if (num48 > 50) WorldGen.GrowDungeonTree(WorldGen.dungeonX, num48);
+			if (y1 > 50) WorldGen.GrowDungeonTree(WorldGen.dungeonX, y1);
 		}
-
-		if (!WorldGen.drunkWorldGen)
+		else
 		{
 			const int num49 = 100;
 			if (num4 == 1)
@@ -2107,7 +2106,7 @@ public partial class DungeonPass
 			}
 		}
 
-		num18 = 2 + WorldGen.genRand.Next(4);
+		num18 = WorldGen.genRand.Next(2, 6);
 		num19 = 0;
 		xMin = (int)(vector.X - dungeonXStrength * 0.5);
 		xMax = (int)(vector.X + dungeonXStrength * 0.5);
