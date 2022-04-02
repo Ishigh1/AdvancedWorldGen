@@ -160,7 +160,7 @@ public class ModifiedWorld : ModSystem
 		if (passIndex != -1)
 			HalloweenCommon.InsertTasks(tasks, ref passIndex);
 
-		if (API.OptionsContains("Santa", "Evil", "Random", "Painted"))
+		if (API.OptionsContains("Santa", "Evil", "Random", "Random.Painted"))
 		{
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
 			if (liquidSettle != null)
@@ -172,7 +172,7 @@ public class ModifiedWorld : ModSystem
 	{
 		List<int> availableNPCs = NPCs.ToList();
 		int alreadyPlaced = 0;
-		if (API.OptionsContains("Painted")) TryAddNpc(availableNPCs, Painter, ref alreadyPlaced, out _);
+		if (API.OptionsContains("Random.Painted")) TryAddNpc(availableNPCs, Painter, ref alreadyPlaced, out _);
 
 		if (WorldGen.notTheBees) TryAddNpc(availableNPCs, Merchant, ref alreadyPlaced, out _);
 
@@ -252,7 +252,7 @@ public class ModifiedWorld : ModSystem
 
 		if (API.OptionsContains("Evil")) EvilReplacer.CorruptWorld(progress);
 
-		if (API.OptionsContains("Random", "Painted")) TileReplacer.RandomizeWorld(progress);
+		if (API.OptionsContains("Random", "Random.Painted")) TileReplacer.RandomizeWorld(progress);
 	}
 
 	public override void PostUpdateTime()

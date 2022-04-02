@@ -197,7 +197,7 @@ public class TileReplacer
 				}
 			}
 
-		if (API.OptionsContains("Painted"))
+		if (API.OptionsContains("Random.Painted"))
 		{
 			if (!paintRandom.TryGetValue(tile.TileType, out byte paint))
 			{
@@ -230,7 +230,7 @@ public class TileReplacer
 			}
 		}
 
-		if (API.OptionsContains("Painted"))
+		if (API.OptionsContains("Random.Painted"))
 		{
 			if (!paintWallRandom.TryGetValue(tile.WallType, out byte paint))
 			{

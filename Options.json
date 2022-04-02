@@ -62,12 +62,6 @@
             }
         ]
     },
-    "Painted": {
-        "Hidden": false,
-        "Conflicts": [],
-        "Name": "Painted",
-        "Children": []
-    },
     "Random": {
         "Hidden": false,
         "Conflicts": [
@@ -76,7 +70,14 @@
             "Santa"
         ],
         "Name": "Random",
-        "Children": []
+        "Children": [
+            {
+                "Hidden": false,
+                "Conflicts": [],
+                "Name": "Painted",
+                "Children": []
+            }
+        ]
     },
     "Santa": {
         "Hidden": false,

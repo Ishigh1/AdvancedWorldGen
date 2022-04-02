@@ -12,5 +12,12 @@ public class Legacy
 			options.Add("Drunk.Crimruption");
 
 		#endregion
+
+		#region 2.6.4.5, 23/03/2022
+
+		if (options.Remove("Painted"))
+			options.Add("Random.Painted");
+
+		#endregion
 	}
 }

@@ -11,6 +11,7 @@ using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
 using OnUserInterface = On.Terraria.UI.UserInterface;
 using OnUIWorldLoad = On.Terraria.GameContent.UI.States.UIWorldLoad;
 using OnWorldFile = On.Terraria.IO.WorldFile;
+using OnWorldFileData = On.Terraria.IO.WorldFileData;
 using OnMain = On.Terraria.Main;
 using ILProjectile = IL.Terraria.Projectile;
 using ILWorldGen = IL.Terraria.WorldGen;
@@ -32,7 +33,8 @@ public class AdvancedWorldGenMod : Mod
 		Crimruption = new Crimruption();
 
 		OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
-		//OnUIWorldListItem.ctor += UiChanger.CopySettingsButton; Removed until twld can be loaded in a reasonable time
+		OnWorldFileData.SetWorldSize += UiChanger.SetSpecialName;
+		// OnUIWorldListItem.ctor += UiChanger.CopySettingsButton; // Removed until twld can be loaded in a reasonable time
 
 		ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
 		OnWorldFile.CreateMetadata += DedServUi.DedServOptions;

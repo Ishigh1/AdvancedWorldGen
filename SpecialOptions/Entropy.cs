@@ -180,7 +180,7 @@ public class Entropy
 				Tile tileSafely = Framing.GetTileSafely(x, y);
 				tileSafely.TileType = (ushort)NewTile;
 				WorldGen.DiamondTileFrame(x, y);
-				if (API.OptionsContains("Painted"))
+				if (API.OptionsContains("Random.Painted"))
 					tileSafely.TileColor = PaintTile;
 			}
 
@@ -191,7 +191,7 @@ public class Entropy
 				Tile tileSafely = Framing.GetTileSafely(x, y);
 				tileSafely.WallType = (ushort)NewWall;
 				WorldGen.SquareWallFrame(x, y);
-				if (API.OptionsContains("Painted"))
+				if (API.OptionsContains("Random.Painted"))
 					tileSafely.WallColor = PaintWall;
 			}
 	}

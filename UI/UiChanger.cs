@@ -265,4 +265,25 @@ public class UiChanger
 		copyOptionButton.OnMouseOut += delegate { uiText.SetText(""); };
 		return options;
 	}
+
+	public void SetSpecialName(On.Terraria.IO.WorldFileData.orig_SetWorldSize orig, WorldFileData self, int x, int y)
+	{
+		self.WorldSizeX = x;
+		self.WorldSizeY = y;
+		switch (x, y)
+		{
+			case (4200, 1200):
+				self._worldSizeName = Language.GetText("UI.WorldSizeSmall");
+				break;
+			case (6400, 1800):
+				self._worldSizeName = Language.GetText("UI.WorldSizeMedium");
+				break;
+			case (8400, 2400):
+				self._worldSizeName = Language.GetText("UI.WorldSizeLarge");
+				break;
+			default:
+				self._worldSizeName = Language.GetText(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSizedWorld", x, y));
+				break;
+		}
+	}
 }

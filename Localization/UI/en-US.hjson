@@ -29,7 +29,8 @@
             "NoOptions": "World without options",
             "CopySettings": "Copy settings",
             "OptionButton": "Choose your world generation settings",
-            "DownLevel": "Edit what will be used from this seed"
+            "DownLevel": "Edit what will be used from this seed",
+            "CustomSizedWorld": "{0}x{1}"
         }
     }
 }

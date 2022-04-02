@@ -14,13 +14,13 @@
     },
     "Drunk": {
         "children": {
-        "BothOres": {
-            "children": {},
-            "conflicts": {},
-            "description": "Makes so both ores are generated",
-            "displayed_name": "Both Ores",
-            "hidden": false
-        },
+            "BothOres": {
+                "children": {},
+                "conflicts": {},
+                "description": "Makes so both ores are generated",
+                "displayed_name": "Both Ores",
+                "hidden": false
+            },
             "Crimruption": {
                 "children": {},
                 "conflicts": {},
@@ -134,21 +134,22 @@
         },
         "hidden": false
     },
-    "Painted": {
-        "children": {},
-        "conflicts": {},
-        "description": {
-            "en-US": "A world where each block and wall type get a paint.",
-            "fr-FR": "A monde o\u00f9 chaque type de bloc et mur est peint."
-        },
-        "displayed_name": {
-            "en-US": "Painted",
-            "fr-FR": "Peint"
-        },
-        "hidden": false
-    },
     "Random": {
-        "children": {},
+        "children": {
+            "Painted": {
+                "children": {},
+                "conflicts": {},
+                "description": {
+                    "en-US": "A world where each block and wall type get a paint.",
+                    "fr-FR": "A monde o\u00f9 chaque type de bloc et mur est peint."
+                },
+                "displayed_name": {
+                    "en-US": "Painted",
+                    "fr-FR": "Peint"
+                },
+                "hidden": false
+            }
+        },
         "conflicts": {
             "Evil": {
                 "en-US": "Evil only leaves a few blocks to be randomized.",
