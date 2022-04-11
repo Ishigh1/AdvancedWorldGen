@@ -225,6 +225,8 @@ public class MushroomPatches : ControlledWorldGenPass
 				x = (int)vector.X + WorldGen.genRand.Next(-20, 20);
 				y = (int)vector.Y + WorldGen.genRand.Next(0, 20);
 				(x, y) = TileFinder.SpiralSearch(x, y, (i1, i2) => Main.tile[i1, i2].HasTile);
+				if ((x, y) is (-1, -1))
+					throw new Exception("Solid tile not found for mushroom biome !");
 
 				int strength = WorldGen.genRand.Next(10, 20);
 				int steps = WorldGen.genRand.Next(10, 20);

@@ -17,8 +17,7 @@ public class MicroBiomes : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		WorldGenConfiguration configuration =
-			WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
+		WorldGenConfiguration configuration = (WorldGenConfiguration)Configuration;
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Dead Man's Chests";
 		const int totalSteps = 9;
 		int currentStep = 0;
@@ -135,7 +134,6 @@ public class MicroBiomes : ControlledWorldGenPass
 
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Long Minecart Tracks";
 		Progress.Set(currentStep++, totalSteps);
-		// Extra patch context.
 		TrackGenerator trackGenerator = new();
 		int random6 = Configuration.Get<WorldGenRange>("LongTrackCount").GetRandom(WorldGen.genRand);
 		WorldGenRange worldGenRange = Configuration.Get<WorldGenRange>("LongTrackLength");

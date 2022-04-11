@@ -35,6 +35,7 @@ public class UiChanger
 	public UIText Description = null!;
 	public OptionsSelector OptionsSelector = null!;
 	public Thread Thread = null!;
+	public WorldGenConfigurator WorldGenConfigurator = null!;
 
 	public UiChanger(Mod mod)
 	{
@@ -282,7 +283,8 @@ public class UiChanger
 				self._worldSizeName = Language.GetText("UI.WorldSizeLarge");
 				break;
 			default:
-				self._worldSizeName = Language.GetText(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSizedWorld", x, y));
+				self._worldSizeName =
+					Language.GetText(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSizedWorld", x, y));
 				break;
 		}
 	}

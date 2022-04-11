@@ -3,7 +3,6 @@ using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 using Terraria.WorldBuilding;
-using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 

@@ -1,4 +1,11 @@
 {
+    "": {
+        "children": {},
+        "conflicts": {},
+        "description": "",
+        "displayed_name": "",
+        "hidden": false
+    },
     "Celebrationmk10": {
         "children": {},
         "conflicts": {},
@@ -32,6 +39,13 @@
                     "en-US": "Crimruption",
                     "fr-FR": "Carmruption"
                 },
+                "hidden": false
+            },
+            "MiddleLavaOcean": {
+                "children": {},
+                "conflicts": {},
+                "description": "Makes so the Underworld has a lava ocean in the middle of the world.",
+                "displayed_name": "Spread Underworld",
                 "hidden": false
             }
         },

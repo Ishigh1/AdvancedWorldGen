@@ -27,6 +27,8 @@ public static class TileFinder
 				yStep = tmp;
 				length += 0.5f;
 				activeLength = (int)length;
+				if (length >= 1000f)
+					return (-1, -1);
 			}
 		}
 

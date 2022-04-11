@@ -1,7 +1,9 @@
 using System;
 using System.Reflection;
+using AdvancedWorldGen.Base;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
+using AdvancedWorldGen.UI;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.States;
@@ -36,6 +38,7 @@ public class WorldSettings
 		orig(self);
 		UIWorldCreation = self;
 		SetSizeTo(0);
+		AdvancedWorldGenMod.Instance.UiChanger.WorldGenConfigurator = new WorldGenConfigurator();
 	}
 
 	public void SetSize(OnUIWorldCreation.orig_ClickSizeOption orig, UIWorldCreation self, UIMouseEvent evt,
@@ -89,12 +92,12 @@ public class WorldSettings
 			Main.maxTilesY = Params.SizeY;
 		}
 
-		int oldSizeX = Main.tile.Width;
-		int oldSizeY = Main.tile.Height;
-		if (oldSizeX < Main.maxTilesX || oldSizeY < Main.maxTilesY)
+		if (8400 < Main.maxTilesX || 2400 < Main.maxTilesY)
 		{
-			int newSizeX = Math.Max(Main.maxTilesX, oldSizeX);
-			int newSizeY = Math.Max(Main.maxTilesY, oldSizeY);
+			int chunkX = (Main.maxTilesX - 1) / Main.sectionWidth + 1;
+			int chunkY = (Main.maxTilesY - 1) / Main.sectionHeight + 1;
+			int newSizeX = Math.Max(chunkX * Main.sectionWidth, 8400);
+			int newSizeY = Math.Max(chunkY * Main.sectionHeight, 2400);
 
 			if ((long)newSizeX * newSizeY * 44 > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)
 			{
@@ -115,8 +118,8 @@ public class WorldSettings
 		int newHeight = Main.maxTilesY / Main.textureMaxHeight + 1;
 		if (newWidth > Main.mapTargetX || newHeight > Main.mapTargetY)
 		{
-			Main.mapTargetX = Math.Max(newWidth, Main.mapTargetX);
-			Main.mapTargetY = Math.Max(newHeight, Main.mapTargetY);
+			Main.mapTargetX = Math.Max(5, newWidth);
+			Main.mapTargetY = Math.Max(3, newHeight);
 			Main.instance.mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
 			Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
 			Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];

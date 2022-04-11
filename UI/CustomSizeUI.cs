@@ -50,30 +50,40 @@ public class CustomSizeUI : UIState
 		});
 
 		float top = 50;
-		NumberTextBox<int> sizeXInput = new(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue);
+		NumberTextBox<int> sizeXInput = new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue);
 		sizeXInput.Top.Pixels = top;
 		top += sizeXInput.Height.Pixels + 4;
 		uiPanel.Append(sizeXInput);
 
-		NumberTextBox<int> sizeYInput = new(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue);
+		NumberTextBox<int> sizeYInput = new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue);
 		sizeYInput.Top.Pixels = top;
 		top += sizeYInput.Height.Pixels + 4;
 		uiPanel.Append(sizeYInput);
 
 		NumberTextBox<float> templeModifier =
-			new(WorldSettings.Params, nameof(Params.TempleMultiplier), 0, float.PositiveInfinity);
+			new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.TempleMultiplier), 0, float.PositiveInfinity);
 		templeModifier.Top.Pixels = top;
 		top += templeModifier.Height.Pixels + 4;
 		uiPanel.Append(templeModifier);
 
 		if (WorldgenSettings.Revamped)
 		{
-			NumberTextBox<float> beachModifier = new(WorldSettings.Params, nameof(Params.BeachMultiplier), 0,
+			NumberTextBox<float> beachModifier = new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.BeachMultiplier), 0,
 				float.PositiveInfinity);
 			beachModifier.Top.Pixels = top;
 			top += beachModifier.Height.Pixels + 4;
 			uiPanel.Append(beachModifier);
 		}
+
+		UITextPanel<string> gotoConfig = new(Language.GetTextValue("UI.Config"))
+		{
+			Width = new StyleDimension(0f, 1f),
+			Top = new StyleDimension(top, 0f)
+		};
+		uiPanel.Append(gotoConfig);
+		gotoConfig.OnMouseDown += ConfigWorldGen;
+		gotoConfig.OnMouseOver += UiChanger.FadedMouseOver;
+		gotoConfig.OnMouseOut += UiChanger.FadedMouseOut;
 
 		UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 		{
@@ -85,6 +95,12 @@ public class CustomSizeUI : UIState
 		goBack.OnMouseOver += UiChanger.FadedMouseOver;
 		goBack.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(goBack);
+	}
+
+	public static void ConfigWorldGen(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.WorldGenConfigurator);
 	}
 
 	public void GoBack(UIMouseEvent evt, UIElement listeningElement)

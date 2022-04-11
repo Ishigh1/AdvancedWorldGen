@@ -19,7 +19,12 @@
                     "Conflicts": {},
                     "Description": "Both Crimson and Corruption are in this world"
                 },
-                "Description": "The ninth anniversary secret seed."
+                "Description": "The ninth anniversary secret seed.",
+                "MiddleLavaOcean": {
+                    "$parentVal": "Spread Underworld",
+                    "Conflicts": {},
+                    "Description": "Makes so the Underworld has a lava ocean in the middle of the world."
+                }
             },
             "Entropy": {
                 "$parentVal": "Entropy",

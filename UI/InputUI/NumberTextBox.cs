@@ -1,33 +1,25 @@
 using System;
-using AdvancedWorldGen.CustomSized;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
 
 namespace AdvancedWorldGen.UI.InputUI;
 
-public class NumberTextBox<T> : UIElement where T : IConvertible, IComparable
+public abstract class NumberTextBox<T> : OrderedUIItem where T : IConvertible, IComparable
 {
-	public T Max;
-	public T Min;
 	public string Name;
-	public Params Params;
+	
+	public T Min;
+	public T Max;
 
-	public NumberTextBox(Params @params, string name, T min, T max)
+	protected NumberTextBox(string name, T min, T max)
 	{
-		Params = @params;
+		Name = name;
 		Min = min;
 		Max = max;
-		Name = name;
-
-		CreateUIElement();
 	}
 
-	public T Value
-	{
-		get => (T)Params.Data[Name];
-		set => Params.Data[Name] = value;
-	}
+	public abstract T Value { get; set; }
 
 	public void CreateUIElement()
 	{
@@ -53,7 +45,7 @@ public class NumberTextBox<T> : UIElement where T : IConvertible, IComparable
 		};
 		Append(background);
 
-		UIText title = new(Language.GetText("Mods.AdvancedWorldGen.UI.CustomSizes." + Name))
+		UIText title = new(Language.GetText(Name))
 		{
 			VAlign = 0.5f
 		};

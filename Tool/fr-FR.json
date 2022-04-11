@@ -19,7 +19,12 @@
                     "Conflicts": {},
                     "Description": "Le Carmin et la Corruption sont tous eux g\u00e9n\u00e9r\u00e9s."
                 },
-                "Description": "La graine secr\u00e8te du neuvi\u00e8me anniversaire."
+                "Description": "La graine secr\u00e8te du neuvi\u00e8me anniversaire.",
+                "MiddleLavaOcean": {
+                    "$parentVal": "Spread Underworld",
+                    "Conflicts": {},
+                    "Description": "Makes so the Underworld has a lava ocean in the middle of the world."
+                }
             },
             "Entropy": {
                 "$parentVal": "Entropie",

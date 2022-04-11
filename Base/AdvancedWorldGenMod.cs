@@ -20,7 +20,6 @@ namespace AdvancedWorldGen.Base;
 
 public class AdvancedWorldGenMod : Mod
 {
-	public Crimruption Crimruption = null!;
 	public UiChanger UiChanger = null!;
 	public static AdvancedWorldGenMod Instance => ModContent.GetInstance<AdvancedWorldGenMod>();
 
@@ -29,8 +28,6 @@ public class AdvancedWorldGenMod : Mod
 		TileReplacer.Initialize();
 
 		UiChanger = new UiChanger(this);
-
-		Crimruption = new Crimruption();
 
 		OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
 		OnWorldFileData.SetWorldSize += UiChanger.SetSpecialName;
@@ -52,7 +49,7 @@ public class AdvancedWorldGenMod : Mod
 		OnMain.checkXMas += SnowWorld.MainOnCheckXMas;
 		ILProjectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
 
-		ILWorldGen.MakeDungeon += Crimruption.CrimruptionChest;
+		ILWorldGen.MakeDungeon += DrunkOptions.CrimruptionChest;
 
 		Replacer.Replace();
 

@@ -52,6 +52,8 @@ public class JungleChests : ControlledWorldGenPass
 
 
 			(x, y) = TileFinder.SpiralSearch(x, y, IsValid);
+			if ((x, y) is (-1, -1))
+				throw new Exception("Jungle grass not found for jungle chest !");
 
 			int width = WorldGen.genRand.Next(2, 4);
 			int height = WorldGen.genRand.Next(2, 4);
@@ -146,7 +148,7 @@ public class JungleChests : ControlledWorldGenPass
 
 	public static bool IsValid(int x, int y)
 	{
-		if (Main.tile[x, y].TileType == 60)
+		if (Main.tile[x, y].TileType == TileID.JungleGrass)
 		{
 			const int spread = 30;
 			int xMin = Math.Max(x - spread, 10);

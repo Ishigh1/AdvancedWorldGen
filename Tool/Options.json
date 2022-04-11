@@ -21,6 +21,12 @@
                 "Conflicts": [],
                 "Name": "Crimruption",
                 "Children": []
+            },
+            {
+                "Hidden": false,
+                "Conflicts": [],
+                "Name": "MiddleLavaOcean",
+                "Children": []
             }
         ]
     },

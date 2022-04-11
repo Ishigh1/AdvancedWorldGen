@@ -72,6 +72,22 @@ public class ModifiedWorld : ModSystem
 			tagCompound.Add("Options", options);
 	}
 
+	public override void PreWorldGen()
+	{
+		Main.notTheBeesWorld = API.OptionsContains("NotTheBees");
+		WorldGen.notTheBees = Main.notTheBeesWorld;
+		Main.getGoodWorld = API.OptionsContains("ForTheWorthy");
+		WorldGen.getGoodWorldGen = Main.getGoodWorld;
+		Main.drunkWorld = API.OptionsContains("Drunk");
+		WorldGen.drunkWorldGen = Main.drunkWorld;
+		WorldGen.drunkWorldGenText = Main.drunkWorld;
+		Main.tenthAnniversaryWorld = API.OptionsContains("Celebrationmk10");
+		WorldGen.tenthAnniversaryWorldGen = Main.tenthAnniversaryWorld;
+		Main.dontStarveWorld = API.OptionsContains("TheConstant");
+		WorldGen.dontStarveWorldGen = Main.dontStarveWorld;
+		if (!Main.dayTime) Main.time = 0;
+	}
+
 	public override void NetReceive(BinaryReader reader)
 	{
 		List<string> options = new();
@@ -94,22 +110,6 @@ public class ModifiedWorld : ModSystem
 		writer.Write("");
 	}
 
-	public override void PreWorldGen()
-	{
-		Main.notTheBeesWorld = API.OptionsContains("NotTheBees");
-		WorldGen.notTheBees = Main.notTheBeesWorld;
-		Main.getGoodWorld = API.OptionsContains("ForTheWorthy");
-		WorldGen.getGoodWorldGen = Main.getGoodWorld;
-		Main.drunkWorld = API.OptionsContains("Drunk");
-		WorldGen.drunkWorldGen = Main.drunkWorld;
-		WorldGen.drunkWorldGenText = Main.drunkWorld;
-		Main.tenthAnniversaryWorld = API.OptionsContains("Celebrationmk10");
-		WorldGen.tenthAnniversaryWorldGen = Main.tenthAnniversaryWorld;
-		Main.dontStarveWorld = API.OptionsContains("TheConstant");
-		WorldGen.dontStarveWorldGen = Main.dontStarveWorld;
-		if (!Main.dayTime) Main.time = 0;
-	}
-
 	//Deletes all the now-useless stuff about special seeds
 	public static void OverrideWorldOptions(ILContext il)
 	{
@@ -123,38 +123,12 @@ public class ModifiedWorld : ModSystem
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 	{
 		Replacer.ReplaceGenPasses(tasks);
-		int passIndex = tasks.FindIndex(pass => pass.Name == "Shinies");
-		if (passIndex != -1)
-		{
-			tasks.Insert(passIndex++, new PassLegacy("BothOres1", BothOres.BothOres1));
-			passIndex++;
-			tasks.Insert(passIndex++, new PassLegacy("BothOres2", BothOres.BothOres2));
-		}
 
-		passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
-		if (passIndex != -1)
-		{
-			tasks.Insert(passIndex++, new PassLegacy("Crimruption1", Crimruption.Crimruption1));
-			passIndex++;
-			tasks.Insert(passIndex++, new PassLegacy("Crimruption2", Crimruption.Crimruption2));
-		}
+		DrunkOptions.AddDrunkEdits(tasks);
 
-		passIndex = tasks.FindIndex(pass => pass.Name == "Guide");
+		int passIndex = tasks.FindIndex(pass => pass.Name == "Guide");
 		if (passIndex != -1)
 			tasks[passIndex] = new PassLegacy("NPCs", HandleNpcs);
-
-		GenPass? liquidSettle = null;
-		passIndex = tasks.FindIndex(pass => pass.Name == "Settle Liquids Again");
-		if (passIndex != -1)
-			liquidSettle = tasks[passIndex];
-
-		passIndex = tasks.FindIndex(pass => pass.Name == "Tile Cleanup");
-		if (passIndex != -1 && API.OptionsContains("Drunk.Crimruption"))
-		{
-			tasks.Insert(passIndex++, new PassLegacy("Crimruption3", Crimruption.Crimruption3));
-			passIndex++;
-			tasks.Insert(passIndex++, new PassLegacy("Crimruption4", Crimruption.Crimruption4));
-		}
 
 		passIndex = tasks.FindIndex(pass => pass.Name == "Micro Biomes");
 		if (passIndex != -1)
@@ -163,6 +137,10 @@ public class ModifiedWorld : ModSystem
 		if (API.OptionsContains("Santa", "Evil", "Random", "Random.Painted"))
 		{
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
+			GenPass? liquidSettle = null;
+			passIndex = tasks.FindIndex(pass => pass.Name == "Settle Liquids Again");
+			if (passIndex != -1)
+				liquidSettle = tasks[passIndex];
 			if (liquidSettle != null)
 				tasks.Add(liquidSettle);
 		}
