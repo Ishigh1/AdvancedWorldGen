@@ -50,25 +50,36 @@ public class CustomSizeUI : UIState
 		});
 
 		float top = 50;
-		NumberTextBox<int> sizeXInput = new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue);
+		NumberTextBox<int> sizeXInput =
+			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue);
 		sizeXInput.Top.Pixels = top;
 		top += sizeXInput.Height.Pixels + 4;
 		uiPanel.Append(sizeXInput);
 
-		NumberTextBox<int> sizeYInput = new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue);
+		NumberTextBox<int> sizeYInput =
+			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue);
 		sizeYInput.Top.Pixels = top;
 		top += sizeYInput.Height.Pixels + 4;
 		uiPanel.Append(sizeYInput);
 
 		NumberTextBox<float> templeModifier =
-			new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.TempleMultiplier), 0, float.PositiveInfinity);
+			new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.TempleMultiplier), 0,
+				float.PositiveInfinity);
 		templeModifier.Top.Pixels = top;
 		top += templeModifier.Height.Pixels + 4;
 		uiPanel.Append(templeModifier);
 
 		if (WorldgenSettings.Revamped)
 		{
-			NumberTextBox<float> beachModifier = new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.BeachMultiplier), 0,
+			NumberTextBox<float> dungeonModifier =
+				new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.DungeonMultiplier), 0,
+					float.MaxValue);
+			dungeonModifier.Top.Pixels = top;
+			top += dungeonModifier.Height.Pixels + 4;
+			uiPanel.Append(dungeonModifier);
+
+			NumberTextBox<float> beachModifier = new ConfigNumberTextBox<float>(WorldSettings.Params,
+				nameof(Params.BeachMultiplier), 0,
 				float.PositiveInfinity);
 			beachModifier.Top.Pixels = top;
 			top += beachModifier.Height.Pixels + 4;

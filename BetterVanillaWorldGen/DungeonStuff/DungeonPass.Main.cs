@@ -96,8 +96,11 @@ public partial class DungeonPass
 		DungeonYStrength1 = WorldGen.genRand.Next(20, 25);
 		DungeonXStrength2 = WorldGen.genRand.Next(35, 50);
 		DungeonYStrength2 = WorldGen.genRand.Next(10, 15);
-		int maxRooms = Main.maxTilesX / 60;
+
+		int maxRooms = (int)(Main.maxTilesX *
+			ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.DungeonMultiplier / 60);
 		maxRooms += WorldGen.genRand.Next(maxRooms / 3);
+
 		int num6 = 5;
 		DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 		for (int room = 0; room < maxRooms; room++)

@@ -5,7 +5,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 
 public partial class DungeonPass : ControlledWorldGenPass
 {
-	public DungeonPass() : base("Dungeon", 477.1963f)
+	public DungeonPass() : base("Dungeon", 326.2836f)
 	{
 	}
 

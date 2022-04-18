@@ -11,7 +11,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class MushroomPatches : ControlledWorldGenPass
 {
-	public MushroomPatches() : base("Mushroom Patches", 743.7686f)
+	public MushroomPatches() : base("Mushroom Patches", 6853.0454f)
 	{
 	}
 

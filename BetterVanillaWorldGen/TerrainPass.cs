@@ -15,7 +15,7 @@ public class TerrainPass : ControlledWorldGenPass
 		Valley
 	}
 
-	public TerrainPass() : base("Terrain", 449.3722f)
+	public TerrainPass() : base("Terrain", 189.9452f)
 	{
 	}
 

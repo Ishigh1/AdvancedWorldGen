@@ -17,7 +17,7 @@ public class JunglePass : ControlledWorldGenPass
 	public float WorldScale;
 	public double WorldSurface;
 
-	public JunglePass() : base("Jungle", 10154.652f)
+	public JunglePass() : base("Jungle", 4304.6303f)
 	{
 	}
 

@@ -6,6 +6,7 @@
                     "SizeX": "Horizontal size :",
                     "SizeY": "Vertical size :",
                     "TempleMultiplier": "Temple size multiplier :",
+                    "DungeonMultiplier": "Dungeon size multiplier :",
                     "BeachMultiplier": "Beach size multiplier :"
                 }
             }

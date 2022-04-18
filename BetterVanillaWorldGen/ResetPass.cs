@@ -12,7 +12,7 @@ public class ResetPass : ControlledWorldGenPass
 	private static readonly MethodInfo ResetGenerator =
 		typeof(WorldGen).GetMethod("ResetGenerator", BindingFlags.Static | BindingFlags.NonPublic)!;
 
-	public ResetPass() : base("Reset", 0.9667f)
+	public ResetPass() : base("Reset", 7.0760f)
 	{
 	}
 

@@ -6,7 +6,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class ShellPiles : ControlledWorldGenPass
 {
-	public ShellPiles() : base("Shell Piles", 1f)
+	public ShellPiles() : base("Shell Piles", 3.7431f)
 	{
 	}
 

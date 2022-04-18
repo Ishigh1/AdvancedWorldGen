@@ -29,6 +29,12 @@ public class Params
 		set => Data[nameof(TempleMultiplier)] = value;
 	}
 
+	public float DungeonMultiplier
+	{
+		get => (float)Data[nameof(DungeonMultiplier)];
+		set => Data[nameof(DungeonMultiplier)] = value;
+	}
+
 	public float BeachMultiplier
 	{
 		get => (float)Data[nameof(BeachMultiplier)];
@@ -46,6 +52,7 @@ public class Params
 		SizeX = -1;
 		SizeY = -1;
 		TempleMultiplier = 1;
+		DungeonMultiplier = 1;
 		BeachMultiplier = 1;
 	}
 }

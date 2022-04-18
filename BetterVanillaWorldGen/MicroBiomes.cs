@@ -11,14 +11,15 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class MicroBiomes : ControlledWorldGenPass
 {
-	public MicroBiomes() : base("Micro Biomes", 3547.4304f)
+	public MicroBiomes() : base("Micro Biomes", 7784.3704f)
 	{
 	}
 
 	protected override void ApplyPass()
 	{
-		WorldGenConfiguration configuration = (WorldGenConfiguration)Configuration;
+		WorldGenConfiguration configuration = VanillaInterface.Configuration.Value;
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Dead Man's Chests";
+		
 		const int totalSteps = 9;
 		int currentStep = 0;
 		Progress.Set(currentStep++, totalSteps);

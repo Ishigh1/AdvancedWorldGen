@@ -5,7 +5,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class GenerateIceBiome : ControlledWorldGenPass
 {
-	public GenerateIceBiome() : base("Generate Ice Biome", 100.005f)
+	public GenerateIceBiome() : base("Generate Ice Biome", 25.8571f)
 	{
 	}
 

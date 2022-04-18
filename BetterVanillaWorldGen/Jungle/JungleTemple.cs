@@ -12,7 +12,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 
 public class JungleTemple : ControlledWorldGenPass
 {
-	public JungleTemple() : base("Jungle Temple", 595.8422f)
+	public JungleTemple() : base("Jungle Temple", 156.7158f)
 	{
 	}
 
