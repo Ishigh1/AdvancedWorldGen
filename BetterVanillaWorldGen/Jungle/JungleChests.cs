@@ -33,8 +33,7 @@ public class JungleChests : ControlledWorldGenPass
 			_ => WallID.GoldBrick
 		};
 
-		float stepCount = WorldGen.genRand.Next(7, 12);
-		stepCount *= Main.maxTilesX / 4200f;
+		float stepCount = WorldGen.genRand.Next(7 * Main.maxTilesX / 4200, 12 * Main.maxTilesX / 4200);
 		for (int step = 0; step < stepCount; step++)
 		{
 			Progress.Set(step, stepCount);
