@@ -56,7 +56,7 @@ public static class EyeOfCthulhu
 			if (distanceToPlayer <= 300f) return;
 			NPC newNPC =
 				Main.npc[
-					NPC.NewNPC(npc.GetSpawnSourceForNPCFromNPCAI(), 0, 0, NPCID.EyeofCthulhu, ai0: 3f, ai1: 4f,
+					NPC.NewNPC(npc.GetSource_FromAI(), 0, 0, NPCID.EyeofCthulhu, ai0: 3f, ai1: 4f,
 						ai2: GhostDuration.GetCurrentValue(),
 						ai3: Main.netMode == NetmodeID.Server ? DashServerInitAI : DashInitAI)];
 			newNPC.position.X = npc.position.X;

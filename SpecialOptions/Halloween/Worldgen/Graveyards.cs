@@ -308,7 +308,7 @@ public static class Graveyards
 				{
 					type = npcId
 				};
-				if (TownNPCProfiles.Instance.GetProfile(npcId, out ITownNPCProfile profile))
+				if (TownNPCProfiles.Instance.GetProfile(tmpNPC, out ITownNPCProfile profile))
 				{
 					tmpNPC.townNpcVariationIndex = profile.RollVariation();
 					return profile.GetNameForVariant(tmpNPC);

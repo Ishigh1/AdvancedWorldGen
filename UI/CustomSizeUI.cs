@@ -142,10 +142,10 @@ public class CustomSizeUI : UIState
 		int oldSizeY = Main.tile.Height;
 		if (oldSizeX < WorldSettings.Params.SizeX || oldSizeY < WorldSettings.Params.SizeY)
 		{
-			int newSizeX = Math.Max(WorldSettings.Params.SizeX, oldSizeX);
-			int newSizeY = Math.Max(WorldSettings.Params.SizeY, oldSizeY);
+			int newSizeX = Math.Max(WorldSettings.Params.SizeX, 8400);
+			int newSizeY = Math.Max(WorldSettings.Params.SizeY, 2100);
 
-			if ((long)newSizeX * newSizeY * 44 > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)
+			if (KnownLimits.WillCrashMissingEwe(newSizeX, newSizeY))
 			{
 				Main.MenuUI.SetState(new ErrorUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.TooBigFromRAM", newSizeX, newSizeY)));

@@ -99,7 +99,7 @@ public class WorldSettings
 			int newSizeX = Math.Max(chunkX * Main.sectionWidth, 8400);
 			int newSizeY = Math.Max(chunkY * Main.sectionHeight, 2400);
 
-			if ((long)newSizeX * newSizeY * 44 > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)
+			if (KnownLimits.WillCrashMissingEwe(newSizeX, newSizeY))
 			{
 				string message =
 					Language.GetTextValue("Mods.AdvancedWorldGen.InvalidSizes.TooBigFromRAM", newSizeX, newSizeY);

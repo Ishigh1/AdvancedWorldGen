@@ -65,7 +65,7 @@ public class Special : ModSystem
 			orig();
 			if (WorldGen.prioritizedTownNPCType != 0)
 			{
-				int id = NPC.NewNPC(NPC.GetSpawnSourceForTownSpawn(), Main.spawnTileX * 16, Main.spawnTileY * 16,
+				int id = NPC.NewNPC(Entity.GetSource_TownSpawn(), Main.spawnTileX * 16, Main.spawnTileY * 16,
 					WorldGen.prioritizedTownNPCType);
 				Main.npc[id].netUpdate = true;
 				string fullName = Main.npc[id].FullName;

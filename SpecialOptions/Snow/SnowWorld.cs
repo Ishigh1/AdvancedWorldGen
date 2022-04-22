@@ -50,7 +50,7 @@ public class SnowWorld
 		speedY *= modifier;
 		ComputeSnowBall(out double damages, out double knockback);
 
-		int projectile = Projectile.NewProjectile(Projectile.GetNoneSource(), x * 16 + 8, y * 16 + 8,
+		int projectile = Projectile.NewProjectile(Entity.GetSource_None(), x * 16 + 8, y * 16 + 8,
 			speedX, speedY, SnowBallHostile, (int)damages, (float)knockback, Main.myPlayer);
 		Main.projectile[projectile].friendly = true;
 		Main.projectile[projectile].netUpdate = true;

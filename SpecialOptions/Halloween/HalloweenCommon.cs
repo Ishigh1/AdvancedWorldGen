@@ -60,7 +60,7 @@ public static class HalloweenCommon
 		orig(self, damageSource, dmg, hitDirection, pvp);
 		if (Main.netMode == NetmodeID.MultiplayerClient ||
 		    !API.OptionsContains("Spooky")) return;
-		NPC npc = Main.npc[NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), 0, 0, Ghost)];
+		NPC npc = Main.npc[NPC.NewNPC(Entity.GetSource_NaturalSpawn(), 0, 0, Ghost)];
 		npc.position.X = self.position.X;
 		npc.position.Y = self.position.Y;
 		npc.netUpdate = true;
