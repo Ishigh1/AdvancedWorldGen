@@ -349,7 +349,7 @@ public class JungleTemple : ControlledWorldGenPass
 			{
 				Tile tile = Main.tile[num66, num67];
 				if (tile.WallType == 87 ||
-				    tile.HasTile && tile.TileType == 226)
+				    (tile.HasTile && tile.TileType == 226))
 					flag3 = true;
 
 				if (tile.HasTile && tile.TileType == 226)
@@ -368,7 +368,7 @@ public class JungleTemple : ControlledWorldGenPass
 
 		num69 -= 4;
 		int num70 = num69;
-		while (Main.tile[num68, num70].HasTile && Main.tile[num68, num70].TileType == 226 ||
+		while ((Main.tile[num68, num70].HasTile && Main.tile[num68, num70].TileType == 226) ||
 		       Main.tile[num68, num70].WallType == 87) num70--;
 
 		num70 += 2;

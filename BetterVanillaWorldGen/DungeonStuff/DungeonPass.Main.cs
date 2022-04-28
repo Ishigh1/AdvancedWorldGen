@@ -438,8 +438,8 @@ public partial class DungeonPass
 						}
 
 				if (flag && y - oldY < 20)
-					if (pos == 0 && y - oldY < num34 || pos == -1 && x > num35 ||
-					    pos == 1 && (x < num35 || num35 == 0))
+					if ((pos == 0 && y - oldY < num34) || (pos == -1 && x > num35) ||
+					    (pos == 1 && (x < num35 || num35 == 0)))
 					{
 						num35 = x;
 						num34 = y - oldY;

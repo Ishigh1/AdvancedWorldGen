@@ -35,7 +35,7 @@ public class UiChanger
 	public UIText Description = null!;
 	public OptionsSelector OptionsSelector = null!;
 	public Thread Thread = null!;
-	public WorldGenConfigurator WorldGenConfigurator = null!;
+	public WorldGenConfigurator? WorldGenConfigurator;
 
 	public UiChanger(Mod mod)
 	{

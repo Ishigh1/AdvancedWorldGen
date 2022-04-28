@@ -10,7 +10,7 @@ public class HalloweenGlobalNPC : GlobalNPC
 {
 	public override bool PreAI(NPC npc)
 	{
-		return !API.OptionsContains("Spooky") || EyeOfCthulhu.PreAI(npc) && BrainOfCthulhu.PreAI(npc);
+		return !API.OptionsContains("Spooky") || (EyeOfCthulhu.PreAI(npc) && BrainOfCthulhu.PreAI(npc));
 	}
 
 	public override void AI(NPC npc)
@@ -29,8 +29,8 @@ public class HalloweenGlobalNPC : GlobalNPC
 	{
 		if (!API.OptionsContains("Spooky")) return;
 		if (Main.netMode == NetmodeID.MultiplayerClient && (npc.friendly ||
-		                                                    npc.type != Ghost && npc.type != Wraith &&
-		                                                    Main.rand.NextBool(20)))
+		                                                    (npc.type != Ghost && npc.type != Wraith &&
+		                                                     Main.rand.NextBool(20))))
 		{
 			NPC newNPC = Main.npc[NPC.NewNPC(Entity.GetSource_NaturalSpawn(), 0, 0, Ghost)];
 			newNPC.position.X = npc.position.X;

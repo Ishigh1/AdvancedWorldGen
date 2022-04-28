@@ -110,10 +110,10 @@ public partial class DungeonPass
 										    new Vector2(num * 16, num3 * 16 + 1), 16, 16))
 										continue;
 
-									if ((WorldGen.SolidTile(num4 - 1, num5) &&
-									     Main.tile[num4 - 1, num5].TileType != 10 ||
-									     WorldGen.SolidTile(num4 + 1, num5) &&
-									     Main.tile[num4 + 1, num5].TileType != 10 ||
+									if (((WorldGen.SolidTile(num4 - 1, num5) &&
+									      Main.tile[num4 - 1, num5].TileType != 10) ||
+									     (WorldGen.SolidTile(num4 + 1, num5) &&
+									      Main.tile[num4 + 1, num5].TileType != 10) ||
 									     WorldGen.SolidTile(num4, num5 + 1)) &&
 									    Main.wallDungeon[tile.WallType] &&
 									    (Main.tileDungeon[Main.tile[num4 - 1, num5].TileType] ||
@@ -183,8 +183,8 @@ public partial class DungeonPass
 								    new Vector2(num * 16, num3 * 16 + 1), 16, 16))
 								continue;
 
-							if (WorldGen.SolidTile(num6 - 1, num7) && Main.tile[num6 - 1, num7].TileType != 10 ||
-							    WorldGen.SolidTile(num6 + 1, num7) && Main.tile[num6 + 1, num7].TileType != 10 ||
+							if ((WorldGen.SolidTile(num6 - 1, num7) && Main.tile[num6 - 1, num7].TileType != 10) ||
+							    (WorldGen.SolidTile(num6 + 1, num7) && Main.tile[num6 + 1, num7].TileType != 10) ||
 							    WorldGen.SolidTile(num6, num7 + 1)) WorldGen.PlaceTile(num6, num7, 136, true);
 
 							if (!Main.tile[num6, num7].HasTile)
@@ -658,10 +658,10 @@ public partial class DungeonPass
 			if (num18 is 10 or 11 or 12 && WorldGen.genRand.Next(4) != 0)
 				num18 = WorldGen.genRand.Next(13);
 
-			while (num18 == 2 && num9 == -1 || num18 == 5 && num10 == -1 || num18 == 6 && num11 == -1 ||
-			       num18 == 7 && num12 == -1 || num18 == 8 && num13 == -1 || num18 == 9 && num14 == -1 ||
-			       num18 == 10 && num15 == -1 || num18 == 11 && num16 == -1 ||
-			       num18 == 12 && num17 == -1) num18 = WorldGen.genRand.Next(13);
+			while ((num18 == 2 && num9 == -1) || (num18 == 5 && num10 == -1) || (num18 == 6 && num11 == -1) ||
+			       (num18 == 7 && num12 == -1) || (num18 == 8 && num13 == -1) || (num18 == 9 && num14 == -1) ||
+			       (num18 == 10 && num15 == -1) || (num18 == 11 && num16 == -1) ||
+			       (num18 == 12 && num17 == -1)) num18 = WorldGen.genRand.Next(13);
 
 			int num19 = 0;
 			int num20 = 0;
@@ -974,8 +974,8 @@ public partial class DungeonPass
 		else if (WorldGen.genRand.NextBool(6))
 			delta.Y *= 2f;
 
-		if (WorldGen.dungeonX < Main.maxTilesX / 2 && delta.X < 0.5f ||
-		    WorldGen.dungeonX > Main.maxTilesX / 2 && delta.X > 0.5f)
+		if ((WorldGen.dungeonX < Main.maxTilesX / 2 && delta.X < 0.5f) ||
+		    (WorldGen.dungeonX > Main.maxTilesX / 2 && delta.X > 0.5f))
 			delta.X = -0.5f;
 
 		if (WorldGen.drunkWorldGen)
@@ -1154,9 +1154,9 @@ public partial class DungeonPass
 
 				if (x == i - offX || x == i + offX || y == num2 + offY)
 					tile.TileType = TileID.Spikes;
-				else if (x == i - offX + 1 && y % 2 == 0 ||
-				         x == i + offX - 1 && y % 2 == 0 ||
-				         y == num2 + offY - 1 && x % 2 == 0)
+				else if ((x == i - offX + 1 && y % 2 == 0) ||
+				         (x == i + offX - 1 && y % 2 == 0) ||
+				         (y == num2 + offY - 1 && x % 2 == 0))
 					tile.TileType = TileID.Spikes;
 				else
 					tile.HasTile = false;

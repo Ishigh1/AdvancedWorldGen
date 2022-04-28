@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.WorldBuilding;
 using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle;

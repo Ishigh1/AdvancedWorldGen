@@ -38,6 +38,7 @@ public class WorldSettings
 		orig(self);
 		UIWorldCreation = self;
 		SetSizeTo(0);
+		AdvancedWorldGenMod.Instance.UiChanger.WorldGenConfigurator?.Dispose();
 		AdvancedWorldGenMod.Instance.UiChanger.WorldGenConfigurator = new WorldGenConfigurator();
 	}
 

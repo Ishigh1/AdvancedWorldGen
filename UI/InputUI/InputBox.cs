@@ -1,27 +1,22 @@
-using System;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
 
 namespace AdvancedWorldGen.UI.InputUI;
 
-public abstract class NumberTextBox<T> : OrderedUIItem where T : IConvertible, IComparable
+public abstract class InputBox<T> : OrderedUIItem
 {
+	public UIPanel Background = null!;
 	public string Name;
-	
-	public T Min;
-	public T Max;
 
-	protected NumberTextBox(string name, T min, T max)
+	protected InputBox(string name)
 	{
 		Name = name;
-		Min = min;
-		Max = max;
 	}
 
 	public abstract T Value { get; set; }
 
-	public void CreateUIElement()
+	public virtual void CreateUIElement()
 	{
 		Height = new StyleDimension
 		{
@@ -32,7 +27,7 @@ public abstract class NumberTextBox<T> : OrderedUIItem where T : IConvertible, I
 			Percent = 1f
 		};
 
-		UIPanel background = new()
+		Background = new UIPanel
 		{
 			Height =
 			{
@@ -43,19 +38,12 @@ public abstract class NumberTextBox<T> : OrderedUIItem where T : IConvertible, I
 				Percent = 1f
 			}
 		};
-		Append(background);
+		Append(Background);
 
 		UIText title = new(Language.GetText(Name))
 		{
 			VAlign = 0.5f
 		};
-		background.Append(title);
-
-		EditableText<T> editableText = new(this)
-		{
-			VAlign = 0.5f,
-			HAlign = 1f
-		};
-		background.Append(editableText);
+		Background.Append(title);
 	}
 }

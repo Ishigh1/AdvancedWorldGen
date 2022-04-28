@@ -102,8 +102,8 @@ public class OptionHelper
 	{
 		Entropy.StartEntropy();
 		if (OptionsContains("Santa") &&
-		    Main.hardMode && Main.invasionType == 0 && (!NPC.downedFrost && Main.rand.NextBool(20) ||
-		                                                NPC.downedFrost && Main.rand.NextBool(60)))
+		    Main.hardMode && Main.invasionType == 0 && ((!NPC.downedFrost && Main.rand.NextBool(20)) ||
+		                                                (NPC.downedFrost && Main.rand.NextBool(60))))
 		{
 			Main.invasionDelay = 0;
 			Main.StartInvasion(InvasionID.SnowLegion);
@@ -118,8 +118,8 @@ public class OptionHelper
 	{
 		Entropy.StartEntropy();
 		if (OptionsContains("Santa") && NPC.downedFishron &&
-		    (!NPC.downedChristmasIceQueen && Main.rand.NextBool(20) ||
-		     NPC.downedChristmasIceQueen && Main.rand.NextBool(60)))
+		    ((!NPC.downedChristmasIceQueen && Main.rand.NextBool(20)) ||
+		     (NPC.downedChristmasIceQueen && Main.rand.NextBool(60))))
 		{
 			if (Main.netMode == NetmodeID.SinglePlayer)
 			{

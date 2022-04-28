@@ -111,7 +111,7 @@ public class ResetPass : ControlledWorldGenPass
 		VanillaInterface.JungleOriginX.Value = dungeonSide == 1 ? shift : Main.maxTilesX - shift;
 
 		int snowCenter;
-		if (dungeonSide == 1 && !WorldGen.drunkWorldGen || dungeonSide == -1 && WorldGen.drunkWorldGen)
+		if ((dungeonSide == 1 && !WorldGen.drunkWorldGen) || (dungeonSide == -1 && WorldGen.drunkWorldGen))
 			snowCenter = (int)(Main.maxTilesX * 0.6f + Main.maxTilesX * 0.15f);
 		else
 			snowCenter = (int)(Main.maxTilesX * 0.25f + Main.maxTilesX * 0.15f);

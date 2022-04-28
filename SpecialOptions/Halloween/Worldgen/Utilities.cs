@@ -25,8 +25,8 @@ public static class Utilities
 		}
 
 		Tile tile = Main.tile[x, y];
-		if (Main.tile[x - 1, y].HasTile && Main.tileSolid[Main.tile[x - 1, y].TileType] &&
-		    Main.tile[x + 1, y].HasTile && Main.tileSolid[Main.tile[x + 1, y].TileType] ||
+		if ((Main.tile[x - 1, y].HasTile && Main.tileSolid[Main.tile[x - 1, y].TileType] &&
+		     Main.tile[x + 1, y].HasTile && Main.tileSolid[Main.tile[x + 1, y].TileType]) ||
 		    tile.WallType != 0 || tile.TileType == TileID.LeafBlock || Main.tile[x, y - 1].LiquidAmount > 0)
 			return FindSuitableSpotForSurfacePressurePlate(direction, x + direction);
 		y--;

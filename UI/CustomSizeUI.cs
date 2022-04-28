@@ -6,6 +6,7 @@ using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.CustomSized;
 using AdvancedWorldGen.Helper;
 using AdvancedWorldGen.UI.InputUI;
+using AdvancedWorldGen.UI.InputUI.Number;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;

@@ -19,7 +19,7 @@ public class MicroBiomes : ControlledWorldGenPass
 	{
 		WorldGenConfiguration configuration = VanillaInterface.Configuration.Value;
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Dead Man's Chests";
-		
+
 		const int totalSteps = 9;
 		int currentStep = 0;
 		Progress.Set(currentStep++, totalSteps);

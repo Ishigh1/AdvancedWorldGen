@@ -154,7 +154,7 @@ public class Entropy
 	public void SendData()
 	{
 		if (Main.netMode == NetmodeID.Server &&
-		    (OldTile != -1 && NewTile != -1 || OldWall != 0 && NewWall != 0))
+		    ((OldTile != -1 && NewTile != -1) || (OldWall != 0 && NewWall != 0)))
 		{
 			ModPacket modPacket = AdvancedWorldGenMod.Instance.GetPacket();
 			modPacket.Write((byte)PacketId.SantaWaterFreezing);

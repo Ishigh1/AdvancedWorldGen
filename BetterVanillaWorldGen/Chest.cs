@@ -125,10 +125,11 @@ public static class Chest
 						ItemID.DripplerFlail);
 		}
 
-		if (chestTileType == TileID.Containers && (outStyle == 11 || contain == ItemID.None &&
-			    y >= Main.worldSurface + 25.0 &&
-			    y <= Main.maxTilesY - 205 &&
-			    Main.tile[x, y].TileType is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce))
+		if (chestTileType == TileID.Containers && (outStyle == 11 || (contain == ItemID.None &&
+		                                                              y >= Main.worldSurface + 25.0 &&
+		                                                              y <= Main.maxTilesY - 205 &&
+		                                                              Main.tile[x, y].TileType is TileID.SnowBlock
+			                                                              or TileID.IceBlock or TileID.BreakableIce)))
 		{
 			iceBiome = true;
 			outStyle = 11;
@@ -255,7 +256,7 @@ public static class Chest
 		int index = 0;
 		while (index == 0)
 		{
-			if (style == 0 && y < Main.worldSurface + 25.0 || pyramid)
+			if ((style == 0 && y < Main.worldSurface + 25.0) || pyramid)
 			{
 				if (contain > 0)
 				{

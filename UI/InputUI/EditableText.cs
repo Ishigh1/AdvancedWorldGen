@@ -1,17 +1,14 @@
 using System;
 using System.Reflection;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.GameInput;
-using Terraria.UI;
 
 namespace AdvancedWorldGen.UI.InputUI;
 
-public class EditableText<T> : UIElement, IEditableText where T : IConvertible, IComparable
+public class EditableText<T> : FocusElement where T : IConvertible, IComparable
 {
-	public static IEditableText? CurrentFocus;
 	public string? CurrentContent;
 	public int FrameNumber;
 
@@ -24,55 +21,51 @@ public class EditableText<T> : UIElement, IEditableText where T : IConvertible, 
 		FrameNumber = 0;
 	}
 
-	public void Focus()
+	public override string DisplayText => ParentBox.Value.ToString()!;
+
+	public override void Focus(SpriteBatch spriteBatch)
 	{
-		CurrentFocus?.Unfocus();
-		CurrentContent = ParentBox.Value.ToString();
-		CurrentFocus = this;
+		base.Focus(spriteBatch);
+
+		CurrentContent = DisplayText;
 		Shift = 0;
 		Main.clrInput();
 	}
 
-	public void Unfocus()
+	public override void Unfocus()
 	{
-		if (CurrentContent != null)
+		base.Unfocus();
+
+		Type type = typeof(T);
+		Type[] types = { typeof(string), typeof(T).MakeByRefType() };
+		MethodInfo methodInfo = type.GetMethod("TryParse", BindingFlags.Public | BindingFlags.Static, types)!;
+		object[] parameters = { CurrentContent, ParentBox.Value };
+		bool isValid = (bool)methodInfo.Invoke(null, parameters)!;
+		if (isValid)
 		{
-			Type type = typeof(T);
-			Type[] types = { typeof(string), typeof(T).MakeByRefType() };
-			MethodInfo methodInfo = type.GetMethod("TryParse", BindingFlags.Public | BindingFlags.Static, types)!;
-			object[] parameters = { CurrentContent, ParentBox.Value };
-			bool isValid = (bool)methodInfo.Invoke(null, parameters)!;
-			if (isValid)
-			{
-				ParentBox.Value = (T)parameters[1];
-			}
-			else
-			{
-				parameters[0] = "0";
-				methodInfo.Invoke(null, parameters);
-				ParentBox.Value = (T)parameters[1];
-			}
-
-			if (ParentBox.Value.CompareTo(ParentBox.Min) < 0)
-				ParentBox.Value = ParentBox.Min;
-
-			else if (ParentBox.Value.CompareTo(ParentBox.Max) > 0)
-				ParentBox.Value = ParentBox.Max;
-
-			CurrentContent = null;
-			CurrentFocus = null;
+			ParentBox.Value = (T)parameters[1];
 		}
+		else
+		{
+			parameters[0] = "0";
+			methodInfo.Invoke(null, parameters);
+			ParentBox.Value = (T)parameters[1];
+		}
+
+		if (ParentBox.Value.CompareTo(ParentBox.Min) < 0)
+			ParentBox.Value = ParentBox.Min;
+
+		else if (ParentBox.Value.CompareTo(ParentBox.Max) > 0)
+			ParentBox.Value = ParentBox.Max;
+
+		CurrentContent = null;
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
-		if (Main.mouseLeft && Main.mouseLeftRelease)
-			if (Parent.IsMouseHovering)
-				Focus();
-			else
-				Unfocus();
+		base.DrawSelf(spriteBatch);
 
-		if (CurrentContent != null)
+		if (IsTheCurrentFocus)
 		{
 			PlayerInput.WritingText = true;
 			Main.instance.HandleIME();
@@ -111,18 +104,10 @@ public class EditableText<T> : UIElement, IEditableText where T : IConvertible, 
 				{
 					FrameNumber = 0;
 				}
+
+				string displayString = CurrentContent[..^Shift] + "|" + CurrentContent[^Shift..];
+				DrawText(spriteBatch, displayString);
 			}
 		}
-
-		string displayString;
-		if (CurrentContent == null)
-			displayString = ParentBox.Value.ToString()!;
-		else
-			displayString = CurrentContent[..^Shift] + "|" + CurrentContent[^Shift..];
-
-		CalculatedStyle space = GetDimensions();
-		Vector2 size = Utils.DrawBorderString(spriteBatch, displayString, new Vector2(space.X, space.Y), Color.White);
-		Width.Pixels = size.X;
-		Height.Pixels = size.Y;
 	}
 }

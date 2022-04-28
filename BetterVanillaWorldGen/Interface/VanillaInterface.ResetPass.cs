@@ -7,6 +7,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 
 public partial class VanillaInterface
 {
+	public readonly VanillaAccessor<WorldGenConfiguration> Configuration;
 	public readonly VanillaAccessor<int> Copper;
 	public readonly VanillaAccessor<int> DungeonLocation;
 
@@ -35,8 +36,6 @@ public partial class VanillaInterface
 	public readonly VanillaAccessor<int> SnowOriginLeft;
 	public readonly VanillaAccessor<int> SnowOriginRight;
 	public readonly VanillaAccessor<int> SnowTop;
-	
-	public readonly VanillaAccessor<WorldGenConfiguration> Configuration; 
 
 	public VanillaInterface(GenPass vanillaResetPass)
 	{
@@ -77,7 +76,7 @@ public partial class VanillaInterface
 		OceanWaterStartRandomMax = new VanillaAccessor<int>(fieldInfos, "oceanWaterStartRandomMax", vanillaData);
 		OceanWaterForcedJungleLength =
 			new VanillaAccessor<int>(fieldInfos, "oceanWaterForcedJungleLength", vanillaData);
-		
+
 		Configuration = new VanillaAccessor<WorldGenConfiguration>(fieldInfos, "configuration", vanillaData);
 	}
 }

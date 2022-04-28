@@ -8,7 +8,7 @@ public class OrderedUIItem : UIElement
 
 	public override int CompareTo(object obj)
 	{
-		if(obj is OrderedUIItem other) return Order - other.Order;
+		if (obj is OrderedUIItem other) return Order - other.Order;
 		return 0;
 	}
 }

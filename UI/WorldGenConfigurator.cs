@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AdvancedWorldGen.BetterVanillaWorldGen;
-using AdvancedWorldGen.CustomSized;
 using AdvancedWorldGen.UI.InputUI;
+using AdvancedWorldGen.UI.InputUI.List;
+using AdvancedWorldGen.UI.InputUI.Number;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
 using Terraria;
@@ -32,7 +31,7 @@ public class WorldGenConfigurator : UIState
 		SetupUI();
 	}
 
-	public void Clear()
+	public void Dispose()
 	{
 		WorldGen.Hooks.OnWorldGenConfigProcess -= SetConfig;
 	}
@@ -125,7 +124,12 @@ public class WorldGenConfigurator : UIState
 				uiPanel.Add(doubleInput);
 				break;
 			case JTokenType.String:
-				//
+				//Create a world scaling text box.
+				EnumInputListBox<WorldGenRange.ScalingMode> enumInput = new((JValue)jToken)
+				{
+					Order = index++
+				};
+				uiPanel.Add(enumInput);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();
