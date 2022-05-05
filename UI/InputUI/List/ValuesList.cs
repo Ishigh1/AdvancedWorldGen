@@ -6,7 +6,7 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
-namespace AdvancedWorldGen.UI.InputUI;
+namespace AdvancedWorldGen.UI.InputUI.List;
 
 public class ValuesList : FocusElement
 {
@@ -41,9 +41,26 @@ public class ValuesList : FocusElement
 
 	public void ExpandList(GameTime gameTime)
 	{
-		CalculatedStyle windowDimension = ParentBox.Parent.Parent.Parent.GetDimensions();
-		float top = ParentBox.Top.Pixels + ParentBox.Height.Pixels - ((UIList)ParentBox.Parent.Parent).ViewPosition +
-		            ParentBox.Parent.Parent.Top.Pixels + windowDimension.Y + 15;
+		UIList? parentList = null;
+		UIPanel parentPanel = null!;
+		UIElement? currentElement = this;
+		while (currentElement != null)
+		{
+			currentElement = currentElement.Parent;
+			switch (currentElement)
+			{
+				case UIList list:
+					parentList = list;
+					break;
+				case UIPanel panel:
+					parentPanel = panel;
+					break;
+			}
+		}
+		
+		CalculatedStyle windowDimension = parentPanel.GetDimensions();
+		float top = ParentBox.Top.Pixels + ParentBox.Height.Pixels - (parentList?.ViewPosition ?? 0f) +
+		            (parentList?.Top.Pixels ?? 0f) + windowDimension.Y + 15;
 
 		foreach (object enumValue in EnumValues)
 		{
@@ -63,7 +80,7 @@ public class ValuesList : FocusElement
 			option.OnMouseOver += UiChanger.FadedMouseOver;
 			option.OnMouseOut += UiChanger.FadedMouseOut;
 			ShownOptions.Add(option);
-			ParentBox.Parent.Parent.Parent.Parent.Append(option);
+			parentPanel.Parent.Append(option);
 		}
 
 		Main.OnPostDraw -= ExpandList;
@@ -86,6 +103,6 @@ public class ValuesList : FocusElement
 		base.DrawSelf(spriteBatch);
 
 		if (IsTheCurrentFocus)
-			DrawText(spriteBatch, DisplayText!);
+			DrawText(spriteBatch, DisplayText);
 	}
 }

@@ -6,6 +6,7 @@ using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.CustomSized;
 using AdvancedWorldGen.Helper;
 using AdvancedWorldGen.UI.InputUI;
+using AdvancedWorldGen.UI.InputUI.List;
 using AdvancedWorldGen.UI.InputUI.Number;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -49,50 +50,88 @@ public class CustomSizeUI : UIState
 			Top = new StyleDimension(43f, 0f),
 			Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 		});
-
-		float top = 50;
+		
+		UIScrollbar uiScrollbar = new()
+		{
+			Height = new StyleDimension(-110f, 1f),
+			Top = new StyleDimension(50, 0f),
+			HAlign = 1f
+		};
+		UIList uiList = new()
+		{
+			Height = new StyleDimension(-110f, 1f),
+			Width = new StyleDimension(-20f, 1f),
+			Top = new StyleDimension(50, 0f)
+		};
+		uiList.SetScrollbar(uiScrollbar);
+		uiPanel.Append(uiScrollbar);
+		uiPanel.Append(uiList);
+		int index = 0;
+		
 		NumberTextBox<int> sizeXInput =
 			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue);
-		sizeXInput.Top.Pixels = top;
-		top += sizeXInput.Height.Pixels + 4;
-		uiPanel.Append(sizeXInput);
+		sizeXInput.Order = index++;
+		uiList.Add(sizeXInput);
 
 		NumberTextBox<int> sizeYInput =
 			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue);
-		sizeYInput.Top.Pixels = top;
-		top += sizeYInput.Height.Pixels + 4;
-		uiPanel.Append(sizeYInput);
+		sizeYInput.Order = index++;
+		uiList.Add(sizeYInput);
 
 		NumberTextBox<float> templeModifier =
 			new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.TempleMultiplier), 0,
 				float.PositiveInfinity);
-		templeModifier.Top.Pixels = top;
-		top += templeModifier.Height.Pixels + 4;
-		uiPanel.Append(templeModifier);
+		templeModifier.Order = index++;
+		uiList.Add(templeModifier);
 
 		if (WorldgenSettings.Revamped)
 		{
 			NumberTextBox<float> dungeonModifier =
 				new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.DungeonMultiplier), 0,
 					float.MaxValue);
-			dungeonModifier.Top.Pixels = top;
-			top += dungeonModifier.Height.Pixels + 4;
-			uiPanel.Append(dungeonModifier);
+			dungeonModifier.Order = index++;
+			uiList.Add(dungeonModifier);
 
 			NumberTextBox<float> beachModifier = new ConfigNumberTextBox<float>(WorldSettings.Params,
 				nameof(Params.BeachMultiplier), 0,
 				float.PositiveInfinity);
-			beachModifier.Top.Pixels = top;
-			top += beachModifier.Height.Pixels + 4;
-			uiPanel.Append(beachModifier);
+			beachModifier.Order = index++;
+			uiList.Add(beachModifier);
+
+			TileExpandableList copperList = new(WorldSettings.Params, nameof(Params.Copper), false,
+				TileExpandableList.Random, TileID.Copper, TileID.Tin)
+			{
+				Order = index++
+			};
+			uiList.Add(copperList);
+
+			TileExpandableList ironList = new(WorldSettings.Params, nameof(Params.Iron), false,
+				TileExpandableList.Random, TileID.Iron, TileID.Lead)
+			{
+				Order = index++
+			};
+			uiList.Add(ironList);
+
+			TileExpandableList silverList = new(WorldSettings.Params, nameof(Params.Silver), false,
+				TileExpandableList.Random, TileID.Silver, TileID.Tungsten)
+			{
+				Order = index++
+			};
+			uiList.Add(silverList);
+
+			TileExpandableList goldList = new(WorldSettings.Params, nameof(Params.Gold), false,
+				TileExpandableList.Random, TileID.Gold, TileID.Platinum)
+			{
+				Order = index++
+			};
+			uiList.Add(goldList);
 		}
 
 		UITextPanel<string> gotoConfig = new(Language.GetTextValue("UI.Config"))
 		{
-			Width = new StyleDimension(0f, 1f),
-			Top = new StyleDimension(top, 0f)
+			Width = new StyleDimension(0f, 1f)
 		};
-		uiPanel.Append(gotoConfig);
+		uiList.Add(gotoConfig);
 		gotoConfig.OnMouseDown += ConfigWorldGen;
 		gotoConfig.OnMouseOver += UiChanger.FadedMouseOver;
 		gotoConfig.OnMouseOut += UiChanger.FadedMouseOut;

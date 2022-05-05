@@ -2,8 +2,10 @@ using System;
 using System.Reflection;
 using AdvancedWorldGen.Base;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
+using AdvancedWorldGen.UI.InputUI.List;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
@@ -42,7 +44,9 @@ public class ResetPass : ControlledWorldGenPass
 		Main.slimeRainTime = -WorldGen.genRand.Next(num917 * 2, num917 * 3);
 		Main.cloudBGActive = -WorldGen.genRand.Next(8640, num917);
 		VanillaInterface.SkipFramingDuringGen.Value = false;
-		if (WorldGen.genRand.NextBool(2))
+		if ((ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Copper == TileExpandableList.Random &&
+		     WorldGen.genRand.NextBool(2))
+		    || ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Copper == TileID.Copper)
 		{
 			WorldGen.SavedOreTiers.Copper = 7;
 			WorldGen.copperBar = 20;
@@ -54,7 +58,10 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.SavedOreTiers.Copper = 166;
 		}
 
-		if (WorldGen.dontStarveWorldGen || WorldGen.genRand.NextBool(2))
+		if ((WorldGen.dontStarveWorldGen &&
+		     ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Iron == TileExpandableList.Random &&
+		     WorldGen.genRand.NextBool(2))
+		    || ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Iron == TileID.Iron)
 		{
 			WorldGen.SavedOreTiers.Iron = 6;
 			WorldGen.ironBar = 22;
@@ -66,7 +73,9 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.SavedOreTiers.Iron = 167;
 		}
 
-		if (WorldGen.genRand.NextBool(2))
+		if ((ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Silver == TileExpandableList.Random &&
+		     WorldGen.genRand.NextBool(2))
+		    || ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Silver == TileID.Silver)
 		{
 			WorldGen.SavedOreTiers.Silver = 9;
 			WorldGen.silverBar = 21;
@@ -78,7 +87,10 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.SavedOreTiers.Silver = 168;
 		}
 
-		if (WorldGen.dontStarveWorldGen || WorldGen.genRand.NextBool(2))
+		if ((WorldGen.dontStarveWorldGen &&
+		     ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Gold == TileExpandableList.Random &&
+		     WorldGen.genRand.NextBool(2))
+		    || ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Gold == TileID.Gold)
 		{
 			WorldGen.SavedOreTiers.Gold = 8;
 			WorldGen.goldBar = 19;
@@ -97,7 +109,7 @@ public class ResetPass : ControlledWorldGenPass
 			_ => Main.rand.NextBool(2) //Using Main.rand to not affect the worldgen
 		};
 
-		Main.worldID = WorldGen.genRand.Next(int.MaxValue);
+		Main.worldID = Main.rand.Next(int.MaxValue);
 		WorldGen.RandomizeTreeStyle();
 		WorldGen.RandomizeCaveBackgrounds();
 		WorldGen.RandomizeBackgrounds(WorldGen.genRand);

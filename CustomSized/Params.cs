@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AdvancedWorldGen.UI.InputUI.List;
 
 namespace AdvancedWorldGen.CustomSized;
 
@@ -40,6 +41,30 @@ public class Params
 		get => (float)Data[nameof(BeachMultiplier)];
 		set => Data[nameof(BeachMultiplier)] = value;
 	}
+	
+	public int Copper
+	{
+		get => (int)Data[nameof(Copper)];
+		set => Data[nameof(Copper)] = value;
+	}
+	
+	public int Iron
+	{
+		get => (int)Data[nameof(Iron)];
+		set => Data[nameof(Iron)] = value;
+	}
+	
+	public int Silver
+	{
+		get => (int)Data[nameof(Silver)];
+		set => Data[nameof(Silver)] = value;
+	}
+	
+	public int Gold
+	{
+		get => (int)Data[nameof(Gold)];
+		set => Data[nameof(Gold)] = value;
+	}
 
 	public void Wipe()
 	{
@@ -54,5 +79,10 @@ public class Params
 		TempleMultiplier = 1;
 		DungeonMultiplier = 1;
 		BeachMultiplier = 1;
+		
+		Copper = TileExpandableList.Random;
+		Iron = TileExpandableList.Random;
+		Silver = TileExpandableList.Random;
+		Gold = TileExpandableList.Random;
 	}
 }
