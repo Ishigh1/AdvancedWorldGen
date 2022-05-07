@@ -127,7 +127,7 @@ public class CustomSizeUI : UIState
 			uiList.Add(goldList);
 		}
 
-		UITextPanel<string> gotoConfig = new(Language.GetTextValue("UI.Config"))
+		UITextPanel<string> gotoConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.Config"))
 		{
 			Width = new StyleDimension(0f, 1f)
 		};
