@@ -7,7 +7,7 @@ def make(language):
     file.close()
 
     translation = {}
-    base = {"Mods": {"AdvancedWorldGen": translation}}
+    base = {"Mods.AdvancedWorldGen": translation}
 
     make_trans(language, options, translation)
 
