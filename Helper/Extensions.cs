@@ -9,18 +9,6 @@ namespace AdvancedWorldGen.Helper;
 
 public static class Extensions
 {
-	public static bool TryGetValue<T>(this TagCompound tagCompound, string name, [NotNullWhen(true)] out T? value)
-	{
-		if (tagCompound.ContainsKey(name))
-		{
-			value = tagCompound.Get<T>(name)!;
-			return true;
-		}
-
-		value = default;
-		return false;
-	}
-
 	#region GenerationProgress
 
 	public static void Set(this GenerationProgress generationProgress, int currentValue, float maxValue,

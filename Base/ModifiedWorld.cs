@@ -55,10 +55,9 @@ public class ModifiedWorld : ModSystem
 
 	public override void LoadWorldData(TagCompound tag)
 	{
-		IList<string> list = tag.GetList<string>("Options");
-		if (list != null)
+		if(tag.TryGet("Options", out List<string> options));
 		{
-			OptionHelper.Import(list);
+			OptionHelper.Import(options);
 			Main.checkHalloween();
 			Main.checkXMas();
 		}

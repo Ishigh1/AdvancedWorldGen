@@ -12,8 +12,8 @@ public class OverhauledWorld : ModSystem
 
 	public override void LoadWorldData(TagCompound tag)
 	{
-		if (tag.TryGetValue("ocean", out int value)) WorldGen.oceanDistance = value;
-		if (tag.TryGetValue("beach", out value)) WorldGen.beachDistance = value;
+		if (tag.TryGet("ocean", out int value)) WorldGen.oceanDistance = value;
+		if (tag.TryGet("beach", out value)) WorldGen.beachDistance = value;
 	}
 
 	public override void SaveWorldData(TagCompound tagCompound)
