@@ -7,9 +7,10 @@ public class ConfigNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, I
 {
 	public Params Params;
 
-	public ConfigNumberTextBox(Params @params, string name, T min, T max) : base(name, min, max)
+	public ConfigNumberTextBox(Params @params, string name, T min, T max, string? localizationPath = null) : base(name, min, max)
 	{
 		Params = @params;
+		LocalizationPath = localizationPath;
 
 		CreateUIElement();
 	}

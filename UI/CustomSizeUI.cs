@@ -67,20 +67,22 @@ public class CustomSizeUI : UIState
 		uiPanel.Append(uiScrollbar);
 		uiPanel.Append(uiList);
 		int index = 0;
-		
+
+		const string localizationPath = "Mods.AdvancedWorldGen.UI.CustomSizes";
+
 		NumberTextBox<int> sizeXInput =
-			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue);
+			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue, localizationPath);
 		sizeXInput.Order = index++;
 		uiList.Add(sizeXInput);
 
 		NumberTextBox<int> sizeYInput =
-			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue);
+			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue, localizationPath);
 		sizeYInput.Order = index++;
 		uiList.Add(sizeYInput);
 
 		NumberTextBox<float> templeModifier =
 			new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.TempleMultiplier), 0,
-				float.PositiveInfinity);
+				float.PositiveInfinity, localizationPath);
 		templeModifier.Order = index++;
 		uiList.Add(templeModifier);
 
@@ -88,13 +90,13 @@ public class CustomSizeUI : UIState
 		{
 			NumberTextBox<float> dungeonModifier =
 				new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.DungeonMultiplier), 0,
-					float.MaxValue);
+					float.MaxValue, localizationPath);
 			dungeonModifier.Order = index++;
 			uiList.Add(dungeonModifier);
 
 			NumberTextBox<float> beachModifier = new ConfigNumberTextBox<float>(WorldSettings.Params,
 				nameof(Params.BeachMultiplier), 0,
-				float.PositiveInfinity);
+				float.PositiveInfinity, localizationPath);
 			beachModifier.Order = index++;
 			uiList.Add(beachModifier);
 
@@ -132,6 +134,7 @@ public class CustomSizeUI : UIState
 			Width = new StyleDimension(0f, 1f)
 		};
 		uiList.Add(gotoConfig);
+
 		gotoConfig.OnMouseDown += ConfigWorldGen;
 		gotoConfig.OnMouseOver += UiChanger.FadedMouseOver;
 		gotoConfig.OnMouseOut += UiChanger.FadedMouseOut;

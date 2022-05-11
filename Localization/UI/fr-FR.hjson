@@ -8,10 +8,10 @@
             "Description": "Choisissez vos options."
         },
         "ShowHidden": {
-            "description": "Montre les options mineures et/ou instables."
+            "Description": "Montre les options mineures et/ou instables."
         },
         "HideHidden": {
-            "description": "Cache les options mineures et/ou instables."
+            "Description": "Cache les options mineures et/ou instables."
         },
         "DedServ": {
             "Selected": "(selectioné)",

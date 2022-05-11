@@ -1,0 +1,37 @@
+﻿{
+    "Mods.AdvancedWorldGen": {
+        "Import": {
+            "$parentVal": "Импортировать из буфера обмена",
+            "Description": "Импортирует настройки из буфера обмена."
+        },
+        "NoneSelected": {
+            "Description": "Выберите опции создания мира."
+        },
+        "ShowHidden": {
+            "Description": "Показывать минорные и/или нестабильные опции."
+        },
+        "HideHidden": {
+            "Description": "Скрывать минорные и/или нестабильные опции."
+        },
+        "DedServ": {
+            "Selected": "(выбрано)",
+            "ShowHidden": "h : Показывать скрытые опции",
+            "Import": "i <options> : Импорт опций",
+            "Validate": "y : Проверить правильность",
+            "InvalidId": "Неправильное число",
+            "InvalidImport": "Неверный импорт",
+            "InvalidInput": "Ввод не распознан"
+        },
+        "Warning": "Внимание",
+        "CustomSize": "Кастомный размер",
+        "Abort": "Отмена",
+        "NoOptions": "Мир без опций",
+        "CopySettings": "Скопировать настройки",
+        "OptionButton": "Выберите настройки генерации мира",
+        "DownLevel": "Настройка опций сида",
+        "CustomSizedWorld": "{0}x{1}",
+        "UI": {
+            "Config": "Сброс к настройкам мира Terraria"
+        }
+    }
+}
