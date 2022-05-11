@@ -9,6 +9,8 @@ public abstract class InputBox<T> : OrderedUIItem
 	public UIPanel Background = null!;
 	public string Name;
 
+	public string? LocalizationPath { get; set; }
+
 	protected InputBox(string name)
 	{
 		Name = name;
@@ -40,7 +42,14 @@ public abstract class InputBox<T> : OrderedUIItem
 		};
 		Append(Background);
 
-		UIText title = new(Language.GetText(Name))
+		string localization = Name;
+		if (LocalizationPath is not null)
+		{
+			localization = $"{LocalizationPath}.{Name}";
+			if (!Language.Exists(localization)) localization = Name;
+		}
+
+		UIText title = new(Language.GetText(localization))
 		{
 			VAlign = 0.5f
 		};
