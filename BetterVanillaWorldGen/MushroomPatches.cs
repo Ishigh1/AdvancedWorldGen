@@ -62,12 +62,12 @@ public class MushroomPatches : ControlledWorldGenPass
 				if (!isValid)
 					continue;
 
-				ShroomPatch(x, y);
+                ShroomPatch(x, y);
 				for (int it = 0; it < 5; it++)
 				{
 					int x2 = x + WorldGen.genRand.Next(-40, 41);
 					int y2 = y + WorldGen.genRand.Next(-40, 41);
-					ShroomPatch(x2, y2);
+                    ShroomPatch(x2, y2);
 				}
 
 				mushroomBiomesPosition.Add(new Vector2(x, y));
@@ -132,7 +132,7 @@ public class MushroomPatches : ControlledWorldGenPass
 		}
 	}
 
-	public void ShroomPatch(int x, int y)
+	public static void ShroomPatch(int x, int y)
 	{
 		int num = WorldGen.genRand.Next(80, 100);
 		int num2 = WorldGen.genRand.Next(20, 26);

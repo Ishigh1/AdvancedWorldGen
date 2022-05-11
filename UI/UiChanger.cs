@@ -242,7 +242,7 @@ public class UiChanger
 				text += optionText;
 				if (text.Length > 55)
 				{
-					text = text.Substring(0, 50) + "[...]";
+					text = string.Concat(text.AsSpan(0, 50), "[...]");
 					break;
 				}
 			}
@@ -267,25 +267,16 @@ public class UiChanger
 		return options;
 	}
 
-	public void SetSpecialName(On.Terraria.IO.WorldFileData.orig_SetWorldSize orig, WorldFileData self, int x, int y)
+	public static void SetSpecialName(On.Terraria.IO.WorldFileData.orig_SetWorldSize orig, WorldFileData self, int x, int y)
 	{
 		self.WorldSizeX = x;
 		self.WorldSizeY = y;
-		switch (x, y)
+		self._worldSizeName = (x, y) switch
 		{
-			case (4200, 1200):
-				self._worldSizeName = Language.GetText("UI.WorldSizeSmall");
-				break;
-			case (6400, 1800):
-				self._worldSizeName = Language.GetText("UI.WorldSizeMedium");
-				break;
-			case (8400, 2400):
-				self._worldSizeName = Language.GetText("UI.WorldSizeLarge");
-				break;
-			default:
-				self._worldSizeName =
-					Language.GetText(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSizedWorld", x, y));
-				break;
-		}
+			(4200, 1200) => Language.GetText("UI.WorldSizeSmall"),
+			(6400, 1800) => Language.GetText("UI.WorldSizeMedium"),
+			(8400, 2400) => Language.GetText("UI.WorldSizeLarge"),
+			_ => Language.GetText(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSizedWorld", x, y))
+		};
 	}
 }

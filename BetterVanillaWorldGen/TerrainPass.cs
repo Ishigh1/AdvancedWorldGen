@@ -205,7 +205,7 @@ public class TerrainPass : ControlledWorldGenPass
 		}
 	}
 
-	public double GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
+	public static double GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
 	{
 		double num = 0.0;
 		if ((WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen) && WorldGen.genRand.NextBool(2))

@@ -12,7 +12,7 @@ public abstract class FocusElement : UIElement
 
 	public abstract string DisplayText { get; }
 
-	public virtual void Focus(SpriteBatch spriteBatch)
+	public virtual void Focus()
 	{
 		CurrentFocus?.Unfocus();
 		CurrentFocus = this;
@@ -27,7 +27,7 @@ public abstract class FocusElement : UIElement
 	{
 		if (Main.mouseLeft && Main.mouseLeftRelease)
 			if (Parent.IsMouseHovering)
-				Focus(spriteBatch);
+				Focus();
 			else if (IsTheCurrentFocus)
 				Unfocus();
 

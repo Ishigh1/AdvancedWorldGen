@@ -8,10 +8,10 @@
             "Description": "Please choose the options you want."
         },
         "ShowHidden": {
-            "description": "Show the minor and/or unstable features."
+            "Description": "Show the minor and/or unstable features."
         },
         "HideHidden": {
-            "description": "Hide the minor and/or unstable features."
+            "Description": "Hide the minor and/or unstable features."
         },
         "DedServ": {
             "Selected": "(selected)",

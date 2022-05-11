@@ -72,7 +72,7 @@ public class JunglePass : ControlledWorldGenPass
 		WorldGen.TileRunner(x, y, num, 10000, 59, false, 0f, -20f, true);
 		Progress.Set(7, 11);
 
-		GenerateTunnelToSurface(x, y);
+        GenerateTunnelToSurface(x, y);
 		Progress.Set(8, 11);
 
 		WorldGen.mudWall = false;
@@ -119,7 +119,7 @@ public class JunglePass : ControlledWorldGenPass
 		y = Utils.Clamp(y, (int)Main.rockLayer, Main.UnderworldLayer);
 	}
 
-	public void GenerateTunnelToSurface(int x, int y)
+	public static void GenerateTunnelToSurface(int x, int y)
 	{
 		double num = WorldGen.genRand.Next(5, 11);
 		Vector2 vector = new(x, y);

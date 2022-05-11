@@ -25,9 +25,9 @@ public class ValuesList : FocusElement
 
 	public override string DisplayText => ParentBox.Value;
 
-	public override void Focus(SpriteBatch spriteBatch)
+	public override void Focus()
 	{
-		base.Focus(spriteBatch);
+		base.Focus();
 
 		Main.OnPostDraw += ExpandList;
 	}

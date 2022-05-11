@@ -102,7 +102,7 @@ public class WorldGenConfigurator : UIState
 		{
 			case JTokenType.Object:
 				JObject jObject = (JObject)jToken;
-				foreach ((string? key, JToken? child) in jObject)
+				foreach ((string? _, JToken? child) in jObject)
 					if (child is not null)
 						TransformJsonToUI(uiPanel, ref index, child);
 				return;

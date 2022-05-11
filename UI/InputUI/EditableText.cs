@@ -23,9 +23,9 @@ public class EditableText<T> : FocusElement where T : IConvertible, IComparable
 
 	public override string DisplayText => ParentBox.Value.ToString()!;
 
-	public override void Focus(SpriteBatch spriteBatch)
+	public override void Focus()
 	{
-		base.Focus(spriteBatch);
+		base.Focus();
 
 		CurrentContent = DisplayText;
 		Shift = 0;
