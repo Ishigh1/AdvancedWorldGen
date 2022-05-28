@@ -58,7 +58,7 @@ public class SnowWorld
 
 	public static void ComputeSnowBall(out double damages, out double knockback)
 	{
-		damages = 10 * DifficultyHelper.GetDamageModifier();
+		damages = 10;
 		knockback = 4.5;
 		if (NPC.downedBoss1)
 		{

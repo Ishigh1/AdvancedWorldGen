@@ -79,7 +79,7 @@ public static class EyeOfCthulhu
 		else if (rotation > MathHelper.Pi)
 			rotation -= MathHelper.TwoPi;
 
-		SoundEngine.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, -1);
+		SoundEngine.PlaySound(SoundID.ForceRoar, npc.position);
 		npc.rotation = rotation;
 		npc.velocity = (rotation + MathHelper.PiOver2).ToRotationVector2() * EyeSpeed.GetCurrentValue();
 		npc.dontTakeDamage = true;

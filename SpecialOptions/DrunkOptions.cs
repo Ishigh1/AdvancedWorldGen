@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.Helper;
 using MonoMod.Cil;
 using Terraria;
@@ -41,7 +42,7 @@ public class DrunkOptions
 			}
 		}
 
-		if (WorldGen.drunkWorldGen ^ API.OptionsContains("Drunk.Crimruption"))
+		if (!WorldgenSettings.Revamped && WorldGen.drunkWorldGen ^ API.OptionsContains("Drunk.Crimruption"))
 		{
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
 			if (passIndex != -1)

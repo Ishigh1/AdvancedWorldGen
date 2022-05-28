@@ -40,6 +40,9 @@ public static partial class Replacer
 		index = genPasses.FindIndex(pass => pass.Name == "Mushroom Patches");
 		if (index != -1) genPasses[index] = new MushroomPatches();
 
+		index = genPasses.FindIndex(pass => pass.Name == "Corruption");
+		if (index != -1) genPasses[index] = new Corruption();
+		
 		index = genPasses.FindIndex(pass => pass.Name == "Dungeon");
 		if (index != -1) genPasses[index] = new DungeonPass();
 
@@ -50,8 +53,7 @@ public static partial class Replacer
 		if (index != -1) genPasses[index] = new JungleChests();
 
 		index = genPasses.FindIndex(pass => pass.Name == "Shell Piles");
-		if (index != -1)
-			genPasses[index] = new ShellPiles();
+		if (index != -1) genPasses[index] = new ShellPiles();
 
 		index = genPasses.FindIndex(pass => pass.Name == "Surface Ore and Stone");
 		if (index != -1) genPasses[index] = new SurfaceOreAndStone();

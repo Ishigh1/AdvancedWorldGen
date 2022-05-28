@@ -148,6 +148,7 @@ public class ResetPass : ControlledWorldGenPass
 		int beachBordersWidth = (int)(275 * worldSize);
 		int beachSandRandomWidthRange = (int)(20 * worldSize);
 		int beachSandRandomCenter = beachBordersWidth + 5 + 2 * beachSandRandomWidthRange;
+		VanillaInterface.EvilBiomeBeachAvoidance.Value = beachSandRandomCenter + 60;
 		if (worldSize < 1)
 		{
 			WorldGen.oceanDistance = beachBordersWidth - 25;

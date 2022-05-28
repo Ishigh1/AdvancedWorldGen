@@ -84,6 +84,7 @@ public class MushroomPatches : ControlledWorldGenPass
 			{
 				if (!Main.tile[x, y].HasTile)
 					continue;
+				Interface.VanillaInterface.GrassSpread.Value = 0;
 				WorldGen.SpreadGrass(x, y, TileID.Mud, TileID.MushroomGrass, false);
 				if (Main.tile[x, y].TileType == TileID.MushroomGrass)
 				{
