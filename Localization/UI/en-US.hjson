@@ -1,9 +1,7 @@
 {
     "Mods.AdvancedWorldGen": {
-        "Import": {
-            "$parentVal": "Import from clipboard",
-            "Description": "Import settings from clipboard."
-        },
+        "Import": "Import from clipboard",
+        "Export": "Export to clipboard",
         "NoneSelected": {
             "Description": "Please choose the options you want."
         },

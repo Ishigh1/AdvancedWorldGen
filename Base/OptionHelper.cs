@@ -76,11 +76,13 @@ public class OptionHelper
 				option.WeakEnable();
 	}
 
-	public void Export(ICollection<string> collection)
+	public List<string> Export()
 	{
+		List<string> list = new();
 		foreach ((string? _, Option? option) in OptionDict)
 			if (option.Enabled && option.Children.Count == 0)
-				collection.Add(option.FullName);
+				list.Add(option.FullName);
+		return list;
 	}
 
 	public bool OptionsContains(params string[] optionNames)
@@ -93,7 +95,7 @@ public class OptionHelper
 		});
 	}
 
-	public void OnTick()
+	public static void OnTick()
 	{
 		SnowWorld.FallSnow();
 	}
@@ -155,7 +157,7 @@ public class OptionHelper
 				new Entropy(500, reader).TreatTiles();
 				break;
 			default:
-				throw new ArgumentOutOfRangeException(nameof(packetId));
+				throw new ArgumentOutOfRangeException(nameof(packetId), packetId, null);
 		}
 	}
 }

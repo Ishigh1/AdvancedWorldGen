@@ -16,7 +16,7 @@ public abstract class InputBox<T> : OrderedUIItem
 		Name = name;
 	}
 
-	public abstract T Value { get; set; }
+	public abstract T? Value { get; set; }
 
 	public virtual void CreateUIElement()
 	{

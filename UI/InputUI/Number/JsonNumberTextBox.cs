@@ -14,7 +14,7 @@ public class JsonNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, ICo
 		CreateUIElement();
 	}
 
-	public override T Value
+	public override T? Value
 	{
 		get => (T)JValue.Value;
 		set => JValue.Value = value;

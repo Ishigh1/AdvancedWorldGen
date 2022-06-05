@@ -5,7 +5,7 @@ namespace AdvancedWorldGen.CustomSized;
 
 public class Params
 {
-	public Dictionary<string, object> Data = new();
+	public Dictionary<string, object?> Data = new();
 
 	public Params()
 	{

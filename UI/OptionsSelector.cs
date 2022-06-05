@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;
@@ -17,16 +17,21 @@ namespace AdvancedWorldGen.UI;
 
 public class OptionsSelector : UIState
 {
+	public static bool ShowHidden;
 	public LocalizedText Description;
+	public UIText UIDescription = null!;
+	public UIList UIList = null!;
+	public Option? Parent;
 
 	public UIState PreviousState;
 
 	public OptionsSelector(UIState previousState, Option? parent)
 	{
 		PreviousState = previousState;
+		Parent = parent;
 		Description = Language.GetText("Mods.AdvancedWorldGen.NoneSelected.Description");
 
-		CreateOptionPanel(parent);
+		CreateOptionPanel();
 	}
 
 	public void GoBack(UIMouseEvent evt, UIElement listeningElement)
@@ -35,7 +40,7 @@ public class OptionsSelector : UIState
 		Main.MenuUI.SetState(PreviousState);
 	}
 
-	public void CreateOptionPanel(Option? parent)
+	public void CreateOptionPanel()
 	{
 		UIPanel uiPanel = new()
 		{
@@ -57,9 +62,9 @@ public class OptionsSelector : UIState
 			Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 		});
 
-		UIText uiDescription = new(Description, 0.75f) { HAlign = 0.5f, VAlign = 0.5f };
+		UIDescription = new UIText(Description, 0.75f) { HAlign = 0.5f, VAlign = 0.5f };
 
-		CreateSelectableOptions(uiPanel, uiDescription, parent);
+		CreateSelectableOptions(uiPanel);
 
 		uiPanel.Append(new UIHorizontalSeparator
 		{
@@ -68,7 +73,7 @@ public class OptionsSelector : UIState
 			Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 		});
 
-		uiDescription.Height = uiDescription.MinHeight;
+		UIDescription.Height = UIDescription.MinHeight;
 		UISlicedImage uIDescriptionBox =
 			new(Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelHighlight"))
 			{
@@ -79,7 +84,7 @@ public class OptionsSelector : UIState
 				Color = Color.LightGray * 0.7f
 			};
 		uIDescriptionBox.SetSliceDepths(10);
-		uIDescriptionBox.Append(uiDescription);
+		uIDescriptionBox.Append(UIDescription);
 		uiPanel.Append(uIDescriptionBox);
 
 		uiPanel.Recalculate();
@@ -87,7 +92,7 @@ public class OptionsSelector : UIState
 		UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 		{
 			Width = new StyleDimension(0f, 0.1f),
-			Top = new StyleDimension(0f, 0.75f),
+			Top = new StyleDimension(0f, 0.8f),
 			HAlign = 0.4f
 		};
 		goBack.OnMouseDown += GoBack;
@@ -98,13 +103,39 @@ public class OptionsSelector : UIState
 		UITextPanel<string> customSize = new(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSize"))
 		{
 			Width = new StyleDimension(0f, 0.1f),
-			Top = new StyleDimension(0f, 0.75f),
+			Top = new StyleDimension(0f, 0.8f),
 			HAlign = 0.6f
 		};
 		customSize.OnMouseDown += GoToCustomSize;
 		customSize.OnMouseOver += UiChanger.FadedMouseOver;
 		customSize.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(customSize);
+		
+		UITextPanel<string> importButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Import"))
+		{
+			Width = new StyleDimension(0f, 0.1f),
+			Top = new StyleDimension(0f, 0.75f),
+			HAlign = 0.4f
+		};
+		importButton.OnMouseDown += delegate
+		{
+			OptionsParser.Parse(Platform.Get<IClipboard>().Value);
+			CreateOptionList();
+		};
+		importButton.OnMouseOver += UiChanger.FadedMouseOver;
+		importButton.OnMouseOut += UiChanger.FadedMouseOut;
+		Append(importButton);
+		
+		UITextPanel<string> exportButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Export"))
+		{
+			Width = new StyleDimension(0f, 0.1f),
+			Top = new StyleDimension(0f, 0.75f),
+			HAlign = 0.6f
+		};
+		exportButton.OnMouseDown += delegate { Platform.Get<IClipboard>().Value = OptionsParser.GetJsonText(); };
+		exportButton.OnMouseOver += UiChanger.FadedMouseOver;
+		exportButton.OnMouseOut += UiChanger.FadedMouseOut;
+		Append(exportButton);
 	}
 
 	public static void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
@@ -113,7 +144,7 @@ public class OptionsSelector : UIState
 		Main.MenuUI.SetState(new CustomSizeUI());
 	}
 
-	public void CreateSelectableOptions(UIElement uiPanel, UIText uiDescription, Option? parent)
+	public void CreateSelectableOptions(UIElement uiPanel)
 	{
 		UIScrollbar uiScrollbar = new()
 		{
@@ -121,18 +152,17 @@ public class OptionsSelector : UIState
 			Top = new StyleDimension(50, 0f),
 			HAlign = 1f
 		};
-		UIList uiList = new()
+		UIList = new UIList
 		{
 			Height = new StyleDimension(-110f, 1f),
 			Width = new StyleDimension(-20f, 1f),
 			Top = new StyleDimension(50, 0f)
 		};
-		uiList.SetScrollbar(uiScrollbar);
+		UIList.SetScrollbar(uiScrollbar);
 		uiPanel.Append(uiScrollbar);
-		uiPanel.Append(uiList);
-		CreateOptionList(uiDescription, uiList, parent, false);
+		uiPanel.Append(UIList);
+		CreateOptionList();
 
-		bool showHidden = false;
 		LocalizedText showHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.ShowHidden.Description");
 		LocalizedText hideHiddenDescription = Language.GetText("Mods.AdvancedWorldGen.HideHidden.Description");
 		UIImage uiImage = new(TextureAssets.InventoryTickOff)
@@ -142,71 +172,39 @@ public class OptionsSelector : UIState
 		uiImage.OnMouseDown += delegate
 		{
 			SoundEngine.PlaySound(SoundID.MenuTick);
-			showHidden = !showHidden;
-			uiImage.SetImage(showHidden ? TextureAssets.InventoryTickOn : TextureAssets.InventoryTickOff);
-			CreateOptionList(uiDescription, uiList, parent, showHidden);
-			uiDescription.SetText(showHidden ? hideHiddenDescription : showHiddenDescription);
+			ShowHidden = !ShowHidden;
+			uiImage.SetImage(ShowHidden ? TextureAssets.InventoryTickOn : TextureAssets.InventoryTickOff);
+			CreateOptionList();
+			UIDescription.SetText(ShowHidden ? hideHiddenDescription : showHiddenDescription);
 		};
 		uiImage.OnMouseOver += delegate
 		{
 			SoundEngine.PlaySound(SoundID.MenuTick);
-			uiDescription.SetText(showHidden ? hideHiddenDescription : showHiddenDescription);
+			UIDescription.SetText(ShowHidden ? hideHiddenDescription : showHiddenDescription);
 		};
 		uiImage.OnMouseOut += delegate
 		{
 			SoundEngine.PlaySound(SoundID.MenuTick);
-			uiDescription.SetText(Description);
+			UIDescription.SetText(Description);
 		};
 		uiPanel.Append(uiImage);
 	}
 
-	public void CreateOptionList(UIText uiDescription, UIList uiList, Option? parent, bool showHidden)
+	public void CreateOptionList()
 	{
 		float currentHeight = 50;
-		uiList.Clear();
+		UIList.Clear();
 		bool isLookingAtSomething = false;
 
 		void SetDefaultDescription(UIMouseEvent evt, UIElement listeningElement)
 		{
-			uiDescription.SetText(Description);
-		}
-
-		if (parent == null)
-		{
-			GroupOptionButton<bool> importButton = new(true,
-				Language.GetText("Mods.AdvancedWorldGen.Import"),
-				Language.GetText("Mods.AdvancedWorldGen.Import.Description"), Color.White, null)
-			{
-				HAlign = 0.5f,
-				Width = new StyleDimension(0f, 1f),
-				Height = new StyleDimension(40f, 0f),
-				Top = new StyleDimension(currentHeight, 0f)
-			};
-			currentHeight += 40;
-			uiList.Add(importButton);
-
-			importButton.SetCurrentOption(false);
-			importButton.OnMouseDown += delegate
-			{
-				string optionText = Platform.Get<IClipboard>().Value;
-				HashSet<string> options = new(optionText.Split('|'));
-				if (options.Count != 0)
-				{
-					ModifiedWorld.Instance.OptionHelper.Import(options);
-					SoundEngine.PlaySound(SoundID.MenuOpen);
-
-					CreateOptionList(uiDescription, uiList, parent, showHidden);
-				}
-			};
-			importButton.OnMouseOver += delegate { uiDescription.SetText(importButton.Description); };
-
-			importButton.OnMouseOut += SetDefaultDescription;
+			UIDescription.SetText(Description);
 		}
 
 		foreach ((_, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
 		{
-			if (option.Hidden && !showHidden) continue;
-			if (option.Parent != parent) continue;
+			if (option.Hidden && !ShowHidden) continue;
+			if (option.Parent != Parent) continue;
 			GroupOptionButton<bool> clickableText = new(true,
 				Language.GetText("Mods." + option.ModName + "." + option.SimplifiedName),
 				Language.GetText("Mods." + option.ModName + "." + option.SimplifiedName + ".Description"), Color.White,
@@ -218,7 +216,7 @@ public class OptionsSelector : UIState
 				Top = new StyleDimension(currentHeight, 0f)
 			};
 			currentHeight += 40;
-			uiList.Add(clickableText);
+			UIList.Add(clickableText);
 
 			clickableText.SetCurrentOption(option.Enabled);
 			clickableText.OnMouseDown += delegate
@@ -233,14 +231,14 @@ public class OptionsSelector : UIState
 
 				if (option.Conflicts
 				    .Any(conflict => API.OptionsContains(conflict)))
-					CreateOptionList(uiDescription, uiList, parent, showHidden);
+					CreateOptionList();
 				else
 					clickableText.SetCurrentOption(!selected);
 			};
 			clickableText.OnMouseOver += delegate
 			{
 				if (!isLookingAtSomething)
-					uiDescription.SetText(clickableText.Description);
+					UIDescription.SetText(clickableText.Description);
 			};
 			clickableText.OnMouseOut += SetDefaultDescription;
 
@@ -257,13 +255,13 @@ public class OptionsSelector : UIState
 				uiImage.OnMouseOver += delegate
 				{
 					SoundEngine.PlaySound(SoundID.MenuTick);
-					uiDescription.SetText(downLevel);
+					UIDescription.SetText(downLevel);
 					isLookingAtSomething = true;
 				};
 				uiImage.OnMouseOut += delegate
 				{
 					SoundEngine.PlaySound(SoundID.MenuTick);
-					uiDescription.SetText(clickableText.Description);
+					UIDescription.SetText(clickableText.Description);
 					isLookingAtSomething = false;
 				};
 				uiImage.OnMouseDown += delegate
@@ -290,13 +288,13 @@ public class OptionsSelector : UIState
 						uiImage.OnMouseOver += delegate
 						{
 							SoundEngine.PlaySound(SoundID.MenuTick);
-							uiDescription.SetText(conflictDescription);
+							UIDescription.SetText(conflictDescription);
 							isLookingAtSomething = true;
 						};
 						uiImage.OnMouseOut += delegate
 						{
 							SoundEngine.PlaySound(SoundID.MenuTick);
-							uiDescription.SetText(clickableText.Description);
+							UIDescription.SetText(clickableText.Description);
 							isLookingAtSomething = false;
 						};
 						clickableText.Append(uiImage);

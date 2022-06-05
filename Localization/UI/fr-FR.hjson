@@ -1,9 +1,7 @@
 {
     "Mods.AdvancedWorldGen": {
-        "Import": {
-            "$parentVal": "Importer",
-            "Description": "Importe les options depuis le presse-papier."
-        },
+        "Import": "Importer depuis le presse-papier",
+        "Export": "Exporter vers le presse-papier",
         "NoneSelected": {
             "Description": "Choisissez vos options."
         },

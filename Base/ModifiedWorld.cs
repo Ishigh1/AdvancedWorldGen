@@ -65,8 +65,7 @@ public class ModifiedWorld : ModSystem
 
 	public override void SaveWorldData(TagCompound tagCompound)
 	{
-		List<string> options = new();
-		OptionHelper.Export(options);
+		List<string> options = OptionHelper.Export();
 		if (options.Count > 0)
 			tagCompound.Add("Options", options);
 	}
@@ -101,8 +100,7 @@ public class ModifiedWorld : ModSystem
 
 	public override void NetSend(BinaryWriter writer)
 	{
-		List<string> optionNames = new();
-		OptionHelper.Export(optionNames);
+		List<string> optionNames = OptionHelper.Export();
 		foreach (string optionName in optionNames)
 			writer.Write(optionName);
 

@@ -1,8 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using AdvancedWorldGen.Base;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.Helper;

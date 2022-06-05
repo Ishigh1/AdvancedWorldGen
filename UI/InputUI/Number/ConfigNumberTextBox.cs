@@ -15,7 +15,7 @@ public class ConfigNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, I
 		CreateUIElement();
 	}
 
-	public override T Value
+	public override T? Value
 	{
 		get => (T)Params.Data[Name];
 		set => Params.Data[Name] = value;
