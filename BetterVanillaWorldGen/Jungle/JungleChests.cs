@@ -37,8 +37,8 @@ public class JungleChests : ControlledWorldGenPass
 		for (int step = 0; step < stepCount; step++)
 		{
 			Progress.Set(step, stepCount);
-			int minX = VanillaInterface.JungleMinX;
-			int maxX = VanillaInterface.JungleMaxX;
+			int minX = VanillaInterface.JungleLeft;
+			int maxX = VanillaInterface.JungleRight;
 			int x = WorldGen.genRand.Next(minX, maxX);
 
 			int y;
@@ -90,13 +90,6 @@ public class JungleChests : ControlledWorldGenPass
 
 			for (int xx = x - width - 1; xx <= x + width + 1; xx++)
 			for (int yy = y + height - 2; yy <= y + height; yy++)
-			{
-				Tile tile = Main.tile[xx, yy];
-				tile.HasTile = false;
-			}
-
-			for (int xx = x - width - 1; xx <= x + width + 1; xx++)
-			for (int yy = y + height - 2; yy <= y + height - 1; yy++)
 			{
 				Tile tile = Main.tile[xx, yy];
 				tile.HasTile = false;

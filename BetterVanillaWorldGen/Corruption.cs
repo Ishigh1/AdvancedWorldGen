@@ -34,8 +34,8 @@ public class Corruption : ControlledWorldGenPass
 				}
 
 		const int num700 = 10;
-		VanillaInterface.JungleMinX -= num700;
-		VanillaInterface.JungleMaxX += num700;
+		VanillaInterface.JungleLeft -= num700;
+		VanillaInterface.JungleRight += num700;
 		snowLeft -= num700;
 		snowRight += num700;
 		int beachPadding = WorldGen.oceanDistance * 2;
@@ -62,8 +62,8 @@ public class Corruption : ControlledWorldGenPass
 		{
 			int num728 = snowLeft;
 			int num729 = snowRight;
-			int num730 = VanillaInterface.JungleMinX;
-			int num731 = VanillaInterface.JungleMaxX;
+			int num730 = VanillaInterface.JungleLeft;
+			int num731 = VanillaInterface.JungleRight;
 			Progress.Set(biome, (float)biomeNumber);
 			bool isValid = false;
 			int num732 = 0;
@@ -241,8 +241,8 @@ public class Corruption : ControlledWorldGenPass
 		{
 			int num705 = snowLeft;
 			int num706 = snowRight;
-			int num707 = VanillaInterface.JungleMinX;
-			int num708 = VanillaInterface.JungleMaxX;
+			int num707 = VanillaInterface.JungleLeft;
+			int num708 = VanillaInterface.JungleRight;
 			Progress.Set(biome, (float)biomeNumber);
 			bool flag48 = false;
 			int num709 = 0;

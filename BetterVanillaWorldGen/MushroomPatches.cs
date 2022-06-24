@@ -22,8 +22,8 @@ public class MushroomPatches : ControlledWorldGenPass
 
 		List<Vector2> mushroomBiomesPosition = new();
 		const int spread = 100;
-		int jungleMinX = Math.Max(VanillaInterface.JungleMinX - spread, spread);
-		int jungleSpread = Math.Min(VanillaInterface.JungleMaxX + spread, Main.maxTilesX - spread) -
+		int jungleMinX = Math.Max(VanillaInterface.JungleLeft - spread, spread);
+		int jungleSpread = Math.Min(VanillaInterface.JungleRight + spread, Main.maxTilesX - spread) -
 		                   jungleMinX;
 		int xMax = Main.maxTilesX - jungleSpread - spread;
 

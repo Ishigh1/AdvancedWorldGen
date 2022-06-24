@@ -32,7 +32,7 @@ public class DrunkOptions
 
 	public static void AddDrunkEdits(List<GenPass> tasks)
 	{
-		if (WorldGen.drunkWorldGen ^ API.OptionsContains("Drunk.BothOres"))
+		if (API.OptionsContains("Drunk.BothOres"))
 		{
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Shinies");
 			if (passIndex != -1)
@@ -42,7 +42,7 @@ public class DrunkOptions
 			}
 		}
 
-		if (!WorldgenSettings.Revamped && WorldGen.drunkWorldGen ^ API.OptionsContains("Drunk.Crimruption"))
+		if (!WorldgenSettings.Revamped && API.OptionsContains("Drunk.Crimruption"))
 		{
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
 			if (passIndex != -1)
@@ -59,7 +59,7 @@ public class DrunkOptions
 			}
 		}
 
-		if (WorldGen.drunkWorldGen ^ API.OptionsContains("Drunk.MiddleLavaOcean"))
+		if (API.OptionsContains("Drunk.MiddleLavaOcean"))
 		{
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Underworld");
 			if (passIndex != -1)

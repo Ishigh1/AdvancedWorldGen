@@ -113,7 +113,13 @@ public class OptionHelper
 				NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, 0, 1f, Main.invasionType + 3);
 		}
 
-		if (OptionsContains("Drunk.Crimruption") && !WorldGen.drunkWorldGen) WorldGen.crimson = !WorldGen.crimson;
+
+		if (Main.drunkWorld ^ OptionsContains("Drunk.Crimruption") && Main.netMode != NetmodeID.MultiplayerClient)
+		{
+			WorldGen.crimson = !WorldGen.crimson;
+			if (Main.netMode == NetmodeID.Server)
+				NetMessage.SendData(MessageID.WorldData);
+		}
 	}
 
 	public void OnDusk()

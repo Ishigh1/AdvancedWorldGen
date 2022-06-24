@@ -14,7 +14,8 @@ public class JunglePass : ControlledWorldGenPass
 	public int JungleOriginX;
 	public int LeftBeachEnd;
 	public int RightBeachStart;
-	public float WorldScale;
+	public float WorldScaleX;
+	public float WorldScaleY;
 
 	public JunglePass() : base("Jungle", 4304.6303f)
 	{
@@ -29,69 +30,66 @@ public class JunglePass : ControlledWorldGenPass
 		LeftBeachEnd = VanillaInterface.LeftBeachEnd.Value;
 		RightBeachStart = VanillaInterface.RightBeachStart.Value;
 
-		WorldScale = Main.maxTilesX * (1.5f / 4200f);
-		(int x, int y) = CreateStartPoint();
-		ApplyRandomMovement(ref x, ref y, 100, 100);
-		Point mean = new(x, y);
+		WorldScaleY = Main.maxTilesY * (1.5f / 1200f);
+		WorldScaleX = Main.maxTilesX * (1.5f / 4200f);
+		int meanX = 0;
+		int meanY = 0;
 
-		PlaceFirstPassMud(x, y, 3);
-		Progress.Set(1, 11);
+		Progress.Add(1, 11);
 
-		PlaceGemsAt(x, y, 63, 2);
-		Progress.Set(2, 11);
+		int mudPasses = (int)Math.Max(3, 3 * WorldScaleY / WorldScaleX);
+		for (int i = 0; i < mudPasses; i++)
+		{
+			int xRange = 100 + 300 * i / mudPasses;
 
-		ApplyRandomMovement(ref x, ref y, 250, 150);
-		mean.X += x;
-		mean.Y += y;
+			(int x, int y) = RandomPoint(xRange);
+			meanX += x;
+			meanY += y;
+			PlaceFirstPassMud(x, y, 3);
+			Progress.Set(1, 11);
 
-		PlaceFirstPassMud(x, y, 0);
-		Progress.Set(3, 11);
+			ushort baseGem;
+			if (i < mudPasses / 3)
+				baseGem = 63;
+			else if (i < 2 * mudPasses / 3)
+				baseGem = 65;
+			else
+				baseGem = 67;
+			PlaceGemsAt(x, y, baseGem, 2);
+			Progress.Add(1, mudPasses, 5 / 11f);
+		}
 
-		PlaceGemsAt(x, y, 65, 2);
-		Progress.Set(4, 11);
+		meanX /= mudPasses;
+		meanY /= mudPasses;
 
-		int oldX = x;
-		int oldY = y;
-		ApplyRandomMovement(ref x, ref y, 400, 150);
-		mean.X += x;
-		mean.Y += y;
-
-		PlaceFirstPassMud(x, y, -3);
-		Progress.Set(5, 11);
-
-		PlaceGemsAt(x, y, 67, 2);
-		Progress.Set(6, 11);
-
-		x = mean.X / 3;
-		y = mean.Y / 3;
-		int num = WorldGen.genRand.Next((int)(400f * WorldScale), (int)(600f * WorldScale));
-		x = (int)Utils.Clamp(x, LeftBeachEnd + num / 2 + 25f * WorldScale,
-			RightBeachStart - num / 2f - 25f * WorldScale);
+		int num = WorldGen.genRand.Next((int)(400f * WorldScaleX), (int)(600f * WorldScaleX));
+		meanX = (int)Utils.Clamp(meanX, LeftBeachEnd + num / 2 + 25f * WorldScaleX,
+			RightBeachStart - num / 2f - 25f * WorldScaleX);
 
 		WorldGen.mudWall = true;
-		WorldGen.TileRunner(x, y, num, 10000, 59, false, 0f, -20f, true);
+		WorldGen.TileRunner(meanX, meanY, num, (int)(5000 * WorldScaleY), 59, false, 0f, -20f, true);
 		Progress.Set(7, 11);
 
-        GenerateTunnelToSurface(x, y);
+		GenerateTunnelToSurface(meanX, meanY);
 		Progress.Set(8, 11);
 
 		WorldGen.mudWall = false;
-		DelimitJungle();
+		DelimitJungle((int)((WorldGen.rockLayer + Main.UnderworldLayer) / 2));
 		Progress.Set(9, 11);
 
 		GenerateHolesInMudWalls();
 		Progress.Set(10, 11);
 
-		GenerateFinishingTouches(oldX, oldY);
+		GenerateFinishingTouches(meanX, meanY);
 		Progress.Set(11, 11);
 	}
 
 	public void PlaceGemsAt(int x, int y, ushort baseGem, int gemVariants)
 	{
-		for (int _ = 0; _ < 6f * WorldScale; _++)
+		for (int _ = 0; _ < 6f * Math.Sqrt(WorldScaleX * WorldScaleY); _++)
 		{
-			int i = x + WorldGen.genRand.Next(-(int)(125f * WorldScale), (int)(125f * WorldScale));
-			int j = y + WorldGen.genRand.Next(-(int)(125f * WorldScale), (int)(125f * WorldScale));
+			int i = x + WorldGen.genRand.Next(-(int)(125f * WorldScaleX), (int)(125f * WorldScaleX));
+			int j = y + WorldGen.genRand.Next(-(int)(125f * WorldScaleY), (int)(125f * WorldScaleY));
 			int strength = WorldGen.genRand.Next(3, 7);
 			int steps = WorldGen.genRand.Next(3, 8);
 			int type = baseGem + WorldGen.genRand.Next(0, gemVariants);
@@ -102,8 +100,9 @@ public class JunglePass : ControlledWorldGenPass
 	public void PlaceFirstPassMud(int x, int y, int xSpeedScale)
 	{
 		WorldGen.mudWall = true;
-		WorldGen.TileRunner(x, y, WorldGen.genRand.Next((int)(250f * WorldScale), (int)(500f * WorldScale)),
-			WorldGen.genRand.Next(50, 150), 59, false, DungeonSide * xSpeedScale);
+		float mul = WorldScaleY / WorldScaleX;
+		WorldGen.TileRunner(x, y, WorldGen.genRand.Next((int)(250f * WorldScaleX), (int)(500f * WorldScaleX)),
+			WorldGen.genRand.Next((int)(50f * WorldScaleY * mul), (int)(150f * WorldScaleY * mul)), 59, false, DungeonSide * xSpeedScale);
 		WorldGen.mudWall = false;
 	}
 
@@ -114,9 +113,14 @@ public class JunglePass : ControlledWorldGenPass
 
 	public void ApplyRandomMovement(ref int x, ref int y, int xRange, int yRange)
 	{
-		x += WorldGen.genRand.Next((int)(-xRange * WorldScale), 1 + (int)(xRange * WorldScale));
-		y += WorldGen.genRand.Next((int)(-yRange * WorldScale), 1 + (int)(yRange * WorldScale));
+		x += WorldGen.genRand.Next((int)(-xRange * WorldScaleX), 1 + (int)(xRange * WorldScaleX));
+		y += WorldGen.genRand.Next((int)(-yRange * WorldScaleY), 1 + (int)(yRange * WorldScaleY));
 		y = Utils.Clamp(y, (int)Main.rockLayer, Main.UnderworldLayer);
+	}
+
+	public (int x, int y) RandomPoint(int xDeviation)
+	{
+		return (JungleOriginX + WorldGen.genRand.Next(-xDeviation, xDeviation), WorldGen.genRand.Next((int)WorldGen.rockLayer, Main.UnderworldLayer));
 	}
 
 	public static void GenerateTunnelToSurface(int x, int y)
@@ -190,8 +194,8 @@ public class JunglePass : ControlledWorldGenPass
 
 	public void GenerateHolesInMudWalls()
 	{
-		int minX = VanillaInterface.JungleMinX;
-		int maxX = VanillaInterface.JungleMaxX;
+		int minX = VanillaInterface.JungleLeft;
+		int maxX = VanillaInterface.JungleRight;
 		for (int i = 0; i < Main.maxTilesX / 4; i++)
 		{
 			int x = WorldGen.genRand.Next(minX, maxX);
@@ -201,9 +205,8 @@ public class JunglePass : ControlledWorldGenPass
 		}
 	}
 
-	public void DelimitJungle()
+	public void DelimitJungle(int y, bool secondTry = false)
 	{
-		int y = (int)((WorldGen.rockLayer + Main.UnderworldLayer) / 2);
 		int importantX = JungleOriginX;
 		int currentX = JungleOriginX;
 		Tile tile1;
@@ -220,7 +223,10 @@ public class JunglePass : ControlledWorldGenPass
 		         !tile2.HasTile || tile2.TileType is TileID.Mud ||
 		         !tile3.HasTile || tile3.TileType is TileID.Mud);
 
-		VanillaInterface.JungleMinX = importantX + 1;
+		if (secondTry)
+			VanillaInterface.JungleLeft = Math.Min(VanillaInterface.JungleLeft, importantX + 1);
+		else
+			VanillaInterface.JungleLeft = importantX + 1;
 
 		currentX = JungleOriginX;
 		do
@@ -234,29 +240,31 @@ public class JunglePass : ControlledWorldGenPass
 		         !tile2.HasTile || tile2.TileType is TileID.Mud ||
 		         !tile3.HasTile || tile3.TileType is TileID.Mud);
 
-		VanillaInterface.JungleMaxX = importantX - 1;
+		if (secondTry)
+			VanillaInterface.JungleRight = Math.Min(VanillaInterface.JungleRight, importantX + 1);
+		else
+			VanillaInterface.JungleRight = importantX - 1;
 	}
 
 	public void GenerateFinishingTouches(int middleX, int middleY)
 	{
 		int x = middleX;
 		int y = middleY;
-		float worldScale = WorldScale;
 
-		float iterations = 20f * worldScale;
+		float iterations = 20f * WorldScaleX;
 		for (int i = 0; i <= iterations; i++)
 		{
 			Progress.Set(i, iterations, 1 / 11f / 3f, 10 / 11f);
-			x += WorldGen.genRand.Next((int)(-5f * worldScale), (int)(6f * worldScale));
-			y += WorldGen.genRand.Next((int)(-5f * worldScale), (int)(6f * worldScale));
+			x += WorldGen.genRand.Next((int)(-5f * WorldScaleX), (int)(6f * WorldScaleX));
+			y += WorldGen.genRand.Next((int)(-5f * WorldScaleY), (int)(6f * WorldScaleY));
 			WorldGen.TileRunner(x, y, WorldGen.genRand.Next(40, 100), WorldGen.genRand.Next(300, 500), 59);
 		}
 
-		iterations = 10f * worldScale;
-		int xMin = Math.Max(1, (int)(middleX - 600f * worldScale));
-		int xMax = Math.Min(Main.maxTilesX - 1, (int)(middleX + 600f * worldScale));
-		int yMin = Math.Max(1, (int)(middleY - 200f * worldScale));
-		int yMax = Math.Min(Main.maxTilesY - 1, (int)(middleY + 200f * worldScale));
+		iterations = 10f * WorldScaleX;
+		int xMin = Math.Max(1, (int)(middleX - 600f * WorldScaleX));
+		int xMax = Math.Min(Main.maxTilesX - 1, (int)(middleX + 600f * WorldScaleX));
+		int yMin = Math.Max(1, (int)(middleY - 200f * WorldScaleY));
+		int yMax = Math.Min(Main.maxTilesY - 1, (int)(middleY + 200f * WorldScaleY));
 		for (int i = 0; i <= iterations; i++)
 		{
 			Progress.Set(i, iterations, 1 / 11f / 3f, 10 / 11f + 1 / 11f / 3f);
@@ -267,7 +275,7 @@ public class JunglePass : ControlledWorldGenPass
 				y = WorldGen.genRand.Next(yMin, yMax);
 			} while (Main.tile[x, y].TileType != TileID.Mud);
 
-			for (int k = 0; k < 8f * worldScale; k++)
+			for (int k = 0; k < 8f * WorldScaleX; k++)
 			{
 				x += WorldGen.genRand.Next(-30, 31);
 				y += WorldGen.genRand.Next(-30, 31);
@@ -279,7 +287,7 @@ public class JunglePass : ControlledWorldGenPass
 			}
 		}
 
-		iterations = 300f * worldScale;
+		iterations = 300f * WorldScaleX;
 		for (int i = 0; i <= iterations; i++)
 		{
 			Progress.Set(i, iterations, 1 / 11f / 3f, 10 / 11f + 2 / 11f / 3f);
