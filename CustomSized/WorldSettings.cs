@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.Map;
+using Terraria.ModLoader;
 using Terraria.UI;
 using OnWorldGen = On.Terraria.WorldGen;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
@@ -37,7 +38,7 @@ public class WorldSettings
 	{
 		orig(self);
 		UIWorldCreation = self;
-		SetSizeTo(0);
+		SetSizeTo(ModLoader.TryGetMod("CalamityMod", out Mod _) ? 2 : 0); //Calamity have large worlds by defaults and do it in a way that fucks with this logic
 		AdvancedWorldGenMod.Instance.UiChanger.WorldGenConfigurator?.Dispose();
 		AdvancedWorldGenMod.Instance.UiChanger.WorldGenConfigurator = new WorldGenConfigurator();
 	}

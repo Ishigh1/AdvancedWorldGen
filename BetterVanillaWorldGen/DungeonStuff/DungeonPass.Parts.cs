@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 
@@ -13,12 +14,12 @@ public partial class DungeonPass
 		int failCount = 0;
 		const int failMax = 1000;
 		int numAdd = 0;
-		int yMin = (int)Math.Max(DungeonMinY, Main.worldSurface);
+		int yMin = (int)Math.Max(VanillaInterface.DungeonMinY.Value, Main.worldSurface);
 		while (numAdd < Main.maxTilesX / 500)
 		{
 			failCount++;
-			int x1 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-			int y1 = WorldGen.genRand.Next(yMin, DungeonMaxY);
+			int x1 = WorldGen.genRand.Next(VanillaInterface.DungeonMinX.Value, VanillaInterface.DungeonMaxX.Value);
+			int y1 = WorldGen.genRand.Next(yMin, VanillaInterface.DungeonMaxY.Value);
 
 			if (Main.wallDungeon[Main.tile[x1, y1].WallType] && WorldGen.placeTrap(x1, y1, 0))
 				failCount = failMax;
@@ -48,10 +49,10 @@ public partial class DungeonPass
 		while (numAdd < Main.maxTilesX / 150)
 		{
 			failCount++;
-			int num = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-			int num2 = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
+			int num = WorldGen.genRand.Next(VanillaInterface.DungeonMinX.Value, VanillaInterface.DungeonMaxX.Value);
+			int num2 = WorldGen.genRand.Next(VanillaInterface.DungeonMinY.Value, VanillaInterface.DungeonMaxY.Value);
 			if (Main.wallDungeon[Main.tile[num, num2].WallType])
-				for (int num3 = num2; num3 > DungeonMinY; num3--)
+				for (int num3 = num2; num3 > VanillaInterface.DungeonMinY.Value; num3--)
 					if (Main.tile[num, num3 - 1].HasTile && Main.tile[num, num3 - 1].TileType == tileType)
 					{
 						bool flag = false;
@@ -237,12 +238,12 @@ public partial class DungeonPass
 		float count = 840000f / Main.maxTilesX;
 		for (int i = 0; i < count; i++)
 		{
-			int num = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-			int num2 = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
+			int num = WorldGen.genRand.Next(VanillaInterface.DungeonMinX.Value, VanillaInterface.DungeonMaxX.Value);
+			int num2 = WorldGen.genRand.Next(VanillaInterface.DungeonMinY.Value, VanillaInterface.DungeonMaxY.Value);
 			while (!Main.wallDungeon[Main.tile[num, num2].WallType] || Main.tile[num, num2].HasTile)
 			{
-				num = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				num2 = WorldGen.genRand.Next(DungeonMinY, DungeonMaxY);
+				num = WorldGen.genRand.Next(VanillaInterface.DungeonMinX.Value, VanillaInterface.DungeonMaxX.Value);
+				num2 = WorldGen.genRand.Next(VanillaInterface.DungeonMinY.Value, VanillaInterface.DungeonMaxY.Value);
 			}
 
 			while (!WorldGen.SolidTile(num, num2) && num2 > 10) num2--;
@@ -280,12 +281,12 @@ public partial class DungeonPass
 		float count = 420000f / Main.maxTilesX;
 		for (int i = 0; i < count; i++)
 		{
-			int num = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-			int num2 = WorldGen.genRand.Next((int)Main.worldSurface, DungeonMaxY);
+			int num = WorldGen.genRand.Next(VanillaInterface.DungeonMinX.Value, VanillaInterface.DungeonMaxX.Value);
+			int num2 = WorldGen.genRand.Next((int)Main.worldSurface, VanillaInterface.DungeonMaxY.Value);
 			while (!Main.wallDungeon[Main.tile[num, num2].WallType] || Main.tile[num, num2].HasTile)
 			{
-				num = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				num2 = WorldGen.genRand.Next((int)Main.worldSurface, DungeonMaxY);
+				num = WorldGen.genRand.Next(VanillaInterface.DungeonMinX.Value, VanillaInterface.DungeonMaxX.Value);
+				num2 = WorldGen.genRand.Next((int)Main.worldSurface, VanillaInterface.DungeonMaxY.Value);
 			}
 
 			int num3;
@@ -554,12 +555,12 @@ public partial class DungeonPass
 		int num3 = 1 + Main.maxTilesX / 4200;
 		for (int i = 0; i < num; i++)
 		{
-			int num4 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-			int j = WorldGen.genRand.Next((int)Main.worldSurface + 10, DungeonMaxY);
+			int num4 = WorldGen.genRand.Next(VanillaInterface.DungeonMinX.Value, VanillaInterface.DungeonMaxX.Value);
+			int j = WorldGen.genRand.Next((int)Main.worldSurface + 10, VanillaInterface.DungeonMaxY.Value);
 			while (!Main.wallDungeon[Main.tile[num4, j].WallType] || Main.tile[num4, j].HasTile)
 			{
-				num4 = WorldGen.genRand.Next(DungeonMinX, DungeonMaxX);
-				j = WorldGen.genRand.Next((int)Main.worldSurface + 10, DungeonMaxY);
+				num4 = WorldGen.genRand.Next(VanillaInterface.DungeonMinX.Value, VanillaInterface.DungeonMaxX.Value);
+				j = WorldGen.genRand.Next((int)Main.worldSurface + 10, VanillaInterface.DungeonMaxY.Value);
 			}
 
 			if (!Main.wallDungeon[Main.tile[num4, j].WallType] || Main.tile[num4, j].HasTile)
@@ -1482,9 +1483,9 @@ public partial class DungeonPass
 			int yMin = (int)Math.Max(vector.Y - num - 4.0 - WorldGen.genRand.Next(6), 0);
 			int yMax = (int)Math.Min(vector.Y + num + 4.0 + WorldGen.genRand.Next(6), Main.maxTilesY);
 
-			DungeonMinX = Math.Min(xMin, DungeonMinX);
-			DungeonMaxX = Math.Max(xMax, DungeonMaxX);
-			DungeonMaxY = Math.Max(yMax, DungeonMaxY);
+			VanillaInterface.DungeonMinX.Value = Math.Min(xMin, VanillaInterface.DungeonMinX.Value);
+			VanillaInterface.DungeonMaxX.Value = Math.Max(xMax, VanillaInterface.DungeonMaxX.Value);
+			VanillaInterface.DungeonMaxY.Value = Math.Max(yMax, VanillaInterface.DungeonMaxY.Value);
 			for (int x = xMin; x < xMax; x++)
 			for (int y = yMin; y < yMax; y++)
 			{
@@ -1574,10 +1575,10 @@ public partial class DungeonPass
 		while (num2 > 0)
 		{
 			num2--;
-			int xMin = (int)Math.Max(vector2.X - num * 0.8 - 5.0, DungeonMinX);
-			int xMax = (int)Math.Min(vector2.X + num * 0.8 + 5.0, DungeonMaxX);
-			int yMin = (int)Math.Max(vector2.Y - num * 0.8 - 5.0, 0);
-			int yMax = (int)Math.Min(vector2.Y + num * 0.8 + 5.0, DungeonMaxX);
+			int xMin = (int)Math.Max(vector2.X - num * 0.8 - 5.0, VanillaInterface.DungeonMinX.Value);
+			int xMax = (int)Math.Min(vector2.X + num * 0.8 + 5.0, VanillaInterface.DungeonMaxX.Value);
+			int yMin = (int)Math.Max(vector2.Y - num * 0.8 - 5.0, VanillaInterface.DungeonMinY.Value);
+			int yMax = (int)Math.Min(vector2.Y + num * 0.8 + 5.0, VanillaInterface.DungeonMaxY.Value);
 
 			for (int x = xMin; x < xMax; x++)
 			for (int y = yMin; y < yMax; y++)
@@ -1646,8 +1647,8 @@ public partial class DungeonPass
 
 		double dungeonXStrength = DungeonXStrength1;
 		double dungeonYStrength = DungeonYStrength1;
-		DungeonMinY = y - (int)(dungeonYStrength / 2f);
-		Vector2 vector = new(x, DungeonMinY);
+		VanillaInterface.DungeonMinY.Value = y - (int)(dungeonYStrength / 2f);
+		Vector2 vector = new(x, VanillaInterface.DungeonMinY.Value);
 		int num4 = x > Main.maxTilesX / 2 ? -1 : 1;
 
 		if (WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen)

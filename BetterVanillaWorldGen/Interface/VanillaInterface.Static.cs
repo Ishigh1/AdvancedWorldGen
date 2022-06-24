@@ -25,4 +25,10 @@ public partial class VanillaInterface
 	public static readonly VanillaAccessor<bool[]> SkyLake = new(typeof(WorldGen), "skyLake");
 	
 	public static readonly VanillaAccessor<int> GrassSpread = new(typeof(WorldGen), "grassSpread");
+	
+	//Dungeon stuff
+	public static readonly VanillaAccessor<int> DungeonMinX = new(typeof(WorldGen), "dMinX");
+	public static readonly VanillaAccessor<int> DungeonMaxX = new(typeof(WorldGen), "dMaxX");
+	public static readonly VanillaAccessor<int> DungeonMinY = new(typeof(WorldGen), "dMinY");
+	public static readonly VanillaAccessor<int> DungeonMaxY = new(typeof(WorldGen), "dMaxY");
 }
