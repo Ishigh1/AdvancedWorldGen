@@ -2,6 +2,7 @@ using System;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ModLoader;
 using OnWorldGen = On.Terraria.WorldGen;
 
 namespace AdvancedWorldGen.CustomSized;
@@ -11,7 +12,7 @@ public static class HardmodeConversion
 	public static void ReplaceHardmodeConversion(OnWorldGen.orig_GERunner orig, int x, int y, float speedX,
 		float speedY, bool good)
 	{
-		if (!WorldgenSettings.Revamped)
+		if (!WorldgenSettings.Revamped || ModLoader.TryGetMod("CalamityMod", out Mod _))
 		{
 			orig(x, y, speedX, speedY, good);
 			return;

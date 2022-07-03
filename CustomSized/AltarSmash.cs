@@ -5,6 +5,7 @@ using Terraria.Chat;
 using Terraria.GameContent.Achievements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using WorldGen = On.Terraria.WorldGen;
 
 namespace AdvancedWorldGen.CustomSized;
@@ -13,7 +14,7 @@ public static class AltarSmash
 {
 	public static void SmashAltar(WorldGen.orig_SmashAltar orig, int x, int y)
 	{
-		if (!WorldgenSettings.Revamped)
+		if (!WorldgenSettings.Revamped || ModLoader.TryGetMod("CalamityMod", out Mod _))
 		{
 			orig(x, y);
 			return;

@@ -12,8 +12,10 @@
         <DefineConstants>TRACE;DEBUG;SPECIALDEBUG</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DefineConstants>TRACE</DefineConstants>
+        <DefineConstants>TRACE;VanillaTracks</DefineConstants>
     </PropertyGroup>
+    <!-- Debug track : 
+        VanillaTracks ; TracksVerbose ; StoredTracks ; ReverseTracks ; BadRectangleTracks ; LazyTracks -->
     <ItemGroup>
         <PackageReference Include="tModLoader.CodeAssist" Version="0.1.3" />
     </ItemGroup>

@@ -1,64 +1,102 @@
+using System;
 using System.Collections.Generic;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.Biomes;
-using Terraria.GameContent.Generation;
 using Terraria.Localization;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
-namespace AdvancedWorldGen.BetterVanillaWorldGen;
+
+#if TracksVerbose
+using System.IO;
+using System.Diagnostics;
+#endif
+#if VanillaTracks
+using TrackGenerator = AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff.VanillaTrackGenerator;
+#else
+using TrackGenerator = AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff.ModifiedTrackGenerator;
+#endif
+
+namespace AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 
 public class MicroBiomes : ControlledWorldGenPass
 {
-	public MicroBiomes() : base("Micro Biomes", 7784.3704f)
+	private int Index;
+	private string Variation;
+
+	public MicroBiomes(int index) : base("Micro Biomes", 973.0463f)
 	{
+		Index = index;
+		Variation = GetVariationFromIndex();
+		Name = "Micro Biomes " + Variation;
 	}
 
 	protected override void ApplyPass()
 	{
 		WorldGenConfiguration configuration = VanillaInterface.Configuration.Value;
-		const int totalSteps = 9;
-		int currentStep = 0;
-		
-		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Dead Man's Chests";
-		Progress.Set(currentStep++, totalSteps);
-		MakeDeadManChests(configuration);
+		Configuration = configuration.GetPassConfiguration("Micro Biomes");
 
-		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Thin Ice";
-		Progress.Set(currentStep++, totalSteps);
-		MakeThinIcePatches(configuration);
+		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + ".." + Variation;
+		switch (Index)
+		{
+			case 1:
+				MakeDeadManChests(configuration);
+				break;
+			case 2:
+				MakeThinIcePatches(configuration);
+				break;
+			case 3:
+				MakeEnchantedSwordShrines(configuration);
+				break;
+			case 4:
+				MakeCampsites(configuration);
+				break;
+			case 5:
+				MakeExplosiveTraps(configuration);
+				break;
+			case 6:
+				MakeMahoganyTrees(configuration);
+				break;
+			case 7:
+				Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Long Minecart Tracks";
 
-		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Sword Shrines";
-		Progress.Set(currentStep++, totalSteps);
-		MakeEnchantedSwordShrines(configuration);
+				WorldGenRange worldGenLongRange = Configuration.Get<WorldGenRange>("LongTrackLength");
+				WorldGenRange worldGenShortRange = Configuration.Get<WorldGenRange>("StandardTrackLength");
 
-		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Campsites";
-		Progress.Set(currentStep++, totalSteps);
-		MakeCampsites(configuration);
+				WorldGen._genRand = new UnifiedRandom(0);
+#if !VanillaTracks
+				TrackGenerator trackGenerator = new(worldGenShortRange.ScaledMinimum);
+#else
+				TrackGenerator trackGenerator = new();
+#endif
+				MakeLongMinecartTracks(trackGenerator, worldGenLongRange);
 
-		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Explosive Traps";
-		Progress.Set(currentStep++, totalSteps);
-		MakeExplosiveTraps(configuration);
+				WorldGen._genRand = new UnifiedRandom(0);
+				Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Standard Minecart Tracks";
+				MakeStandardMinecartTracks(trackGenerator, worldGenShortRange);
+				break;
+			case 8:
+				MakeLavaTraps();
+				break;
+		}
+	}
 
-		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Living Trees";
-		Progress.Set(currentStep++, totalSteps);
-		MakeMahoganyTrees(configuration);
-
-		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Long Minecart Tracks";
-		Progress.Set(currentStep++, totalSteps);
-		TrackGenerator trackGenerator = new();
-		MakeLongMinecartTracks(trackGenerator);
-
-		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Standard Minecart Tracks";
-		Progress.Set(currentStep++, totalSteps);
-		MakeStandardMinecartTracks(trackGenerator);
-
-		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Lava Traps";
-		Progress.Set(currentStep++, totalSteps);
-		MakeLavaTraps();
-		
-		Progress.Set(currentStep, totalSteps);
+	public string GetVariationFromIndex()
+	{
+		return Index switch
+		{
+			1 => "Dead Man's Chests",
+			2 => "Thin Ice",
+			3 => "Sword Shrines",
+			4 => "Campsites",
+			5 => "Explosive Traps",
+			6 => "Living Trees",
+			7 => "Minecart Tracks",
+			8 => "Lava Traps",
+			_ => throw new ArgumentException("Invalid index")
+		};
 	}
 
 	private void MakeDeadManChests(WorldGenConfiguration configuration)
@@ -191,53 +229,123 @@ public class MicroBiomes : ControlledWorldGenPass
 		}
 	}
 
-	private void MakeLongMinecartTracks(TrackGenerator trackGenerator)
+	private void MakeLongMinecartTracks(TrackGenerator trackGenerator, WorldGenRange worldGenLongRange)
 	{
 		int longTracks = Configuration.Get<WorldGenRange>("LongTrackCount").GetRandom(WorldGen.genRand);
-		WorldGenRange worldGenRange = Configuration.Get<WorldGenRange>("LongTrackLength");
+
 		int attempts = 0;
 		int longTrackGenerated = 0;
-		const int longTrackMaxAttempts = 20000;
+		const int longTrackMaxAttempts = 200;
+#if TracksVerbose
+		int success = 0;
+		int fails = 0;
+		TimeSpan timeSuccess = TimeSpan.Zero;
+		TimeSpan timeFails = TimeSpan.Zero;
+		Stopwatch stopwatch = new Stopwatch();
+		stopwatch.Start();
+#endif
 
 		while (longTrackGenerated < longTracks && attempts < longTrackMaxAttempts)
+		{
 			if (trackGenerator.Place(
 				    RandomUnderSurfaceWorldPoint((int)Main.worldSurface, 200, 10, 10),
-				    worldGenRange.ScaledMinimum, worldGenRange.ScaledMaximum))
+				    worldGenLongRange.ScaledMinimum, worldGenLongRange.ScaledMaximum))
+			{
+				Progress.Add(1, longTracks, 0.5f);
 				longTrackGenerated++;
+
+#if TracksVerbose
+				stopwatch.Stop();
+				success++;
+				timeSuccess += stopwatch.Elapsed;
+#endif
+			}
 			else
+			{
 				attempts++;
+
+#if TracksVerbose
+				stopwatch.Stop();
+				fails++;
+				timeFails += stopwatch.Elapsed;
+#endif
+			}
+#if TracksVerbose
+			stopwatch.Restart();
+#endif
+		}
+
+#if TracksVerbose
+		using (StreamWriter file =
+		       new StreamWriter(@"D:\debug.txt", true))
+		{
+			file.WriteLine("Long track generation: " + success + " successful, " + fails + " failed");
+			file.WriteLine("Success time: " + timeSuccess);
+			file.WriteLine("Fail time: " + timeFails);
+		}
+#endif
 	}
 
-	private void MakeStandardMinecartTracks(TrackGenerator trackGenerator)
+	private void MakeStandardMinecartTracks(TrackGenerator trackGenerator, WorldGenRange worldGenShortRange)
 	{
-		int longTracks = Configuration.Get<WorldGenRange>("StandardTrackCount").GetRandom(WorldGen.genRand);
-		WorldGenRange worldGenRange = Configuration.Get<WorldGenRange>("StandardTrackLength");
-		int maxAttempts = Main.maxTilesX * 10;
+		int standardTracks = Configuration.Get<WorldGenRange>("StandardTrackCount").GetRandom(WorldGen.genRand);
+		int maxAttempts = Main.maxTilesX / 10;
 		int attempts = 0;
 		int num47 = 0;
-		while (num47 < longTracks)
+#if TracksVerbose
+		int success = 0;
+		int fails = 0;
+		TimeSpan timeSuccess = TimeSpan.Zero;
+		TimeSpan timeFails = TimeSpan.Zero;
+		Stopwatch stopwatch = new();
+		stopwatch.Start();
+#endif
+		while (num47 < standardTracks && attempts < maxAttempts)
+		{
 			if (trackGenerator.Place(
 				    RandomUnderSurfaceWorldPoint((int)Main.worldSurface, 200, 10, 10),
-				    worldGenRange.ScaledMinimum, worldGenRange.ScaledMaximum))
+				    worldGenShortRange.ScaledMinimum, worldGenShortRange.ScaledMaximum))
 			{
+				Progress.Add(1, standardTracks, 0.5f);
 				num47++;
 				attempts = 0;
+#if TracksVerbose
+				stopwatch.Stop();
+				success++;
+				timeSuccess += stopwatch.Elapsed;
+#endif
 			}
 			else
 			{
 				attempts++;
-				if (attempts > maxAttempts)
-				{
-					num47++;
-					attempts = 0;
-				}
+
+#if TracksVerbose
+				stopwatch.Stop();
+				fails++;
+				timeFails += stopwatch.Elapsed;
+#endif
 			}
+
+#if TracksVerbose
+			stopwatch.Restart();
+#endif
+		}
+
+#if TracksVerbose
+		using (StreamWriter file =
+		       new StreamWriter(@"D:\debug.txt", true))
+		{
+			file.WriteLine("Small track generation: " + success + " successful, " + fails + " failed");
+			file.WriteLine("Success time: " + timeSuccess);
+			file.WriteLine("Fail time: " + timeFails);
+		}
+#endif
 	}
 
 	private static void MakeLavaTraps()
 	{
 		if (WorldGen.notTheBees) return;
-		
+
 		const int maxAttempts = 20000;
 		int attempts = 0;
 		double lavaTraps = Main.maxTilesX * 0.02;

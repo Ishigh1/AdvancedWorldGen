@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
+using AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 using Terraria.WorldBuilding;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
@@ -42,7 +43,7 @@ public static partial class Replacer
 
 		index = genPasses.FindIndex(pass => pass.Name == "Corruption");
 		if (index != -1) genPasses[index] = new Corruption();
-		
+
 		index = genPasses.FindIndex(pass => pass.Name == "Dungeon");
 		if (index != -1) genPasses[index] = new DungeonPass();
 
@@ -59,6 +60,15 @@ public static partial class Replacer
 		if (index != -1) genPasses[index] = new SurfaceOreAndStone();
 
 		index = genPasses.FindIndex(pass => pass.Name == "Micro Biomes");
-		if (index != -1) genPasses[index] = new MicroBiomes();
+		if (index != -1)
+		{
+			GenPass pass = genPasses[index];
+			for (int i = 1; i <= 8; i++)
+			{
+				MicroBiomes microBiomes = new MicroBiomes(i);
+				genPasses.Insert(index + i, microBiomes);
+			}
+			genPasses.RemoveAt(index);
+		}
 	}
 }
