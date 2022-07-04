@@ -149,6 +149,8 @@ public class UiChanger
 
 		ModifiedWorld.Instance.OptionHelper.ClearAll();
 		OptionsSelector = new OptionsSelector(self, null);
+		
+		
 	}
 
 	public void ToOptionsMenu(UIMouseEvent evt, UIElement listeningElement)

@@ -1,3 +1,4 @@
+using System;
 using AdvancedWorldGen.Base;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -10,15 +11,12 @@ using Terraria.UI;
 
 namespace AdvancedWorldGen.UI;
 
-public class ErrorUI : UIState
+public class WarningUI : UIState
 {
-	public ErrorUI(string message)
+	public WarningUI(string message, Func<UIState?> back, Func<UIState?> next)
 	{
-		BasicSetup(message);
-	}
-
-	public void BasicSetup(string message)
-	{
+		AdvancedWorldGenMod.Instance.Logger.Warn(message);
+		
 		UIPanel uiPanel = new()
 		{
 			HAlign = 0.5f,
@@ -48,7 +46,13 @@ public class ErrorUI : UIState
 			Top = new StyleDimension(0f, 0.75f),
 			HAlign = 0.35f
 		};
-		goBack.OnMouseDown += GoBack;
+		goBack.OnMouseDown += delegate
+		{
+			SoundEngine.PlaySound(SoundID.MenuClose);
+			UIState? state = back.Invoke();
+			if (state != null)
+				Main.MenuUI.SetState(state);
+		};
 		goBack.OnMouseOver += UiChanger.FadedMouseOver;
 		goBack.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(goBack);
@@ -59,21 +63,15 @@ public class ErrorUI : UIState
 			Top = new StyleDimension(0f, 0.75f),
 			HAlign = 0.65f
 		};
-		goForward.OnMouseDown += Continue;
+		goForward.OnMouseDown += delegate
+		{
+			SoundEngine.PlaySound(SoundID.MenuClose);
+			UIState? state = next.Invoke();
+			if (state != null)
+				Main.MenuUI.SetState(state);
+		};
 		goForward.OnMouseOver += UiChanger.FadedMouseOver;
 		goForward.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(goForward);
-	}
-
-	public static void GoBack(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
-		Main.MenuUI.SetState(new CustomSizeUI());
-	}
-
-	public static void Continue(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
-		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.OptionsSelector);
 	}
 }

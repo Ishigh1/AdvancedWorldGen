@@ -14,7 +14,7 @@ using System.IO;
 using System.Diagnostics;
 #endif
 #if VanillaTracks
-using TrackGenerator = AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff.VanillaTrackGenerator;
+using TrackGenerator = Terraria.GameContent.Generation.TrackGenerator;
 #else
 using TrackGenerator = AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff.ModifiedTrackGenerator;
 #endif
@@ -65,15 +65,19 @@ public class MicroBiomes : ControlledWorldGenPass
 				WorldGenRange worldGenLongRange = Configuration.Get<WorldGenRange>("LongTrackLength");
 				WorldGenRange worldGenShortRange = Configuration.Get<WorldGenRange>("StandardTrackLength");
 
+#if FixedSeed
 				WorldGen._genRand = new UnifiedRandom(0);
-#if !VanillaTracks
-				TrackGenerator trackGenerator = new(worldGenShortRange.ScaledMinimum);
-#else
+#endif
+#if VanillaTracks
 				TrackGenerator trackGenerator = new();
+#else
+				TrackGenerator trackGenerator = new(worldGenShortRange.ScaledMinimum);
 #endif
 				MakeLongMinecartTracks(trackGenerator, worldGenLongRange);
 
+#if FixedSeed
 				WorldGen._genRand = new UnifiedRandom(0);
+#endif
 				Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Standard Minecart Tracks";
 				MakeStandardMinecartTracks(trackGenerator, worldGenShortRange);
 				break;

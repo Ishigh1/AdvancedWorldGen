@@ -3,9 +3,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using AdvancedWorldGen.BetterVanillaWorldGen;
+using AdvancedWorldGen.CustomSized;
+using AdvancedWorldGen.Helper;
 using AdvancedWorldGen.SpecialOptions;
 using AdvancedWorldGen.SpecialOptions.Halloween;
 using AdvancedWorldGen.SpecialOptions.Snow;
+using AdvancedWorldGen.UI;
 using MonoMod.Cil;
 using Terraria;
 using Terraria.DataStructures;
@@ -22,6 +25,7 @@ using Terraria.WorldBuilding;
 using static Terraria.ID.NPCID;
 using OnMain = On.Terraria.Main;
 using OnUserInterface = On.Terraria.UI.UserInterface;
+using UIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
 
 namespace AdvancedWorldGen.Base;
 
@@ -255,5 +259,39 @@ public class ModifiedWorld : ModSystem
 			OptionHelper.ClearAll();
 			OptionHelper.WorldSettings.Params.Wipe();
 		}
+	}
+
+	public void LastMinuteChecks(UIWorldCreation.orig_FinishCreatingWorld orig, Terraria.GameContent.UI.States.UIWorldCreation self)
+	{
+		Params worldSettingsParams = OptionHelper.WorldSettings.Params;
+		void OrigWithLog()
+		{
+			Mod.Logger.Info("Options : " + OptionsParser.GetJsonText());
+			orig(self);
+		}
+		
+		if (ModLoader.TryGetMod("CalamityMod", out Mod _))
+		{
+			UIState currentState = UserInterface.ActiveInstance.CurrentState;
+			UIState? Prev() => currentState;
+			UIState? Next()
+			{
+				OrigWithLog();
+				return null;
+			}
+
+			switch (worldSettingsParams.SizeX)
+			{
+				case < KnownLimits.ClamityMinX:
+					Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
+						"Mods.AdvancedWorldGen.InvalidSizes.ClamityMinX"), Prev, Next));
+					return;
+				case > KnownLimits.ClamityMaxX:
+					Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
+						"Mods.AdvancedWorldGen.InvalidSizes.ClamityMaxX"), Prev, Next));
+					return;
+			}
+		}
+		OrigWithLog();
 	}
 }

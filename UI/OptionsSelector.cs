@@ -21,7 +21,7 @@ public class OptionsSelector : UIState
 	public LocalizedText Description;
 	public UIText UIDescription = null!;
 	public UIList UIList = null!;
-	public Option? Parent;
+	public new Option? Parent;
 
 	public UIState PreviousState;
 

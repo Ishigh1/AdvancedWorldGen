@@ -30,6 +30,7 @@ public class AdvancedWorldGenMod : Mod
 		UiChanger = new UiChanger(this);
 
 		OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
+		OnUIWorldCreation.FinishCreatingWorld += ModifiedWorld.Instance.LastMinuteChecks;
 		OnWorldFileData.SetWorldSize += UiChanger.SetSpecialName;
 		// OnUIWorldListItem.ctor += UiChanger.CopySettingsButton; // Removed until twld can be loaded in a reasonable time
 

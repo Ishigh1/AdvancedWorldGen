@@ -23,7 +23,9 @@
             "OverhauledMinX": "The world is known to not be able to generate under x={0}.",
             "OverhauledMinY": "The world is known to not be able to generate under y={0}.",
             "NormalMinX": "You need to enable the overhauled worldgen in the mod settings\nto be able to generate a world under x={0}.",
-            "ComfortNormalMaxX": "The worldgen will be slow to generate a big world,\nyou should maybe enable the overhauled worldgen in the mod settings."
+            "ComfortNormalMaxX": "The worldgen will be slow to generate a big world,\nyou should maybe enable the overhauled worldgen in the mod settings.",
+            "ClamityMinX": "Calamity isn't designed to generate small worlds",
+            "ClamityMaxX": "Calamity isn't designed to generate XL worlds"
         }
     }
 }

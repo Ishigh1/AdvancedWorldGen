@@ -14,6 +14,7 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <DefineConstants>TRACE;VanillaTracks</DefineConstants>
     </PropertyGroup>
+    <!-- General Debug : FixedSeed -->
     <!-- Debug track : 
         VanillaTracks ; TracksVerbose ; StoredTracks ; ReverseTracks ; BadRectangleTracks ; LazyTracks -->
     <ItemGroup>
@@ -27,8 +28,5 @@
     </ItemGroup>
     <ItemGroup>
         <None Remove="Tool\**" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Localization\Options" />
     </ItemGroup>
 </Project>
