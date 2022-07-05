@@ -7,15 +7,7 @@ using Terraria.GameContent.Biomes;
 using Terraria.Localization;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
-#if TracksVerbose
-using System.IO;
-using System.Diagnostics;
-#endif
-#if VanillaTracks
-using TrackGenerator = Terraria.GameContent.Generation.TrackGenerator;
-#else
 using TrackGenerator = AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff.ModifiedTrackGenerator;
-#endif
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 
@@ -66,21 +58,13 @@ public class MicroBiomes : ControlledWorldGenPass
 				WorldGenRange worldGenLongRange = Configuration.Get<WorldGenRange>("LongTrackLength");
 				WorldGenRange worldGenShortRange = Configuration.Get<WorldGenRange>("StandardTrackLength");
 
-#if FixedSeed
-				WorldGen._genRand = new UnifiedRandom(0);
-#endif
-#if VanillaTracks
-				TrackGenerator trackGenerator = new();
-#else
 				TrackGenerator trackGenerator = new(worldGenShortRange.ScaledMinimum);
-#endif
-				MakeLongMinecartTracks(trackGenerator, worldGenLongRange);
+				int longTracks = Configuration.Get<WorldGenRange>("LongTrackCount").GetRandom(WorldGen.genRand);
+				MakeMinecartTracks(trackGenerator, worldGenLongRange, longTracks);
 
-#if FixedSeed
-				WorldGen._genRand = new UnifiedRandom(0);
-#endif
 				Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Standard Minecart Tracks";
-				MakeStandardMinecartTracks(trackGenerator, worldGenShortRange);
+				int shortTracks = Configuration.Get<WorldGenRange>("StandardTrackCount").GetRandom(WorldGen.genRand);
+				MakeMinecartTracks(trackGenerator, worldGenShortRange, shortTracks);
 				break;
 			case 8:
 				MakeLavaTraps();
@@ -234,115 +218,25 @@ public class MicroBiomes : ControlledWorldGenPass
 		}
 	}
 
-	private void MakeLongMinecartTracks(TrackGenerator trackGenerator, WorldGenRange worldGenLongRange)
+	private void MakeMinecartTracks(TrackGenerator trackGenerator, WorldGenRange worldGenLongRange, int tracks)
 	{
-		int longTracks = Configuration.Get<WorldGenRange>("LongTrackCount").GetRandom(WorldGen.genRand);
-
 		int attempts = 0;
 		int longTrackGenerated = 0;
-		const int longTrackMaxAttempts = 200;
-#if TracksVerbose
-		int success = 0;
-		int fails = 0;
-		TimeSpan timeSuccess = TimeSpan.Zero;
-		TimeSpan timeFails = TimeSpan.Zero;
-		Stopwatch stopwatch = new();
-		stopwatch.Start();
-#endif
+		int maxAttempts = Main.maxTilesX / 10;
 
-		while (longTrackGenerated < longTracks && attempts < longTrackMaxAttempts)
-		{
+		while (longTrackGenerated < tracks && attempts < maxAttempts)
 			if (trackGenerator.Place(
 				    RandomUnderSurfaceWorldPoint((int)Main.worldSurface, 200, 10, 10),
 				    worldGenLongRange.ScaledMinimum, worldGenLongRange.ScaledMaximum))
 			{
-				Progress.Add(1, longTracks, 0.5f);
+				Progress.Add(1, tracks, 0.5f);
 				longTrackGenerated++;
 
-#if TracksVerbose
-				stopwatch.Stop();
-				success++;
-				timeSuccess += stopwatch.Elapsed;
-#endif
 			}
 			else
 			{
 				attempts++;
-
-#if TracksVerbose
-				stopwatch.Stop();
-				fails++;
-				timeFails += stopwatch.Elapsed;
-#endif
 			}
-#if TracksVerbose
-			stopwatch.Restart();
-#endif
-		}
-
-#if TracksVerbose
-		using (StreamWriter file = new(@"D:\debug.txt", true))
-		{
-			file.WriteLine("Long track generation: " + success + " successful, " + fails + " failed");
-			file.WriteLine("Success time: " + timeSuccess);
-			file.WriteLine("Fail time: " + timeFails);
-		}
-#endif
-	}
-
-	private void MakeStandardMinecartTracks(TrackGenerator trackGenerator, WorldGenRange worldGenShortRange)
-	{
-		int standardTracks = Configuration.Get<WorldGenRange>("StandardTrackCount").GetRandom(WorldGen.genRand);
-		int maxAttempts = Main.maxTilesX / 10;
-		int attempts = 0;
-		int num47 = 0;
-#if TracksVerbose
-		int success = 0;
-		int fails = 0;
-		TimeSpan timeSuccess = TimeSpan.Zero;
-		TimeSpan timeFails = TimeSpan.Zero;
-		Stopwatch stopwatch = new();
-		stopwatch.Start();
-#endif
-		while (num47 < standardTracks && attempts < maxAttempts)
-		{
-			if (trackGenerator.Place(
-				    RandomUnderSurfaceWorldPoint((int)Main.worldSurface, 200, 10, 10),
-				    worldGenShortRange.ScaledMinimum, worldGenShortRange.ScaledMaximum))
-			{
-				Progress.Add(1, standardTracks, 0.5f);
-				num47++;
-				attempts = 0;
-#if TracksVerbose
-				stopwatch.Stop();
-				success++;
-				timeSuccess += stopwatch.Elapsed;
-#endif
-			}
-			else
-			{
-				attempts++;
-
-#if TracksVerbose
-				stopwatch.Stop();
-				fails++;
-				timeFails += stopwatch.Elapsed;
-#endif
-			}
-
-#if TracksVerbose
-			stopwatch.Restart();
-#endif
-		}
-
-#if TracksVerbose
-		using (StreamWriter file = new(@"D:\debug.txt", true))
-		{
-			file.WriteLine("Small track generation: " + success + " successful, " + fails + " failed");
-			file.WriteLine("Success time: " + timeSuccess);
-			file.WriteLine("Fail time: " + timeFails);
-		}
-#endif
 	}
 
 	private static void MakeLavaTraps()
