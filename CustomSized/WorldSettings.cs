@@ -116,8 +116,8 @@ public class WorldSettings
 			Main.tile = (Tilemap)constructorInfo.Invoke(new object?[] { (ushort)newSizeX, (ushort)newSizeY });
 		}
 
-		int newWidth = Main.maxTilesX / Main.textureMaxWidth + 1;
-		int newHeight = Main.maxTilesY / Main.textureMaxHeight + 1;
+		int newWidth = Main.maxTilesX / Main.textureMaxWidth + 2;
+		int newHeight = Main.maxTilesY / Main.textureMaxHeight + 2;
 		if (newWidth > Main.mapTargetX || newHeight > Main.mapTargetY)
 		{
 			Main.mapTargetX = Math.Max(5, newWidth);
