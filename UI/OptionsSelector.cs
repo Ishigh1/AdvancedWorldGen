@@ -19,11 +19,11 @@ public class OptionsSelector : UIState
 {
 	public static bool ShowHidden;
 	public LocalizedText Description;
-	public UIText UIDescription = null!;
-	public UIList UIList = null!;
 	public new Option? Parent;
 
 	public UIState PreviousState;
+	public UIText UIDescription = null!;
+	public UIList UIList = null!;
 
 	public OptionsSelector(UIState previousState, Option? parent)
 	{
@@ -110,7 +110,7 @@ public class OptionsSelector : UIState
 		customSize.OnMouseOver += UiChanger.FadedMouseOver;
 		customSize.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(customSize);
-		
+
 		UITextPanel<string> importButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Import"))
 		{
 			Width = new StyleDimension(0f, 0.1f),
@@ -125,7 +125,7 @@ public class OptionsSelector : UIState
 		importButton.OnMouseOver += UiChanger.FadedMouseOver;
 		importButton.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(importButton);
-		
+
 		UITextPanel<string> exportButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Export"))
 		{
 			Width = new StyleDimension(0f, 0.1f),

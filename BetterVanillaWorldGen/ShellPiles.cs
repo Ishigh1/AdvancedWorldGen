@@ -22,10 +22,10 @@ public class ShellPiles : ControlledWorldGenPass
 			int num520 = num518 + num517;
 			for (int num521 = 0; num521 < 80; num521++)
 			{
-				int num522 = Random.Next(100, Main.maxTilesX - 100);
+				int num522 = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
 				if (num522 >= num519 && num522 <= num520)
 				{
-					num522 = Random.Next(100, Main.maxTilesX - 100);
+					num522 = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
 					if (num522 >= num519 && num522 <= num520)
 						continue;
 				}
@@ -45,8 +45,8 @@ public class ShellPiles : ControlledWorldGenPass
 		float worldSize = Main.maxTilesX < 4200 ? Main.maxTilesX / 4200f : 1;
 		if (WorldGen.genRand.Next(2) == 0)
 		{
-			int baseShellStartXLeft = VanillaInterface.ShellStartXLeft.Value;
-			int baseShellStartYLeft = VanillaInterface.ShellStartYLeft.Value;
+			int baseShellStartXLeft = VanillaInterface.ShellStartXLeft;
+			int baseShellStartYLeft = VanillaInterface.ShellStartYLeft;
 			int shellStartXLeft = baseShellStartXLeft;
 			int shellStartYLeft = baseShellStartYLeft;
 

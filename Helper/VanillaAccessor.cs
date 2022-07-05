@@ -42,7 +42,7 @@ public class VanillaAccessor<T>
 	{
 		return (T)FieldInfo.GetValue(VanillaData)!;
 	}
-	
+
 	public static implicit operator T(VanillaAccessor<T> accessor)
 	{
 		return accessor.Value;

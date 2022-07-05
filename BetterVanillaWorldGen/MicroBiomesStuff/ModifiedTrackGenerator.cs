@@ -11,7 +11,20 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 
 public class ModifiedTrackGenerator
 {
-	private static readonly ushort[] InvalidWalls =
+	public enum TrackMode : byte
+	{
+		Normal,
+		Tunnel
+	}
+
+	public enum TrackSlope : sbyte
+	{
+		Up = -1,
+		Straight,
+		Down
+	}
+
+	private static readonly HashSet<ushort> InvalidWalls = new()
 	{
 		7,
 		94,
@@ -35,7 +48,7 @@ public class ModifiedTrackGenerator
 		149
 	};
 
-	private static readonly ushort[] InvalidTiles =
+	private static readonly HashSet<ushort> InvalidTiles = new()
 	{
 		383,
 		384,
@@ -61,103 +74,81 @@ public class ModifiedTrackGenerator
 		190
 	};
 
-#if BadRectangleTracks
-	public List<Rectangle> BadRectangles = new List<Rectangle>();
+	public RTree RTree;
 	public Rectangle CurrentTrackRectangle;
-#endif
-	public List<TrackHistory> CurrentTrack;
 	private readonly TrackHistory[] _rewriteHistory = new TrackHistory[25];
 	private int _xDirection;
+	public List<TrackHistory> CurrentTrack;
 	public int PlayerHeight = 6;
-#if StoredTracks
-	public List<List<TrackHistory>> TrackList = new();
-#endif
 	public int StrictMinimum;
+	public byte Sample;
+	public List<List<TrackHistory>> TrackList = new();
 
 	public ModifiedTrackGenerator(int strictMinimum)
 	{
 		StrictMinimum = strictMinimum;
+		RTree = new RTree(new Rectangle((int)((Main.worldSurface + Main.maxTilesX - 200) / 20), Main.maxTilesY / 2, 0, 0));
+		if (WorldGen.notTheBees)
+			InvalidWalls.Add(108);
 	}
 
 	public bool Place(Point origin, int minLength, int maxLength)
 	{
 		CurrentTrack = new List<TrackHistory>(maxLength);
-#if StoredTracks
 		foreach (List<TrackHistory> trackHistories in TrackList.Where(trackHistories => trackHistories.Count >= minLength))
 		{
 			CurrentTrack = trackHistories.Count > maxLength ? trackHistories.GetRange(trackHistories.Count - maxLength, maxLength) : trackHistories;
 			TrackList.Remove(trackHistories);
 			break;
 		}
-#endif
 
 		if (CurrentTrack.Count == 0)
 		{
 			if (!FindSuitableOrigin(ref origin))
 				return false;
 
-#if BadRectangleTracks
-			CurrentTrackRectangle = new Rectangle(origin.X, origin.Y, 0, 0);
-#endif
+			CurrentTrackRectangle = new Rectangle(origin.X, origin.Y, 1, 1);
 
 			CurrentTrack.Add(new TrackHistory(origin.X, origin.Y, TrackSlope.Down));
 			_xDirection = origin.X <= Main.maxTilesX / 2 ? 1 : -1;
-			if (!FindPath(minLength, maxLength)) return false;
+			if (!FindPath(maxLength))
+			{
+				RegisterBadRectangle();
+				return false;
+			}
 
-#if ReverseTracks
 			int trackLength = CurrentTrack.Count;
 			if (trackLength < minLength && trackLength * 2 > minLength)
 			{
 				CurrentTrack.Reverse();
 				_xDirection *= -1;
-				if (!FindPath(minLength, maxLength))
+				if (!FindPath(maxLength))
 				{
 					RegisterBadRectangle();
 					return false;
 				}
 			}
-#endif
 
-#if StoredTracks
+			RegisterBadRectangle();
 			if (CurrentTrack.Count < minLength)
 			{
 				if (CurrentTrack.Count >= StrictMinimum) TrackList.Add(CurrentTrack);
-				RegisterBadRectangle();
 				return false;
 			}
-#endif
 		}
 
 		PlacePath();
-		RegisterBadRectangle();
 		return true;
 	}
 
 	private bool FindSuitableOrigin(ref Point origin)
 	{
-#if BadRectangleTracks
-		foreach (Rectangle badRectangle in BadRectangles)
-			if (badRectangle.Contains(origin))
-				return false;
-#endif
-
-		TrackPlacementState trackPlacementState;
-		while ((trackPlacementState = CalculateStateForLocation(origin.X, origin.Y)) != TrackPlacementState.Obstructed)
-		{
-			origin.Y++;
-			if (trackPlacementState == TrackPlacementState.Invalid)
-				return false;
-		}
-
-		origin.Y--;
-		return CalculateStateForLocation(origin.X, origin.Y) == TrackPlacementState.Available;
+		Sample = 0;
+		return CalculateStateForLocation(origin.X, origin.Y) != TrackPlacementState.Available;
 	}
 
-	private bool FindPath(int minLength, int maxLength)
+	private bool FindPath(int maxLength)
 	{
-#if LazyTracks
-		maxLength = Math.Min(maxLength, 3996);
-#endif
 		while (CurrentTrack.Count < maxLength)
 		{
 			TrackSlope slope = CurrentTrack[^1].Slope != TrackSlope.Up ? TrackSlope.Down : TrackSlope.Straight;
@@ -182,11 +173,7 @@ public class ModifiedTrackGenerator
 			}
 		}
 
-#if StoredTracks
 		if (CurrentTrack.Count < StrictMinimum)
-#else
-		if (CurrentTrack.Count < minLength)
-#endif
 			return false;
 
 		SmoothTrack();
@@ -300,13 +287,7 @@ public class ModifiedTrackGenerator
 
 	public void RegisterBadRectangle()
 	{
-#if BadRectangleTracks
-		CurrentTrackRectangle.X -= 5;
-		CurrentTrackRectangle.Y -= 5;
-		CurrentTrackRectangle.Width += 10;
-		CurrentTrackRectangle.Height += 10;
-		BadRectangles.Add(CurrentTrackRectangle);
-#endif
+		RTree.Insert(new Rectangle(CurrentTrackRectangle.X - 5, CurrentTrackRectangle.Y - 5, CurrentTrackRectangle.Width + 10, CurrentTrackRectangle.Height + 10));
 	}
 
 	private void AppendToHistory(TrackSlope slope, TrackMode mode = TrackMode.Normal)
@@ -319,7 +300,6 @@ public class ModifiedTrackGenerator
 			Mode = mode
 		});
 
-#if BadRectangleTracks
 		if (CurrentTrackRectangle.Left > x)
 			CurrentTrackRectangle.X -= 1;
 		else if (CurrentTrackRectangle.Right < x)
@@ -328,7 +308,6 @@ public class ModifiedTrackGenerator
 			CurrentTrackRectangle.Y -= 1;
 		else if (CurrentTrackRectangle.Bottom < y)
 			CurrentTrackRectangle.Y += 1;
-#endif
 	}
 
 	private TrackPlacementState TryRewriteHistoryToAvoidTiles()
@@ -452,26 +431,14 @@ public class ModifiedTrackGenerator
 			if (IsLocationInvalid(x, y - i))
 				return TrackPlacementState.Invalid;
 
-		for (int j = 0; j < PlayerHeight; j++)
-			if (IsMinecartTrack(x, y + j))
-				return TrackPlacementState.Invalid;
-
 		for (int k = 0; k < PlayerHeight; k++)
 			if (WorldGen.SolidTile(x, y - k))
 				return TrackPlacementState.Obstructed;
 
-		if (WorldGen.IsTileNearby(x, y, 314, 30))
+		if (Sample++ % 5 == 0 && RTree.Contains(x, y))
 			return TrackPlacementState.Invalid;
 
 		return TrackPlacementState.Available;
-	}
-
-	private static bool IsMinecartTrack(int x, int y)
-	{
-		if (Main.tile[x, y].HasTile)
-			return Main.tile[x, y].TileType == 314;
-
-		return false;
 	}
 
 	private static bool IsLocationInvalid(int x, int y)
@@ -483,10 +450,10 @@ public class ModifiedTrackGenerator
 			return true;
 
 		ushort wall = Main.tile[x, y].WallType;
-		if (InvalidWalls.Any(t => wall == t && !(WorldGen.notTheBees && wall == 108))) return true;
+		if (InvalidWalls.Contains(wall)) return true;
 
 		ushort type = Main.tile[x, y].TileType;
-		if (InvalidTiles.Any(t => type == t)) return true;
+		if (InvalidTiles.Contains(type)) return true;
 
 		for (int k = -1; k <= 1; k++)
 			if (Main.tile[x + k, y].HasTile && (Main.tile[x + k, y].TileType == 314 || !TileID.Sets.GeneralPlacementTiles[Main.tile[x + k, y].TileType]) && !(WorldGen.notTheBees && Main.tile[x + k, y].TileType == 225))
@@ -500,19 +467,6 @@ public class ModifiedTrackGenerator
 		Available,
 		Obstructed,
 		Invalid
-	}
-
-	public enum TrackSlope : sbyte
-	{
-		Up = -1,
-		Straight,
-		Down
-	}
-
-	public enum TrackMode : byte
-	{
-		Normal,
-		Tunnel
 	}
 
 	[DebuggerDisplay("X = {X}, Y = {Y}, Slope = {Slope}")]

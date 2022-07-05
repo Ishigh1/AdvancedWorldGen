@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -62,12 +63,12 @@ public class MushroomPatches : ControlledWorldGenPass
 				if (!isValid)
 					continue;
 
-                ShroomPatch(x, y);
+				ShroomPatch(x, y);
 				for (int it = 0; it < 5; it++)
 				{
 					int x2 = x + WorldGen.genRand.Next(-40, 41);
 					int y2 = y + WorldGen.genRand.Next(-40, 41);
-                    ShroomPatch(x2, y2);
+					ShroomPatch(x2, y2);
 				}
 
 				mushroomBiomesPosition.Add(new Vector2(x, y));
@@ -84,7 +85,7 @@ public class MushroomPatches : ControlledWorldGenPass
 			{
 				if (!Main.tile[x, y].HasTile)
 					continue;
-				Interface.VanillaInterface.GrassSpread.Value = 0;
+				VanillaInterface.GrassSpread.Value = 0;
 				WorldGen.SpreadGrass(x, y, TileID.Mud, TileID.MushroomGrass, false);
 				if (Main.tile[x, y].TileType == TileID.MushroomGrass)
 				{

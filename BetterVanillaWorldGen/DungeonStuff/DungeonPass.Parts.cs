@@ -1,9 +1,9 @@
 using System;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 

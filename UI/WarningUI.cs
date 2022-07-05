@@ -16,7 +16,7 @@ public class WarningUI : UIState
 	public WarningUI(string message, Func<UIState?> back, Func<UIState?> next)
 	{
 		AdvancedWorldGenMod.Instance.Logger.Warn(message);
-		
+
 		UIPanel uiPanel = new()
 		{
 			HAlign = 0.5f,

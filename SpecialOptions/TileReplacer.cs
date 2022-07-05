@@ -189,7 +189,7 @@ public class TileReplacer
 				{
 					do
 					{
-						type = (ushort)WorldGen._genRand.Next(TileLoader.TileCount);
+						type = (ushort)WorldGen.genRand.Next(TileLoader.TileCount);
 					} while (DontReplace(type) || tileRandom.ContainsValue(type));
 
 					tileRandom[tile.TileType] = type;
@@ -201,7 +201,7 @@ public class TileReplacer
 		{
 			if (!paintRandom.TryGetValue(tile.TileType, out byte paint))
 			{
-				paint = (byte)WorldGen._genRand.Next(PaintID.IlluminantPaint + 1);
+				paint = (byte)WorldGen.genRand.Next(PaintID.IlluminantPaint + 1);
 				paintRandom[tile.TileType] = paint;
 			}
 
@@ -222,7 +222,7 @@ public class TileReplacer
 			{
 				do
 				{
-					type = (ushort)WorldGen._genRand.Next(1, WallLoader.WallCount);
+					type = (ushort)WorldGen.genRand.Next(1, WallLoader.WallCount);
 				} while (wallRandom.ContainsValue(type));
 
 				wallRandom[tile.WallType] = type;
@@ -234,7 +234,7 @@ public class TileReplacer
 		{
 			if (!paintWallRandom.TryGetValue(tile.WallType, out byte paint))
 			{
-				paint = (byte)WorldGen._genRand.Next(PaintID.IlluminantPaint + 1);
+				paint = (byte)WorldGen.genRand.Next(PaintID.IlluminantPaint + 1);
 				paintWallRandom[tile.WallType] = paint;
 			}
 

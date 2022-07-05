@@ -57,7 +57,7 @@ public class ValuesList : FocusElement
 					break;
 			}
 		}
-		
+
 		CalculatedStyle windowDimension = parentPanel.GetDimensions();
 		float top = ParentBox.Top.Pixels + ParentBox.Height.Pixels - (parentList?.ViewPosition ?? 0f) +
 		            (parentList?.Top.Pixels ?? 0f) + windowDimension.Y + 15;

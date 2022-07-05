@@ -5,11 +5,10 @@ namespace AdvancedWorldGen.UI.InputUI.List;
 
 public class TileExpandableList : InputBox<string>
 {
-	public string[] PossibleValues;
+	public const int Random = -1;
 	public bool AllowOther;
 	public Params Params;
-
-	public const int Random = -1;
+	public string[] PossibleValues;
 
 	public TileExpandableList(Params @params, string name, bool allowOther, params int[] possibleValues) : base(name)
 	{

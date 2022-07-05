@@ -50,7 +50,7 @@ public class CustomSizeUI : UIState
 			Top = new StyleDimension(43f, 0f),
 			Color = Color.Lerp(Color.White, new Color(63, 65, 151, 255), 0.85f) * 0.9f
 		});
-		
+
 		UIScrollbar uiScrollbar = new()
 		{
 			Height = new StyleDimension(-110f, 1f),
@@ -181,8 +181,15 @@ public class CustomSizeUI : UIState
 			setCurrentOptionMethod.Invoke(groupOptionButton, new object[] { size });
 
 #if !SPECIALDEBUG
-		UIState? Prev() => new CustomSizeUI();
-		UIState? Next() => AdvancedWorldGenMod.Instance.UiChanger.OptionsSelector;
+		UIState? Prev()
+		{
+			return new CustomSizeUI();
+		}
+
+		UIState? Next()
+		{
+			return AdvancedWorldGenMod.Instance.UiChanger.OptionsSelector;
+		}
 
 		int oldSizeX = Main.tile.Width;
 		int oldSizeY = Main.tile.Height;

@@ -23,9 +23,9 @@ public partial class VanillaInterface
 	public static readonly VanillaAccessor<int[]> FloatingIslandHouseY = new(typeof(WorldGen), "floatingIslandHouseY");
 	public static readonly VanillaAccessor<int[]> FloatingIslandStyle = new(typeof(WorldGen), "floatingIslandStyle");
 	public static readonly VanillaAccessor<bool[]> SkyLake = new(typeof(WorldGen), "skyLake");
-	
+
 	public static readonly VanillaAccessor<int> GrassSpread = new(typeof(WorldGen), "grassSpread");
-	
+
 	//Dungeon stuff
 	public static readonly VanillaAccessor<int> DungeonMinX = new(typeof(WorldGen), "dMinX");
 	public static readonly VanillaAccessor<int> DungeonMaxX = new(typeof(WorldGen), "dMaxX");

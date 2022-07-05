@@ -1,4 +1,3 @@
-using AdvancedWorldGen.Helper;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;

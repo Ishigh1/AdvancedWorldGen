@@ -49,6 +49,7 @@ public class JungleTemple : ControlledWorldGenPass
 			templeY = Main.UnderworldLayer - height - WorldGen.genRand.Next(Main.UnderworldLayer - WorldGen.lavaLine);
 		else
 			templeY = WorldGen.genRand.Next((int)WorldGen.rockLayer, Main.UnderworldLayer - height);
+
 		MoveRooms(generationProgress, rooms, templeY);
 
 		CreateRoomBorders(generationProgress, templeRoomCount, rooms);

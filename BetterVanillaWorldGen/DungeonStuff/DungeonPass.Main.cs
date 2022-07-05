@@ -28,7 +28,7 @@ public partial class DungeonPass
 	public static double DungeonYStrength1;
 	public static double DungeonXStrength2;
 	public static double DungeonYStrength2;
-	
+
 	public static ushort CrackedType;
 
 	public static bool IsDungeon(int x, int y)

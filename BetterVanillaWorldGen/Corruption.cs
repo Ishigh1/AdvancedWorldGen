@@ -48,8 +48,14 @@ public class Corruption : ControlledWorldGenPass
 			GenerateCrimson(biomeNumber, snowLeft, snowRight, flag47, beachPadding, num702);
 			GenerateCorruption(biomeNumber, snowLeft, snowRight, flag47, beachPadding, num702);
 		}
-		else if (WorldGen.crimson) GenerateCrimson(biomeNumber, snowLeft, snowRight, true, beachPadding, num702);
-		else GenerateCorruption(biomeNumber, snowLeft, snowRight, true, beachPadding, num702);
+		else if (WorldGen.crimson)
+		{
+			GenerateCrimson(biomeNumber, snowLeft, snowRight, true, beachPadding, num702);
+		}
+		else
+		{
+			GenerateCorruption(biomeNumber, snowLeft, snowRight, true, beachPadding, num702);
+		}
 	}
 
 	private void GenerateCorruption(double biomeNumber, int snowLeft, int snowRight, bool flag47, int beachPadding, int num702)

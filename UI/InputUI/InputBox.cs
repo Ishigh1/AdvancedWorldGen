@@ -9,12 +9,12 @@ public abstract class InputBox<T> : OrderedUIItem
 	public UIPanel Background = null!;
 	public string Name;
 
-	public string? LocalizationPath { get; set; }
-
 	protected InputBox(string name)
 	{
 		Name = name;
 	}
+
+	public string? LocalizationPath { get; set; }
 
 	public abstract T? Value { get; set; }
 

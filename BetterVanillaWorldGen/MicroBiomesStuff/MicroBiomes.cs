@@ -7,8 +7,6 @@ using Terraria.GameContent.Biomes;
 using Terraria.Localization;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
-
-
 #if TracksVerbose
 using System.IO;
 using System.Diagnostics;
@@ -23,14 +21,17 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 
 public class MicroBiomes : ControlledWorldGenPass
 {
-	private int Index;
-	private string Variation;
+	private readonly int Index;
+	private readonly string? Variation;
 
 	public MicroBiomes(int index) : base("Micro Biomes", 973.0463f)
 	{
 		Index = index;
-		Variation = GetVariationFromIndex();
-		Name = "Micro Biomes " + Variation;
+		if (index != -1)
+		{
+			Variation = GetVariationFromIndex();
+			Name = "Micro Biomes " + Variation;
+		}
 	}
 
 	protected override void ApplyPass()
@@ -245,7 +246,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		int fails = 0;
 		TimeSpan timeSuccess = TimeSpan.Zero;
 		TimeSpan timeFails = TimeSpan.Zero;
-		Stopwatch stopwatch = new Stopwatch();
+		Stopwatch stopwatch = new();
 		stopwatch.Start();
 #endif
 
@@ -280,8 +281,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		}
 
 #if TracksVerbose
-		using (StreamWriter file =
-		       new StreamWriter(@"D:\debug.txt", true))
+		using (StreamWriter file = new(@"D:\debug.txt", true))
 		{
 			file.WriteLine("Long track generation: " + success + " successful, " + fails + " failed");
 			file.WriteLine("Success time: " + timeSuccess);
@@ -336,8 +336,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		}
 
 #if TracksVerbose
-		using (StreamWriter file =
-		       new StreamWriter(@"D:\debug.txt", true))
+		using (StreamWriter file = new(@"D:\debug.txt", true))
 		{
 			file.WriteLine("Small track generation: " + success + " successful, " + fails + " failed");
 			file.WriteLine("Success time: " + timeSuccess);

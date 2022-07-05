@@ -62,12 +62,13 @@ public static partial class Replacer
 		index = genPasses.FindIndex(pass => pass.Name == "Micro Biomes");
 		if (index != -1)
 		{
-			GenPass pass = genPasses[index];
 			for (int i = 1; i <= 8; i++)
 			{
-				MicroBiomes microBiomes = new MicroBiomes(i);
+				MicroBiomes microBiomes = new(i);
 				genPasses.Insert(index + i, microBiomes);
 			}
+
+			genPasses.Insert(index + 9, new MicroBiomes(-1)); //For mod compatibility sake
 			genPasses.RemoveAt(index);
 		}
 	}

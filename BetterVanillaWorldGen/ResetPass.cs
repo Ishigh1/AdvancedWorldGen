@@ -102,12 +102,19 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.SavedOreTiers.Gold = 169;
 		}
 
-		WorldGen.crimson = WorldGen.WorldGenParam_Evil switch
+		switch (WorldGen.WorldGenParam_Evil)
 		{
-			0 => false,
-			1 => true,
-			_ => Main.rand.NextBool(2) //Using Main.rand to not affect the worldgen
-		};
+			case 0:
+				WorldGen.crimson = false;
+				break;
+			case 1:
+				WorldGen.crimson = true;
+				break;
+			default:
+				WorldGen.crimson = Main.rand.NextBool(2);
+				AdvancedWorldGenMod.Instance.Logger.Info($"Crimson : {WorldGen.crimson}");
+				break;
+		}
 
 		Main.worldID = Main.rand.Next(int.MaxValue);
 		WorldGen.RandomizeTreeStyle();

@@ -10,11 +10,11 @@ using AdvancedWorldGen.SpecialOptions.Halloween;
 using AdvancedWorldGen.SpecialOptions.Snow;
 using AdvancedWorldGen.UI;
 using MonoMod.Cil;
+using On.Terraria.GameContent.UI.States;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Events;
 using Terraria.GameContent.Generation;
-using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
@@ -25,7 +25,7 @@ using Terraria.WorldBuilding;
 using static Terraria.ID.NPCID;
 using OnMain = On.Terraria.Main;
 using OnUserInterface = On.Terraria.UI.UserInterface;
-using UIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
+using UIWorldSelect = Terraria.GameContent.UI.States.UIWorldSelect;
 
 namespace AdvancedWorldGen.Base;
 
@@ -59,7 +59,7 @@ public class ModifiedWorld : ModSystem
 
 	public override void LoadWorldData(TagCompound tag)
 	{
-		if(tag.TryGet("Options", out List<string> options))
+		if (tag.TryGet("Options", out List<string> options))
 		{
 			OptionHelper.Import(options);
 			Main.checkHalloween();
@@ -222,7 +222,7 @@ public class ModifiedWorld : ModSystem
 
 	public static int RandomNpc(List<int> availableNPCs)
 	{
-		return WorldGen._genRand.NextFromList(availableNPCs.ToArray());
+		return WorldGen.genRand.NextFromList(availableNPCs.ToArray());
 	}
 
 	public static void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
@@ -264,16 +264,23 @@ public class ModifiedWorld : ModSystem
 	public void LastMinuteChecks(UIWorldCreation.orig_FinishCreatingWorld orig, Terraria.GameContent.UI.States.UIWorldCreation self)
 	{
 		Params worldSettingsParams = OptionHelper.WorldSettings.Params;
+
 		void OrigWithLog()
 		{
+			Mod.Logger.Info($"Overhauled : {WorldgenSettings.Revamped}");
 			Mod.Logger.Info("Options : " + OptionsParser.GetJsonText());
 			orig(self);
 		}
-		
+
 		if (ModLoader.TryGetMod("CalamityMod", out Mod _))
 		{
 			UIState currentState = UserInterface.ActiveInstance.CurrentState;
-			UIState? Prev() => currentState;
+
+			UIState? Prev()
+			{
+				return currentState;
+			}
+
 			UIState? Next()
 			{
 				OrigWithLog();
@@ -292,6 +299,7 @@ public class ModifiedWorld : ModSystem
 					return;
 			}
 		}
+
 		OrigWithLog();
 	}
 }
