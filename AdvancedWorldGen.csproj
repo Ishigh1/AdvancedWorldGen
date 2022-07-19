@@ -15,8 +15,6 @@
         <DefineConstants>TRACE</DefineConstants>
     </PropertyGroup>
     <!-- General Debug : FixedSeed -->
-    <!-- Debug track : 
-        VanillaTracks ; TracksVerbose ; StoredTracks ; ReverseTracks ; BadRectangleTracks ; LazyTracks -->
     <ItemGroup>
         <PackageReference Include="tModLoader.CodeAssist" Version="0.1.3" />
     </ItemGroup>
