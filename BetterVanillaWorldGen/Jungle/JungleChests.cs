@@ -1,5 +1,4 @@
 using System;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -125,14 +124,12 @@ public class JungleChests : ControlledWorldGenPass
 				j--;
 			}
 
-
-			int[] jChestX = VanillaInterface.JChestX.Value;
-			int[] jChestY = VanillaInterface.JChestY.Value;
-			int numJChests = VanillaInterface.NumJChests.Value;
-			jChestX[numJChests] = x;
-			jChestY[numJChests] = y;
+			int[] jChestX = WorldGen.JChestX;
+			int[] jChestY = WorldGen.JChestY;
+			jChestX[WorldGen.numJChests] = x;
+			jChestY[WorldGen.numJChests] = y;
 			WorldGen.structures.AddProtectedStructure(area);
-			VanillaInterface.NumJChests.Value = numJChests + 1;
+			WorldGen.numJChests++;
 		}
 
 		Main.tileSolid[TileID.Traps] = false;

@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using AdvancedWorldGen.Base;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.UI.InputUI.List;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -20,7 +19,7 @@ public class ResetPass : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		VanillaInterface.NumOceanCaveTreasure.Value = 0;
+		WorldGen.numOceanCaveTreasure = 0;
 		WorldGen.skipDesertTileCheck = false;
 		WorldGen.gen = true;
 		Liquid.ReInit();
@@ -31,7 +30,7 @@ public class ResetPass : ControlledWorldGenPass
 		Main.cloudAlpha = 0f;
 		Main.maxRaining = 0f;
 		Main.raining = false;
-		VanillaInterface.HeartCount.Value = 0;
+		WorldGen.heartCount = 0;
 		Main.checkXMas();
 		Main.checkHalloween();
 		ResetGenerator.Invoke(null, null);
@@ -43,7 +42,7 @@ public class ResetPass : ControlledWorldGenPass
 		const int num917 = 86400;
 		Main.slimeRainTime = -WorldGen.genRand.Next(num917 * 2, num917 * 3);
 		Main.cloudBGActive = -WorldGen.genRand.Next(8640, num917);
-		VanillaInterface.SkipFramingDuringGen.Value = false;
+		WorldGen.skipFramingDuringGen = false;
 		if ((ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Copper == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
 		    || ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Copper == TileID.Copper)
@@ -53,7 +52,7 @@ public class ResetPass : ControlledWorldGenPass
 		}
 		else
 		{
-			VanillaInterface.Copper.Value = 166;
+			WorldGen.copper = 166;
 			WorldGen.copperBar = 703;
 			WorldGen.SavedOreTiers.Copper = 166;
 		}
@@ -68,7 +67,7 @@ public class ResetPass : ControlledWorldGenPass
 		}
 		else
 		{
-			VanillaInterface.Iron.Value = 167;
+			WorldGen.iron = 167;
 			WorldGen.ironBar = 704;
 			WorldGen.SavedOreTiers.Iron = 167;
 		}
@@ -82,7 +81,7 @@ public class ResetPass : ControlledWorldGenPass
 		}
 		else
 		{
-			VanillaInterface.Silver.Value = 168;
+			WorldGen.silver = 168;
 			WorldGen.silverBar = 705;
 			WorldGen.SavedOreTiers.Silver = 168;
 		}
@@ -97,7 +96,7 @@ public class ResetPass : ControlledWorldGenPass
 		}
 		else
 		{
-			VanillaInterface.Gold.Value = 169;
+			WorldGen.gold = 169;
 			WorldGen.goldBar = 706;
 			WorldGen.SavedOreTiers.Gold = 169;
 		}
@@ -124,10 +123,10 @@ public class ResetPass : ControlledWorldGenPass
 		WorldGen.TreeTops.CopyExistingWorldInfoForWorldGeneration();
 
 		int dungeonSide = WorldGen.genRand.NextBool(2) ? 1 : -1;
-		VanillaInterface.DungeonSide.Value = dungeonSide;
+		WorldGen.dungeonSide = dungeonSide;
 
 		int shift = (int)(Main.maxTilesX * WorldGen.genRand.Next(15, 30) * 0.01f);
-		VanillaInterface.JungleOriginX.Value = dungeonSide == 1 ? shift : Main.maxTilesX - shift;
+		WorldGen.jungleOriginX = dungeonSide == 1 ? shift : Main.maxTilesX - shift;
 
 		int snowCenter;
 		if ((dungeonSide == 1 && !WorldGen.drunkWorldGen) || (dungeonSide == -1 && WorldGen.drunkWorldGen))
@@ -146,8 +145,8 @@ public class ResetPass : ControlledWorldGenPass
 		num921 += (int)(WorldGen.genRand.Next(20, 40) * worldSize);
 		int snowOriginRight = Math.Min(Main.maxTilesX, snowCenter + num921);
 
-		VanillaInterface.SnowOriginLeft.Value = snowOriginLeft;
-		VanillaInterface.SnowOriginRight.Value = snowOriginRight;
+		WorldGen.snowOriginLeft = snowOriginLeft;
+		WorldGen.snowOriginRight = snowOriginRight;
 
 		worldSize *= ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier;
 		int beachSandDungeonExtraWidth = (int)(40 * worldSize);
@@ -155,7 +154,7 @@ public class ResetPass : ControlledWorldGenPass
 		int beachBordersWidth = (int)(275 * worldSize);
 		int beachSandRandomWidthRange = (int)(20 * worldSize);
 		int beachSandRandomCenter = beachBordersWidth + 5 + 2 * beachSandRandomWidthRange;
-		VanillaInterface.EvilBiomeBeachAvoidance.Value = beachSandRandomCenter + 60;
+		WorldGen.evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
 		if (worldSize < 1)
 		{
 			WorldGen.oceanDistance = beachBordersWidth - 25;
@@ -169,28 +168,28 @@ public class ResetPass : ControlledWorldGenPass
 			                               ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier);
 		}
 
-		VanillaInterface.OceanWaterStartRandomMin.Value = (int)(VanillaInterface.OceanWaterStartRandomMin.Value *
-		                                                        ModifiedWorld.Instance.OptionHelper.WorldSettings.Params
-			                                                        .BeachMultiplier);
-		VanillaInterface.OceanWaterStartRandomMax.Value = (int)(VanillaInterface.OceanWaterStartRandomMax.Value *
-		                                                        ModifiedWorld.Instance.OptionHelper.WorldSettings.Params
-			                                                        .BeachMultiplier);
-		VanillaInterface.OceanWaterForcedJungleLength.Value =
-			(int)(VanillaInterface.OceanWaterForcedJungleLength.Value *
+		WorldGen.oceanWaterStartRandomMin = (int)(WorldGen.oceanWaterStartRandomMin *
+		                                          ModifiedWorld.Instance.OptionHelper.WorldSettings.Params
+			                                          .BeachMultiplier);
+		WorldGen.oceanWaterStartRandomMax = (int)(WorldGen.oceanWaterStartRandomMax *
+		                                          ModifiedWorld.Instance.OptionHelper.WorldSettings.Params
+			                                          .BeachMultiplier);
+		WorldGen.oceanWaterForcedJungleLength =
+			(int)(WorldGen.oceanWaterForcedJungleLength *
 			      ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier);
 
 		int leftBeachEnd = beachSandRandomCenter +
 		                   WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
 		leftBeachEnd += dungeonSide == 1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
-		VanillaInterface.LeftBeachEnd.Value = leftBeachEnd;
+		WorldGen.leftBeachEnd = leftBeachEnd;
 
 		int rightBeachStart = Main.maxTilesX - beachSandRandomCenter +
 		                      WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
 		rightBeachStart -= dungeonSide == -1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
-		VanillaInterface.RightBeachStart.Value = rightBeachStart;
+		WorldGen.rightBeachStart = rightBeachStart;
 
 		int dungeonShift = (int)(50 * worldSize);
-		VanillaInterface.DungeonLocation.Value = dungeonSide == -1
+		WorldGen.dungeonLocation = dungeonSide == -1
 			? WorldGen.genRand.Next(leftBeachEnd + dungeonShift, (int)(Main.maxTilesX * 0.2))
 			: WorldGen.genRand.Next((int)(Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
 	}

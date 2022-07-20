@@ -74,20 +74,21 @@ public class ModifiedTrackGenerator
 		190
 	};
 
-	public RTree RTree;
-	public Rectangle CurrentTrackRectangle;
 	private readonly TrackHistory[] _rewriteHistory = new TrackHistory[25];
 	private int _xDirection;
 	public List<TrackHistory> CurrentTrack;
+	public Rectangle CurrentTrackRectangle;
 	public int PlayerHeight = 6;
-	public int StrictMinimum;
+
+	public RTree RTree;
 	public byte Sample;
+	public int StrictMinimum;
 	public List<List<TrackHistory>> TrackList = new();
 
 	public ModifiedTrackGenerator(int strictMinimum)
 	{
 		StrictMinimum = strictMinimum;
-		RTree = new RTree(new Rectangle((int)((Main.worldSurface + Main.maxTilesX - 200) / 20), Main.maxTilesY / 2, 0, 0));
+		RTree = new RTree(new Rectangle(Main.maxTilesX / 2, (int)((Main.worldSurface + Main.maxTilesY - 200) / 2), 0, 0));
 		if (WorldGen.notTheBees)
 			InvalidWalls.Add(108);
 	}

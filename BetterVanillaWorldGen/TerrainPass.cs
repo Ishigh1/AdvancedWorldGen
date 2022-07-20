@@ -21,8 +21,8 @@ public class TerrainPass : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		int leftBeachSize = VanillaInterface.LeftBeachEnd.Value;
-		int rightBeachSize = Main.maxTilesX - VanillaInterface.RightBeachStart.Value;
+		int leftBeachSize = WorldGen.leftBeachEnd;
+		int rightBeachSize = Main.maxTilesX - WorldGen.rightBeachStart;
 
 		int num = Configuration.Get<int>("FlatBeachPadding");
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.0");

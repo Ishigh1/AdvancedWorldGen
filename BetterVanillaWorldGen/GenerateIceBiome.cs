@@ -12,15 +12,15 @@ public class GenerateIceBiome : ControlledWorldGenPass
 	protected override void ApplyPass()
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.56");
-		VanillaInterface.SnowTop.Value = (int)Main.worldSurface;
+		WorldGen.snowTop = (int)Main.worldSurface;
 		int num840 = WorldGen.lavaLine - WorldGen.genRand.Next(160, 200);
-		int snowLeft = VanillaInterface.SnowOriginLeft.Value;
-		int snowRight = VanillaInterface.SnowOriginRight.Value;
+		int snowLeft = WorldGen.snowOriginLeft;
+		int snowRight = WorldGen.snowOriginRight;
 		int num843 = 10;
-		bool dungeonRight = VanillaInterface.DungeonSide.Value > 0;
+		bool dungeonRight = WorldGen.dungeonSide > 0;
 
-		int[] snowMinX = VanillaInterface.SnowMinX.Value;
-		int[] snowMaxX = VanillaInterface.SnowMaxX.Value;
+		int[] snowMinX = WorldGen.snowMinX;
+		int[] snowMaxX = WorldGen.snowMaxX;
 		for (int num844 = 0; num844 <= WorldGen.lavaLine - 140; num844++)
 		{
 			Progress.Set(num844 / (float)(WorldGen.lavaLine - 140));
@@ -114,8 +114,8 @@ public class GenerateIceBiome : ControlledWorldGenPass
 					}
 				}
 
-			if (VanillaInterface.SnowBottom.Value < num844)
-				VanillaInterface.SnowBottom.Value = num844;
+			if (WorldGen.snowBottom < num844)
+				WorldGen.snowBottom = num844;
 		}
 	}
 }

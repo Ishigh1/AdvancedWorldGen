@@ -45,8 +45,8 @@ public class ShellPiles : ControlledWorldGenPass
 		float worldSize = Main.maxTilesX < 4200 ? Main.maxTilesX / 4200f : 1;
 		if (WorldGen.genRand.Next(2) == 0)
 		{
-			int baseShellStartXLeft = VanillaInterface.ShellStartXLeft;
-			int baseShellStartYLeft = VanillaInterface.ShellStartYLeft;
+			int baseShellStartXLeft = WorldGen.shellStartXLeft;
+			int baseShellStartYLeft = WorldGen.shellStartYLeft;
 			int shellStartXLeft = baseShellStartXLeft;
 			int shellStartYLeft = baseShellStartYLeft;
 
@@ -100,8 +100,8 @@ public class ShellPiles : ControlledWorldGenPass
 
 		if (WorldGen.genRand.Next(2) == 0)
 		{
-			int baseShellStartXRight = VanillaInterface.ShellStartXRight.Value;
-			int baseShellStartYRight = VanillaInterface.ShellStartYRight.Value;
+			int baseShellStartXRight = WorldGen.shellStartXRight;
+			int baseShellStartYRight = WorldGen.shellStartYRight;
 			int shellStartXRight = baseShellStartXRight;
 			int shellStartYRight = baseShellStartYRight;
 

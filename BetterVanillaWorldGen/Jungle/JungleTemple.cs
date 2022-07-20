@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using AdvancedWorldGen.SpecialOptions;
 using Microsoft.Xna.Framework;
@@ -252,10 +251,8 @@ public class JungleTemple : ControlledWorldGenPass
 				WorldGen.PlaceTile(x, y, TileID.LihzahrdAltar);
 				if (Main.tile[x, y].TileType == TileID.LihzahrdAltar)
 				{
-					int lAltarX = x - Main.tile[x, y].TileFrameX / 18;
-					int lAltarY = y - Main.tile[x, y].TileFrameY / 18;
-					VanillaInterface.LAltarX.Value = lAltarX;
-					VanillaInterface.LAltarY.Value = lAltarY;
+					WorldGen.lAltarX = x - Main.tile[x, y].TileFrameX / 18;
+					WorldGen.lAltarY = y - Main.tile[x, y].TileFrameY / 18;
 					break;
 				}
 
@@ -295,10 +292,8 @@ public class JungleTemple : ControlledWorldGenPass
 					tile3.HasTile = false;
 				}
 
-				int lAltarX2 = x;
-				int lAltarY2 = y;
-				VanillaInterface.LAltarX.Value = lAltarX2;
-				VanillaInterface.LAltarY.Value = lAltarY2;
+				WorldGen.lAltarX = x;
+				WorldGen.lAltarY = y;
 				for (int num94 = 0; num94 <= 2; num94++)
 				for (int num95 = 0; num95 <= 1; num95++)
 				{

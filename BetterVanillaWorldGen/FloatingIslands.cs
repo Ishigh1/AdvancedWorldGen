@@ -1,9 +1,7 @@
 using System;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using Terraria;
 using Terraria.Localization;
-using static Terraria.WorldGen;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
@@ -15,8 +13,8 @@ public class FloatingIslands : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		int numIslandHouses = 0;
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.12");
+		int numIslandHouses = 0;
 		int skyIslands = (int)(Main.maxTilesX * 0.0008);
 		int islandsMade = 0;
 
@@ -34,15 +32,15 @@ public class FloatingIslands : ControlledWorldGenPass
 			while (--num820 > 0)
 			{
 				bool flag54 = true;
-				int x = genRand.Next((int)(Main.maxTilesX * 0.1),
+				int x = WorldGen.genRand.Next((int)(Main.maxTilesX * 0.1),
 					(int)(Main.maxTilesX * 0.9));
 				while (x > Main.maxTilesX / 2 - 150 && x < Main.maxTilesX / 2 + 150)
-					x = genRand.Next((int)(Main.maxTilesX * 0.1),
+					x = WorldGen.genRand.Next((int)(Main.maxTilesX * 0.1),
 						(int)(Main.maxTilesX * 0.9));
 
 				for (int num822 = 0; num822 < numIslandHouses; num822++)
-					if (x > VanillaInterface.FloatingIslandHouseX.Value[num822] - 180 &&
-					    x < VanillaInterface.FloatingIslandHouseX.Value[num822] + 180)
+					if (x > WorldGen.floatingIslandHouseX[num822] - 180 &&
+					    x < WorldGen.floatingIslandHouseX[num822] + 180)
 					{
 						flag54 = false;
 						break;
@@ -64,43 +62,43 @@ public class FloatingIslands : ControlledWorldGenPass
 					{
 						int num825 = 0;
 						num820 = -1;
-						int y = genRand.Next(Math.Max(50, Math.Min(90, (int)worldSurfaceLow - 50)), num823 - 100);
+						int y = WorldGen.genRand.Next(Math.Max(50, Math.Min(90, (int)WorldGen.worldSurfaceLow - 50)), num823 - 100);
 						if (islandsMade >= skyIslands)
 						{
-							VanillaInterface.SkyLake.Value[numIslandHouses] = true;
-							CloudLake(x, y);
+							WorldGen.skyLake[numIslandHouses] = true;
+							WorldGen.CloudLake(x, y);
 						}
 						else
 						{
-							VanillaInterface.SkyLake.Value[numIslandHouses] = false;
-							if (drunkWorldGen)
+							WorldGen.skyLake[numIslandHouses] = false;
+							if (WorldGen.drunkWorldGen)
 							{
-								if (genRand.Next(2) == 0)
+								if (WorldGen.genRand.Next(2) == 0)
 								{
 									num825 = 3;
-									SnowCloudIsland(x, y);
+									WorldGen.SnowCloudIsland(x, y);
 								}
 								else
 								{
 									num825 = 1;
-									DesertCloudIsland(x, y);
+									WorldGen.DesertCloudIsland(x, y);
 								}
 							}
 							else
 							{
-								if (getGoodWorldGen)
-									num825 = !crimson ? 4 : 5;
+								if (WorldGen.getGoodWorldGen)
+									num825 = !WorldGen.crimson ? 4 : 5;
 
 								if (Main.tenthAnniversaryWorld)
 									num825 = 6;
 
-								CloudIsland(x, y);
+								WorldGen.CloudIsland(x, y);
 							}
 						}
 
-						VanillaInterface.FloatingIslandHouseX.Value[numIslandHouses] = x;
-						VanillaInterface.FloatingIslandHouseY.Value[numIslandHouses] = y;
-						VanillaInterface.FloatingIslandStyle.Value[numIslandHouses] = num825;
+						WorldGen.floatingIslandHouseX[numIslandHouses] = x;
+						WorldGen.floatingIslandHouseY[numIslandHouses] = y;
+						WorldGen.floatingIslandStyle[numIslandHouses] = num825;
 						numIslandHouses++;
 						islandsMade++;
 					}
@@ -108,6 +106,6 @@ public class FloatingIslands : ControlledWorldGenPass
 			}
 		}
 
-		VanillaInterface.NumIslandHouses.Value = numIslandHouses;
+		numIslandHouses = numIslandHouses;
 	}
 }

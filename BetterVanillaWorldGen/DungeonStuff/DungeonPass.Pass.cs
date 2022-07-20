@@ -12,7 +12,7 @@ public partial class DungeonPass : ControlledWorldGenPass
 	protected override void ApplyPass()
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.58");
-		int dungeonX = VanillaInterface.DungeonLocation.Value;
+		int dungeonX = WorldGen.dungeonLocation;
 		int dungeonY;
 		bool solidGround = false;
 		if (WorldGen.drunkWorldGen)

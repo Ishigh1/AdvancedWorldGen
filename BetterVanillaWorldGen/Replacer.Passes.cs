@@ -18,7 +18,7 @@ public static partial class Replacer
 		int index = genPasses.FindIndex(pass => pass.Name == "Reset");
 		if (index != -1)
 		{
-			VanillaInterface = new VanillaInterface(genPasses[index]);
+			VanillaInterface = new VanillaInterface();
 			genPasses[index] = new ResetPass();
 		}
 		else

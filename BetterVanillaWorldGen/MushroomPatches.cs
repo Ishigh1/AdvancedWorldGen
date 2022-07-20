@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
+using AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 using AdvancedWorldGen.Helper;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -12,7 +10,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class MushroomPatches : ControlledWorldGenPass
 {
-	public MushroomPatches() : base("Mushroom Patches", 6853.0454f)
+	public MushroomPatches() : base("Mushroom Patches", 301f)
 	{
 	}
 
@@ -21,7 +19,8 @@ public class MushroomPatches : ControlledWorldGenPass
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.13");
 		int mushroomBiomes = Math.Max(1, Main.maxTilesX / 700);
 
-		List<Vector2> mushroomBiomesPosition = new();
+		RTree mushroomBiomesRectangles = new(new Rectangle((int)((Main.worldSurface + Main.maxTilesX) / 2), Main.maxTilesY / 2, 0, 0));
+
 		const int spread = 100;
 		int jungleMinX = Math.Max(VanillaInterface.JungleLeft - spread, spread);
 		int jungleSpread = Math.Min(VanillaInterface.JungleRight + spread, Main.maxTilesX - spread) -
@@ -47,11 +46,8 @@ public class MushroomPatches : ControlledWorldGenPass
 				y = Main.rockLayer + 200 < Main.UnderworldLayer
 					? WorldGen.genRand.Next((int)Main.rockLayer + 50, Main.UnderworldLayer - 100)
 					: WorldGen.genRand.Next((int)Main.rockLayer, Main.UnderworldLayer);
-				const int distanceBetweenBiomes = 500;
 
-				Vector2 current = new(x, y);
-				isValid = mushroomBiomesPosition.All(position =>
-					current.Distance(position) > distanceBetweenBiomes);
+				isValid = mushroomBiomesRectangles.Contains(x, y);
 
 				for (int x2 = x - spread; x2 < x + spread && isValid; x2 += 10)
 				for (int y2 = y - spread; y2 < y + spread && isValid; y2 += 10)
@@ -71,7 +67,8 @@ public class MushroomPatches : ControlledWorldGenPass
 					ShroomPatch(x2, y2);
 				}
 
-				mushroomBiomesPosition.Add(new Vector2(x, y));
+				const int halfDistanceBetweenBiomes = 250;
+				mushroomBiomesRectangles.Insert(new Rectangle(x - halfDistanceBetweenBiomes, y - halfDistanceBetweenBiomes, 2 * halfDistanceBetweenBiomes, 2 * halfDistanceBetweenBiomes));
 			}
 
 			if (tries > Main.maxTilesX / 2)
@@ -85,7 +82,7 @@ public class MushroomPatches : ControlledWorldGenPass
 			{
 				if (!Main.tile[x, y].HasTile)
 					continue;
-				VanillaInterface.GrassSpread.Value = 0;
+				WorldGen.grassSpread = 0;
 				WorldGen.SpreadGrass(x, y, TileID.Mud, TileID.MushroomGrass, false);
 				if (Main.tile[x, y].TileType == TileID.MushroomGrass)
 				{

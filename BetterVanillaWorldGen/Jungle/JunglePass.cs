@@ -25,10 +25,10 @@ public class JunglePass : ControlledWorldGenPass
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.11");
 
-		JungleOriginX = VanillaInterface.JungleOriginX.Value;
-		DungeonSide = VanillaInterface.DungeonSide.Value;
-		LeftBeachEnd = VanillaInterface.LeftBeachEnd.Value;
-		RightBeachStart = VanillaInterface.RightBeachStart.Value;
+		JungleOriginX = WorldGen.jungleOriginX;
+		DungeonSide = WorldGen.dungeonSide;
+		LeftBeachEnd = WorldGen.leftBeachEnd;
+		RightBeachStart = WorldGen.rightBeachStart;
 
 		WorldScaleY = Main.maxTilesY * (1.5f / 1200f);
 		WorldScaleX = Main.maxTilesX * (1.5f / 4200f);

@@ -1,6 +1,5 @@
 using System;
 using AdvancedWorldGen.Base;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using Terraria;
 using Terraria.ID;
@@ -60,8 +59,8 @@ public class Corruption : ControlledWorldGenPass
 
 	private void GenerateCorruption(double biomeNumber, int snowLeft, int snowRight, bool flag47, int beachPadding, int num702)
 	{
-		int corruptionMin = Math.Max(VanillaInterface.EvilBiomeBeachAvoidance, 0);
-		int corruptionMax = Main.maxTilesX - Math.Min(VanillaInterface.EvilBiomeBeachAvoidance, 0);
+		int corruptionMin = Math.Max(WorldGen.evilBiomeBeachAvoidance, 0);
+		int corruptionMax = Main.maxTilesX - Math.Min(WorldGen.evilBiomeBeachAvoidance, 0);
 
 		Progress.Message = Lang.gen[20].Value;
 		for (int biome = 0; biome < biomeNumber; biome++)
@@ -89,11 +88,11 @@ public class Corruption : ControlledWorldGenPass
 				corruptionLeft = Utils.Clamp(corruptionLeft, corruptionMin, corruptionMax);
 				corruptionRight = Utils.Clamp(corruptionRight, corruptionMin, corruptionMax);
 
-				if (num732 < corruptionLeft + VanillaInterface.EvilBiomeAvoidanceMidFixer)
-					num732 = corruptionLeft + VanillaInterface.EvilBiomeAvoidanceMidFixer;
+				if (num732 < corruptionLeft + WorldGen.evilBiomeAvoidanceMidFixer)
+					num732 = corruptionLeft + WorldGen.evilBiomeAvoidanceMidFixer;
 
-				if (num732 > corruptionRight - VanillaInterface.EvilBiomeAvoidanceMidFixer)
-					num732 = corruptionRight - VanillaInterface.EvilBiomeAvoidanceMidFixer;
+				if (num732 > corruptionRight - WorldGen.evilBiomeAvoidanceMidFixer)
+					num732 = corruptionRight - WorldGen.evilBiomeAvoidanceMidFixer;
 
 				if (num732 > half - num736 && num732 < half + num736)
 					isValid = false;
@@ -113,7 +112,7 @@ public class Corruption : ControlledWorldGenPass
 				if (corruptionRight > WorldGen.UndergroundDesertLocation.X && corruptionRight < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
 					isValid = false;
 
-				if (corruptionLeft < VanillaInterface.DungeonLocation + num702 && corruptionRight > VanillaInterface.DungeonLocation - num702)
+				if (corruptionLeft < WorldGen.dungeonLocation + num702 && corruptionRight > WorldGen.dungeonLocation - num702)
 					isValid = false;
 
 				if (corruptionLeft < num729 && corruptionRight > num728)
@@ -186,7 +185,7 @@ public class Corruption : ControlledWorldGenPass
 
 						if (Main.tile[num744, num745].TileType == 0 && num745 < Main.worldSurface - 1.0 && !flag52)
 						{
-							VanillaInterface.GrassSpread.Value = 0;
+							WorldGen.grassSpread = 0;
 							WorldGen.SpreadGrass(num744, num745, 0, 23);
 						}
 
@@ -240,8 +239,8 @@ public class Corruption : ControlledWorldGenPass
 	{
 		Progress.Message = Lang.gen[72].Value;
 
-		int crimsonMin = Math.Max(VanillaInterface.EvilBiomeBeachAvoidance, VanillaInterface.DungeonSide == -1 ? beachPadding * 4 / 5 : 0);
-		int crimsonMax = Main.maxTilesX - Math.Min(VanillaInterface.EvilBiomeBeachAvoidance, VanillaInterface.DungeonSide == 1 ? beachPadding * 4 / 5 : 0);
+		int crimsonMin = Math.Max(WorldGen.evilBiomeBeachAvoidance, WorldGen.dungeonSide == -1 ? beachPadding * 4 / 5 : 0);
+		int crimsonMax = Main.maxTilesX - Math.Min(WorldGen.evilBiomeBeachAvoidance, WorldGen.dungeonSide == 1 ? beachPadding * 4 / 5 : 0);
 
 		for (int biome = 0; biome < biomeNumber; biome++)
 		{
@@ -274,11 +273,11 @@ public class Corruption : ControlledWorldGenPass
 				crimsonLeft = Utils.Clamp(crimsonLeft, crimsonMin, crimsonMax);
 				crimsonRight = Utils.Clamp(crimsonLeft, crimsonMin, crimsonMax);
 
-				if (num709 < crimsonLeft + VanillaInterface.EvilBiomeAvoidanceMidFixer)
-					num709 = crimsonLeft + VanillaInterface.EvilBiomeAvoidanceMidFixer;
+				if (num709 < crimsonLeft + WorldGen.evilBiomeAvoidanceMidFixer)
+					num709 = crimsonLeft + WorldGen.evilBiomeAvoidanceMidFixer;
 
-				if (num709 > crimsonRight - VanillaInterface.EvilBiomeAvoidanceMidFixer)
-					num709 = crimsonRight - VanillaInterface.EvilBiomeAvoidanceMidFixer;
+				if (num709 > crimsonRight - WorldGen.evilBiomeAvoidanceMidFixer)
+					num709 = crimsonRight - WorldGen.evilBiomeAvoidanceMidFixer;
 
 				if (num709 > num712 - num713 && num709 < num712 + num713)
 					flag48 = false;
@@ -298,7 +297,7 @@ public class Corruption : ControlledWorldGenPass
 				if (crimsonRight > WorldGen.UndergroundDesertLocation.X && crimsonRight < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
 					flag48 = false;
 
-				if (crimsonLeft < VanillaInterface.DungeonLocation + num702 && crimsonRight > VanillaInterface.DungeonLocation - num702)
+				if (crimsonLeft < WorldGen.dungeonLocation + num702 && crimsonRight > WorldGen.dungeonLocation - num702)
 					flag48 = false;
 
 				if (crimsonLeft < num706 && crimsonRight > num705)
@@ -344,15 +343,17 @@ public class Corruption : ControlledWorldGenPass
 
 						if (Main.tile[num719, num720].TileType == 0 && num720 < Main.worldSurface - 1.0 && !flag49)
 						{
-							VanillaInterface.GrassSpread.Value = 0;
+							WorldGen.grassSpread = 0;
 							WorldGen.SpreadGrass(num719, num720, 0, 199);
 						}
 
 						flag49 = true;
-						if (Main.tile[num719, num720].WallType == 216)
-							Main.tile[num719, num720].WallType = 218;
-						else if (Main.tile[num719, num720].WallType == 187)
-							Main.tile[num719, num720].WallType = 221;
+						Main.tile[num719, num720].WallType = Main.tile[num719, num720].WallType switch
+						{
+							216 => 218,
+							187 => 221,
+							_ => Main.tile[num719, num720].WallType
+						};
 
 						switch (Main.tile[num719, num720].TileType)
 						{

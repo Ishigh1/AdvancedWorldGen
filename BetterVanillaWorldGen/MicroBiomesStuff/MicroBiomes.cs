@@ -5,9 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.Biomes;
 using Terraria.Localization;
-using Terraria.Utilities;
 using Terraria.WorldBuilding;
-using TrackGenerator = AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff.ModifiedTrackGenerator;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 
@@ -28,7 +26,7 @@ public class MicroBiomes : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		WorldGenConfiguration configuration = VanillaInterface.Configuration.Value;
+		WorldGenConfiguration configuration = WorldGen.configuration;
 		Configuration = configuration.GetPassConfiguration("Micro Biomes");
 
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + ".." + Variation;
@@ -58,7 +56,7 @@ public class MicroBiomes : ControlledWorldGenPass
 				WorldGenRange worldGenLongRange = Configuration.Get<WorldGenRange>("LongTrackLength");
 				WorldGenRange worldGenShortRange = Configuration.Get<WorldGenRange>("StandardTrackLength");
 
-				TrackGenerator trackGenerator = new(worldGenShortRange.ScaledMinimum);
+				ModifiedTrackGenerator trackGenerator = new(worldGenShortRange.ScaledMinimum);
 				int longTracks = Configuration.Get<WorldGenRange>("LongTrackCount").GetRandom(WorldGen.genRand);
 				MakeMinecartTracks(trackGenerator, worldGenLongRange, longTracks);
 
@@ -218,7 +216,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		}
 	}
 
-	private void MakeMinecartTracks(TrackGenerator trackGenerator, WorldGenRange worldGenLongRange, int tracks)
+	private void MakeMinecartTracks(ModifiedTrackGenerator trackGenerator, WorldGenRange worldGenLongRange, int tracks)
 	{
 		int attempts = 0;
 		int longTrackGenerated = 0;
@@ -231,7 +229,6 @@ public class MicroBiomes : ControlledWorldGenPass
 			{
 				Progress.Add(1, tracks, 0.5f);
 				longTrackGenerated++;
-
 			}
 			else
 			{
