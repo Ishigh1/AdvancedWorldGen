@@ -3,9 +3,10 @@ import string
 
 from commands import *
 
-file = open("Data.json", "r")
+file = open("Data.json", "r", encoding="utf8")
 options = json.load(file)
 file.close()
+save_data(options)
 
 while True:
     output = input("command : ")
@@ -73,35 +74,28 @@ while True:
         for conflict in option["conflicts"]:
             options[conflict]["conflicts"][known_name] = option["conflicts"][conflict]
 
-        file = open("Data.json", "w")
-        json.dump(options, file, indent=4, sort_keys=True)
-        file.close()
+        save_data(options)
 
     elif command == "translate":
         if data == "fr":
             language = "fr-FR"
+        elif data == "ru":
+            language = "ru-RU"
         else:
             continue
 
-        for key in options:
-            option = options[key]
-            option["displayed_name"] = translate(option["displayed_name"], language)
-            option["description"] = translate(option["description"], language)
-            for conflict_key in option["conflicts"]:
-                option["conflicts"][conflict_key] = translate(option["conflicts"][conflict_key], language)
-                options[conflict_key]["conflicts"][key] = option["conflicts"][conflict_key]
-            file = open("Data.json", "w")
-            json.dump(options, file, indent=4, sort_keys=True)
-            file.close()
+        translate_options(options, options, language)
 
     elif command == "make":
         make("en-US")
         make("fr-FR")
+        make("ru-RU")
 
     elif command == "setup":
         shutil.copy("Options.json", "../Options.json")
-        shutil.copy("en-US.json", "../Localization/Options/en-US.hjson")
-        shutil.copy("fr-FR.json", "../Localization/Options/fr-FR.hjson")
+        shutil.copy("en-US.json", "../Localization/en-US/options.hjson")
+        shutil.copy("fr-FR.json", "../Localization/fr-FR/options.hjson")
+        shutil.copy("ru-RU.json", "../Localization/ru-RU/options.hjson")
 
     elif command == "conflict":
         option1 = input("option 1 : ")
@@ -113,9 +107,7 @@ while True:
         options[option1]["conflicts"][option2] = conflict_description
         options[option2]["conflicts"][option1] = conflict_description
 
-        file = open("Data.json", "w")
-        json.dump(options, file, indent=4, sort_keys=True)
-        file.close()
+        save_data(options)
 
     else:
         print("command unknown")
