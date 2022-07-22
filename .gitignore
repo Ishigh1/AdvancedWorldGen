@@ -3,3 +3,6 @@ obj/
 **/.*
 **/__pycache__
 workshop.json
+**/options.hjson
+Tool/*-*.json
+Tool/Options.json
