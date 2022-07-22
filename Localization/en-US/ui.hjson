@@ -23,6 +23,7 @@
         "Warning": "Warning",
         "CustomSize": "Custom Size",
         "Abort": "Abort",
+        "Timer": "Time remaining : {0}",
         "NoOptions": "World without options",
         "CopySettings": "Copy settings",
         "OptionButton": "Choose your world generation settings",

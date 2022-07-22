@@ -14,16 +14,10 @@ public class FloatingIslands : ControlledWorldGenPass
 	protected override void ApplyPass()
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.12");
-		int numIslandHouses = 0;
-		int skyIslands = (int)(Main.maxTilesX * 0.0008);
-		int islandsMade = 0;
+		WorldGen.numIslandHouses = 0;
+		int skyIslands = Main.maxTilesX / 1250;
 
-		int skyLakes = Main.maxTilesX switch
-		{
-			> 8000 => 3,
-			> 6000 => 2,
-			_ => 1
-		};
+		int skyLakes = Main.maxTilesX / 2500;
 		int totalSkyBiomes = skyIslands + skyLakes;
 		for (int currentSkyItem = 0; currentSkyItem < totalSkyBiomes; currentSkyItem++)
 		{
@@ -38,7 +32,7 @@ public class FloatingIslands : ControlledWorldGenPass
 					x = WorldGen.genRand.Next((int)(Main.maxTilesX * 0.1),
 						(int)(Main.maxTilesX * 0.9));
 
-				for (int num822 = 0; num822 < numIslandHouses; num822++)
+				for (int num822 = 0; num822 < WorldGen.numIslandHouses; num822++)
 					if (x > WorldGen.floatingIslandHouseX[num822] - 180 &&
 					    x < WorldGen.floatingIslandHouseX[num822] + 180)
 					{
@@ -60,52 +54,52 @@ public class FloatingIslands : ControlledWorldGenPass
 
 					if (flag54)
 					{
-						int num825 = 0;
+						WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = 0;
 						num820 = -1;
 						int y = WorldGen.genRand.Next(Math.Max(50, Math.Min(90, (int)WorldGen.worldSurfaceLow - 50)), num823 - 100);
-						if (islandsMade >= skyIslands)
+
+						bool lake = WorldGen.genRand.NextBool(skyLakes, skyLakes + skyIslands);
+						if (lake)
 						{
-							WorldGen.skyLake[numIslandHouses] = true;
+							skyLakes--;
+							WorldGen.skyLake[WorldGen.numIslandHouses] = true;
 							WorldGen.CloudLake(x, y);
 						}
 						else
 						{
-							WorldGen.skyLake[numIslandHouses] = false;
+							skyIslands--;
+							WorldGen.skyLake[WorldGen.numIslandHouses] = false;
 							if (WorldGen.drunkWorldGen)
 							{
 								if (WorldGen.genRand.Next(2) == 0)
 								{
-									num825 = 3;
+									WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = 3;
 									WorldGen.SnowCloudIsland(x, y);
 								}
 								else
 								{
-									num825 = 1;
+									WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = 1;
 									WorldGen.DesertCloudIsland(x, y);
 								}
 							}
 							else
 							{
 								if (WorldGen.getGoodWorldGen)
-									num825 = !WorldGen.crimson ? 4 : 5;
+									WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = !WorldGen.crimson ? 4 : 5;
 
 								if (Main.tenthAnniversaryWorld)
-									num825 = 6;
+									WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = 6;
 
 								WorldGen.CloudIsland(x, y);
 							}
 						}
 
-						WorldGen.floatingIslandHouseX[numIslandHouses] = x;
-						WorldGen.floatingIslandHouseY[numIslandHouses] = y;
-						WorldGen.floatingIslandStyle[numIslandHouses] = num825;
-						numIslandHouses++;
-						islandsMade++;
+						WorldGen.floatingIslandHouseX[WorldGen.numIslandHouses] = x;
+						WorldGen.floatingIslandHouseY[WorldGen.numIslandHouses] = y;
+						WorldGen.numIslandHouses++;
 					}
 				}
 			}
 		}
-
-		numIslandHouses = numIslandHouses;
 	}
 }

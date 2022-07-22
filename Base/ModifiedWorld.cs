@@ -47,11 +47,6 @@ public class ModifiedWorld : ModSystem
 		OptionHelper = new OptionHelper(Mod);
 	}
 
-	public override void Unload()
-	{
-		OptionHelper = null!;
-	}
-
 	public override void OnWorldLoad()
 	{
 		OptionHelper.ClearAll();
@@ -149,7 +144,7 @@ public class ModifiedWorld : ModSystem
 
 	public void HandleNpcs(GenerationProgress progress, GameConfiguration configuration)
 	{
-		List<int> availableNPCs = NPCs.ToList();
+		HashSet<int> availableNPCs = NPCs.ToHashSet();
 		int alreadyPlaced = 0;
 		if (API.OptionsContains("Random.Painted")) TryAddNpc(availableNPCs, Painter, ref alreadyPlaced, out _);
 
@@ -198,7 +193,7 @@ public class ModifiedWorld : ModSystem
 		if (alreadyPlaced == 0) TryAddNpc(availableNPCs, Guide, ref alreadyPlaced, out _);
 	}
 
-	public static bool TryAddNpc(List<int> availableNPCs, int npcType,
+	public static bool TryAddNpc(HashSet<int> availableNPCs, int npcType,
 		ref int alreadyPlaced, [NotNullWhen(true)] out NPC? npc)
 	{
 		if (!availableNPCs.Contains(npcType))
@@ -220,7 +215,7 @@ public class ModifiedWorld : ModSystem
 		return true;
 	}
 
-	public static int RandomNpc(List<int> availableNPCs)
+	public static int RandomNpc(HashSet<int> availableNPCs)
 	{
 		return WorldGen.genRand.NextFromList(availableNPCs.ToArray());
 	}

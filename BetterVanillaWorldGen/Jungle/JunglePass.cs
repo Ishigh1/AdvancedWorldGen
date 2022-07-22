@@ -17,7 +17,7 @@ public class JunglePass : ControlledWorldGenPass
 	public float WorldScaleX;
 	public float WorldScaleY;
 
-	public JunglePass() : base("Jungle", 4304.6303f)
+	public JunglePass() : base("Jungle", 14834.1467f)
 	{
 	}
 
@@ -46,7 +46,7 @@ public class JunglePass : ControlledWorldGenPass
 			meanX += x;
 			meanY += y;
 			PlaceFirstPassMud(x, y, 3);
-			Progress.Set(1, 11);
+			Progress.Add(1, mudPasses, 5 / 11f / 2f);
 
 			ushort baseGem;
 			if (i < mudPasses / 3)
@@ -56,7 +56,7 @@ public class JunglePass : ControlledWorldGenPass
 			else
 				baseGem = 67;
 			PlaceGemsAt(x, y, baseGem, 2);
-			Progress.Add(1, mudPasses, 5 / 11f);
+			Progress.Add(1, mudPasses, 5 / 11f / 2f);
 		}
 
 		meanX /= mudPasses;

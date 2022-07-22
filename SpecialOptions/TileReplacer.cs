@@ -16,7 +16,7 @@ public class TileReplacer
 	public const int Lava = -3;
 	public const int Honey = -4;
 
-	public static List<int> NotReplaced = null!;
+	public static HashSet<int> NotReplaced = null!;
 
 	public Dictionary<int, int> DirectReplacements;
 	public Dictionary<int, SpecialCase> SpecialCases;
@@ -29,7 +29,7 @@ public class TileReplacer
 
 	public static void Initialize()
 	{
-		NotReplaced = new List<int>
+		NotReplaced = new HashSet<int>
 		{
 			TileID.ClosedDoor,
 			TileID.MagicalIceBlock,

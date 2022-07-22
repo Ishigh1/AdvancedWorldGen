@@ -1,5 +1,6 @@
 using System;
 using AdvancedWorldGen.Base;
+using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
 using Terraria;
 using Terraria.ID;
@@ -14,59 +15,45 @@ public class Corruption : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		int snowLeft = Main.maxTilesX;
-		int snowRight = 0;
-		for (int x = 0; x < Main.maxTilesX; x++)
-		for (int y = 0; y < Main.worldSurface; y++)
-			if (Main.tile[x, y].HasTile)
-				switch (Main.tile[x, y].TileType)
-				{
-					case TileID.SnowBlock or TileID.IceBlock:
-					{
-						if (x < snowLeft)
-							snowLeft = x;
-
-						if (x > snowRight)
-							snowRight = x;
-						break;
-					}
-				}
-
 		const int num700 = 10;
 		VanillaInterface.JungleLeft -= num700;
 		VanillaInterface.JungleRight += num700;
-		snowLeft -= num700;
-		snowRight += num700;
 		int beachPadding = WorldGen.oceanDistance * 2;
 		const int num702 = 100;
 		double biomeNumber = Main.maxTilesX * 0.00045;
+		bool oldCrimson = WorldGen.crimson;
 		if (API.OptionsContains("Drunk.Crimruption"))
 		{
 			biomeNumber /= 2.0;
 			bool flag47 = WorldGen.genRand.NextBool(2);
-			GenerateCrimson(biomeNumber, snowLeft, snowRight, flag47, beachPadding, num702);
-			GenerateCorruption(biomeNumber, snowLeft, snowRight, flag47, beachPadding, num702);
+			GenerateCrimson(biomeNumber, flag47, beachPadding, num702);
+			GenerateCorruption(biomeNumber, flag47, beachPadding, num702);
 		}
-		else if (WorldGen.crimson)
+		else if (oldCrimson)
 		{
-			GenerateCrimson(biomeNumber, snowLeft, snowRight, true, beachPadding, num702);
+			GenerateCrimson(biomeNumber, true, beachPadding, num702);
 		}
 		else
 		{
-			GenerateCorruption(biomeNumber, snowLeft, snowRight, true, beachPadding, num702);
+			GenerateCorruption(biomeNumber, true, beachPadding, num702);
 		}
+
+		WorldGen.crimson = oldCrimson;
 	}
 
-	private void GenerateCorruption(double biomeNumber, int snowLeft, int snowRight, bool flag47, int beachPadding, int num702)
+	private void GenerateCorruption(double biomeNumber, bool flag47, int beachPadding, int num702)
 	{
+		Progress.Message = Lang.gen[20].Value;
+
+		WorldGen.crimson = false;
+
 		int corruptionMin = Math.Max(WorldGen.evilBiomeBeachAvoidance, 0);
 		int corruptionMax = Main.maxTilesX - Math.Min(WorldGen.evilBiomeBeachAvoidance, 0);
 
-		Progress.Message = Lang.gen[20].Value;
 		for (int biome = 0; biome < biomeNumber; biome++)
 		{
-			int num728 = snowLeft;
-			int num729 = snowRight;
+			int num728 = WorldGen.snowOriginLeft;
+			int num729 = WorldGen.snowOriginRight;
 			int num730 = VanillaInterface.JungleLeft;
 			int num731 = VanillaInterface.JungleRight;
 			Progress.Set(biome, (float)biomeNumber);
@@ -87,12 +74,6 @@ public class Corruption : ControlledWorldGenPass
 				corruptionRight = num732 + WorldGen.genRand.Next(200) + 100;
 				corruptionLeft = Utils.Clamp(corruptionLeft, corruptionMin, corruptionMax);
 				corruptionRight = Utils.Clamp(corruptionRight, corruptionMin, corruptionMax);
-
-				if (num732 < corruptionLeft + WorldGen.evilBiomeAvoidanceMidFixer)
-					num732 = corruptionLeft + WorldGen.evilBiomeAvoidanceMidFixer;
-
-				if (num732 > corruptionRight - WorldGen.evilBiomeAvoidanceMidFixer)
-					num732 = corruptionRight - WorldGen.evilBiomeAvoidanceMidFixer;
 
 				if (num732 > half - num736 && num732 < half + num736)
 					isValid = false;
@@ -130,85 +111,93 @@ public class Corruption : ControlledWorldGenPass
 				}
 			}
 
+			int minY = (int)WorldGen.worldSurfaceLow;
+			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
+			{
+				int islandX = WorldGen.floatingIslandHouseX[index];
+				if (corruptionLeft - 100 < islandX && corruptionRight + 100 > islandX)
+					minY = Math.Max(minY, WorldGen.floatingIslandHouseY[index] + 30);
+			}
+
 			int num737 = 0;
-			for (int num738 = corruptionLeft; num738 < corruptionRight; num738++)
+			for (int x = corruptionLeft; x < corruptionRight; x++)
 			{
 				if (num737 > 0)
 					num737--;
 
-				if (num738 == num732 || num737 == 0)
-					for (int num739 = (int)WorldGen.worldSurfaceLow; num739 < Main.worldSurface - 1.0; num739++)
-						if (Main.tile[num738, num739].HasTile || Main.tile[num738, num739].WallType > 0)
+				if (x == num732 || num737 == 0)
+					for (int y = minY; y < Main.worldSurface - 1.0; y++)
+						if (Main.tile[x, y].HasTile || Main.tile[x, y].WallType > 0)
 						{
-							if (num738 == num732)
+							if (x == num732)
 							{
 								num737 = 20;
-								WorldGen.ChasmRunner(num738, num739, WorldGen.genRand.Next(150) + 150, true);
+								WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(150) + 150, true);
 							}
 							else if (WorldGen.genRand.Next(35) == 0 && num737 == 0)
 							{
 								num737 = 30;
-								WorldGen.ChasmRunner(num738, num739, WorldGen.genRand.Next(50) + 50, true);
+								WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(50) + 50, true);
 							}
-
 							break;
 						}
 
 				for (int num740 = (int)WorldGen.worldSurfaceLow; num740 < Main.worldSurface - 1.0; num740++)
-					if (Main.tile[num738, num740].HasTile)
+					if (Main.tile[x, num740].HasTile)
 					{
 						int num741 = num740 + WorldGen.genRand.Next(10, 14);
 						for (int num742 = num740; num742 < num741; num742++)
-							if (Main.tile[num738, num742].TileType is 59 or 60 && num738 >= corruptionLeft + WorldGen.genRand.Next(5) && num738 < corruptionRight - WorldGen.genRand.Next(5))
-								Main.tile[num738, num742].TileType = 0;
+							if (Main.tile[x, num742].TileType is 59 or 60 && x >= corruptionLeft + WorldGen.genRand.Next(5) && x < corruptionRight - WorldGen.genRand.Next(5))
+								Main.tile[x, num742].TileType = 0;
 
 						break;
 					}
 			}
 
-			double num743 = Main.worldSurface + 40.0;
-			for (int num744 = corruptionLeft; num744 < corruptionRight; num744++)
+			double worldTop = WorldGen.worldSurfaceHigh + 60.0;
+
+			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
 			{
-				num743 += WorldGen.genRand.Next(-2, 3);
-				if (num743 < Main.worldSurface + 30.0)
-					num743 = Main.worldSurface + 30.0;
-
-				if (num743 > Main.worldSurface + 50.0)
-					num743 = Main.worldSurface + 50.0;
-
+				int islandX = WorldGen.floatingIslandHouseX[index];
+				if (corruptionLeft - 100 < islandX && corruptionRight + 100 > islandX) 
+					worldTop = Math.Max(worldTop, WorldGen.floatingIslandHouseY[index] + 30);
+			}
+			
+			for (int x = corruptionLeft; x < corruptionRight; x++)
+			{
 				bool flag52 = false;
-				for (int num745 = (int)WorldGen.worldSurfaceLow; num745 < num743; num745++)
-					if (Main.tile[num744, num745].HasTile)
+				for (int y = minY; y < worldTop; y++)
+					if (Main.tile[x, y].HasTile)
 					{
-						if (Main.tile[num744, num745].TileType == 53 && num744 >= corruptionLeft + WorldGen.genRand.Next(5) && num744 <= corruptionRight - WorldGen.genRand.Next(5))
-							Main.tile[num744, num745].TileType = 112;
+						if (Main.tile[x, y].TileType == 53 && x >= corruptionLeft + WorldGen.genRand.Next(5) && 
+						    x <= corruptionRight - WorldGen.genRand.Next(5))
+							Main.tile[x, y].TileType = 112;
 
-						if (Main.tile[num744, num745].TileType == 0 && num745 < Main.worldSurface - 1.0 && !flag52)
+						if (Main.tile[x, y].TileType == 0 && y < Main.worldSurface - 1.0 && !flag52)
 						{
 							WorldGen.grassSpread = 0;
-							WorldGen.SpreadGrass(num744, num745, 0, 23);
+							WorldGen.SpreadGrass(x, y, 0, 23);
 						}
 
 						flag52 = true;
-						if (Main.tile[num744, num745].TileType == 1 && num744 >= corruptionLeft + WorldGen.genRand.Next(5) && num744 <= corruptionRight - WorldGen.genRand.Next(5))
-							Main.tile[num744, num745].TileType = 25;
+						if (Main.tile[x, y].TileType == 1 && x >= corruptionLeft + WorldGen.genRand.Next(5) && x <= corruptionRight - WorldGen.genRand.Next(5))
+							Main.tile[x, y].TileType = 25;
 
-						Main.tile[num744, num745].WallType = Main.tile[num744, num745].WallType switch
+						Main.tile[x, y].WallType = Main.tile[x, y].WallType switch
 						{
 							216 => 217,
 							187 => 220,
-							_ => Main.tile[num744, num745].WallType
+							_ => Main.tile[x, y].WallType
 						};
 
-						if (Main.tile[num744, num745].TileType == 2)
-							Main.tile[num744, num745].TileType = 23;
-
-						if (Main.tile[num744, num745].TileType == 161)
-							Main.tile[num744, num745].TileType = 163;
-						else if (Main.tile[num744, num745].TileType == 396)
-							Main.tile[num744, num745].TileType = 400;
-						else if (Main.tile[num744, num745].TileType == 397)
-							Main.tile[num744, num745].TileType = 398;
+						Main.tile[x, y].TileType = Main.tile[x, y].TileType switch
+						{
+							2 => 23,
+							161 => 163,
+							396 => 400,
+							397 => 398,
+							_ => Main.tile[x, y].TileType
+						};
 					}
 			}
 
@@ -235,22 +224,24 @@ public class Corruption : ControlledWorldGenPass
 		}
 	}
 
-	private void GenerateCrimson(double biomeNumber, int snowLeft, int snowRight, bool flag47, int beachPadding, int num702)
+	private void GenerateCrimson(double biomeNumber, bool flag47, int beachPadding, int num702)
 	{
 		Progress.Message = Lang.gen[72].Value;
+
+		WorldGen.crimson = true;
 
 		int crimsonMin = Math.Max(WorldGen.evilBiomeBeachAvoidance, WorldGen.dungeonSide == -1 ? beachPadding * 4 / 5 : 0);
 		int crimsonMax = Main.maxTilesX - Math.Min(WorldGen.evilBiomeBeachAvoidance, WorldGen.dungeonSide == 1 ? beachPadding * 4 / 5 : 0);
 
 		for (int biome = 0; biome < biomeNumber; biome++)
 		{
-			int num705 = snowLeft;
-			int num706 = snowRight;
+			int num705 = WorldGen.snowOriginLeft;
+			int num706 = WorldGen.snowOriginRight;
 			int num707 = VanillaInterface.JungleLeft;
 			int num708 = VanillaInterface.JungleRight;
 			Progress.Set(biome, (float)biomeNumber);
 			bool flag48 = false;
-			int num709 = 0;
+			int crimX = 0;
 			int crimsonLeft = 0;
 			int crimsonRight = 0;
 			while (!flag48)
@@ -261,25 +252,25 @@ public class Corruption : ControlledWorldGenPass
 				if (API.OptionsContains("Drunk.Crimruption"))
 				{
 					num713 = 100;
-					num709 = flag47 ? WorldGen.genRand.Next(beachPadding, (int)(Main.maxTilesX * 0.5)) : WorldGen.genRand.Next((int)(Main.maxTilesX * 0.5), Main.maxTilesX - beachPadding);
+					crimX = flag47 ? WorldGen.genRand.Next(beachPadding, (int)(Main.maxTilesX * 0.5)) : WorldGen.genRand.Next((int)(Main.maxTilesX * 0.5), Main.maxTilesX - beachPadding);
 				}
 				else
 				{
-					num709 = WorldGen.genRand.Next(beachPadding, Main.maxTilesX - beachPadding);
+					crimX = WorldGen.genRand.Next(beachPadding, Main.maxTilesX - beachPadding);
 				}
 
-				crimsonLeft = num709 - WorldGen.genRand.Next(200) - 100;
-				crimsonRight = num709 + WorldGen.genRand.Next(200) + 100;
+				crimsonLeft = crimX - WorldGen.genRand.Next(200) - 100;
+				crimsonRight = crimX + WorldGen.genRand.Next(200) + 100;
 				crimsonLeft = Utils.Clamp(crimsonLeft, crimsonMin, crimsonMax);
-				crimsonRight = Utils.Clamp(crimsonLeft, crimsonMin, crimsonMax);
+				crimsonRight = Utils.Clamp(crimsonRight, crimsonMin, crimsonMax);
 
-				if (num709 < crimsonLeft + WorldGen.evilBiomeAvoidanceMidFixer)
-					num709 = crimsonLeft + WorldGen.evilBiomeAvoidanceMidFixer;
+				if (crimX < crimsonLeft + WorldGen.evilBiomeAvoidanceMidFixer)
+					crimX = crimsonLeft + WorldGen.evilBiomeAvoidanceMidFixer;
 
-				if (num709 > crimsonRight - WorldGen.evilBiomeAvoidanceMidFixer)
-					num709 = crimsonRight - WorldGen.evilBiomeAvoidanceMidFixer;
+				if (crimX > crimsonRight - WorldGen.evilBiomeAvoidanceMidFixer)
+					crimX = crimsonRight - WorldGen.evilBiomeAvoidanceMidFixer;
 
-				if (num709 > num712 - num713 && num709 < num712 + num713)
+				if (crimX > num712 - num713 && crimX < num712 + num713)
 					flag48 = false;
 
 				if (crimsonLeft > num712 - num713 && crimsonLeft < num712 + num713)
@@ -288,7 +279,7 @@ public class Corruption : ControlledWorldGenPass
 				if (crimsonRight > num712 - num713 && crimsonRight < num712 + num713)
 					flag48 = false;
 
-				if (num709 > WorldGen.UndergroundDesertLocation.X && num709 < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
+				if (crimX > WorldGen.UndergroundDesertLocation.X && crimX < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
 					flag48 = false;
 
 				if (crimsonLeft > WorldGen.UndergroundDesertLocation.X && crimsonLeft < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
@@ -315,65 +306,78 @@ public class Corruption : ControlledWorldGenPass
 				}
 			}
 
-			WorldGen.CrimStart(num709, (int)WorldGen.worldSurfaceLow - 10);
-			for (int num714 = crimsonLeft; num714 < crimsonRight; num714++)
-			for (int num715 = (int)WorldGen.worldSurfaceLow; num715 < Main.worldSurface - 1.0; num715++)
-				if (Main.tile[num714, num715].HasTile)
+			int crimY = (int)WorldGen.worldSurfaceLow;
+			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
+			{
+				int islandX = WorldGen.floatingIslandHouseX[index];
+				if (crimsonLeft - 100 < islandX && crimsonRight + 100 > islandX)
+					crimY = Math.Max(crimY, WorldGen.floatingIslandHouseY[index] + 30);
+			}
+
+			WorldGen.CrimStart(crimX, crimY - 10);
+			for (int x = crimsonLeft; x < crimsonRight; x++)
+			for (int y = crimY; y < Main.worldSurface - 1.0; y++)
+				if (Main.tile[x, y].HasTile)
 				{
-					int num716 = num715 + WorldGen.genRand.Next(10, 14);
-					for (int num717 = num715; num717 < num716; num717++)
-						if (Main.tile[num714, num717].TileType is 59 or 60 && num714 >= crimsonLeft + WorldGen.genRand.Next(5) && num714 < crimsonRight - WorldGen.genRand.Next(5))
-							Main.tile[num714, num717].TileType = 0;
+					int num716 = y + WorldGen.genRand.Next(10, 14);
+					for (int num717 = y; num717 < num716; num717++)
+						if (Main.tile[x, num717].TileType is 59 or 60 && x >= crimsonLeft + WorldGen.genRand.Next(5) && x < crimsonRight - WorldGen.genRand.Next(5))
+							Main.tile[x, num717].TileType = 0;
 
 					break;
 				}
 
-			double num718 = Main.worldSurface + 40.0;
-			for (int num719 = crimsonLeft; num719 < crimsonRight; num719++)
+			double worldTop = WorldGen.worldSurfaceHigh + 60.0;
+
+			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
 			{
-				num718 += WorldGen.genRand.Next(-2, 3);
-				num718 = Utils.Clamp(num718, Main.worldSurface + 30, Main.worldSurface + 50.0);
-
+				int islandX = WorldGen.floatingIslandHouseX[index];
+				if (crimsonLeft - 100 < islandX && crimsonRight + 100 > islandX) 
+					worldTop = Math.Max(worldTop, WorldGen.floatingIslandHouseY[index] + 30);
+			}
+			
+			for (int x = crimsonLeft; x < crimsonRight; x++)
+			{
 				bool flag49 = false;
-				for (int num720 = (int)WorldGen.worldSurfaceLow; num720 < num718; num720++)
-					if (Main.tile[num719, num720].HasTile)
+				for (int y = crimY; y < worldTop; y++)
+					if (Main.tile[x, y].HasTile)
 					{
-						if (Main.tile[num719, num720].TileType == 53 && num719 >= crimsonLeft + WorldGen.genRand.Next(5) && num719 <= crimsonRight - WorldGen.genRand.Next(5))
-							Main.tile[num719, num720].TileType = 234;
+						if (Main.tile[x, y].TileType == 53 && x >= crimsonLeft + WorldGen.genRand.Next(5) && x <= crimsonRight - WorldGen.genRand.Next(5))
+							Main.tile[x, y].TileType = 234;
 
-						if (Main.tile[num719, num720].TileType == 0 && num720 < Main.worldSurface - 1.0 && !flag49)
+						if (Main.tile[x, y].TileType == 0 && y < Main.worldSurface - 1.0 && !flag49)
 						{
 							WorldGen.grassSpread = 0;
-							WorldGen.SpreadGrass(num719, num720, 0, 199);
+							WorldGen.SpreadGrass(x, y, 0, 199);
 						}
 
 						flag49 = true;
-						Main.tile[num719, num720].WallType = Main.tile[num719, num720].WallType switch
+						Main.tile[x, y].WallType = Main.tile[x, y].WallType switch
 						{
 							216 => 218,
 							187 => 221,
-							_ => Main.tile[num719, num720].WallType
+							_ => Main.tile[x, y].WallType
 						};
 
-						switch (Main.tile[num719, num720].TileType)
+						switch (Main.tile[x, y].TileType)
 						{
 							case 1:
 							{
-								if (num719 >= crimsonLeft + WorldGen.genRand.Next(5) && num719 <= crimsonRight - WorldGen.genRand.Next(5))
-									Main.tile[num719, num720].TileType = 203;
+								if (x >= crimsonLeft + WorldGen.genRand.Next(5) && x <= crimsonRight - WorldGen.genRand.Next(5))
+									Main.tile[x, y].TileType = 203;
 								break;
 							}
 							case 2:
-								Main.tile[num719, num720].TileType = 199;
+								Main.tile[x, y].TileType = 199;
 								break;
 							case 161:
-								Main.tile[num719, num720].TileType = 200;
+								Main.tile[x, y].TileType = 200;
 								break;
 							case 396:
-								Main.tile[num719, num720].TileType = 401;
+								Main.tile[x, y].TileType = 401;
 								break;
 							case 397:
-								Main.tile[num719, num720].TileType = 399;
+								Main.tile[x, y].TileType = 399;
 								break;
 						}
 					}

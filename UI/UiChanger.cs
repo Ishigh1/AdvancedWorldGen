@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using AdvancedWorldGen.Base;
 using AdvancedWorldGen.BetterVanillaWorldGen;
 using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
+using Humanizer;
+using Humanizer.Localisation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -21,6 +24,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
+using Terraria.WorldBuilding;
 using OnUIWorldLoad = On.Terraria.GameContent.UI.States.UIWorldLoad;
 using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
 using OnWorldGen = On.Terraria.WorldGen;
@@ -36,6 +40,7 @@ public class UiChanger
 	public OptionsSelector OptionsSelector = null!;
 	public Thread Thread = null!;
 	public WorldGenConfigurator? WorldGenConfigurator;
+	private GenerationProgress Progress = null!;
 
 	public UiChanger(Mod mod)
 	{
@@ -50,10 +55,12 @@ public class UiChanger
 		}
 	}
 
-	public void ThreadifyWorldGen(OnWorldGen.orig_do_worldGenCallBack orig, object threadContext)
+	public void ThreadifyWorldGen(OnWorldGen.orig_do_worldGenCallBack orig, object? threadContext)
 	{
 		if (!Main.dedServ)
 		{
+			threadContext ??= new GenerationProgress();
+			Progress = (GenerationProgress)threadContext;
 			Thread = new Thread(() =>
 			{
 				try
@@ -94,6 +101,20 @@ public class UiChanger
 		orig(self);
 		if (!Main.dedServ)
 		{
+			Stopwatch stopwatch = new();
+			stopwatch.Start();
+			UITextPanel<string> timer = new("");
+			self.Append(timer);
+			timer.VAlign = 0.7f;
+			timer.HAlign = 0.5f;
+			timer.OnUpdate += _ =>
+			{
+				if (Progress != null && stopwatch.ElapsedMilliseconds > 500)
+					timer.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.Timer",
+						(stopwatch.Elapsed * (1 / Progress.TotalProgress - 1)).Humanize(precision: 2, minUnit: TimeUnit.Second)));
+			};
+			timer.Recalculate();
+
 			UITextPanel<string> uiTextPanel = new("");
 			self.Append(uiTextPanel);
 			uiTextPanel.VAlign = 0.75f;
@@ -192,7 +213,7 @@ public class UiChanger
 			PaddingLeft = 4f
 		};
 
-		List<string> options = GetOptionsFromData(data);
+		HashSet<string> options = GetOptionsFromData(data);
 
 		options = SetupCopyButton(copyOptionButton, options, uiText);
 
@@ -202,24 +223,24 @@ public class UiChanger
 		data.DrunkWorld = data.DrunkWorld || options.Contains("Drunk.Crimruption");
 	}
 
-	public static List<string> GetOptionsFromData(WorldFileData data)
+	public static HashSet<string> GetOptionsFromData(WorldFileData data)
 	{
 		string path = Path.ChangeExtension(data.Path, ".twld");
 		if (!FileUtilities.Exists(path, data.IsCloudSave))
-			return new List<string>();
+			return new HashSet<string>();
 		byte[] buf = FileUtilities.ReadAllBytes(path, data.IsCloudSave);
 		TagCompound tags = TagIO.FromStream(new MemoryStream(buf));
 		IList<TagCompound> modTags = tags.GetList<TagCompound>("modData");
-		List<string> options =
+		HashSet<string> options =
 			(from tagCompound in modTags
 				where tagCompound.GetString("mod") == "AdvancedWorldGen"
-				select (List<string>?)tagCompound.GetCompound("data")?.GetList<string>("Options"))
+				select new HashSet<string>(tagCompound.GetCompound("data")?.GetList<string>("Options")))
 			.FirstOrDefault() ??
-			new List<string>();
+			new HashSet<string>();
 		return options;
 	}
 
-	public static List<string> SetupCopyButton(UIImageButton copyOptionButton, List<string> options, UIText uiText)
+	public static HashSet<string> SetupCopyButton(UIImageButton copyOptionButton, HashSet<string> options, UIText uiText)
 	{
 		copyOptionButton.OnMouseOver += delegate
 		{
