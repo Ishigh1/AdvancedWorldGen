@@ -6,7 +6,6 @@ from commands import *
 file = open("Data.json", "r", encoding="utf8")
 options = json.load(file)
 file.close()
-save_data(options)
 
 while True:
     output = input("command : ")
