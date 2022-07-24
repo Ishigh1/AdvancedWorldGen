@@ -95,6 +95,8 @@ public partial class DungeonPass
 
 		int num6 = 5;
 		DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
+		int x00 = WorldGen.dungeonX;
+		int y00 = WorldGen.dungeonY;
 		for (int room = 0; room < maxRooms; room++)
 		{
 			WorldGen.dMinX = Math.Min(WorldGen.dMinX, WorldGen.dungeonX);
@@ -107,15 +109,15 @@ public partial class DungeonPass
 				num6 = 5;
 				if (WorldGen.genRand.NextBool(2))
 				{
-					int num7 = WorldGen.dungeonX;
-					int num8 = WorldGen.dungeonY;
+					int x = WorldGen.dungeonX;
+					int y = WorldGen.dungeonY;
 					DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 					if (WorldGen.genRand.NextBool(2))
 						DungeonHalls(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 
 					DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
-					WorldGen.dungeonX = num7;
-					WorldGen.dungeonY = num8;
+					WorldGen.dungeonX = x;
+					WorldGen.dungeonY = y;
 				}
 				else
 				{
@@ -130,13 +132,6 @@ public partial class DungeonPass
 
 		DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
 		(int dX, int dY) = DungeonRoomPos[0];
-		for (int index = 0; index < DungeonRoomPos.Count; index++)
-			if (DungeonRoomPos[index].y < dY)
-			{
-				dX = DungeonRoomPos[index].x;
-				dY = DungeonRoomPos[index].y;
-			}
-
 		WorldGen.dungeonX = dX;
 		WorldGen.dungeonY = dY;
 		DungeonEntranceX = dX;
@@ -161,6 +156,7 @@ public partial class DungeonPass
 		}
 
 		DungeonEntrance(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
+
 		Progress.Set(65, 100);
 		int num13 = Main.maxTilesX * 2;
 		for (int num14 = 0; num14 < num13; num14++)

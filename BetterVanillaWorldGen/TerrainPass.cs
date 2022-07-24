@@ -118,7 +118,7 @@ public class TerrainPass : ControlledWorldGenPass
 		}
 
 		Main.worldSurface = (int)(worldSurfaceHigh + 25.0);
-		Main.rockLayer = Main.worldSurface + (rockLayerHigh - Main.worldSurface) / 6;
+		Main.rockLayer = Main.worldSurface + rockLayerHigh - Main.worldSurface;
 		int waterLine = (int)(Main.rockLayer + Main.maxTilesY) / 2;
 		waterLine += WorldGen.genRand.Next(-100, 20);
 		int lavaLine = waterLine + WorldGen.genRand.Next(50, 80);

@@ -1,7 +1,7 @@
 using System;
 using AdvancedWorldGen.Base;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 using AdvancedWorldGen.Helper;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 
@@ -58,7 +58,7 @@ public class Corruption : ControlledWorldGenPass
 			int num731 = VanillaInterface.JungleRight;
 			Progress.Set(biome, (float)biomeNumber);
 			bool isValid = false;
-			int num732 = 0;
+			int centralX = 0;
 			int corruptionLeft = 0;
 			int corruptionRight = 0;
 			while (!isValid)
@@ -67,15 +67,15 @@ public class Corruption : ControlledWorldGenPass
 				int half = Main.maxTilesX / 2;
 				const int num736 = 200;
 				if (API.OptionsContains("Drunk.Crimruption"))
-					num732 = flag47 ? WorldGen.genRand.Next(half, Main.maxTilesX - beachPadding) : WorldGen.genRand.Next(beachPadding, half);
+					centralX = flag47 ? WorldGen.genRand.Next(half, Main.maxTilesX - beachPadding) : WorldGen.genRand.Next(beachPadding, half);
 				else
-					num732 = WorldGen.genRand.Next(beachPadding, Main.maxTilesX - beachPadding);
-				corruptionLeft = num732 - WorldGen.genRand.Next(200) - 100;
-				corruptionRight = num732 + WorldGen.genRand.Next(200) + 100;
+					centralX = WorldGen.genRand.Next(beachPadding, Main.maxTilesX - beachPadding);
+				corruptionLeft = centralX - WorldGen.genRand.Next(200) - 100;
+				corruptionRight = centralX + WorldGen.genRand.Next(200) + 100;
 				corruptionLeft = Utils.Clamp(corruptionLeft, corruptionMin, corruptionMax);
 				corruptionRight = Utils.Clamp(corruptionRight, corruptionMin, corruptionMax);
 
-				if (num732 > half - num736 && num732 < half + num736)
+				if (centralX > half - num736 && centralX < half + num736)
 					isValid = false;
 
 				if (corruptionLeft > half - num736 && corruptionLeft < half + num736)
@@ -84,7 +84,7 @@ public class Corruption : ControlledWorldGenPass
 				if (corruptionRight > half - num736 && corruptionRight < half + num736)
 					isValid = false;
 
-				if (num732 > WorldGen.UndergroundDesertLocation.X && num732 < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
+				if (centralX > WorldGen.UndergroundDesertLocation.X && centralX < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
 					isValid = false;
 
 				if (corruptionLeft > WorldGen.UndergroundDesertLocation.X && corruptionLeft < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
@@ -111,7 +111,8 @@ public class Corruption : ControlledWorldGenPass
 				}
 			}
 
-			int minY = (int)WorldGen.worldSurfaceLow;
+			int minY = (int)WorldGen.worldSurfaceLow - 50;
+
 			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
 			{
 				int islandX = WorldGen.floatingIslandHouseX[index];
@@ -122,31 +123,32 @@ public class Corruption : ControlledWorldGenPass
 			int num737 = 0;
 			for (int x = corruptionLeft; x < corruptionRight; x++)
 			{
-				if (num737 > 0)
-					num737--;
+				num737--;
 
-				if (x == num732 || num737 == 0)
-					for (int y = minY; y < Main.worldSurface - 1.0; y++)
-						if (Main.tile[x, y].HasTile || Main.tile[x, y].WallType > 0)
+				if (x == centralX || (WorldGen.genRand.NextBool(35) && num737 <= 0))
+					for (int y = minY; y < Main.worldSurface - 1; y++)
+						if (Main.tile[x, y].HasTile || (Main.tile[x, y].WallType > 0 && Main.tile[x, y].WallType != WallID.EbonstoneUnsafe))
 						{
-							if (x == num732)
+							const int depth = 50;
+							if (x == centralX)
 							{
 								num737 = 20;
-								WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(150) + 150, true);
+								WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(depth * 3, depth * 6), true);
 							}
-							else if (WorldGen.genRand.Next(35) == 0 && num737 == 0)
+							else
 							{
 								num737 = 30;
-								WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(50) + 50, true);
+								WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(depth, depth * 2), true);
 							}
+
 							break;
 						}
 
-				for (int num740 = (int)WorldGen.worldSurfaceLow; num740 < Main.worldSurface - 1.0; num740++)
-					if (Main.tile[x, num740].HasTile)
+				for (int y = (int)WorldGen.worldSurfaceLow; y < Main.worldSurface - 1.0; y++)
+					if (Main.tile[x, y].HasTile)
 					{
-						int num741 = num740 + WorldGen.genRand.Next(10, 14);
-						for (int num742 = num740; num742 < num741; num742++)
+						int num741 = y + WorldGen.genRand.Next(10, 14);
+						for (int num742 = y; num742 < num741; num742++)
 							if (Main.tile[x, num742].TileType is 59 or 60 && x >= corruptionLeft + WorldGen.genRand.Next(5) && x < corruptionRight - WorldGen.genRand.Next(5))
 								Main.tile[x, num742].TileType = 0;
 
@@ -154,22 +156,15 @@ public class Corruption : ControlledWorldGenPass
 					}
 			}
 
-			double worldTop = WorldGen.worldSurfaceHigh + 60.0;
+			double deepEnough = WorldGen.worldSurfaceHigh + 60.0;
 
-			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
-			{
-				int islandX = WorldGen.floatingIslandHouseX[index];
-				if (corruptionLeft - 100 < islandX && corruptionRight + 100 > islandX) 
-					worldTop = Math.Max(worldTop, WorldGen.floatingIslandHouseY[index] + 30);
-			}
-			
 			for (int x = corruptionLeft; x < corruptionRight; x++)
 			{
 				bool flag52 = false;
-				for (int y = minY; y < worldTop; y++)
+				for (int y = minY; y < deepEnough; y++)
 					if (Main.tile[x, y].HasTile)
 					{
-						if (Main.tile[x, y].TileType == 53 && x >= corruptionLeft + WorldGen.genRand.Next(5) && 
+						if (Main.tile[x, y].TileType == 53 && x >= corruptionLeft + WorldGen.genRand.Next(5) &&
 						    x <= corruptionRight - WorldGen.genRand.Next(5))
 							Main.tile[x, y].TileType = 112;
 
@@ -201,26 +196,30 @@ public class Corruption : ControlledWorldGenPass
 					}
 			}
 
-			for (int num746 = corruptionLeft; num746 < corruptionRight; num746++)
-			for (int num747 = 0; num747 < Main.maxTilesY - 50; num747++)
-				if (Main.tile[num746, num747].HasTile && Main.tile[num746, num747].TileType == 31)
-				{
-					int num748 = num746 - 13;
-					int num749 = num746 + 13;
-					int num750 = num747 - 13;
-					int num751 = num747 + 13;
-					for (int num752 = num748; num752 < num749; num752++)
-						if (num752 > 10 && num752 < Main.maxTilesX - 10)
-							for (int num753 = num750; num753 < num751; num753++)
-							{
-								Tile tile = Main.tile[num752, num753];
-								if (Math.Abs(num752 - num746) + Math.Abs(num753 - num747) < 9 + WorldGen.genRand.Next(11) && WorldGen.genRand.Next(3) != 0 && tile.HasTile && tile.TileType != 31)
-									if (Math.Abs(num752 - num746) > 1 || Math.Abs(num753 - num747) > 1)
-										WorldGen.PlaceTile(num752, num753, 25, true);
+			#region protecc the orbs
 
-								if (Main.tile[num752, num753].TileType != 31 && Math.Abs(num752 - num746) <= 2 + WorldGen.genRand.Next(3) && Math.Abs(num753 - num747) <= 2 + WorldGen.genRand.Next(3)) WorldGen.KillTile(num752, num753);
+			for (int x1 = corruptionLeft; x1 < corruptionRight; x1++)
+			for (int y1 = 0; y1 < Main.maxTilesY - 50; y1++)
+				if (Main.tile[x1, y1].HasTile && Main.tile[x1, y1].TileType == TileID.ShadowOrbs)
+				{
+					int xMin = x1 - 13;
+					int xMax = x1 + 13;
+					int yMin = y1 - 13;
+					int yMax = y1 + 13;
+					for (int x2 = xMin; x2 < xMax; x2++)
+						if (x2 > 10 && x2 < Main.maxTilesX - 10)
+							for (int y2 = yMin; y2 < yMax; y2++)
+							{
+								Tile tile = Main.tile[x2, y2];
+								if (Math.Abs(x2 - x1) + Math.Abs(y2 - y1) < 9 + WorldGen.genRand.Next(11) && WorldGen.genRand.Next(3) != 0 && tile.HasTile && tile.TileType != 31)
+									if (Math.Abs(x2 - x1) > 1 || Math.Abs(y2 - y1) > 1)
+										WorldGen.PlaceTile(x2, y2, TileID.Ebonstone, true);
+
+								if (Main.tile[x2, y2].TileType != TileID.Ebonstone && Math.Abs(x2 - x1) <= 2 + WorldGen.genRand.Next(3) && Math.Abs(y2 - y1) <= 2 + WorldGen.genRand.Next(3)) WorldGen.KillTile(x2, y2);
 							}
 				}
+
+			#endregion
 		}
 	}
 
@@ -306,7 +305,7 @@ public class Corruption : ControlledWorldGenPass
 				}
 			}
 
-			int crimY = (int)WorldGen.worldSurfaceLow;
+			int crimY = (int)WorldGen.worldSurfaceLow - 50;
 			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
 			{
 				int islandX = WorldGen.floatingIslandHouseX[index];
@@ -329,13 +328,6 @@ public class Corruption : ControlledWorldGenPass
 
 			double worldTop = WorldGen.worldSurfaceHigh + 60.0;
 
-			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
-			{
-				int islandX = WorldGen.floatingIslandHouseX[index];
-				if (crimsonLeft - 100 < islandX && crimsonRight + 100 > islandX) 
-					worldTop = Math.Max(worldTop, WorldGen.floatingIslandHouseY[index] + 30);
-			}
-			
 			for (int x = crimsonLeft; x < crimsonRight; x++)
 			{
 				bool flag49 = false;

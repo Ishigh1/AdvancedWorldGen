@@ -38,9 +38,9 @@ public class UiChanger
 	public readonly Asset<Texture2D> OptionsTexture;
 	public UIText Description = null!;
 	public OptionsSelector OptionsSelector = null!;
+	private GenerationProgress? Progress;
 	public Thread Thread = null!;
 	public WorldGenConfigurator? WorldGenConfigurator;
-	private GenerationProgress Progress = null!;
 
 	public UiChanger(Mod mod)
 	{
@@ -69,7 +69,7 @@ public class UiChanger
 				}
 				catch (Exception)
 				{
-					if (Main.tile.Width > 0) EmergencySaving(false);
+					if (Main.tile.Width > 0) EmergencySaving("Failed");
 				}
 			}) { Name = "WorldGen" };
 			Thread.Start();
@@ -80,12 +80,12 @@ public class UiChanger
 		}
 	}
 
-	public static void EmergencySaving(bool aborted)
+	public static void EmergencySaving(string suffix)
 	{
 		if (WorldgenSettings.AbortedSaving)
 		{
 			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
-			Main.worldName += aborted ? "_Aborted" : "_Failed";
+			Main.worldName += "_" + suffix;
 			if (Main.spawnTileX == 0)
 			{
 				Main.spawnTileX = Main.maxTilesX / 2;
@@ -111,7 +111,7 @@ public class UiChanger
 			{
 				if (Progress != null && stopwatch.ElapsedMilliseconds > 500)
 					timer.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.Timer",
-						(stopwatch.Elapsed * (1 / Progress.TotalProgress - 1)).Humanize(precision: 2, minUnit: TimeUnit.Second)));
+						(stopwatch.Elapsed * (1 / Progress.TotalProgress - 1)).Humanize(2, minUnit: TimeUnit.Second)));
 			};
 			timer.Recalculate();
 
@@ -136,7 +136,7 @@ public class UiChanger
 		Thread.Join();
 		Main.tile = tiles;
 
-		EmergencySaving(true);
+		EmergencySaving("Aborted");
 	}
 
 	public void TweakWorldGenUi(OnUIWorldCreation.orig_AddDescriptionPanel origAddDescriptionPanel,
