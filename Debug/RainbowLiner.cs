@@ -1,7 +1,4 @@
 #if SPECIALDEBUG
-using Terraria;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.Debug
 {
 	public static class RainbowLiner

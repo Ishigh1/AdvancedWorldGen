@@ -1,10 +1,3 @@
-using System.Collections.Generic;
-using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
-using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
-using AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public static partial class Replacer
@@ -33,7 +26,7 @@ public static partial class Replacer
 		if (index != -1) genPasses[index] = new GenerateIceBiome();
 
 		index = genPasses.FindIndex(pass => pass.Name == "Jungle");
-		if (index != -1) genPasses[index] = new JunglePass();
+		if (index != -1) genPasses[index] = new ModifiedJunglePass();
 
 		index = genPasses.FindIndex(pass => pass.Name == "Floating Islands");
 		if (index != -1) genPasses[index] = new FloatingIslands();
@@ -71,5 +64,7 @@ public static partial class Replacer
 			genPasses.Insert(index + 9, new MicroBiomes(-1)); //For mod compatibility sake
 			genPasses.RemoveAt(index);
 		}
+
+		GenPasses = genPasses;
 	}
 }

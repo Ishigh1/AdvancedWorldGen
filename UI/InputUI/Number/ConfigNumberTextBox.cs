@@ -1,6 +1,3 @@
-using System;
-using AdvancedWorldGen.CustomSized;
-
 namespace AdvancedWorldGen.UI.InputUI.Number;
 
 public class ConfigNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, IComparable

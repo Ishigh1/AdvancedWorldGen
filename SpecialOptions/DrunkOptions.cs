@@ -1,12 +1,3 @@
-using System.Collections.Generic;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.BetterVanillaWorldGen;
-using AdvancedWorldGen.Helper;
-using MonoMod.Cil;
-using Terraria;
-using Terraria.WorldBuilding;
-using OnWorldGen = On.Terraria.WorldGen;
-
 namespace AdvancedWorldGen.SpecialOptions;
 
 public class DrunkOptions

@@ -1,7 +1,3 @@
-using Terraria.GameContent.UI.Elements;
-using Terraria.Localization;
-using Terraria.UI;
-
 namespace AdvancedWorldGen.UI.InputUI;
 
 public abstract class InputBox<T> : OrderedUIItem

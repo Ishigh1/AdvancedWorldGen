@@ -1,15 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.GameContent.Biomes.Desert;
-using Terraria.ID;
-using Terraria.Utilities;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff;
 
-public static class DesertHive
+public static class ModifiedDesertHive
 {
 	public static void Place(DesertDescription description)
 	{
@@ -316,10 +307,10 @@ public static class DesertHive
 
 			foreach (List<Point> item5 in pointClusters)
 			{
-				Cluster cluster = new();
 				if (item5.Count < 4)
 					continue;
-
+				
+				Cluster cluster = new();
 				cluster.AddRange(item5.Select(item6 => (
 					(int)(item6.X * SpreadX) + description.Hive.X,
 					(int)(item6.Y * SpreadY) + description.Hive.Y)));

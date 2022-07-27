@@ -1,7 +1,4 @@
-﻿using System;
-using Terraria.Localization;
-
-namespace AdvancedWorldGen.BetterVanillaWorldGen;
+﻿namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class RockUnderHellException : Exception
 {

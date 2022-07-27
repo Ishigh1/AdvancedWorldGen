@@ -1,12 +1,3 @@
-using System.Collections.Generic;
-using AdvancedWorldGen.Base;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.ID;
-using Terraria.IO;
-using Terraria.Localization;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen;
 
 public static class Graveyards

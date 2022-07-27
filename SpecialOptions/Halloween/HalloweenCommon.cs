@@ -1,19 +1,4 @@
-using System.Collections.Generic;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.Helper;
-using AdvancedWorldGen.SpecialOptions.Halloween.Worldgen;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent.Generation;
-using Terraria.ID;
-using Terraria.WorldBuilding;
 using static Terraria.ID.NPCID;
-using OnMain = On.Terraria.Main;
-using OnNPC = On.Terraria.NPC;
-using OnPlayer = On.Terraria.Player;
-using ILPlayer = IL.Terraria.Player;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween;
 

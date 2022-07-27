@@ -1,6 +1,3 @@
-using System;
-using Terraria;
-
 namespace AdvancedWorldGen.Helper;
 
 public static class TileFinder

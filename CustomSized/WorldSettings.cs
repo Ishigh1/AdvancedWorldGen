@@ -1,19 +1,3 @@
-using System;
-using System.Reflection;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
-using AdvancedWorldGen.Helper;
-using AdvancedWorldGen.UI;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.GameContent.UI.States;
-using Terraria.Localization;
-using Terraria.Map;
-using Terraria.ModLoader;
-using Terraria.UI;
-using OnWorldGen = On.Terraria.WorldGen;
-using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
-
 namespace AdvancedWorldGen.CustomSized;
 
 public class WorldSettings

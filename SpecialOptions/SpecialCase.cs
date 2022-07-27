@@ -1,5 +1,3 @@
-using Terraria;
-
 namespace AdvancedWorldGen.SpecialOptions;
 
 public class SpecialCase

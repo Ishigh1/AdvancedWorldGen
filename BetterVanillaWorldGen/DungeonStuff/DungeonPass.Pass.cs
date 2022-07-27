@@ -1,6 +1,3 @@
-using Terraria;
-using Terraria.Localization;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 
 public partial class DungeonPass : ControlledWorldGenPass

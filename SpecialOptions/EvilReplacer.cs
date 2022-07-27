@@ -1,10 +1,3 @@
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.Helper;
-using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.SpecialOptions;
 
 public static class EvilReplacer

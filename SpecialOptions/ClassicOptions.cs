@@ -1,11 +1,3 @@
-using System;
-using AdvancedWorldGen.Base;
-using Microsoft.Xna.Framework;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using Terraria;
-using OnWorldGen = On.Terraria.WorldGen;
-
 namespace AdvancedWorldGen.SpecialOptions;
 
 public class ClassicOptions

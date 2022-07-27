@@ -1,14 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using AdvancedWorldGen.Base;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.Utilities;
-
 namespace AdvancedWorldGen.SpecialOptions;
 
 public class Entropy

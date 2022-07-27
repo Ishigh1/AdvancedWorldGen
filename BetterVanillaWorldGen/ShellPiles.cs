@@ -1,7 +1,3 @@
-using System;
-using Terraria;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class ShellPiles : ControlledWorldGenPass

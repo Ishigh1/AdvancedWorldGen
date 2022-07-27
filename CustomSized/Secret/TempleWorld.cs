@@ -1,15 +1,3 @@
-using System;
-using System.Collections.Generic;
-using AdvancedWorldGen.BetterVanillaWorldGen;
-using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
-using AdvancedWorldGen.Helper;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent.Events;
-using Terraria.ID;
-using Terraria.Localization;
-
 namespace AdvancedWorldGen.CustomSized.Secret;
 
 public class TempleWorld : ControlledWorldGenPass

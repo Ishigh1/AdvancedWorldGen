@@ -1,9 +1,3 @@
-using System;
-using AdvancedWorldGen.Helper;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 
 public class JungleChests : ControlledWorldGenPass

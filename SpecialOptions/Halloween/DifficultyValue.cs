@@ -1,5 +1,3 @@
-using Terraria;
-
 namespace AdvancedWorldGen.SpecialOptions.Halloween;
 
 public class DifficultyValue<T>

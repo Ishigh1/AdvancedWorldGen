@@ -1,12 +1,3 @@
-using System.Collections.Generic;
-using AdvancedWorldGen.Helper;
-using AdvancedWorldGen.SpecialOptions;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 
 public class JungleTemple : ControlledWorldGenPass

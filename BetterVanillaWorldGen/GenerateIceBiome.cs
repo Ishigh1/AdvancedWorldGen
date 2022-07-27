@@ -1,6 +1,3 @@
-using Terraria;
-using Terraria.Localization;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class GenerateIceBiome : ControlledWorldGenPass

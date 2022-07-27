@@ -1,14 +1,3 @@
-using System;
-using AdvancedWorldGen.Base;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader.UI;
-using Terraria.UI;
-
 namespace AdvancedWorldGen.UI;
 
 public class WarningUI : UIState

@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 
 public class RTree

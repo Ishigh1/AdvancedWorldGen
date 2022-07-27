@@ -1,10 +1,4 @@
-﻿using AdvancedWorldGen.Helper;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent.UI.States;
-
-namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface;
+﻿namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 
 public partial class VanillaInterface
 {

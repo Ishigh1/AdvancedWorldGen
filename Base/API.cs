@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using Terraria.ModLoader;
-
 namespace AdvancedWorldGen.Base;
 
 public class API

@@ -1,12 +1,3 @@
-using System;
-using System.Collections.Generic;
-using AdvancedWorldGen.Helper;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.GameContent.Biomes;
-using Terraria.Localization;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 
 public class MicroBiomes : ControlledWorldGenPass

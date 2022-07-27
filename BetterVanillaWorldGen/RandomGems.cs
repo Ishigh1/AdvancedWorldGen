@@ -1,6 +1,3 @@
-using Terraria;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class RandomGems : ControlledWorldGenPass

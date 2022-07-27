@@ -1,20 +1,3 @@
-using System;
-using System.Linq;
-using System.Reflection;
-using AdvancedWorldGen.UI.InputUI;
-using AdvancedWorldGen.UI.InputUI.List;
-using AdvancedWorldGen.UI.InputUI.Number;
-using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader.UI;
-using Terraria.UI;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.UI;
 
 public class WorldGenConfigurator : UIState

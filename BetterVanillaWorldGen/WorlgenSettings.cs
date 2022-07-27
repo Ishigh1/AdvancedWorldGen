@@ -1,7 +1,3 @@
-using System.ComponentModel;
-using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class WorldgenSettings : ModConfig

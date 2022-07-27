@@ -1,6 +1,3 @@
-using System;
-using Newtonsoft.Json.Linq;
-
 namespace AdvancedWorldGen.UI.InputUI.List;
 
 public class EnumInputListBox<T> : InputBox<string>

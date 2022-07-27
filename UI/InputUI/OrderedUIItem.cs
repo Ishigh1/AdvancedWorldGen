@@ -1,5 +1,3 @@
-using Terraria.UI;
-
 namespace AdvancedWorldGen.UI.InputUI;
 
 public class OrderedUIItem : UIElement

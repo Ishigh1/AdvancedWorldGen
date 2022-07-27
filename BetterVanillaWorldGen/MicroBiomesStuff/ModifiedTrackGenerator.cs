@@ -1,12 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 
 public class ModifiedTrackGenerator

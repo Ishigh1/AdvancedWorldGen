@@ -1,10 +1,3 @@
-using System;
-using AdvancedWorldGen.Base;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.IO;
-using Terraria.WorldBuilding;
 using static Terraria.ID.TileID;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen;

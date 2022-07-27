@@ -1,14 +1,5 @@
-using System;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.Helper;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using static Terraria.ID.ProjectileID;
 using static Terraria.ID.TileID;
-using OnMain = On.Terraria.Main;
 
 namespace AdvancedWorldGen.SpecialOptions.Snow;
 

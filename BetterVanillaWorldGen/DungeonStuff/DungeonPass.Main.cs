@@ -1,11 +1,3 @@
-using System;
-using System.Collections.Generic;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.Helper;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
 
 public partial class DungeonPass
@@ -732,7 +724,7 @@ public partial class DungeonPass
 						break;
 				}
 
-				chestPlaced = Chest.AddBuriedChest(randX, randY, contain, false, style2, chestTileType);
+				chestPlaced = GenerationChests.AddBuriedChest(randX, randY, contain, false, style2, chestTileType);
 			}
 		}
 
@@ -923,7 +915,7 @@ public partial class DungeonPass
 					style3 = 0;
 				}
 
-				if (Chest.AddBuriedChest(x, y, itemType, false, style3))
+				if (GenerationChests.AddBuriedChest(x, y, itemType, false, style3))
 				{
 					tries += 1000;
 					num95++;

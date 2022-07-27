@@ -1,8 +1,3 @@
-using AdvancedWorldGen.Base;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.Helper;
 
 public static class Extensions

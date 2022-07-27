@@ -1,7 +1,3 @@
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
-using Terraria.IO;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public abstract class ControlledWorldGenPass : GenPass

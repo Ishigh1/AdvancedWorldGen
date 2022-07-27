@@ -1,7 +1,3 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-
 namespace AdvancedWorldGen.CustomSized.Secret;
 
 public class MudSeller : GlobalNPC

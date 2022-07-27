@@ -1,11 +1,3 @@
-using System;
-using System.Reflection;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.UI.InputUI.List;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class ResetPass : ControlledWorldGenPass
@@ -37,7 +29,7 @@ public class ResetPass : ControlledWorldGenPass
 		WorldGen.UndergroundDesertLocation = Rectangle.Empty;
 		WorldGen.UndergroundDesertHiveLocation = Rectangle.Empty;
 		WorldGen.numLarva = 0;
-		Chest.ShuffleChests(WorldGen.genRand);
+		GenerationChests.ShuffleChests(WorldGen.genRand);
 
 		const int num917 = 86400;
 		Main.slimeRainTime = -WorldGen.genRand.Next(num917 * 2, num917 * 3);

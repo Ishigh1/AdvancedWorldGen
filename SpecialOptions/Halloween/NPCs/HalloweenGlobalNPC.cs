@@ -1,7 +1,3 @@
-using AdvancedWorldGen.Base;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using static Terraria.ID.NPCID;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.NPCs;

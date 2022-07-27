@@ -1,5 +1,3 @@
-using Terraria.ID;
-
 namespace AdvancedWorldGen.SpecialOptions.Snow;
 
 public class SnowReplacer : TileReplacer

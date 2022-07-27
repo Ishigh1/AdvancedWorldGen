@@ -1,8 +1,3 @@
-using System;
-using AdvancedWorldGen.Helper;
-using Terraria;
-using Terraria.Localization;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class FloatingIslands : ControlledWorldGenPass

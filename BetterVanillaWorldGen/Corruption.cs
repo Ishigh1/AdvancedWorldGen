@@ -1,10 +1,3 @@
-using System;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.Helper;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class Corruption : ControlledWorldGenPass

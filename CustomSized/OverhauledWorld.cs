@@ -1,7 +1,3 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-
 namespace AdvancedWorldGen.CustomSized;
 
 public class OverhauledWorld : ModSystem

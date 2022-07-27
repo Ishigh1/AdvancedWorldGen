@@ -1,8 +1,3 @@
-using AdvancedWorldGen.Base;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-
 namespace AdvancedWorldGen.SpecialOptions;
 
 public class SellDirt : GlobalNPC

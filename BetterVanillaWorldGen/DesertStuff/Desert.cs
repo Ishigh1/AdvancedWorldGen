@@ -1,11 +1,3 @@
-#nullable enable
-using System;
-using System.Reflection;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.GameContent.Biomes.Desert;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff;
 
 public static class Desert

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\tModLoader.targets"/>
+    <Import Project="..\tModLoader.targets" />
     <PropertyGroup>
         <AssemblyName>AdvancedWorldGen</AssemblyName>
         <TargetFramework>net6.0</TargetFramework>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Debug release</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DefineConstants>TRACE;DEBUG;SPECIALDEBUG</DefineConstants>
@@ -14,17 +16,20 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <DefineConstants>TRACE</DefineConstants>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug release|AnyCPU'">
+        <DefineConstants>TRACE;SPECIALDEBUG</DefineConstants>
+    </PropertyGroup>
     <!-- General Debug : FixedSeed -->
     <ItemGroup>
-        <PackageReference Include="tModLoader.CodeAssist" Version="0.1.3"/>
+        <PackageReference Include="tModLoader.CodeAssist" Version="0.1.3" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Remove="Tool\**"/>
+        <Compile Remove="Tool\**" />
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Remove="Tool\**"/>
+        <EmbeddedResource Remove="Tool\**" />
     </ItemGroup>
     <ItemGroup>
-        <None Remove="Tool\**"/>
+        <None Remove="Tool\**" />
     </ItemGroup>
 </Project>

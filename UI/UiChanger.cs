@@ -1,35 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.BetterVanillaWorldGen;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
-using Humanizer;
-using Humanizer.Localisation;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using ReLogic.OS;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent.UI.States;
-using Terraria.ID;
-using Terraria.IO;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.UI;
-using Terraria.Utilities;
-using Terraria.WorldBuilding;
-using OnUIWorldLoad = On.Terraria.GameContent.UI.States.UIWorldLoad;
-using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
-using OnWorldGen = On.Terraria.WorldGen;
-using OnUIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
-
 namespace AdvancedWorldGen.UI;
 
 public class UiChanger
@@ -109,7 +77,7 @@ public class UiChanger
 			timer.HAlign = 0.5f;
 			timer.OnUpdate += _ =>
 			{
-				if (Progress != null && stopwatch.ElapsedMilliseconds > 500)
+				if (Progress != null && Progress.TotalProgress > 0 && stopwatch.ElapsedMilliseconds > 500)
 					timer.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.Timer",
 						(stopwatch.Elapsed * (1 / Progress.TotalProgress - 1)).Humanize(2, minUnit: TimeUnit.Second)));
 			};

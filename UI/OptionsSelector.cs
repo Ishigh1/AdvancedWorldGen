@@ -1,18 +1,3 @@
-using System.Linq;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.Helper;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.OS;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader.UI;
-using Terraria.UI;
-
 namespace AdvancedWorldGen.UI;
 
 public class OptionsSelector : UIState

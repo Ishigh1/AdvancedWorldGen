@@ -1,13 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.CustomSized;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Terraria.WorldBuilding;
-
 namespace AdvancedWorldGen.Helper;
 
 public class OptionsParser

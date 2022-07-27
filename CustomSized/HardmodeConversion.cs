@@ -1,10 +1,3 @@
-using System;
-using AdvancedWorldGen.BetterVanillaWorldGen;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using OnWorldGen = On.Terraria.WorldGen;
-
 namespace AdvancedWorldGen.CustomSized;
 
 public static class HardmodeConversion

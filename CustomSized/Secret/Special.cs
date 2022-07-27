@@ -1,15 +1,3 @@
-using System.Collections.Generic;
-using AdvancedWorldGen.Base;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Chat;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
-using OnMain = On.Terraria.Main;
-
 namespace AdvancedWorldGen.CustomSized.Secret;
 
 public class Special : ModSystem

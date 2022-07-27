@@ -1,6 +1,3 @@
-using AdvancedWorldGen.CustomSized;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.UI.InputUI.List;
 
 public class TileExpandableList : InputBox<string>

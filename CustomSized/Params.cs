@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using AdvancedWorldGen.UI.InputUI.List;
-
 namespace AdvancedWorldGen.CustomSized;
 
 public class Params

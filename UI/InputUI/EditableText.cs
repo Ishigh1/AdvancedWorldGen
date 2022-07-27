@@ -1,10 +1,3 @@
-using System;
-using System.Reflection;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Terraria;
-using Terraria.GameInput;
-
 namespace AdvancedWorldGen.UI.InputUI;
 
 public class EditableText<T> : FocusElement where T : IConvertible, IComparable

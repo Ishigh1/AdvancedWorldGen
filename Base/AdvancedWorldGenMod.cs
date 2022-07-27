@@ -1,21 +1,3 @@
-using System.IO;
-using AdvancedWorldGen.BetterVanillaWorldGen;
-using AdvancedWorldGen.SpecialOptions;
-using AdvancedWorldGen.SpecialOptions.Halloween;
-using AdvancedWorldGen.SpecialOptions.Snow;
-using AdvancedWorldGen.UI;
-using Terraria.ModLoader;
-using OnWorldGen = On.Terraria.WorldGen;
-using OnUIWorldCreation = On.Terraria.GameContent.UI.States.UIWorldCreation;
-// using OnUIWorldListItem = On.Terraria.GameContent.UI.Elements.UIWorldListItem;
-using OnUserInterface = On.Terraria.UI.UserInterface;
-using OnUIWorldLoad = On.Terraria.GameContent.UI.States.UIWorldLoad;
-using OnWorldFile = On.Terraria.IO.WorldFile;
-using OnWorldFileData = On.Terraria.IO.WorldFileData;
-using OnMain = On.Terraria.Main;
-using ILProjectile = IL.Terraria.Projectile;
-using ILWorldGen = IL.Terraria.WorldGen;
-
 namespace AdvancedWorldGen.Base;
 
 public class AdvancedWorldGenMod : Mod

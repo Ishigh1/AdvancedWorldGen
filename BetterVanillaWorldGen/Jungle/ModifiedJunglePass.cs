@@ -1,14 +1,6 @@
-using System;
-using AdvancedWorldGen.Helper;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
-using VanillaJunglePass = Terraria.GameContent.Biomes.JunglePass;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 
-public class JunglePass : ControlledWorldGenPass
+public class ModifiedJunglePass : ControlledWorldGenPass
 {
 	public int DungeonSide;
 	public int JungleOriginX;
@@ -17,7 +9,7 @@ public class JunglePass : ControlledWorldGenPass
 	public float WorldScaleX;
 	public float WorldScaleY;
 
-	public JunglePass() : base("Jungle", 14834.1467f)
+	public ModifiedJunglePass() : base("Jungle", 14834.1467f)
 	{
 	}
 

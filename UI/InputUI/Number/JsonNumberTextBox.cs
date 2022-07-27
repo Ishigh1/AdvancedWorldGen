@@ -1,6 +1,3 @@
-using System;
-using Newtonsoft.Json.Linq;
-
 namespace AdvancedWorldGen.UI.InputUI.Number;
 
 public class JsonNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, IComparable

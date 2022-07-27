@@ -1,36 +1,11 @@
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using AdvancedWorldGen.BetterVanillaWorldGen;
-using AdvancedWorldGen.CustomSized;
-using AdvancedWorldGen.Helper;
-using AdvancedWorldGen.SpecialOptions;
-using AdvancedWorldGen.SpecialOptions.Halloween;
-using AdvancedWorldGen.SpecialOptions.Snow;
-using AdvancedWorldGen.UI;
-using MonoMod.Cil;
-using On.Terraria.GameContent.UI.States;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent.Events;
-using Terraria.GameContent.Generation;
-using Terraria.ID;
-using Terraria.IO;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.UI;
-using Terraria.WorldBuilding;
 using static Terraria.ID.NPCID;
-using OnMain = On.Terraria.Main;
-using OnUserInterface = On.Terraria.UI.UserInterface;
-using UIWorldSelect = Terraria.GameContent.UI.States.UIWorldSelect;
 
 namespace AdvancedWorldGen.Base;
 
 public class ModifiedWorld : ModSystem
 {
+	public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
+
 	public static readonly List<int> NPCs = new()
 	{
 		Merchant, Nurse, ArmsDealer, Dryad, Guide, Demolitionist, Clothier, GoblinTinkerer, Wizard, Mechanic,
@@ -38,13 +13,34 @@ public class ModifiedWorld : ModSystem
 		TaxCollector, DD2Bartender, Golfer, BestiaryGirl, Princess, TownBunny, TownDog
 	};
 
-	public OptionHelper OptionHelper = null!;
+	public static string DataPath => Main.SavePath + Path.DirectorySeparatorChar + "AdvancedWorldGenPassesData.json";
 
-	public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
+	public List<Dictionary<string, float>> Weights = null!;
+	public Dictionary<string, TimeSpan>? Times;
+	public OptionHelper OptionHelper = null!;
 
 	public override void OnModLoad()
 	{
 		OptionHelper = new OptionHelper(Mod);
+		LoadWeights();
+	}
+
+	public void LoadWeights()
+	{
+		if (File.Exists(DataPath))
+		{
+			using StreamReader r = new(DataPath);
+			string json = r.ReadToEnd();
+			Weights = JsonConvert.DeserializeObject<List<Dictionary<string, float>>>(json);
+		}
+		else
+			Weights = new List<Dictionary<string, float>>();
+	}
+
+	public void SaveWeights()
+	{
+		using StreamWriter writer = new(DataPath);
+		writer.Write(JsonConvert.SerializeObject(Weights));
 	}
 
 	public override void OnWorldLoad()
@@ -83,6 +79,30 @@ public class ModifiedWorld : ModSystem
 		Main.dontStarveWorld = API.OptionsContains("TheConstant");
 		WorldGen.dontStarveWorldGen = Main.dontStarveWorld;
 		if (!Main.dayTime) Main.time = 0;
+	}
+
+	public override void PostWorldGen()
+	{
+		if (Times != null)
+		{
+			float totalTime = 0;
+			foreach ((string? _, TimeSpan value) in Times) totalTime += value.Milliseconds;
+			totalTime /= 10_000f;
+
+			if (Weights.Count >= 20) Weights.RemoveAt(0);
+
+			Dictionary<string, float> weights = new();
+			foreach ((string? key, TimeSpan value) in Times)
+				weights.Add(key, value.Milliseconds / totalTime);
+
+			Weights.Add(weights);
+			SaveWeights();
+			
+			foreach (MethodInfo methodInfo in Replacer.MethodInfos) HookEndpointManager.Remove(methodInfo, Replacer.Timer);
+			Replacer.MethodInfos.Clear();
+
+			Times = null;
+		}
 	}
 
 	public override void NetReceive(BinaryReader reader)
@@ -256,7 +276,7 @@ public class ModifiedWorld : ModSystem
 		}
 	}
 
-	public void LastMinuteChecks(UIWorldCreation.orig_FinishCreatingWorld orig, Terraria.GameContent.UI.States.UIWorldCreation self)
+	public void LastMinuteChecks(OnUIWorldCreation.orig_FinishCreatingWorld orig, Terraria.GameContent.UI.States.UIWorldCreation self)
 	{
 		Params worldSettingsParams = OptionHelper.WorldSettings.Params;
 

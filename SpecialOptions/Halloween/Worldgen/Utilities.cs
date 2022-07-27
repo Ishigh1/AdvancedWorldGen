@@ -1,7 +1,3 @@
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen;
 
 public static class Utilities

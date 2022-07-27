@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using AdvancedWorldGen.Helper;
-using Terraria;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class SurfaceOreAndStone : ControlledWorldGenPass

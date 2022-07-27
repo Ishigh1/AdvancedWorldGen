@@ -1,13 +1,6 @@
-using System.Collections.Generic;
-using AdvancedWorldGen.BetterVanillaWorldGen.DesertStuff;
-using AdvancedWorldGen.BetterVanillaWorldGen.DungeonStuff;
-using Terraria;
-using Terraria.ID;
-using Terraria.Utilities;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
-public static class Chest
+public static class GenerationChests
 {
 	public static int HellChest;
 	public static List<int> HellChestItem = null!;

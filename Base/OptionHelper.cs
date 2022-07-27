@@ -1,19 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using AdvancedWorldGen.CustomSized;
-using AdvancedWorldGen.SpecialOptions;
-using AdvancedWorldGen.SpecialOptions.Snow;
-using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
-using Terraria;
-using Terraria.Chat;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
-
 namespace AdvancedWorldGen.Base;
 
 public class OptionHelper

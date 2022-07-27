@@ -1,11 +1,3 @@
-using System;
-using AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
-using AdvancedWorldGen.Helper;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class MushroomPatches : ControlledWorldGenPass

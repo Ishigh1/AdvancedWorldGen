@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AdvancedWorldGen.Base;
 
 public class Option

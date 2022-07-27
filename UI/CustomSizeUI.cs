@@ -1,22 +1,3 @@
-using System;
-using System.Reflection;
-using AdvancedWorldGen.Base;
-using AdvancedWorldGen.BetterVanillaWorldGen;
-using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
-using AdvancedWorldGen.CustomSized;
-using AdvancedWorldGen.Helper;
-using AdvancedWorldGen.UI.InputUI;
-using AdvancedWorldGen.UI.InputUI.List;
-using AdvancedWorldGen.UI.InputUI.Number;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader.UI;
-using Terraria.UI;
-
 namespace AdvancedWorldGen.UI;
 
 public class CustomSizeUI : UIState
