@@ -153,12 +153,10 @@ public class ModifiedWorld : ModSystem
 		if (API.OptionsContains("Santa", "Evil", "Random", "Random.Painted"))
 		{
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
-			GenPass? liquidSettle = null;
+			
 			passIndex = tasks.FindIndex(pass => pass.Name == "Settle Liquids Again");
 			if (passIndex != -1)
-				liquidSettle = tasks[passIndex];
-			if (liquidSettle != null)
-				tasks.Add(liquidSettle);
+				tasks.Add(tasks[passIndex]);
 		}
 	}
 

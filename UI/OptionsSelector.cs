@@ -37,7 +37,7 @@ public class OptionsSelector : UIState
 		};
 		Append(uiPanel);
 
-		UIText uiTitle = new("Seed options", 0.75f, true) { HAlign = 0.5f };
+		UIText uiTitle = new("Seed option", 0.75f, true) { HAlign = 0.5f };
 		uiTitle.Height = uiTitle.MinHeight;
 		uiPanel.Append(uiTitle);
 		uiPanel.Append(new UIHorizontalSeparator
@@ -121,6 +121,17 @@ public class OptionsSelector : UIState
 		exportButton.OnMouseOver += UiChanger.FadedMouseOver;
 		exportButton.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(exportButton);
+
+		UITextPanel<string> randomizeButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Randomize"))
+		{
+			Width = new StyleDimension(0f, 0.1f),
+			Top = new StyleDimension(0f, 0.85f),
+			HAlign = 0.5f
+		};
+		randomizeButton.OnMouseDown += RandomizeSettings;
+		randomizeButton.OnMouseOver += UiChanger.FadedMouseOver;
+		randomizeButton.OnMouseOut += UiChanger.FadedMouseOut;
+		Append(randomizeButton);
 	}
 
 	public static void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
@@ -287,5 +298,51 @@ public class OptionsSelector : UIState
 					}
 			}
 		}
+	}
+
+	private void RandomizeSettings(UIMouseEvent _, UIElement __)
+	{
+		if (Main.rand.NextBool(1_000))
+		{
+			ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.TempleMultiplier = float.PositiveInfinity;
+			return;
+		}
+		
+		foreach ((string? _, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
+			RandomizeOption(option);
+		
+		CreateOptionList();
+
+		Params @params = ModifiedWorld.Instance.OptionHelper.WorldSettings.Params;
+		double maxSize = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (double) KnownLimits.DataLoad;
+		double ratio = Main.rand.NextFloat(2, 5);
+		double lambda = 7 / maxSize;
+		double size = -Math.Log(Main.rand.NextDouble()) / lambda + 1_000_000;
+		@params.SizeX = (int)(Math.Sqrt(size / (ratio + 1)) * ratio);
+		@params.SizeY = (int)(size / @params.SizeX);
+		
+		VanillaAccessor<int> optionSize = VanillaInterface.OptionSize(ModifiedWorld.Instance.OptionHelper.WorldSettings.UIWorldCreation);
+		optionSize.Value = -1;
+
+		@params.BeachMultiplier = Main.rand.NextFloat(0.5f, 2);
+		@params.DungeonMultiplier = Main.rand.NextFloat(0.4f, 5f);
+		if (Main.rand.NextBool(4))
+			@params.TempleMultiplier = (float)(-Math.Log(Main.rand.NextDouble()) * 7 + 5);
+		else 
+			@params.TempleMultiplier = Main.rand.NextFloat(0.4f, 5f);
+	}
+
+	private static void RandomizeOption(Option option)
+	{
+		if (option.Children.Count == 0)
+		{
+			if (Main.rand.NextBool(3))
+				option.Enable();
+			else
+				option.Disable();
+		}
+		else
+			foreach (Option? childOption in option.Children)
+				RandomizeOption(childOption);
 	}
 }

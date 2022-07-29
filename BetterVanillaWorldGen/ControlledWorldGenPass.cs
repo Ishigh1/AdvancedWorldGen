@@ -5,6 +5,7 @@ public abstract class ControlledWorldGenPass : GenPass
 	public GameConfiguration Configuration = null!;
 	public GenerationProgress Progress = null!;
 	public VanillaInterface VanillaInterface;
+	public Stopwatch Stopwatch;
 
 	protected ControlledWorldGenPass(string name, float loadWeight) : base(name, loadWeight)
 	{

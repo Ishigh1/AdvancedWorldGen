@@ -1,4 +1,4 @@
-namespace AdvancedWorldGen.UI.InputUI;
+namespace AdvancedWorldGen.UI.InputUI.Number;
 
 public abstract class NumberTextBox<T> : InputBox<T> where T : IConvertible, IComparable
 {

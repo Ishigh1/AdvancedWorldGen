@@ -45,7 +45,7 @@ public static partial class Replacer
 			float originalWeights = 0f;
 			foreach (GenPass pass in GenPasses)
 			{
-				weights.Add(pass.Name, (0, 0));
+				weights.TryAdd(pass.Name, (0, 0));
 				originalWeights += pass.Weight;
 			}
 
@@ -98,6 +98,8 @@ public static partial class Replacer
 		if (ModifiedWorld.Instance.Times != null)
 		{
 			Stopwatch stopwatch = new();
+			if (self is ControlledWorldGenPass controlledWorldGenPass)
+				controlledWorldGenPass.Stopwatch = stopwatch;
 			stopwatch.Start();
 			orig(self, progress, configuration);
 			stopwatch.Stop();

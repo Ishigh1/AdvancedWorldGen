@@ -9,6 +9,7 @@ public class UiChanger
 	private GenerationProgress? Progress;
 	public Thread Thread = null!;
 	public WorldGenConfigurator? WorldGenConfigurator;
+	public Stopwatch Stopwatch;
 
 	public UiChanger(Mod mod)
 	{
@@ -69,17 +70,16 @@ public class UiChanger
 		orig(self);
 		if (!Main.dedServ)
 		{
-			Stopwatch stopwatch = new();
-			stopwatch.Start();
+			Stopwatch = new Stopwatch();
 			UITextPanel<string> timer = new("");
 			self.Append(timer);
 			timer.VAlign = 0.7f;
 			timer.HAlign = 0.5f;
 			timer.OnUpdate += _ =>
 			{
-				if (Progress != null && Progress.TotalProgress > 0 && stopwatch.ElapsedMilliseconds > 500)
+				if (Progress is { TotalProgress: > 0 } && Stopwatch.ElapsedMilliseconds > 500)
 					timer.SetText(Language.GetTextValue("Mods.AdvancedWorldGen.Timer",
-						(stopwatch.Elapsed * (1 / Progress.TotalProgress - 1)).Humanize(2, minUnit: TimeUnit.Second)));
+						(Stopwatch.Elapsed * (1 / Progress.TotalProgress - 1)).Humanize(2, minUnit: TimeUnit.Second)));
 			};
 			timer.Recalculate();
 
@@ -93,6 +93,7 @@ public class UiChanger
 			uiTextPanel.OnMouseOut += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
 			uiTextPanel.OnClick += Abort;
 		}
+		Stopwatch.Start();
 	}
 
 	public void Abort(UIMouseEvent evt, UIElement listeningElement)

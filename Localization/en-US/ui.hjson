@@ -1,36 +1,37 @@
 {
     "Mods.AdvancedWorldGen": {
-        "Import": "Import from clipboard",
+        "Abort": "Abort",
+        "CopySettings": "Copy settings",
+        "CustomSize": "Custom Size",
+        "CustomSizedWorld": "{0}x{1}",
+        "DedServ": {
+            "Import": "i <options> : Import options",
+            "InvalidId": "Not a valid number",
+            "InvalidImport": "Not a valid import",
+            "InvalidInput": "Input not recognized",
+            "Selected": "(selected)",
+            "ShowHidden": "h : Show hidden options",
+            "Validate": "y : Validate"
+        },
+        "DownLevel": "Edit what will be used from this seed",
         "Export": "Export to clipboard",
-        "NoneSelected": {
-            "Description": "Please choose the options you want."
-        },
-        "ShowHidden": {
-            "Description": "Show the minor and/or unstable features."
-        },
         "HideHidden": {
             "Description": "Hide the minor and/or unstable features."
         },
-        "DedServ": {
-            "Selected": "(selected)",
-            "ShowHidden": "h : Show hidden options",
-            "Import": "i <options> : Import options",
-            "Validate": "y : Validate",
-            "InvalidId": "Not a valid number",
-            "InvalidImport": "Not a valid import",
-            "InvalidInput": "Input not recognized"
-        },
-        "Warning": "Warning",
-        "CustomSize": "Custom Size",
-        "Abort": "Abort",
-        "Timer": "Time remaining : {0}",
+        "Import": "Import from clipboard",
         "NoOptions": "World without options",
-        "CopySettings": "Copy settings",
+        "NoneSelected": {
+            "Description": "Please choose the options you want."
+        },
         "OptionButton": "Choose your world generation settings",
-        "DownLevel": "Edit what will be used from this seed",
-        "CustomSizedWorld": "{0}x{1}",
+        "Randomize": "Randomize the options",
+        "ShowHidden": {
+            "Description": "Show the minor and/or unstable features."
+        },
+        "Timer": "Time remaining : {0}",
         "UI": {
             "Config": "Vanilla configuration"
-        }
+        },
+        "Warning": "Warning"
     }
 }

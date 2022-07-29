@@ -2,11 +2,11 @@ namespace AdvancedWorldGen.UI.InputUI.Number;
 
 public class ConfigNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, IComparable
 {
-	public Params Params;
+	public Dictionary<string, object> Data;
 
-	public ConfigNumberTextBox(Params @params, string name, T min, T max, string? localizationPath = null) : base(name, min, max)
+	public ConfigNumberTextBox(Dictionary<string, object> data, string name, T min, T max, string? localizationPath = null) : base(name, min, max)
 	{
-		Params = @params;
+		Data = data;
 		LocalizationPath = localizationPath;
 
 		CreateUIElement();
@@ -14,7 +14,7 @@ public class ConfigNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, I
 
 	public override T? Value
 	{
-		get => (T)Params.Data[Name];
-		set => Params.Data[Name] = value;
+		get => (T)Data[Name];
+		set => Data[Name] = value!;
 	}
 }

@@ -2,8 +2,8 @@ namespace AdvancedWorldGen.Base;
 
 public class Option
 {
-	public List<Option> Children = null!;
-	public List<string> Conflicts = null!;
+	public List<Option> Children = new();
+	public List<string> Conflicts = new();
 	public bool Enabled;
 	public bool Hidden;
 

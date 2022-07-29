@@ -1,17 +1,11 @@
 namespace AdvancedWorldGen.UI.InputUI.List;
 
-public class TileExpandableList : InputBox<string>
+public class TileExpandableList : ExpandableList
 {
 	public const int Random = -1;
-	public bool AllowOther;
-	public Params Params;
-	public string[] PossibleValues;
 
-	public TileExpandableList(Params @params, string name, bool allowOther, params int[] possibleValues) : base(name)
+	public TileExpandableList(Dictionary<string, object> data, string name, bool allowOther, params int[] possibleValues) : base(data, name, allowOther)
 	{
-		AllowOther = allowOther;
-		Params = @params;
-
 		PossibleValues = new string[possibleValues.Length];
 		for (int index = 0; index < possibleValues.Length; index++)
 		{
@@ -29,27 +23,15 @@ public class TileExpandableList : InputBox<string>
 	{
 		get
 		{
-			int value = (int)Params.Data[Name];
+			int value = (int)Data[Name];
 			return value == Random ? nameof(Random) : TileID.Search.GetName(value);
 		}
 		set
 		{
 			if (value == nameof(Random))
-				Params.Data[Name] = Random;
+				Data[Name] = Random;
 			else
-				Params.Data[Name] = TileID.Search.GetId(value);
+				Data[Name] = TileID.Search.GetId(value);
 		}
-	}
-
-	public override void CreateUIElement()
-	{
-		base.CreateUIElement();
-
-		ValuesList valuesList = new(this, PossibleValues)
-		{
-			VAlign = 0.5f,
-			HAlign = 1f
-		};
-		Background.Append(valuesList);
 	}
 }

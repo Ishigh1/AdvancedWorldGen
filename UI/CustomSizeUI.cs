@@ -51,18 +51,20 @@ public class CustomSizeUI : UIState
 
 		const string localizationPath = "Mods.AdvancedWorldGen.UI.CustomSizes";
 
+		Dictionary<string, object> data = WorldSettings.Params.Data; 
+
 		NumberTextBox<int> sizeXInput =
-			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeX), 100, ushort.MaxValue, localizationPath);
+			new ConfigNumberTextBox<int>(data, nameof(Params.SizeX), 100, ushort.MaxValue, localizationPath);
 		sizeXInput.Order = index++;
 		uiList.Add(sizeXInput);
 
 		NumberTextBox<int> sizeYInput =
-			new ConfigNumberTextBox<int>(WorldSettings.Params, nameof(Params.SizeY), 100, ushort.MaxValue, localizationPath);
+			new ConfigNumberTextBox<int>(data, nameof(Params.SizeY), 100, ushort.MaxValue, localizationPath);
 		sizeYInput.Order = index++;
 		uiList.Add(sizeYInput);
 
 		NumberTextBox<float> templeModifier =
-			new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.TempleMultiplier), 0,
+			new ConfigNumberTextBox<float>(data, nameof(Params.TempleMultiplier), 0,
 				float.PositiveInfinity, localizationPath);
 		templeModifier.Order = index++;
 		uiList.Add(templeModifier);
@@ -70,44 +72,50 @@ public class CustomSizeUI : UIState
 		if (WorldgenSettings.Revamped)
 		{
 			NumberTextBox<float> dungeonModifier =
-				new ConfigNumberTextBox<float>(WorldSettings.Params, nameof(Params.DungeonMultiplier), 0,
+				new ConfigNumberTextBox<float>(data, nameof(Params.DungeonMultiplier), 0,
 					float.MaxValue, localizationPath);
 			dungeonModifier.Order = index++;
 			uiList.Add(dungeonModifier);
 
-			NumberTextBox<float> beachModifier = new ConfigNumberTextBox<float>(WorldSettings.Params,
+			NumberTextBox<float> beachModifier = new ConfigNumberTextBox<float>(data,
 				nameof(Params.BeachMultiplier), 0,
 				float.PositiveInfinity, localizationPath);
 			beachModifier.Order = index++;
 			uiList.Add(beachModifier);
 
-			TileExpandableList copperList = new(WorldSettings.Params, nameof(Params.Copper), false,
+			TileExpandableList copperList = new(data, nameof(Params.Copper), false,
 				TileExpandableList.Random, TileID.Copper, TileID.Tin)
 			{
 				Order = index++
 			};
 			uiList.Add(copperList);
 
-			TileExpandableList ironList = new(WorldSettings.Params, nameof(Params.Iron), false,
+			TileExpandableList ironList = new(data, nameof(Params.Iron), false,
 				TileExpandableList.Random, TileID.Iron, TileID.Lead)
 			{
 				Order = index++
 			};
 			uiList.Add(ironList);
 
-			TileExpandableList silverList = new(WorldSettings.Params, nameof(Params.Silver), false,
+			TileExpandableList silverList = new(data, nameof(Params.Silver), false,
 				TileExpandableList.Random, TileID.Silver, TileID.Tungsten)
 			{
 				Order = index++
 			};
 			uiList.Add(silverList);
 
-			TileExpandableList goldList = new(WorldSettings.Params, nameof(Params.Gold), false,
+			TileExpandableList goldList = new(data, nameof(Params.Gold), false,
 				TileExpandableList.Random, TileID.Gold, TileID.Platinum)
 			{
 				Order = index++
 			};
 			uiList.Add(goldList);
+
+			BooleanExpandableList terrainList = new(data, nameof(Params.EditTerrainPass))
+			{
+				Order = index++
+			};
+			uiList.Add(terrainList);
 		}
 
 		UITextPanel<string> gotoConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.Config"))

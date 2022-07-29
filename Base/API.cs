@@ -14,8 +14,6 @@ public class API
 	{
 		ModifiedWorld.Instance.OptionHelper.OptionDict.Add(internalName, new Option
 		{
-			Children = new List<Option>(),
-			Conflicts = new List<string>(),
 			Hidden = hidden,
 			ModName = mod.Name,
 			Name = internalName

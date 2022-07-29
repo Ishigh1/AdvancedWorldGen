@@ -63,6 +63,12 @@ public class Params
 		set => Data[nameof(Gold)] = value;
 	}
 
+	public bool EditTerrainPass
+	{
+		get => (bool)Data[nameof(EditTerrainPass)];
+		set => Data[nameof(EditTerrainPass)] = value;
+	}
+
 	public void Wipe()
 	{
 		Data.Clear();
@@ -81,5 +87,7 @@ public class Params
 		Iron = TileExpandableList.Random;
 		Silver = TileExpandableList.Random;
 		Gold = TileExpandableList.Random;
+
+		EditTerrainPass = false;
 	}
 }
