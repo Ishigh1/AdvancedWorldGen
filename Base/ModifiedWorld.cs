@@ -67,17 +67,27 @@ public class ModifiedWorld : ModSystem
 
 	public override void PreWorldGen()
 	{
-		Main.notTheBeesWorld = API.OptionsContains("NotTheBees");
-		WorldGen.notTheBees = Main.notTheBeesWorld;
-		Main.getGoodWorld = API.OptionsContains("ForTheWorthy");
-		WorldGen.getGoodWorldGen = Main.getGoodWorld;
-		Main.drunkWorld = API.OptionsContains("Drunk");
-		WorldGen.drunkWorldGen = Main.drunkWorld;
-		WorldGen.drunkWorldGenText = Main.drunkWorld;
-		Main.tenthAnniversaryWorld = API.OptionsContains("Celebrationmk10");
-		WorldGen.tenthAnniversaryWorldGen = Main.tenthAnniversaryWorld;
-		Main.dontStarveWorld = API.OptionsContains("TheConstant");
-		WorldGen.dontStarveWorldGen = Main.dontStarveWorld;
+		bool notTheBees = API.OptionsContains("NotTheBees");
+		Main.notTheBeesWorld |= notTheBees;
+		WorldGen.notTheBees |= notTheBees;
+		
+		bool forTheWorthy = API.OptionsContains("ForTheWorthy");
+		Main.getGoodWorld |= forTheWorthy;
+		WorldGen.getGoodWorldGen |= forTheWorthy;
+		
+		bool drunk = API.OptionsContains("Drunk");
+		Main.drunkWorld |= drunk;
+		WorldGen.drunkWorldGen |= drunk;
+		WorldGen.drunkWorldGenText |= drunk;
+
+		bool celebration = API.OptionsContains("Celebrationmk10");
+		Main.tenthAnniversaryWorld |= celebration;
+		WorldGen.tenthAnniversaryWorldGen |= celebration;
+
+		bool dontStarve = API.OptionsContains("TheConstant");
+		Main.dontStarveWorld |= dontStarve;
+		WorldGen.dontStarveWorldGen |= dontStarve;
+		
 		if (!Main.dayTime) Main.time = 0;
 	}
 
