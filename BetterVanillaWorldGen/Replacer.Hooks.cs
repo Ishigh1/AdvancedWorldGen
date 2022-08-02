@@ -103,7 +103,7 @@ public static partial class Replacer
 			stopwatch.Start();
 			orig(self, progress, configuration);
 			stopwatch.Stop();
-			ModifiedWorld.Instance.Times.Add(self.Name, stopwatch.Elapsed);
+			ModifiedWorld.Instance.Times.TryAdd(self.Name, stopwatch.Elapsed);
 		}
 		else
 			orig(self, progress, configuration);
