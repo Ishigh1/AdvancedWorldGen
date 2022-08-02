@@ -79,7 +79,7 @@ public class ModifiedTrackGenerator
 	public ModifiedTrackGenerator(int strictMinimum)
 	{
 		StrictMinimum = strictMinimum;
-		RTree = new RTree(new Rectangle(Main.maxTilesX / 2, (int)((Main.worldSurface + Main.maxTilesY - 200) / 2), 0, 0));
+		RTree = RTree.Root();
 		if (WorldGen.notTheBees)
 			InvalidWalls.Add(108);
 	}

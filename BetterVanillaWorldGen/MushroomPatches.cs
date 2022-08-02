@@ -11,7 +11,7 @@ public class MushroomPatches : ControlledWorldGenPass
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.13");
 		int mushroomBiomes = Math.Max(1, Main.maxTilesX / 700);
 
-		RTree mushroomBiomesRectangles = new(new Rectangle((int)((Main.worldSurface + Main.maxTilesX) / 2), Main.maxTilesY / 2, 0, 0));
+		RTree mushroomBiomesRectangles = RTree.Root();
 
 		const int spread = 100;
 		int jungleMinX = Math.Max(VanillaInterface.JungleLeft - spread, spread);
