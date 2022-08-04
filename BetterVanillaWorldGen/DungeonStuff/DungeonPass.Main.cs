@@ -87,8 +87,6 @@ public partial class DungeonPass
 
 		int num6 = 5;
 		DungeonRoom(WorldGen.dungeonX, WorldGen.dungeonY, tileType, wallType);
-		int x00 = WorldGen.dungeonX;
-		int y00 = WorldGen.dungeonY;
 		for (int room = 0; room < maxRooms; room++)
 		{
 			WorldGen.dMinX = Math.Min(WorldGen.dMinX, WorldGen.dungeonX);
@@ -191,7 +189,7 @@ public partial class DungeonPass
 
 		Progress.Set(70, 100);
 		int num17 = 0;
-		int num18 = 1000;
+		const int maxTries = 1000;
 		int num19 = 0;
 		int num20 = Main.maxTilesX / 100;
 		if (WorldGen.getGoodWorldGen)
@@ -280,7 +278,7 @@ public partial class DungeonPass
 				}
 			}
 
-			if (num17 > num18)
+			if (num17 > maxTries)
 			{
 				num17 = 0;
 				num19++;
@@ -288,7 +286,6 @@ public partial class DungeonPass
 		}
 
 		num17 = 0;
-		num18 = 1000;
 		num19 = 0;
 		Progress.Set(75, 100);
 		while (num19 < num20)
@@ -368,7 +365,7 @@ public partial class DungeonPass
 				}
 			}
 
-			if (num17 > num18)
+			if (num17 > maxTries)
 			{
 				num17 = 0;
 				num19++;
@@ -743,7 +740,6 @@ public partial class DungeonPass
 
 		Progress.Set(90, 100);
 		num17 = 0;
-		num18 = 1000;
 		num19 = 0;
 		while (num19 < Main.maxTilesX / 20)
 		{
@@ -843,20 +839,14 @@ public partial class DungeonPass
 								};
 
 								WorldGen.PlaceTile(x, y, type, true);
-								if (Main.tile[x, y].TileType == TileID.Bottles)
-								{
-									if (WorldGen.genRand.NextBool(2))
-										Main.tile[x, y].TileFrameX = 18;
-									else
-										Main.tile[x, y].TileFrameX = 36;
-								}
+								if (Main.tile[x, y].TileType == TileID.Bottles) Main.tile[x, y].TileFrameX = WorldGen.genRand.NextBool(2) ? (short)18 : (short)36;
 							}
 						}
 					}
 				}
 			}
 
-			if (num17 > num18)
+			if (num17 > maxTries)
 			{
 				num17 = 0;
 				num19++;
@@ -917,25 +907,18 @@ public partial class DungeonPass
 
 				if (GenerationChests.AddBuriedChest(x, y, itemType, false, style3))
 				{
-					tries += 1000;
 					num95++;
+					break;
 				}
 
 				tries++;
 			}
 		}
 
-		WorldGen.dMinX -= 25;
-		WorldGen.dMaxX += 25;
-		WorldGen.dMinY -= 25;
-		WorldGen.dMaxY += 25;
-		if (WorldGen.dMinX < 0) WorldGen.dMinX = 0;
-
-		if (WorldGen.dMaxX > Main.maxTilesX) WorldGen.dMaxX = Main.maxTilesX;
-
-		if (WorldGen.dMinY < 0) WorldGen.dMinY = 0;
-
-		if (WorldGen.dMaxY > Main.maxTilesY) WorldGen.dMaxY = Main.maxTilesY;
+		WorldGen.dMinX = Math.Max(WorldGen.dMinX - 25, 0);
+		WorldGen.dMaxX = Math.Min(WorldGen.dMaxX + 25, Main.maxTilesX);
+		WorldGen.dMinY = Math.Max(WorldGen.dMinY - 25, 0);
+		WorldGen.dMaxY = Math.Min(WorldGen.dMaxY + 25, Main.maxTilesY);
 
 		MakeDungeon_Lights(tileType, wallTypes);
 		MakeDungeon_Traps();

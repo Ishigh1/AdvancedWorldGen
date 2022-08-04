@@ -44,7 +44,7 @@ public static class EyeOfCthulhu
 	public static void AI(NPC npc)
 	{
 		if (npc.type == NPCID.EyeofCthulhu && Main.netMode != NetmodeID.MultiplayerClient &&
-		    Main.rand.Next(EyeGhostChances.GetCurrentValue()) == 0)
+		    Main.rand.NextBool(EyeGhostChances.GetCurrentValue()))
 		{
 			npc.FindClosestPlayer(out float distanceToPlayer);
 			if (distanceToPlayer <= 300f) return;

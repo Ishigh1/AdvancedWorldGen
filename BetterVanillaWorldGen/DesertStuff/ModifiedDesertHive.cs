@@ -47,14 +47,13 @@ public static class ModifiedDesertHive
 
 	public static void PlaceClustersArea(ClusterGroup clusterGroup, Dictionary<(int, int), List<int>> hive)
 	{
-		FastRandom fastRandom = new FastRandom(Main.ActiveWorldFileData.Seed).WithModifier(57005uL);
 		foreach (((int x, int y), List<int> interestingClusters) in hive)
 		{
 			float distanceToClosestCenter = 0f;
 			int closestCluster = -1;
 			float distanceToSecondClosestCenter = 0f;
 			ushort type = 53;
-			if (fastRandom.Next(3) == 0)
+			if (WorldGen.genRand.NextBool(3))
 				type = 397;
 
 			foreach (int k in interestingClusters)
@@ -108,7 +107,7 @@ public static class ModifiedDesertHive
 					break;
 				case > 0.25f:
 					float num8 = (score - 0.25f) / 0.45f;
-					if (fastRandom.NextFloat() < num8)
+					if (WorldGen.genRand.NextFloat() < num8)
 					{
 						tile.WallType = 187;
 						if (y < Main.worldSurface)

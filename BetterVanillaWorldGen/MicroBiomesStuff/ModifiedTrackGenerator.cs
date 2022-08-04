@@ -224,7 +224,7 @@ public class ModifiedTrackGenerator
 		bool[] array = new bool[CurrentTrack.Count];
 		for (int i = 0; i < CurrentTrack.Count; i++)
 		{
-			if (WorldGen.genRand.Next(7) == 0)
+			if (WorldGen.genRand.NextBool(7))
 				PlayerHeight = WorldGen.genRand.Next(5, 9);
 
 			for (int j = 0; j < PlayerHeight; j++)
@@ -247,7 +247,7 @@ public class ModifiedTrackGenerator
 
 		for (int k = 0; k < CurrentTrack.Count; k++)
 		{
-			if (WorldGen.genRand.Next(7) == 0)
+			if (WorldGen.genRand.NextBool(7))
 				PlayerHeight = WorldGen.genRand.Next(5, 9);
 
 			TrackHistory trackHistory = CurrentTrack[k];

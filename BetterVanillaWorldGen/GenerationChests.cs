@@ -108,7 +108,7 @@ public static class GenerationChests
 			outStyle = 10;
 			chestTileType = TileID.Containers2;
 
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
+			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
 				contain = ItemID.AngelStatue;
 			else
 				contain = y <= (WorldGen.desertHiveHigh * 3 + WorldGen.desertHiveLow * 4) / 7
@@ -142,7 +142,7 @@ public static class GenerationChests
 			if (WorldGen.genRand.NextBool(50))
 				contain = ItemID.Fish;
 
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
+			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
 				contain = ItemID.AngelStatue;
 		}
 
@@ -152,7 +152,7 @@ public static class GenerationChests
 		{
 			jungleBiome = true;
 			outStyle = 10;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
+			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
 				contain = ItemID.AngelStatue;
 		}
 
@@ -196,35 +196,35 @@ public static class GenerationChests
 				shadowChest = true;
 			}
 
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
+			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
 				contain = ItemID.AngelStatue;
 		}
 
 		if (chestTileType == TileID.Containers && outStyle == 17)
 		{
 			water = true;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
+			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
 				contain = ItemID.AngelStatue;
 		}
 
 		if (chestTileType == TileID.Containers && outStyle == 12)
 		{
 			livingWood = true;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
+			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
 				contain = ItemID.AngelStatue;
 		}
 
 		if (chestTileType == TileID.Containers && outStyle == 32)
 		{
 			glowingMushroomBiome = true;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
+			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
 				contain = ItemID.AngelStatue;
 		}
 
 		if (chestTileType == TileID.Containers && outStyle != 0 && DungeonPass.IsDungeon(x, y))
 		{
 			dungeon = true;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.Next(angelChances) == 0)
+			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
 				contain = ItemID.AngelStatue;
 		}
 

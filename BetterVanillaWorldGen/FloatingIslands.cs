@@ -66,7 +66,7 @@ public class FloatingIslands : ControlledWorldGenPass
 							WorldGen.skyLake[WorldGen.numIslandHouses] = false;
 							if (WorldGen.drunkWorldGen)
 							{
-								if (WorldGen.genRand.Next(2) == 0)
+								if (WorldGen.genRand.NextBool(2))
 								{
 									WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = 3;
 									WorldGen.SnowCloudIsland(x, y);

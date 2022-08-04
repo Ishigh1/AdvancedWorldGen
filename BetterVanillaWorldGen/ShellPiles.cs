@@ -39,7 +39,7 @@ public class ShellPiles : ControlledWorldGenPass
 		if (WorldGen.notTheBees)
 			return;
 		float worldSize = Main.maxTilesX < 4200 ? Main.maxTilesX / 4200f : 1;
-		if (WorldGen.genRand.Next(2) == 0)
+		if (WorldGen.genRand.NextBool(2))
 		{
 			int baseShellStartXLeft = WorldGen.shellStartXLeft;
 			int baseShellStartYLeft = WorldGen.shellStartYLeft;
@@ -68,33 +68,33 @@ public class ShellPiles : ControlledWorldGenPass
 
 			shellStartYLeft -= 50;
 			shellStartXLeft -= WorldGen.genRand.Next(5);
-			if (WorldGen.genRand.Next(2) == 0)
+			if (WorldGen.genRand.NextBool(2))
 				shellStartXLeft -= WorldGen.genRand.Next(10);
 
-			if (WorldGen.genRand.Next(3) == 0)
+			if (WorldGen.genRand.NextBool(3))
 				shellStartXLeft -= WorldGen.genRand.Next(15);
 
 			if (WorldGen.genRand.Next(4) != 0) WorldGen.ShellPile(shellStartXLeft, shellStartYLeft);
 
 			int shellRarity = WorldGen.genRand.Next(2, 4);
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXLeft - WorldGen.genRand.Next(10, 35) * worldSize), shellStartYLeft);
 
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXLeft - WorldGen.genRand.Next(40, 65) * worldSize), shellStartYLeft);
 
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXLeft - WorldGen.genRand.Next(70, 95) * worldSize), shellStartYLeft);
 
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXLeft - WorldGen.genRand.Next(100, 125) * worldSize),
 					shellStartYLeft);
 
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXLeft + WorldGen.genRand.Next(10, 25) * worldSize), shellStartYLeft);
 		}
 
-		if (WorldGen.genRand.Next(2) == 0)
+		if (WorldGen.genRand.NextBool(2))
 		{
 			int baseShellStartXRight = WorldGen.shellStartXRight;
 			int baseShellStartYRight = WorldGen.shellStartYRight;
@@ -123,32 +123,32 @@ public class ShellPiles : ControlledWorldGenPass
 
 			shellStartYRight -= 50;
 			shellStartXRight += WorldGen.genRand.Next(5);
-			if (WorldGen.genRand.Next(2) == 0)
+			if (WorldGen.genRand.NextBool(2))
 				shellStartXRight += WorldGen.genRand.Next(10);
 
-			if (WorldGen.genRand.Next(3) == 0)
+			if (WorldGen.genRand.NextBool(3))
 				shellStartXRight += WorldGen.genRand.Next(15);
 
 			if (WorldGen.genRand.Next(4) != 0) WorldGen.ShellPile(shellStartXRight, shellStartYRight);
 
 			int shellRarity = WorldGen.genRand.Next(2, 4);
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXRight + WorldGen.genRand.Next(10, 35) * worldSize),
 					shellStartYRight);
 
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXRight + WorldGen.genRand.Next(40, 65) * worldSize),
 					shellStartYRight);
 
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXRight + WorldGen.genRand.Next(70, 95) * worldSize),
 					shellStartYRight);
 
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXRight + WorldGen.genRand.Next(100, 125) * worldSize),
 					shellStartYRight);
 
-			if (WorldGen.genRand.Next(shellRarity) == 0)
+			if (WorldGen.genRand.NextBool(shellRarity))
 				WorldGen.ShellPile((int)(shellStartXRight - WorldGen.genRand.Next(10, 25) * worldSize),
 					shellStartYRight);
 		}

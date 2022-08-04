@@ -110,7 +110,7 @@ public class Corruption : ControlledWorldGenPass
 			{
 				int islandX = WorldGen.floatingIslandHouseX[index];
 				if (corruptionLeft - 100 < islandX && corruptionRight + 100 > islandX)
-					minY = Math.Max(minY, WorldGen.floatingIslandHouseY[index] + 30);
+					minY = Math.Max(minY, WorldGen.floatingIslandHouseY[index] + 50);
 			}
 
 			int num737 = 0;
@@ -298,17 +298,17 @@ public class Corruption : ControlledWorldGenPass
 				}
 			}
 
-			int crimY = (int)WorldGen.worldSurfaceLow - 50;
+			int minY = (int)WorldGen.worldSurfaceLow - 50;
 			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
 			{
 				int islandX = WorldGen.floatingIslandHouseX[index];
 				if (crimsonLeft - 100 < islandX && crimsonRight + 100 > islandX)
-					crimY = Math.Max(crimY, WorldGen.floatingIslandHouseY[index] + 30);
+					minY = Math.Max(minY, WorldGen.floatingIslandHouseY[index] + 50);
 			}
 
-			WorldGen.CrimStart(crimX, crimY - 10);
+			WorldGen.CrimStart(crimX, minY - 10);
 			for (int x = crimsonLeft; x < crimsonRight; x++)
-			for (int y = crimY; y < Main.worldSurface - 1.0; y++)
+			for (int y = minY; y < Main.worldSurface - 1.0; y++)
 				if (Main.tile[x, y].HasTile)
 				{
 					int num716 = y + WorldGen.genRand.Next(10, 14);
@@ -324,7 +324,7 @@ public class Corruption : ControlledWorldGenPass
 			for (int x = crimsonLeft; x < crimsonRight; x++)
 			{
 				bool flag49 = false;
-				for (int y = crimY; y < worldTop; y++)
+				for (int y = minY; y < worldTop; y++)
 					if (Main.tile[x, y].HasTile)
 					{
 						if (Main.tile[x, y].TileType == 53 && x >= crimsonLeft + WorldGen.genRand.Next(5) && x <= crimsonRight - WorldGen.genRand.Next(5))
