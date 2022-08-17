@@ -39,7 +39,7 @@ public class MushroomPatches : ControlledWorldGenPass
 					? WorldGen.genRand.Next((int)Main.rockLayer + 50, Main.UnderworldLayer - 100)
 					: WorldGen.genRand.Next((int)Main.rockLayer, Main.UnderworldLayer);
 
-				isValid = mushroomBiomesRectangles.Contains(x, y);
+				isValid = !mushroomBiomesRectangles.Contains(x, y);
 
 				for (int x2 = x - spread; x2 < x + spread && isValid; x2 += 10)
 				for (int y2 = y - spread; y2 < y + spread && isValid; y2 += 10)
