@@ -113,6 +113,17 @@ public class ModifiedWorld : ModSystem
 
 			Times = null;
 		}
+
+		Tile buffer = Main.tile[0, 0];
+		for (int x = 0; x < Main.maxTilesX; x++)
+		for (int y = x + 1; y < Main.maxTilesY; y++)
+		{
+			Tile tile1 = Main.tile[x, y];
+			Tile tile2 = Main.tile[y, x];
+			buffer.CopyFrom(tile1);
+			tile1.CopyFrom(tile2);
+			tile2.CopyFrom(buffer);
+		}
 	}
 
 	public override void NetReceive(BinaryReader reader)
