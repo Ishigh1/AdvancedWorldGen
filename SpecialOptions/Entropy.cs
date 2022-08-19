@@ -169,7 +169,7 @@ public class Entropy
 				Tile tileSafely = Framing.GetTileSafely(x, y);
 				tileSafely.TileType = (ushort)NewTile;
 				WorldGen.DiamondTileFrame(x, y);
-				if (API.OptionsContains("Random.Painted"))
+				if (OptionHelper.OptionsContains("Random.Painted"))
 					tileSafely.TileColor = PaintTile;
 			}
 
@@ -180,7 +180,7 @@ public class Entropy
 				Tile tileSafely = Framing.GetTileSafely(x, y);
 				tileSafely.WallType = (ushort)NewWall;
 				WorldGen.SquareWallFrame(x, y);
-				if (API.OptionsContains("Random.Painted"))
+				if (OptionHelper.OptionsContains("Random.Painted"))
 					tileSafely.WallColor = PaintWall;
 			}
 	}
@@ -214,7 +214,7 @@ public class Entropy
 
 	public static void StartEntropy()
 	{
-		if (!API.OptionsContains("Entropy")) return;
+		if (!OptionHelper.OptionsContains("Entropy")) return;
 		Thread thread = new(DoEntropy) { Priority = ThreadPriority.Lowest };
 		thread.Start();
 	}

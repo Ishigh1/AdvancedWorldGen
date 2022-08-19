@@ -7,7 +7,7 @@ public class SnowWorld
 {
 	public static void FallSnow()
 	{
-		if (!API.OptionsContains("Santa")) return;
+		if (!OptionHelper.OptionsContains("Santa")) return;
 		if (Main.rand.Next((int)(10000 / (Main.maxRaining + .01))) >=
 		    Main.maxTilesX) return;
 		int x = Main.rand.Next(Main.maxTilesX);
@@ -84,14 +84,14 @@ public class SnowWorld
 
 	public static void MainOnCheckXMas(OnMain.orig_checkXMas orig)
 	{
-		if (API.OptionsContains("Santa"))
+		if (OptionHelper.OptionsContains("Santa"))
 			Main.xMas = true;
 		else
 			orig();
 	}
 
 	/*
-	 * after IL_2356e, && !ModifiedWorld.CurrentCustomSeededWorld.OptionHelper.OptionsContains("Santa")
+	 * after IL_2356e, && !OptionHelper.OptionsContains("Santa")
 	 */
 	public static void RemoveSnowDropDuringChristmas(ILContext il)
 	{

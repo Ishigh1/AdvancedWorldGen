@@ -3,10 +3,10 @@ namespace AdvancedWorldGen.UI.InputUI.List;
 public abstract class ExpandableList : InputBox<string>
 {
 	public bool AllowOther;
-	public Dictionary<string, object> Data;
+	public Params Data;
 	public string[] PossibleValues;
 
-	protected ExpandableList(Dictionary<string, object> data, string name, bool allowOther) : base(name)
+	protected ExpandableList(Params data, string name, bool allowOther) : base(name)
 	{
 		AllowOther = allowOther;
 		Data = data;

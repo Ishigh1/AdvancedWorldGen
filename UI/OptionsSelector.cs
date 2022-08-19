@@ -197,7 +197,7 @@ public class OptionsSelector : UIState
 			UIDescription.SetText(Description);
 		}
 
-		foreach ((_, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
+		foreach ((_, Option? option) in OptionHelper.OptionDict)
 		{
 			if (option.Hidden && !ShowHidden) continue;
 			if (option.Parent != Parent) continue;
@@ -226,7 +226,7 @@ public class OptionsSelector : UIState
 					option.Enable();
 
 				if (option.Conflicts
-				    .Any(conflict => API.OptionsContains(conflict)))
+				    .Any(conflict => OptionHelper.OptionsContains(conflict)))
 					CreateOptionList();
 				else
 					clickableText.SetCurrentOption(!selected);
@@ -270,7 +270,7 @@ public class OptionsSelector : UIState
 			else if (option.Enabled)
 			{
 				foreach (string conflict in option.Conflicts)
-					if (API.OptionsContains(conflict))
+					if (OptionHelper.OptionsContains(conflict))
 					{
 						LocalizedText conflictDescription =
 							Language.GetText("Mods.AdvancedWorldGen." + option.SimplifiedName + ".Conflicts." +
@@ -304,16 +304,16 @@ public class OptionsSelector : UIState
 	{
 		if (Main.rand.NextBool(1_000))
 		{
-			ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.TempleMultiplier = float.PositiveInfinity;
+			OptionHelper.WorldSettings.Params.TempleMultiplier = float.PositiveInfinity;
 			return;
 		}
 		
-		foreach ((string? _, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
+		foreach ((string? _, Option? option) in OptionHelper.OptionDict)
 			RandomizeOption(option);
 		
 		CreateOptionList();
 
-		Params @params = ModifiedWorld.Instance.OptionHelper.WorldSettings.Params;
+		Params @params = OptionHelper.WorldSettings.Params;
 		double maxSize = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (double) KnownLimits.DataLoad;
 		double ratio = Main.rand.NextFloat(2, 5);
 		double lambda = 7 / maxSize;
@@ -321,7 +321,7 @@ public class OptionsSelector : UIState
 		@params.SizeX = (int)(Math.Sqrt(size / (ratio + 1)) * ratio);
 		@params.SizeY = (int)(size / @params.SizeX);
 		
-		VanillaAccessor<int> optionSize = VanillaInterface.OptionSize(ModifiedWorld.Instance.OptionHelper.WorldSettings.UIWorldCreation);
+		VanillaAccessor<int> optionSize = VanillaInterface.OptionSize(OptionHelper.WorldSettings.UIWorldCreation);
 		optionSize.Value = -1;
 
 		@params.BeachMultiplier = Main.rand.NextFloat(0.5f, 2);

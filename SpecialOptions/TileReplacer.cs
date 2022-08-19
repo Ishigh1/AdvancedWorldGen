@@ -169,7 +169,7 @@ public class TileReplacer
 	public static void RandomizeTile(Tile tile, Dictionary<ushort, ushort> tileRandom,
 		Dictionary<ushort, byte> paintRandom)
 	{
-		if (API.OptionsContains("Random"))
+		if (OptionHelper.OptionsContains("Random"))
 			if (Main.tileSolid[tile.TileType])
 			{
 				if (tileRandom.TryGetValue(tile.TileType, out ushort type))
@@ -188,7 +188,7 @@ public class TileReplacer
 				}
 			}
 
-		if (API.OptionsContains("Random.Painted"))
+		if (OptionHelper.OptionsContains("Random.Painted"))
 		{
 			if (!paintRandom.TryGetValue(tile.TileType, out byte paint))
 			{
@@ -203,7 +203,7 @@ public class TileReplacer
 	public static void RandomizeWall(Dictionary<ushort, ushort> wallRandom, Tile tile,
 		Dictionary<ushort, byte> paintWallRandom)
 	{
-		if (API.OptionsContains("Random"))
+		if (OptionHelper.OptionsContains("Random"))
 		{
 			if (wallRandom.TryGetValue(tile.WallType, out ushort type))
 			{
@@ -221,7 +221,7 @@ public class TileReplacer
 			}
 		}
 
-		if (API.OptionsContains("Random.Painted"))
+		if (OptionHelper.OptionsContains("Random.Painted"))
 		{
 			if (!paintWallRandom.TryGetValue(tile.WallType, out byte paint))
 			{

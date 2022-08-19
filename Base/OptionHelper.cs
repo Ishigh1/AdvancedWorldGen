@@ -2,17 +2,12 @@ namespace AdvancedWorldGen.Base;
 
 public class OptionHelper
 {
-	public Dictionary<string, Option> OptionDict = null!;
-	public WorldSettings WorldSettings;
-
-	public OptionHelper(Mod mod)
+	public static Dictionary<string, Option> OptionDict = null!;
+	public static WorldSettings WorldSettings;
+	
+	public static void InitializeDict(Mod mod)
 	{
 		WorldSettings = new WorldSettings();
-		InitializeDict(mod);
-	}
-
-	public void InitializeDict(Mod mod)
-	{
 		OptionDict = JsonConvert.DeserializeObject<Dictionary<string, Option>>(
 			Encoding.UTF8.GetString(mod.GetFileBytes("Options.json")));
 
@@ -46,21 +41,21 @@ public class OptionHelper
 			}
 	}
 
-	public void ClearAll()
+	public static void ClearAll()
 	{
 		foreach ((string? _, Option? option) in OptionDict) option.Disable();
 	}
 
-	public void Import(ICollection<string> optionNames)
+	public static void Import(ICollection<string> optionNames)
 	{
-		ClearAll();
+        ClearAll();
 		Legacy.ReplaceOldOptions(optionNames);
 		foreach (string optionName in optionNames)
 			if (OptionDict.TryGetValue(optionName, out Option? option))
 				option.WeakEnable();
 	}
 
-	public List<string> Export()
+	public static List<string> Export()
 	{
 		List<string> list = new();
 		foreach ((string? _, Option? option) in OptionDict)
@@ -69,14 +64,11 @@ public class OptionHelper
 		return list;
 	}
 
-	public bool OptionsContains(params string[] optionNames)
+	public static bool OptionsContains(string optionName)
 	{
-		return optionNames.Any(optionName =>
-		{
-			if (!OptionDict.TryGetValue(optionName, out Option? option))
-				return false;
-			return option.Children.Count == 0 ? option.Enabled : option.Children[0].Enabled;
-		});
+		if (!OptionDict.TryGetValue(optionName, out Option? option))
+			return false;
+		return option.Children.Count == 0 ? option.Enabled : option.Children[0].Enabled;
 	}
 
 	public static void OnTick()
@@ -84,7 +76,7 @@ public class OptionHelper
 		SnowWorld.FallSnow();
 	}
 
-	public void OnDawn()
+	public static void OnDawn()
 	{
 		Entropy.StartEntropy();
 		if (OptionsContains("Santa") &&
@@ -106,7 +98,7 @@ public class OptionHelper
 		}
 	}
 
-	public void OnDusk()
+	public static void OnDusk()
 	{
 		Entropy.StartEntropy();
 		if (OptionsContains("Santa") && NPC.downedFishron &&

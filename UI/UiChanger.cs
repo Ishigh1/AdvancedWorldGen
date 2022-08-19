@@ -137,7 +137,7 @@ public class UiChanger
 
 		container.Append(groupOptionButton);
 
-		ModifiedWorld.Instance.OptionHelper.ClearAll();
+        OptionHelper.ClearAll();
 		OptionsSelector = new OptionsSelector(self, null);
 	}
 

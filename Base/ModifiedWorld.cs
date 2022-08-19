@@ -17,11 +17,10 @@ public class ModifiedWorld : ModSystem
 
 	public List<Dictionary<string, float>> Weights = null!;
 	public Dictionary<string, TimeSpan>? Times;
-	public OptionHelper OptionHelper = null!;
 
 	public override void OnModLoad()
 	{
-		OptionHelper = new OptionHelper(Mod);
+		OptionHelper.InitializeDict(Mod);
 		LoadWeights();
 	}
 
@@ -67,27 +66,27 @@ public class ModifiedWorld : ModSystem
 
 	public override void PreWorldGen()
 	{
-		bool notTheBees = API.OptionsContains("NotTheBees");
+		bool notTheBees = OptionHelper.OptionsContains("NotTheBees");
 		Main.notTheBeesWorld |= notTheBees;
 		WorldGen.notTheBees |= notTheBees;
-		
-		bool forTheWorthy = API.OptionsContains("ForTheWorthy");
+
+		bool forTheWorthy = OptionHelper.OptionsContains("ForTheWorthy");
 		Main.getGoodWorld |= forTheWorthy;
 		WorldGen.getGoodWorldGen |= forTheWorthy;
-		
-		bool drunk = API.OptionsContains("Drunk");
+
+		bool drunk = OptionHelper.OptionsContains("Drunk");
 		Main.drunkWorld |= drunk;
 		WorldGen.drunkWorldGen |= drunk;
 		WorldGen.drunkWorldGenText |= drunk;
 
-		bool celebration = API.OptionsContains("Celebrationmk10");
+		bool celebration = OptionHelper.OptionsContains("Celebrationmk10");
 		Main.tenthAnniversaryWorld |= celebration;
 		WorldGen.tenthAnniversaryWorldGen |= celebration;
 
-		bool dontStarve = API.OptionsContains("TheConstant");
+		bool dontStarve = OptionHelper.OptionsContains("TheConstant");
 		Main.dontStarveWorld |= dontStarve;
 		WorldGen.dontStarveWorldGen |= dontStarve;
-		
+
 		if (!Main.dayTime) Main.time = 0;
 	}
 
@@ -107,7 +106,7 @@ public class ModifiedWorld : ModSystem
 
 			Weights.Add(weights);
 			SaveWeights();
-			
+
 			foreach (MethodInfo methodInfo in Replacer.MethodInfos) HookEndpointManager.Remove(methodInfo, Replacer.Timer);
 			Replacer.MethodInfos.Clear();
 
@@ -160,10 +159,13 @@ public class ModifiedWorld : ModSystem
 		if (passIndex != -1)
 			HalloweenCommon.InsertTasks(tasks, ref passIndex);
 
-		if (API.OptionsContains("Santa", "Evil", "Random", "Random.Painted"))
+		if (OptionHelper.OptionsContains("Santa") ||
+		    OptionHelper.OptionsContains("Evil") ||
+		    OptionHelper.OptionsContains("Random") ||
+		    OptionHelper.OptionsContains("Random.Painted"))
 		{
 			tasks.Add(new PassLegacy("Tile Switch", ReplaceTiles));
-			
+
 			passIndex = tasks.FindIndex(pass => pass.Name == "Settle Liquids Again");
 			if (passIndex != -1)
 				tasks.Add(tasks[passIndex]);
@@ -174,7 +176,7 @@ public class ModifiedWorld : ModSystem
 	{
 		HashSet<int> availableNPCs = NPCs.ToHashSet();
 		int alreadyPlaced = 0;
-		if (API.OptionsContains("Random.Painted")) TryAddNpc(availableNPCs, Painter, ref alreadyPlaced, out _);
+		if (OptionHelper.OptionsContains("Random.Painted")) TryAddNpc(availableNPCs, Painter, ref alreadyPlaced, out _);
 
 		if (WorldGen.notTheBees) TryAddNpc(availableNPCs, Merchant, ref alreadyPlaced, out _);
 
@@ -214,9 +216,9 @@ public class ModifiedWorld : ModSystem
 			}
 		}
 
-		if (API.OptionsContains("Santa")) TryAddNpc(availableNPCs, SantaClaus, ref alreadyPlaced, out _);
+		if (OptionHelper.OptionsContains("Santa")) TryAddNpc(availableNPCs, SantaClaus, ref alreadyPlaced, out _);
 
-		if (API.OptionsContains("Random")) TryAddNpc(availableNPCs, RandomNpc(availableNPCs), ref alreadyPlaced, out _);
+		if (OptionHelper.OptionsContains("Random")) TryAddNpc(availableNPCs, RandomNpc(availableNPCs), ref alreadyPlaced, out _);
 
 		if (alreadyPlaced == 0) TryAddNpc(availableNPCs, Guide, ref alreadyPlaced, out _);
 	}
@@ -250,11 +252,12 @@ public class ModifiedWorld : ModSystem
 
 	public static void ReplaceTiles(GenerationProgress progress, GameConfiguration configuration)
 	{
-		if (API.OptionsContains("Santa")) new SnowReplacer().ReplaceTiles(progress, "SnowReplace");
+		if (OptionHelper.OptionsContains("Santa")) new SnowReplacer().ReplaceTiles(progress, "SnowReplace");
 
-		if (API.OptionsContains("Evil")) EvilReplacer.CorruptWorld(progress);
+		if (OptionHelper.OptionsContains("Evil")) EvilReplacer.CorruptWorld(progress);
 
-		if (API.OptionsContains("Random", "Random.Painted")) TileReplacer.RandomizeWorld(progress);
+		if (OptionHelper.OptionsContains("Random") ||
+		    OptionHelper.OptionsContains("Random.Painted")) TileReplacer.RandomizeWorld(progress);
 	}
 
 	public override void PostUpdateTime()
@@ -262,19 +265,19 @@ public class ModifiedWorld : ModSystem
 		if (Main.netMode != NetmodeID.MultiplayerClient) OptionHelper.OnTick();
 	}
 
-	public void OnDawn(OnMain.orig_UpdateTime_StartDay orig, ref bool stopEvents)
+	public static void OnDawn(OnMain.orig_UpdateTime_StartDay orig, ref bool stopEvents)
 	{
 		orig(ref stopEvents);
 		OptionHelper.OnDawn();
 	}
 
-	public void OnDusk(OnMain.orig_UpdateTime_StartNight orig, ref bool stopEvents)
+	public static void OnDusk(OnMain.orig_UpdateTime_StartNight orig, ref bool stopEvents)
 	{
 		orig(ref stopEvents);
 		OptionHelper.OnDusk();
 	}
 
-	public void ResetSettings(OnUserInterface.orig_SetState orig, UserInterface self, UIState state)
+	public static void ResetSettings(OnUserInterface.orig_SetState orig, UserInterface self, UIState state)
 	{
 		orig(self, state);
 		if (state is UIWorldSelect)
@@ -284,7 +287,7 @@ public class ModifiedWorld : ModSystem
 		}
 	}
 
-	public void LastMinuteChecks(OnUIWorldCreation.orig_FinishCreatingWorld orig, Terraria.GameContent.UI.States.UIWorldCreation self)
+	public void LastMinuteChecks(OnUIWorldCreation.orig_FinishCreatingWorld orig, UIWorldCreation self)
 	{
 		Params worldSettingsParams = OptionHelper.WorldSettings.Params;
 

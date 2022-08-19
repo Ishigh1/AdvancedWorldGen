@@ -6,7 +6,7 @@ public class CustomSizeUI : UIState
 
 	public CustomSizeUI()
 	{
-		WorldSettings = ModifiedWorld.Instance.OptionHelper.WorldSettings;
+		WorldSettings = OptionHelper.WorldSettings;
 		CreateCustomSizeUI();
 	}
 
@@ -51,7 +51,7 @@ public class CustomSizeUI : UIState
 
 		const string localizationPath = "Mods.AdvancedWorldGen.UI.CustomSizes";
 
-		Dictionary<string, object> data = WorldSettings.Params.Data; 
+		Params data = WorldSettings.Params; 
 
 		NumberTextBox<int> sizeXInput =
 			new ConfigNumberTextBox<int>(data, nameof(Params.SizeX), 100, ushort.MaxValue, localizationPath);
@@ -116,6 +116,12 @@ public class CustomSizeUI : UIState
 				Order = index++
 			};
 			uiList.Add(terrainList);
+
+			EnumInputListBox<TerrainType> terrainTypeList = new(data, nameof(Params.TerrainType))
+			{
+				Order = index++
+			};
+			uiList.Add(terrainTypeList);
 		}
 
 		UITextPanel<string> gotoConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.Config"))

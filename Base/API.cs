@@ -10,9 +10,10 @@ public class API
 	/// <param name="mod">The mod featuring the given option</param>
 	/// <param name="internalName">The internal name of the option, it must be unique and with no space</param>
 	/// <param name="hidden">Set to true if you don't want this option to be shown by default</param>
+	[Obsolete("Please use Mod.Call", true)]
 	public static void RegisterOption(Mod mod, string internalName, bool hidden = false)
 	{
-		ModifiedWorld.Instance.OptionHelper.OptionDict.Add(internalName, new Option
+		OptionHelper.OptionDict.Add(internalName, new Option
 		{
 			Hidden = hidden,
 			ModName = mod.Name,
@@ -20,11 +21,9 @@ public class API
 		});
 	}
 
-	/// <summary>
-	///     Checks if at least one of the given options is enabled
-	/// </summary>
+	[Obsolete("Please use Mod.Call", true)]
 	public static bool OptionsContains(params string[] options)
 	{
-		return ModifiedWorld.Instance.OptionHelper.OptionsContains(options);
+		return OptionHelper.OptionsContains(options[0]);
 	}
 }

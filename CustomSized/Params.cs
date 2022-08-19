@@ -2,11 +2,17 @@ namespace AdvancedWorldGen.CustomSized;
 
 public class Params
 {
-	public Dictionary<string, object> Data = new();
+	private Dictionary<string, object> Data = new();
 
 	public Params()
 	{
 		Initialize();
+	}
+
+	public object this[string name]
+	{
+		get => Data[name];
+		set => Data[name] = value;
 	}
 
 	public int SizeX
@@ -69,6 +75,12 @@ public class Params
 		set => Data[nameof(EditTerrainPass)] = value;
 	}
 
+	public TerrainType TerrainType
+	{
+		get => (TerrainType)Data[nameof(TerrainType)];
+		set => Data[nameof(TerrainType)] = value;
+	}
+
 	public void Wipe()
 	{
 		Data.Clear();
@@ -89,5 +101,16 @@ public class Params
 		Gold = TileExpandableList.Random;
 
 		EditTerrainPass = false;
+		TerrainType = TerrainType.Normal;
+	}
+
+	public bool TryGetValue(string key, out object? value)
+	{
+		return Data.TryGetValue(key, out value);
+	}
+
+	public Dictionary<string, object>.Enumerator GetEnumerator()
+	{
+		return Data.GetEnumerator();
 	}
 }

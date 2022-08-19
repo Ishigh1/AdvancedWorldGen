@@ -6,7 +6,7 @@ public class MeltIce : GlobalTile
 {
 	public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
 	{
-		if (type == BreakableIce && !fail && API.OptionsContains("Santa"))
+		if (type == BreakableIce && !fail && OptionHelper.OptionsContains("Santa"))
 		{
 			Tile tile = Main.tile[i, j];
 			tile.LiquidAmount = byte.MaxValue;

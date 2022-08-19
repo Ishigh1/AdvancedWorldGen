@@ -12,7 +12,7 @@ public static class DedServUi
 		bool showHidden = false;
 		string errorMessage = "";
 
-		ModifiedWorld.Instance.OptionHelper.ClearAll();
+        OptionHelper.ClearAll();
 
 		while (!finished)
 		{
@@ -43,7 +43,7 @@ public static class DedServUi
 	{
 		Console.WriteLine(Language.GetTextValue("Mods.AdvancedWorldGen.NoneSelected.Description"));
 		int id = 1;
-		foreach ((_, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
+		foreach ((_, Option? option) in OptionHelper.OptionDict)
 			if (option.Children.Count == 0 && (!option.Hidden || showHidden))
 				Console.WriteLine(id++ + " : " +
 				                  Language.GetTextValue("Mods." + option.ModName + "." + option.SimplifiedName) +
@@ -71,11 +71,11 @@ public static class DedServUi
 	{
 		bool conflict = false;
 
-		foreach ((string? _, Option? option) in ModifiedWorld.Instance.OptionHelper.OptionDict)
+		foreach ((string? _, Option? option) in OptionHelper.OptionDict)
 			if (option.Enabled && option.Children.Count == 0)
 				foreach (string conflictName in option.Conflicts)
 					if (string.Compare(option.SimplifiedName, conflictName, StringComparison.Ordinal) < 0 &&
-					    API.OptionsContains(conflictName))
+					    OptionHelper.OptionsContains(conflictName))
 					{
 						Console.WriteLine(
 							Language.GetTextValue("Mods.AdvancedWorldGen." + option.SimplifiedName + ".Conflicts." +
@@ -101,7 +101,7 @@ public static class DedServUi
 				if (options.Count == 0)
 					errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidImport");
 				else
-					ModifiedWorld.Instance.OptionHelper.Import(options);
+                    OptionHelper.Import(options);
 			}
 			else
 			{
@@ -112,9 +112,9 @@ public static class DedServUi
 
 	public static bool ConvertIdToOption(bool showHidden, int id)
 	{
-		for (int i = 0; i < ModifiedWorld.Instance.OptionHelper.OptionDict.Count; i++)
+		for (int i = 0; i < OptionHelper.OptionDict.Count; i++)
 		{
-			(string _, Option option) = ModifiedWorld.Instance.OptionHelper.OptionDict.ElementAt(i);
+			(string _, Option option) = OptionHelper.OptionDict.ElementAt(i);
 			if ((!option.Hidden || showHidden) && option.Children.Count == 0 && --id == 0)
 			{
 				if (option.Enabled)

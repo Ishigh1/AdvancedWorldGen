@@ -82,7 +82,7 @@ public partial class DungeonPass
 		DungeonXStrength2 = WorldGen.genRand.Next(35, 50);
 		DungeonYStrength2 = WorldGen.genRand.Next(10, 15);
 
-		int maxRooms = (int)(Main.maxTilesX * Main.maxTilesY * ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.DungeonMultiplier / (1200 * 60));
+		int maxRooms = (int)(Main.maxTilesX * Main.maxTilesY * OptionHelper.WorldSettings.Params.DungeonMultiplier / (1200 * 60));
 		maxRooms += WorldGen.genRand.Next(maxRooms / 3);
 
 		int num6 = 5;
@@ -658,7 +658,7 @@ public partial class DungeonPass
 		}
 
 		int evilChests = 5;
-		if (API.OptionsContains("Drunk.Crimruption"))
+		if (OptionHelper.OptionsContains("Drunk.Crimruption"))
 			evilChests = 6;
 
 		for (int numChest = 0; numChest < evilChests; numChest++)

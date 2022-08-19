@@ -5,7 +5,7 @@ public static class EvilReplacer
 	public static void CorruptWorld(GenerationProgress progress)
 	{
 		progress.Message = Language.GetTextValue("Mods.AdvancedWorldGen.WorldGenMessage.Evil");
-		bool isDrunk = API.OptionsContains("Drunk.Crimruption");
+		bool isDrunk = OptionHelper.OptionsContains("Drunk.Crimruption");
 		bool corruptOnLeft = isDrunk;
 		if (isDrunk)
 			for (int x = WorldGen.beachDistance; x < Main.maxTilesX - WorldGen.beachDistance; x++)

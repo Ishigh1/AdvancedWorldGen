@@ -4,7 +4,7 @@ public class TileExpandableList : ExpandableList
 {
 	public const int Random = -1;
 
-	public TileExpandableList(Dictionary<string, object> data, string name, bool allowOther, params int[] possibleValues) : base(data, name, allowOther)
+	public TileExpandableList(Params data, string name, bool allowOther, params int[] possibleValues) : base(data, name, allowOther)
 	{
 		PossibleValues = new string[possibleValues.Length];
 		for (int index = 0; index < possibleValues.Length; index++)

@@ -4,7 +4,7 @@ public class ClassicOptions
 {
 	public static void SmallNotTheBees(OnWorldGen.orig_NotTheBees orig)
 	{
-		if (API.OptionsContains("NotTheBees.JungleWorld"))
+		if (OptionHelper.OptionsContains("NotTheBees.JungleWorld"))
 		{
 			bool wasNotTheBees = WorldGen.notTheBees;
 			WorldGen.notTheBees = true;
@@ -41,7 +41,7 @@ public class ClassicOptions
 
 	public static int GetTempleRooms(ref int y, float worldSize)
 	{
-		float templeSize = ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.TempleMultiplier;
+		float templeSize = OptionHelper.WorldSettings.Params.TempleMultiplier;
 		if (WorldGen.getGoodWorldGen && WorldGen.drunkWorldGen)
 			templeSize *= 6;
 		else if (WorldGen.getGoodWorldGen || WorldGen.drunkWorldGen) templeSize *= 3;

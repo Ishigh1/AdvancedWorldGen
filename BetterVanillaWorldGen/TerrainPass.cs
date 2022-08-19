@@ -170,7 +170,7 @@ public class TerrainPass : ControlledWorldGenPass
 
 	private static void DrawTerrainUI(Dictionary<string, object> currentState)
 	{
-		if (Main.dedServ || !ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.EditTerrainPass)
+		if (Main.dedServ || !OptionHelper.WorldSettings.Params.EditTerrainPass)
 			return;
 		
 		UIState uiState = Main.MenuUI.CurrentState;
@@ -298,8 +298,41 @@ public class TerrainPass : ControlledWorldGenPass
 
 	public static int GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
 	{
+		switch (OptionHelper.WorldSettings.Params.TerrainType)
+		{
+			case TerrainType.Superflat:
+				return 0;
+			case TerrainType.Flat:
+				featureType = TerrainFeatureType.Plateau;
+				break;
+		}
 		int num = 0;
-		if ((WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen) && WorldGen.genRand.NextBool(2))
+		if (OptionHelper.WorldSettings.Params.TerrainType == TerrainType.Mountainous)
+			switch (featureType)
+			{
+				case TerrainFeatureType.Plateau:
+					while (WorldGen.genRand.NextBool(3)) num += WorldGen.genRand.Next(-1, 2);
+					break;
+				case TerrainFeatureType.Hill:
+					while (WorldGen.genRand.NextBool(2, 3)) num -= 1;
+					while (WorldGen.genRand.NextBool(5)) num += 1;
+					break;
+				case TerrainFeatureType.Dale:
+					while (WorldGen.genRand.NextBool(2, 3)) num += 1;
+					while (WorldGen.genRand.NextBool(5)) num -= 1;
+					break;
+				case TerrainFeatureType.Mountain:
+					while (WorldGen.genRand.NextBool(5, 6)) num -= 1;
+					while (WorldGen.genRand.NextBool(3)) num += 1;
+					break;
+				case TerrainFeatureType.Valley:
+					while (WorldGen.genRand.NextBool(5, 6)) num += 1;
+					while (WorldGen.genRand.NextBool(3)) num -= 1;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(featureType), featureType, null);
+			}
+		else if ((WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen) && WorldGen.genRand.NextBool(2))
 			switch (featureType)
 			{
 				case TerrainFeatureType.Plateau:

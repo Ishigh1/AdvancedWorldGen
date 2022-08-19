@@ -23,7 +23,7 @@ public class DrunkOptions
 
 	public static void AddDrunkEdits(List<GenPass> tasks)
 	{
-		if (API.OptionsContains("Drunk.BothOres"))
+		if (OptionHelper.OptionsContains("Drunk.BothOres"))
 		{
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Shinies");
 			if (passIndex != -1)
@@ -33,7 +33,7 @@ public class DrunkOptions
 			}
 		}
 
-		if (!WorldgenSettings.Revamped && API.OptionsContains("Drunk.Crimruption"))
+		if (!WorldgenSettings.Revamped && OptionHelper.OptionsContains("Drunk.Crimruption"))
 		{
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
 			if (passIndex != -1)
@@ -50,7 +50,7 @@ public class DrunkOptions
 			}
 		}
 
-		if (API.OptionsContains("Drunk.MiddleLavaOcean"))
+		if (OptionHelper.OptionsContains("Drunk.MiddleLavaOcean"))
 		{
 			int passIndex = tasks.FindIndex(pass => pass.Name == "Underworld");
 			if (passIndex != -1)
@@ -64,7 +64,7 @@ public class DrunkOptions
 	public static void Crimruption1(GenPass genPass)
 	{
 		WasDrunk = WorldGen.drunkWorldGen;
-		WorldGen.drunkWorldGen = API.OptionsContains("Drunk.Crimruption");
+		WorldGen.drunkWorldGen = OptionHelper.OptionsContains("Drunk.Crimruption");
 	}
 
 	public static void Crimruption2(GenPass genPass)
@@ -75,7 +75,7 @@ public class DrunkOptions
 	public static void Crimruption3(GenPass genPass)
 	{
 		WasDrunk = WorldGen.drunkWorldGen;
-		WorldGen.drunkWorldGen = API.OptionsContains("Drunk.Crimruption");
+		WorldGen.drunkWorldGen = OptionHelper.OptionsContains("Drunk.Crimruption");
 	}
 
 	public static void Crimruption4(GenPass genPass)
@@ -86,7 +86,7 @@ public class DrunkOptions
 	public static void Hell1(GenPass genPass)
 	{
 		WasDrunk = WorldGen.drunkWorldGen;
-		WorldGen.drunkWorldGen = API.OptionsContains("Drunk.MiddleLavaOcean");
+		WorldGen.drunkWorldGen = OptionHelper.OptionsContains("Drunk.MiddleLavaOcean");
 	}
 
 	public static void Hell2(GenPass genPass)
@@ -97,7 +97,7 @@ public class DrunkOptions
 	public static void BothOres1(GenPass genPass)
 	{
 		WasDrunk = WorldGen.drunkWorldGen;
-		WorldGen.drunkWorldGen = API.OptionsContains("Drunk.BothOres");
+		WorldGen.drunkWorldGen = OptionHelper.OptionsContains("Drunk.BothOres");
 	}
 
 	public static void BothOres2(GenPass genPass)

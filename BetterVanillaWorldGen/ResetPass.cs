@@ -35,9 +35,9 @@ public class ResetPass : ControlledWorldGenPass
 		Main.slimeRainTime = -WorldGen.genRand.Next(num917 * 2, num917 * 3);
 		Main.cloudBGActive = -WorldGen.genRand.Next(8640, num917);
 		WorldGen.skipFramingDuringGen = false;
-		if ((ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Copper == TileExpandableList.Random &&
+		if ((OptionHelper.WorldSettings.Params.Copper == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Copper == TileID.Copper)
+		    || OptionHelper.WorldSettings.Params.Copper == TileID.Copper)
 		{
 			WorldGen.SavedOreTiers.Copper = 7;
 			WorldGen.copperBar = 20;
@@ -50,9 +50,9 @@ public class ResetPass : ControlledWorldGenPass
 		}
 
 		if ((WorldGen.dontStarveWorldGen &&
-		     ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Iron == TileExpandableList.Random &&
+		     OptionHelper.WorldSettings.Params.Iron == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Iron == TileID.Iron)
+		    || OptionHelper.WorldSettings.Params.Iron == TileID.Iron)
 		{
 			WorldGen.SavedOreTiers.Iron = 6;
 			WorldGen.ironBar = 22;
@@ -64,9 +64,9 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.SavedOreTiers.Iron = 167;
 		}
 
-		if ((ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Silver == TileExpandableList.Random &&
+		if ((OptionHelper.WorldSettings.Params.Silver == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Silver == TileID.Silver)
+		    || OptionHelper.WorldSettings.Params.Silver == TileID.Silver)
 		{
 			WorldGen.SavedOreTiers.Silver = 9;
 			WorldGen.silverBar = 21;
@@ -79,9 +79,9 @@ public class ResetPass : ControlledWorldGenPass
 		}
 
 		if ((WorldGen.dontStarveWorldGen &&
-		     ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Gold == TileExpandableList.Random &&
+		     OptionHelper.WorldSettings.Params.Gold == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.Gold == TileID.Gold)
+		    || OptionHelper.WorldSettings.Params.Gold == TileID.Gold)
 		{
 			WorldGen.SavedOreTiers.Gold = 8;
 			WorldGen.goldBar = 19;
@@ -140,7 +140,7 @@ public class ResetPass : ControlledWorldGenPass
 		WorldGen.snowOriginLeft = snowOriginLeft;
 		WorldGen.snowOriginRight = snowOriginRight;
 
-		worldSize *= ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier;
+		worldSize *= OptionHelper.WorldSettings.Params.BeachMultiplier;
 		int beachSandDungeonExtraWidth = (int)(40 * worldSize);
 		int beachSandJungleExtraWidth = (int)(20 * worldSize);
 		int beachBordersWidth = (int)(275 * worldSize);
@@ -155,20 +155,20 @@ public class ResetPass : ControlledWorldGenPass
 		else
 		{
 			WorldGen.oceanDistance = (int)(WorldGen.oceanDistance *
-			                               ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier);
+			                               OptionHelper.WorldSettings.Params.BeachMultiplier);
 			WorldGen.beachDistance = (int)(WorldGen.beachDistance *
-			                               ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier);
+			                               OptionHelper.WorldSettings.Params.BeachMultiplier);
 		}
 
 		WorldGen.oceanWaterStartRandomMin = (int)(WorldGen.oceanWaterStartRandomMin *
-		                                          ModifiedWorld.Instance.OptionHelper.WorldSettings.Params
+		                                          OptionHelper.WorldSettings.Params
 			                                          .BeachMultiplier);
 		WorldGen.oceanWaterStartRandomMax = (int)(WorldGen.oceanWaterStartRandomMax *
-		                                          ModifiedWorld.Instance.OptionHelper.WorldSettings.Params
+		                                          OptionHelper.WorldSettings.Params
 			                                          .BeachMultiplier);
 		WorldGen.oceanWaterForcedJungleLength =
 			(int)(WorldGen.oceanWaterForcedJungleLength *
-			      ModifiedWorld.Instance.OptionHelper.WorldSettings.Params.BeachMultiplier);
+			      OptionHelper.WorldSettings.Params.BeachMultiplier);
 
 		int leftBeachEnd = beachSandRandomCenter +
 		                   WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);

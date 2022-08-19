@@ -15,7 +15,7 @@ public class Corruption : ControlledWorldGenPass
 		const int num702 = 100;
 		double biomeNumber = Main.maxTilesX * 0.00045;
 		bool oldCrimson = WorldGen.crimson;
-		if (API.OptionsContains("Drunk.Crimruption"))
+		if (OptionHelper.OptionsContains("Drunk.Crimruption"))
 		{
 			biomeNumber /= 2.0;
 			bool flag47 = WorldGen.genRand.NextBool(2);
@@ -59,7 +59,7 @@ public class Corruption : ControlledWorldGenPass
 				isValid = true;
 				int half = Main.maxTilesX / 2;
 				const int num736 = 200;
-				if (API.OptionsContains("Drunk.Crimruption"))
+				if (OptionHelper.OptionsContains("Drunk.Crimruption"))
 					centralX = flag47 ? WorldGen.genRand.Next(half, Main.maxTilesX - beachPadding) : WorldGen.genRand.Next(beachPadding, half);
 				else
 					centralX = WorldGen.genRand.Next(beachPadding, Main.maxTilesX - beachPadding);
@@ -241,7 +241,7 @@ public class Corruption : ControlledWorldGenPass
 				flag48 = true;
 				int num712 = Main.maxTilesX / 2;
 				int num713 = 200;
-				if (API.OptionsContains("Drunk.Crimruption"))
+				if (OptionHelper.OptionsContains("Drunk.Crimruption"))
 				{
 					num713 = 100;
 					crimX = flag47 ? WorldGen.genRand.Next(beachPadding, (int)(Main.maxTilesX * 0.5)) : WorldGen.genRand.Next((int)(Main.maxTilesX * 0.5), Main.maxTilesX - beachPadding);

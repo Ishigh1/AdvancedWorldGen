@@ -15,7 +15,7 @@ public static class HalloweenCommon
 
 	public static void MainOnCheckHalloween(OnMain.orig_checkHalloween orig)
 	{
-		if (API.OptionsContains("Spooky"))
+		if (OptionHelper.OptionsContains("Spooky"))
 			Main.halloween = true;
 		else
 			orig();
@@ -25,7 +25,7 @@ public static class HalloweenCommon
 		NPCSpawnParams spawnParams)
 	{
 		orig(self, type, spawnParams);
-		if (!API.OptionsContains("Spooky")) return;
+		if (!OptionHelper.OptionsContains("Spooky")) return;
 		switch (self.aiStyle)
 		{
 			case 1 when Main.hardMode && self.type != HoppinJack:
@@ -44,7 +44,7 @@ public static class HalloweenCommon
 	{
 		orig(self, damageSource, dmg, hitDirection, pvp);
 		if (Main.netMode == NetmodeID.MultiplayerClient ||
-		    !API.OptionsContains("Spooky")) return;
+		    !OptionHelper.OptionsContains("Spooky")) return;
 		NPC npc = Main.npc[NPC.NewNPC(Entity.GetSource_NaturalSpawn(), 0, 0, Ghost)];
 		npc.position.X = self.position.X;
 		npc.position.Y = self.position.Y;
@@ -53,7 +53,7 @@ public static class HalloweenCommon
 
 	public static bool NoGhostDespawn(OnNPC.orig_DoesntDespawnToInactivity orig, NPC self)
 	{
-		if (self.type == Ghost && API.OptionsContains("Spooky")) return true;
+		if (self.type == Ghost && OptionHelper.OptionsContains("Spooky")) return true;
 		return orig(self);
 	}
 
@@ -74,7 +74,7 @@ public static class HalloweenCommon
 
 	public static void InsertTasks(List<GenPass> tasks, ref int passIndex)
 	{
-		if (!API.OptionsContains("Spooky"))
+		if (!OptionHelper.OptionsContains("Spooky"))
 			return;
 		tasks.Insert(++passIndex, new PassLegacy("Graveyards", Graveyards.GenerateStructures));
 		tasks.Insert(++passIndex, new PassLegacy("HalloweenTraps", Traps.PlaceTraps));

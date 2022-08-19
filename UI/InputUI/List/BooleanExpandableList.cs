@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.UI.InputUI.List;
 
 public class BooleanExpandableList : ExpandableList
 {
-	public BooleanExpandableList(Dictionary<string, object> data, string name) : base(data, name, false)
+	public BooleanExpandableList(Params data, string name) : base(data, name, false)
 	{
 		PossibleValues = new[]
 		{

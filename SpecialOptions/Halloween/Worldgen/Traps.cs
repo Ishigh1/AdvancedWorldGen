@@ -9,7 +9,7 @@ public static class Traps
 
 	public static void PlaceTraps(GenerationProgress progress, GameConfiguration configuration)
 	{
-		if (!API.OptionsContains("Spooky")) return;
+		if (!OptionHelper.OptionsContains("Spooky")) return;
 		progress.Message = "Placing Halloween traps";
 		PlaceSpawnTrap(Left, Main.spawnTileX - 20 - Main.rand.Next(100));
 		PlaceSpawnTrap(Right, Main.spawnTileX + 20 + Main.rand.Next(100));
