@@ -66,6 +66,7 @@ public class TerrainPass : ControlledWorldGenPass
 		double rockLayerLow = rockLayer;
 		double rockLayerHigh = rockLayer;
 		SurfaceHistory surfaceHistory = new(500);
+		int average = 0;
 		for (int i = 0; i < Main.maxTilesX; i++)
 		{
 			Progress.Set(i / (float)Main.maxTilesX);
@@ -82,14 +83,16 @@ public class TerrainPass : ControlledWorldGenPass
 			}
 
 			totalBeachSize--;
-			if (i > Main.maxTilesX * 0.45 && i < Main.maxTilesX * 0.55 &&
+			if (i > Main.maxTilesX * 0.48 && i < Main.maxTilesX * 0.52)
+				terrainFeatureType = TerrainFeatureType.Plateau;
+			else if (i > Main.maxTilesX * 0.45 && i < Main.maxTilesX * 0.55 &&
 			    terrainFeatureType is TerrainFeatureType.Mountain or TerrainFeatureType.Valley)
 				terrainFeatureType = (TerrainFeatureType)WorldGen.genRand.Next(3);
 
-			if (i > Main.maxTilesX * 0.48 && i < Main.maxTilesX * 0.52)
-				terrainFeatureType = TerrainFeatureType.Plateau;
 
-			worldSurface += GenerateWorldSurfaceOffset(terrainFeatureType);
+			int generateWorldSurfaceOffset = GenerateWorldSurfaceOffset(terrainFeatureType);
+			worldSurface += generateWorldSurfaceOffset;
+			average += generateWorldSurfaceOffset;
 			float num10 = 0.17f;
 			float num11 = 0.26f;
 			if (WorldGen.drunkWorldGen)
@@ -132,6 +135,7 @@ public class TerrainPass : ControlledWorldGenPass
 				totalBeachSize = Main.maxTilesX - i;
 			}
 		}
+		AdvancedWorldGenMod.Instance.Logger.Info(average);
 
 		Main.worldSurface = (int)(worldSurfaceHigh + 25);
 		Main.rockLayer = Main.worldSurface + rockLayerHigh - Main.worldSurface;
@@ -352,7 +356,7 @@ public class TerrainPass : ControlledWorldGenPass
 					break;
 				case TerrainFeatureType.Valley:
 					while (WorldGen.genRand.NextBool(2, 3)) num += 1;
-					while (WorldGen.genRand.NextBool(5)) num -= 1;
+					while (WorldGen.genRand.NextBool(6)) num -= 1;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(featureType), featureType, null);
@@ -377,7 +381,7 @@ public class TerrainPass : ControlledWorldGenPass
 					break;
 				case TerrainFeatureType.Valley:
 					while (WorldGen.genRand.NextBool(2)) num += 1;
-					while (WorldGen.genRand.NextBool(5)) num -= 1;
+					while (WorldGen.genRand.NextBool(6)) num -= 1;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(featureType), featureType, null);
