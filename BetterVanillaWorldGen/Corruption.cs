@@ -104,7 +104,7 @@ public class Corruption : ControlledWorldGenPass
 				}
 			}
 
-			int minY = (int)WorldGen.worldSurfaceLow - 50;
+			int minY = (int)WorldGen.worldSurfaceLow;
 
 			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
 			{
@@ -120,7 +120,7 @@ public class Corruption : ControlledWorldGenPass
 
 				if (x == centralX || (WorldGen.genRand.NextBool(35) && num737 <= 0))
 					for (int y = minY; y < Main.worldSurface - 1; y++)
-						if (Main.tile[x, y].HasTile || (Main.tile[x, y].WallType > 0 && Main.tile[x, y].WallType != WallID.EbonstoneUnsafe))
+						if (Main.tile[x, y].HasTile || Main.tile[x, y].WallType > 0)
 						{
 							const int depth = 50;
 							if (x == centralX)
@@ -191,25 +191,28 @@ public class Corruption : ControlledWorldGenPass
 
 			#region protecc the orbs
 
-			for (int x1 = corruptionLeft; x1 < corruptionRight; x1++)
-			for (int y1 = 0; y1 < Main.maxTilesY - 50; y1++)
+			for (int x1 = corruptionLeft; x1 < corruptionRight; x1 += 2)
+			for (int y1 = 0; y1 < Main.maxTilesY - 50; y1 += 2) // Main.maxTilesY - 50 is too deep
 				if (Main.tile[x1, y1].HasTile && Main.tile[x1, y1].TileType == TileID.ShadowOrbs)
 				{
-					int xMin = x1 - 13;
-					int xMax = x1 + 13;
-					int yMin = y1 - 13;
-					int yMax = y1 + 13;
-					for (int x2 = xMin; x2 < xMax; x2++)
-						if (x2 > 10 && x2 < Main.maxTilesX - 10)
-							for (int y2 = yMin; y2 < yMax; y2++)
-							{
-								Tile tile = Main.tile[x2, y2];
-								if (Math.Abs(x2 - x1) + Math.Abs(y2 - y1) < 9 + WorldGen.genRand.Next(11) && WorldGen.genRand.Next(3) != 0 && tile.HasTile && tile.TileType != 31)
-									if (Math.Abs(x2 - x1) > 1 || Math.Abs(y2 - y1) > 1)
-										WorldGen.PlaceTile(x2, y2, TileID.Ebonstone, true);
-
-								if (Main.tile[x2, y2].TileType != TileID.Ebonstone && Math.Abs(x2 - x1) <= 2 + WorldGen.genRand.Next(3) && Math.Abs(y2 - y1) <= 2 + WorldGen.genRand.Next(3)) WorldGen.KillTile(x2, y2);
-							}
+					int xMin = Math.Max(x1 - 13, 10);
+					int xMax = Math.Min(x1 + 13, Main.maxTilesX - 10);
+					int yMin = Math.Max(y1 - 13, 10);
+					int yMax = Math.Min(y1 + 13, Main.maxTilesY - 10);
+					for (int x2 = xMin; x2 <= xMax; x2++)
+					for (int y2 = yMin; y2 <= yMax; y2++)
+					{
+						Tile tile = Main.tile[x2, y2];
+						int xDiff = Math.Abs(x2 - x1);
+						int yDiff = Math.Abs(y2 - y1);
+						if (tile.HasTile && tile.TileType == TileID.ShadowOrbs) {}
+						else if (xDiff <= 2 + WorldGen.genRand.Next(3) && 
+						    yDiff <= 2 + WorldGen.genRand.Next(3)) 
+							WorldGen.KillTile(x2, y2);
+						else if (xDiff + yDiff < 9 + WorldGen.genRand.Next(11) &&
+						         WorldGen.genRand.NextBool(2, 3))
+							WorldGen.PlaceTile(x2, y2, TileID.Ebonstone, true);
+					}
 				}
 
 			#endregion
