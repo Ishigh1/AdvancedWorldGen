@@ -33,20 +33,24 @@ public class DrunkOptions
 			}
 		}
 
-		if (!WorldgenSettings.Revamped && OptionHelper.OptionsContains("Drunk.Crimruption"))
+		if (OptionHelper.OptionsContains("Drunk.Crimruption"))
 		{
-			int passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
-			if (passIndex != -1)
+			int passIndex;
+			if (!WorldgenSettings.Revamped)
 			{
-				tasks[passIndex].OnBegin(Crimruption1);
-				tasks[passIndex].OnComplete(Crimruption2);
+				passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
+				if (passIndex != -1)
+				{
+					tasks[passIndex].OnBegin(Crimruption1);
+					tasks[passIndex].OnComplete(Crimruption2);
+				}
 			}
 
 			passIndex = tasks.FindIndex(pass => pass.Name == "Tile Cleanup");
 			if (passIndex != -1)
 			{
-				tasks[passIndex].OnBegin(Crimruption3);
-				tasks[passIndex].OnComplete(Crimruption4);
+				tasks[passIndex].OnBegin(Crimruption1);
+				tasks[passIndex].OnComplete(Crimruption2);
 			}
 		}
 
@@ -68,17 +72,6 @@ public class DrunkOptions
 	}
 
 	public static void Crimruption2(GenPass genPass)
-	{
-		WorldGen.drunkWorldGen = WasDrunk;
-	}
-
-	public static void Crimruption3(GenPass genPass)
-	{
-		WasDrunk = WorldGen.drunkWorldGen;
-		WorldGen.drunkWorldGen = OptionHelper.OptionsContains("Drunk.Crimruption");
-	}
-
-	public static void Crimruption4(GenPass genPass)
 	{
 		WorldGen.drunkWorldGen = WasDrunk;
 	}
