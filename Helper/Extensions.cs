@@ -27,4 +27,36 @@ public static class Extensions
 	}
 
 	#endregion
+
+	#region CrossMod
+
+	public static Type? GetType(this Mod mod, string typeName)
+	{
+		Assembly assembly = mod.GetType().Assembly;
+		Type? type = assembly.GetType(typeName);
+		if (type == null) AdvancedWorldGenMod.Instance.Logger.Info($"{typeName} not found");
+
+		return type;
+	}
+	
+	public static bool TryGetMethod(this Mod mod, string typeName, string methodName, BindingFlags bindingFlags, out MethodInfo? methodInfo)
+	{
+		Type? type = mod.GetType(typeName);
+		if (type == null)
+		{
+			methodInfo = null;
+			return false;
+		}
+
+		methodInfo = type.GetMethod(methodName, bindingFlags);
+		if (methodInfo == null)
+		{
+			AdvancedWorldGenMod.Instance.Logger.Info($"{typeName}.{methodName} not found");
+			return false;
+		}
+
+		return true;
+	}
+
+	#endregion
 }

@@ -2,107 +2,53 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class Corruption : ControlledWorldGenPass
 {
+	private List<(int start, int end)> OtherBiomes;
+
 	public Corruption() : base("Corruption", 1094.237f)
 	{
 	}
 
 	protected override void ApplyPass()
 	{
-		const int num700 = 10;
-		VanillaInterface.JungleLeft -= num700;
-		VanillaInterface.JungleRight += num700;
-		int beachPadding = WorldGen.oceanDistance * 2;
-		const int num702 = 100;
 		double biomeNumber = Main.maxTilesX * 0.00045;
 		bool oldCrimson = WorldGen.crimson;
+		OtherBiomes = new List<(int start, int end)>();
+		int middlePadding = OptionHelper.OptionsContains("Drunk.Crimruption") ? 100 : 200;
+
+		OtherBiomes.Add((Main.maxTilesX / 2 - middlePadding, Main.maxTilesX / 2 + middlePadding)); //Center
+		OtherBiomes.Add((WorldGen.UndergroundDesertLocation.Left, WorldGen.UndergroundDesertLocation.Right)); //Desert
+		OtherBiomes.Add((WorldGen.snowOriginLeft, WorldGen.snowOriginRight)); //Snow
+		OtherBiomes.Add((VanillaInterface.JungleLeft - 10, VanillaInterface.JungleRight + 10)); //Jungle
+		OtherBiomes.Add(WorldGen.dungeonSide < 0 ? (0, 400) : (Main.maxTilesX - 400, Main.maxTilesX)); // Dungeon beach
+		OtherBiomes.Add((WorldGen.dungeonLocation - 100, WorldGen.dungeonLocation + 100)); // Dungeon
 		if (OptionHelper.OptionsContains("Drunk.Crimruption"))
 		{
 			biomeNumber /= 2.0;
-			bool flag47 = WorldGen.genRand.NextBool(2);
-			GenerateCrimson(biomeNumber, flag47, beachPadding, num702);
-			GenerateCorruption(biomeNumber, flag47, beachPadding, num702);
+			bool left = WorldGen.genRand.NextBool(2);
+			GenerateCrimson(biomeNumber, left);
+			GenerateCorruption(biomeNumber, !left);
 		}
 		else if (oldCrimson)
 		{
-			GenerateCrimson(biomeNumber, true, beachPadding, num702);
+			GenerateCrimson(biomeNumber, true);
 		}
 		else
 		{
-			GenerateCorruption(biomeNumber, true, beachPadding, num702);
+			GenerateCorruption(biomeNumber, true);
 		}
 
 		WorldGen.crimson = oldCrimson;
 	}
 
-	private void GenerateCorruption(double biomeNumber, bool flag47, int beachPadding, int num702)
+	private void GenerateCorruption(double biomeNumber, bool left)
 	{
 		Progress.Message = Lang.gen[20].Value;
 
 		WorldGen.crimson = false;
-
-		int corruptionMin = Math.Max(WorldGen.evilBiomeBeachAvoidance, 0);
-		int corruptionMax = Main.maxTilesX - Math.Min(WorldGen.evilBiomeBeachAvoidance, 0);
-
 		for (int biome = 0; biome < biomeNumber; biome++)
 		{
-			int num728 = WorldGen.snowOriginLeft;
-			int num729 = WorldGen.snowOriginRight;
-			int num730 = VanillaInterface.JungleLeft;
-			int num731 = VanillaInterface.JungleRight;
 			Progress.Set(biome, (float)biomeNumber);
-			bool isValid = false;
-			int centralX = 0;
-			int corruptionLeft = 0;
-			int corruptionRight = 0;
-			while (!isValid)
-			{
-				isValid = true;
-				int half = Main.maxTilesX / 2;
-				const int num736 = 200;
-				if (OptionHelper.OptionsContains("Drunk.Crimruption"))
-					centralX = flag47 ? WorldGen.genRand.Next(half, Main.maxTilesX - beachPadding) : WorldGen.genRand.Next(beachPadding, half);
-				else
-					centralX = WorldGen.genRand.Next(beachPadding, Main.maxTilesX - beachPadding);
-				corruptionLeft = centralX - WorldGen.genRand.Next(200) - 100;
-				corruptionRight = centralX + WorldGen.genRand.Next(200) + 100;
-				corruptionLeft = Utils.Clamp(corruptionLeft, corruptionMin, corruptionMax);
-				corruptionRight = Utils.Clamp(corruptionRight, corruptionMin, corruptionMax);
-
-				if (centralX > half - num736 && centralX < half + num736)
-					isValid = false;
-
-				if (corruptionLeft > half - num736 && corruptionLeft < half + num736)
-					isValid = false;
-
-				if (corruptionRight > half - num736 && corruptionRight < half + num736)
-					isValid = false;
-
-				if (centralX > WorldGen.UndergroundDesertLocation.X && centralX < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
-					isValid = false;
-
-				if (corruptionLeft > WorldGen.UndergroundDesertLocation.X && corruptionLeft < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
-					isValid = false;
-
-				if (corruptionRight > WorldGen.UndergroundDesertLocation.X && corruptionRight < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
-					isValid = false;
-
-				if (corruptionLeft < WorldGen.dungeonLocation + num702 && corruptionRight > WorldGen.dungeonLocation - num702)
-					isValid = false;
-
-				if (corruptionLeft < num729 && corruptionRight > num728)
-				{
-					num728++;
-					num729--;
-					isValid = false;
-				}
-
-				if (corruptionLeft < num731 && corruptionRight > num730)
-				{
-					num730++;
-					num731--;
-					isValid = false;
-				}
-			}
+			(int corruptionLeft, int corruptionCenter, int corruptionRight) = FindSuitableCenter(left);
 
 			int minY = (int)WorldGen.worldSurfaceLow;
 
@@ -118,12 +64,12 @@ public class Corruption : ControlledWorldGenPass
 			{
 				num737--;
 
-				if (x == centralX || (WorldGen.genRand.NextBool(35) && num737 <= 0))
+				if (x == corruptionCenter || (WorldGen.genRand.NextBool(35) && num737 <= 0))
 					for (int y = minY; y < Main.worldSurface - 1; y++)
 						if (Main.tile[x, y].HasTile || Main.tile[x, y].WallType > 0)
 						{
 							const int depth = 50;
-							if (x == centralX)
+							if (x == corruptionCenter)
 							{
 								num737 = 20;
 								WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(depth * 3, depth * 6), true);
@@ -205,9 +151,11 @@ public class Corruption : ControlledWorldGenPass
 						Tile tile = Main.tile[x2, y2];
 						int xDiff = Math.Abs(x2 - x1);
 						int yDiff = Math.Abs(y2 - y1);
-						if (tile.HasTile && tile.TileType == TileID.ShadowOrbs) {}
-						else if (xDiff <= 2 + WorldGen.genRand.Next(3) && 
-						    yDiff <= 2 + WorldGen.genRand.Next(3)) 
+						if (tile.HasTile && tile.TileType == TileID.ShadowOrbs)
+						{
+						}
+						else if (xDiff <= 2 + WorldGen.genRand.Next(3) &&
+						         yDiff <= 2 + WorldGen.genRand.Next(3))
 							WorldGen.KillTile(x2, y2);
 						else if (xDiff + yDiff < 9 + WorldGen.genRand.Next(11) &&
 						         WorldGen.genRand.NextBool(2, 3))
@@ -219,87 +167,74 @@ public class Corruption : ControlledWorldGenPass
 		}
 	}
 
-	private void GenerateCrimson(double biomeNumber, bool flag47, int beachPadding, int num702)
+	private (int left, int center, int right) FindSuitableCenter(bool left, int pity = 0)
+	{
+		int half = Main.maxTilesX / 2;
+		int center = WorldGen.genRand.Next(100, 300);
+		int biomeSize = center + WorldGen.genRand.Next(100, 300);
+
+		int min = left ? WorldGen.evilBiomeBeachAvoidance : half;
+		int currentX = min;
+		int max = left && OptionHelper.OptionsContains("Drunk.Crimruption") ? half : Main.maxTilesX - WorldGen.evilBiomeBeachAvoidance;
+		int allowedX = 0;
+
+		List<(int start, int size)> skips = new();
+
+		while (true)
+		{
+			int nextX = max;
+			int nextIndex = -1;
+			for (int i = 0; i < OtherBiomes.Count; i++)
+			{
+				int start = OtherBiomes[i].start + pity;
+				if (start < nextX)
+				{
+					nextX = start;
+					nextIndex = i;
+				}}
+
+			if (nextX > currentX + biomeSize)
+				allowedX = nextX - currentX - biomeSize;
+
+			if (nextIndex == -1)
+				break;
+
+			if (nextX > currentX)
+			{
+				int start = Math.Max(nextX - biomeSize, currentX);
+				int end = Math.Max(OtherBiomes[nextIndex].end - pity, start);
+				if (start != end)
+				{
+					skips.Add((start, end - start));
+					currentX = end;
+				}
+			}
+
+			OtherBiomes.RemoveAt(nextIndex);
+		}
+
+		if (allowedX == 0) return FindSuitableCenter(left, pity + 50);
+		int x = min + WorldGen.genRand.Next(allowedX);
+		foreach ((int start, int size) in skips)
+			if (start <= x)
+				x += size;
+			else
+				break;
+
+		OtherBiomes.Add((x, x + biomeSize));
+		return (x, x + center, x + biomeSize);
+	}
+
+	private void GenerateCrimson(double biomeNumber, bool left)
 	{
 		Progress.Message = Lang.gen[72].Value;
 
 		WorldGen.crimson = true;
 
-		int crimsonMin = Math.Max(WorldGen.evilBiomeBeachAvoidance, WorldGen.dungeonSide == -1 ? beachPadding * 4 / 5 : 0);
-		int crimsonMax = Main.maxTilesX - Math.Min(WorldGen.evilBiomeBeachAvoidance, WorldGen.dungeonSide == 1 ? beachPadding * 4 / 5 : 0);
-
 		for (int biome = 0; biome < biomeNumber; biome++)
 		{
-			int num705 = WorldGen.snowOriginLeft;
-			int num706 = WorldGen.snowOriginRight;
-			int num707 = VanillaInterface.JungleLeft;
-			int num708 = VanillaInterface.JungleRight;
 			Progress.Set(biome, (float)biomeNumber);
-			bool flag48 = false;
-			int crimX = 0;
-			int crimsonLeft = 0;
-			int crimsonRight = 0;
-			while (!flag48)
-			{
-				flag48 = true;
-				int num712 = Main.maxTilesX / 2;
-				int num713 = 200;
-				if (OptionHelper.OptionsContains("Drunk.Crimruption"))
-				{
-					num713 = 100;
-					crimX = flag47 ? WorldGen.genRand.Next(beachPadding, (int)(Main.maxTilesX * 0.5)) : WorldGen.genRand.Next((int)(Main.maxTilesX * 0.5), Main.maxTilesX - beachPadding);
-				}
-				else
-				{
-					crimX = WorldGen.genRand.Next(beachPadding, Main.maxTilesX - beachPadding);
-				}
-
-				crimsonLeft = crimX - WorldGen.genRand.Next(200) - 100;
-				crimsonRight = crimX + WorldGen.genRand.Next(200) + 100;
-				crimsonLeft = Utils.Clamp(crimsonLeft, crimsonMin, crimsonMax);
-				crimsonRight = Utils.Clamp(crimsonRight, crimsonMin, crimsonMax);
-
-				if (crimX < crimsonLeft + WorldGen.evilBiomeAvoidanceMidFixer)
-					crimX = crimsonLeft + WorldGen.evilBiomeAvoidanceMidFixer;
-
-				if (crimX > crimsonRight - WorldGen.evilBiomeAvoidanceMidFixer)
-					crimX = crimsonRight - WorldGen.evilBiomeAvoidanceMidFixer;
-
-				if (crimX > num712 - num713 && crimX < num712 + num713)
-					flag48 = false;
-
-				if (crimsonLeft > num712 - num713 && crimsonLeft < num712 + num713)
-					flag48 = false;
-
-				if (crimsonRight > num712 - num713 && crimsonRight < num712 + num713)
-					flag48 = false;
-
-				if (crimX > WorldGen.UndergroundDesertLocation.X && crimX < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
-					flag48 = false;
-
-				if (crimsonLeft > WorldGen.UndergroundDesertLocation.X && crimsonLeft < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
-					flag48 = false;
-
-				if (crimsonRight > WorldGen.UndergroundDesertLocation.X && crimsonRight < WorldGen.UndergroundDesertLocation.X + WorldGen.UndergroundDesertLocation.Width)
-					flag48 = false;
-
-				if (crimsonLeft < WorldGen.dungeonLocation + num702 && crimsonRight > WorldGen.dungeonLocation - num702)
-					flag48 = false;
-
-				if (crimsonLeft < num706 && crimsonRight > num705)
-				{
-					num705++;
-					num706--;
-					flag48 = false;
-				}
-
-				if (crimsonLeft < num708 && crimsonRight > num707)
-				{
-					num707++;
-					num708--;
-					flag48 = false;
-				}
-			}
+			(int crimsonLeft, int crimsonCenter,int crimsonRight) = FindSuitableCenter(left);
 
 			int minY = (int)WorldGen.worldSurfaceLow - 50;
 			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
@@ -309,7 +244,7 @@ public class Corruption : ControlledWorldGenPass
 					minY = Math.Max(minY, WorldGen.floatingIslandHouseY[index] + 50);
 			}
 
-			WorldGen.CrimStart(crimX, minY - 10);
+			WorldGen.CrimStart(crimsonCenter, minY - 10);
 			for (int x = crimsonLeft; x < crimsonRight; x++)
 			for (int y = minY; y < Main.worldSurface - 1.0; y++)
 				if (Main.tile[x, y].HasTile)

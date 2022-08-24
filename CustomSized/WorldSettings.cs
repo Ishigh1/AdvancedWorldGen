@@ -1,3 +1,5 @@
+using AdvancedWorldGen.Helper.Accessors;
+
 namespace AdvancedWorldGen.CustomSized;
 
 public class WorldSettings
@@ -32,7 +34,7 @@ public class WorldSettings
 	{
 		orig(self, evt, listeningElement);
 
-		VanillaAccessor<int> optionSize = VanillaInterface.OptionSize(self);
+		FieldAccessor<int> optionSize = VanillaInterface.OptionSize(self);
 		int newSize = optionSize.Value;
 		SetSizeTo(newSize);
 	}

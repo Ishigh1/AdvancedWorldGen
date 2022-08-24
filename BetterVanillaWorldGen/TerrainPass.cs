@@ -66,7 +66,6 @@ public class TerrainPass : ControlledWorldGenPass
 		double rockLayerLow = rockLayer;
 		double rockLayerHigh = rockLayer;
 		SurfaceHistory surfaceHistory = new(500);
-		int average = 0;
 		for (int i = 0; i < Main.maxTilesX; i++)
 		{
 			Progress.Set(i / (float)Main.maxTilesX);
@@ -88,11 +87,8 @@ public class TerrainPass : ControlledWorldGenPass
 			else if (i > Main.maxTilesX * 0.45 && i < Main.maxTilesX * 0.55 &&
 			    terrainFeatureType is TerrainFeatureType.Mountain or TerrainFeatureType.Valley)
 				terrainFeatureType = (TerrainFeatureType)WorldGen.genRand.Next(3);
-
-
-			int generateWorldSurfaceOffset = GenerateWorldSurfaceOffset(terrainFeatureType);
-			worldSurface += generateWorldSurfaceOffset;
-			average += generateWorldSurfaceOffset;
+			
+			worldSurface += GenerateWorldSurfaceOffset(terrainFeatureType);
 			float num10 = 0.17f;
 			float num11 = 0.26f;
 			if (WorldGen.drunkWorldGen)
@@ -135,7 +131,6 @@ public class TerrainPass : ControlledWorldGenPass
 				totalBeachSize = Main.maxTilesX - i;
 			}
 		}
-		AdvancedWorldGenMod.Instance.Logger.Info(average);
 
 		Main.worldSurface = (int)(worldSurfaceHigh + 25);
 		Main.rockLayer = Main.worldSurface + rockLayerHigh - Main.worldSurface;
@@ -146,8 +141,8 @@ public class TerrainPass : ControlledWorldGenPass
 			throw new RockUnderHellException();
 		while (lavaLine > Main.UnderworldLayer)
 		{
-			waterLine -= (int)(waterLine - rockLayer) / 8;
-			lavaLine -= (int)(lavaLine - rockLayer) / 8;
+			waterLine -= (waterLine - rockLayer) / 8;
+			lavaLine -= (lavaLine - rockLayer) / 8;
 		}
 
 		const int num14 = 20;

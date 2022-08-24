@@ -1,3 +1,5 @@
+using AdvancedWorldGen.Helper.Accessors;
+
 namespace AdvancedWorldGen.UI;
 
 public class OptionsSelector : UIState
@@ -321,7 +323,7 @@ public class OptionsSelector : UIState
 		@params.SizeX = (int)(Math.Sqrt(size / (ratio + 1)) * ratio);
 		@params.SizeY = (int)(size / @params.SizeX);
 		
-		VanillaAccessor<int> optionSize = VanillaInterface.OptionSize(OptionHelper.WorldSettings.UIWorldCreation);
+		FieldAccessor<int> optionSize = VanillaInterface.OptionSize(OptionHelper.WorldSettings.UIWorldCreation);
 		optionSize.Value = -1;
 
 		@params.BeachMultiplier = Main.rand.NextFloat(0.5f, 2);

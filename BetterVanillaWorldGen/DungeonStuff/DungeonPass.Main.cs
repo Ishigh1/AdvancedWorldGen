@@ -71,8 +71,18 @@ public partial class DungeonPass
 
 		Main.tileSolid[WorldGen.crackedType] = false;
 		WorldGen.dungeonLake = true;
-		WorldGen.dungeonX = dungeonX;
-		WorldGen.dungeonY = dungeonY;
+		if (VanillaInterface.Calamity.Enabled)
+		{
+			WorldGen.dungeonX = Utils.Clamp(dungeonX, VanillaInterface.Calamity.SulphurousSeaBiomeWidth + 100, Main.maxTilesX - VanillaInterface.Calamity.SulphurousSeaBiomeWidth - 100);
+			WorldUtils.Find(new Point(dungeonX, dungeonY), Searches.Chain(new Searches.Down(9001), new Conditions.IsSolid()), out var result);
+			WorldGen.dungeonY = result.Y - 10;
+		}
+		else
+		{
+			WorldGen.dungeonX = dungeonX;
+			WorldGen.dungeonY = dungeonY;
+		}
+
 		WorldGen.dMinX = dungeonX;
 		WorldGen.dMaxX = dungeonX;
 		WorldGen.dMinY = dungeonY;

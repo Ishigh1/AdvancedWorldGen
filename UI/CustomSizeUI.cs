@@ -1,3 +1,5 @@
+using AdvancedWorldGen.Helper.Accessors;
+
 namespace AdvancedWorldGen.UI;
 
 public class CustomSizeUI : UIState
@@ -163,7 +165,7 @@ public class CustomSizeUI : UIState
 			_ => -1
 		};
 
-		VanillaAccessor<int> optionSize = VanillaInterface.OptionSize(WorldSettings.UIWorldCreation);
+		FieldAccessor<int> optionSize = VanillaInterface.OptionSize(WorldSettings.UIWorldCreation);
 		optionSize.Value = size;
 
 		object[] sizeButtons = VanillaInterface.SizeButtons(WorldSettings.UIWorldCreation).Value;
