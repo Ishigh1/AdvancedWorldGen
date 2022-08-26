@@ -22,11 +22,9 @@
             "TooBigFromRAM": "A world with a size of {0} x {1} is too big for this computer.",
             "OverhauledMinX": "The world is known to not be able to generate under x={0}.",
             "OverhauledMinY": "The world is known to not be able to generate under y={0}.",
-            "NormalMinX": "You need to enable the overhauled worldgen in the mod settings\nto be able to generate a world under x={0}.",
-            "ComfortNormalMaxX": "The worldgen will be slow to generate a big world,\nyou should enable the overhauled worldgen in the mod 
-            settings. It might also crash.",
-            "NormalMaxX": "The worldgen will crash if you try generate a such big world,\nyou have to enable the overhauled worldgen in the mod 
-            settings to produce a such world.",
+            "NormalMinX": "You need to enable the overhauled worldgen in the mod settings \nto be able to generate a world under x={0}.",
+            "ComfortNormalMaxX": "The worldgen will be slow to generate a big world, \nyou should enable the overhauled worldgen in the mod settings. It might also crash.",
+            "NormalMaxX": "The worldgen will crash if you try generate a such big world, \nyou have to enable the overhauled worldgen in the mod settings to produce a such world.",
             "ClamityMinX": "Calamity isn't designed to generate small worlds",
             "ClamityMaxX": "Calamity isn't designed to generate XL worlds"
         }
