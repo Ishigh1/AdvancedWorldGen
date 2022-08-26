@@ -52,16 +52,11 @@ public static class ModifiedDesertHive
 			float distanceToClosestCenter = 0f;
 			int closestCluster = -1;
 			float distanceToSecondClosestCenter = 0f;
-			ushort type = 53;
-			if (WorldGen.genRand.NextBool(3))
-				type = 397;
+			ushort type = WorldGen.genRand.NextBool(3) ? (ushort)397 : (ushort)53;
 
 			foreach (int k in interestingClusters)
 			{
 				Cluster cluster = clusterGroup[k];
-				if (Math.Abs(cluster[0].x - x) > 10f * clusterGroup.SpreadX ||
-				    Math.Abs(cluster[0].y - y) > 10f * clusterGroup.SpreadY)
-					continue;
 
 				float distanceScore = cluster.Sum(item =>
 					1f / Vector2.DistanceSquared(
@@ -87,23 +82,22 @@ public static class ModifiedDesertHive
 			{
 				case > 3.5f:
 					tile.ClearEverything();
-					tile.WallType = 187;
 					if (closestCluster % 15 == 2)
 						tile.ResetToType(404);
+					tile.WallType = 187;
 					break;
 				case > 1.8f:
+					if (tile.HasTile) tile.ResetToType(TileID.Sandstone);
 					tile.WallType = 187;
 					if (y < Main.worldSurface)
 						tile.LiquidAmount = 0;
 					else
 						tile.LiquidType = LiquidID.Lava;
-
-					if (tile.HasTile) tile.ResetToType(TileID.Sandstone);
 					break;
 				case > 0.7f:
+					if (tile.HasTile) tile.ResetToType(type);
 					tile.WallType = 216;
 					tile.LiquidAmount = 0;
-					if (tile.HasTile) tile.ResetToType(type);
 					break;
 				case > 0.25f:
 					float num8 = (score - 0.25f) / 0.45f;

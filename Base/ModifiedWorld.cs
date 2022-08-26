@@ -107,8 +107,10 @@ public class ModifiedWorld : ModSystem
 			Weights.Add(weights);
 			SaveWeights();
 
+#if !SPECIALDEBUG
 			foreach (MethodInfo methodInfo in Replacer.MethodInfos) HookEndpointManager.Remove(methodInfo, Replacer.Timer);
 			Replacer.MethodInfos.Clear();
+#endif
 
 			Times = null;
 		}

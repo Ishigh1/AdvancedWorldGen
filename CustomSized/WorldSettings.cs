@@ -1,5 +1,3 @@
-using AdvancedWorldGen.Helper.Accessors;
-
 namespace AdvancedWorldGen.CustomSized;
 
 public class WorldSettings

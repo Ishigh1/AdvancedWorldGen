@@ -50,14 +50,10 @@ public class Corruption : ControlledWorldGenPass
 			Progress.Set(biome, (float)biomeNumber);
 			(int corruptionLeft, int corruptionCenter, int corruptionRight) = FindSuitableCenter(left);
 
-			int minY = (int)WorldGen.worldSurfaceLow;
-
-			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
-			{
-				int islandX = WorldGen.floatingIslandHouseX[index];
-				if (corruptionLeft - 100 < islandX && corruptionRight + 100 > islandX)
-					minY = Math.Max(minY, WorldGen.floatingIslandHouseY[index] + 50);
-			}
+			int minY = (from floatingIslandInfo in VanillaInterface.FloatingIslandInfos
+				let islandX = floatingIslandInfo.X
+				where corruptionLeft - 100 < islandX && corruptionRight + 100 > islandX
+				select floatingIslandInfo.Y + 50).Prepend((int) WorldGen.worldSurfaceLow - 50).Max();
 
 			int num737 = 0;
 			for (int x = corruptionLeft; x < corruptionRight; x++)
@@ -191,7 +187,8 @@ public class Corruption : ControlledWorldGenPass
 				{
 					nextX = start;
 					nextIndex = i;
-				}}
+				}
+			}
 
 			if (nextX > currentX + biomeSize)
 				allowedX = nextX - currentX - biomeSize;
@@ -234,15 +231,13 @@ public class Corruption : ControlledWorldGenPass
 		for (int biome = 0; biome < biomeNumber; biome++)
 		{
 			Progress.Set(biome, (float)biomeNumber);
-			(int crimsonLeft, int crimsonCenter,int crimsonRight) = FindSuitableCenter(left);
+			(int crimsonLeft, int crimsonCenter, int crimsonRight) = FindSuitableCenter(left);
 
-			int minY = (int)WorldGen.worldSurfaceLow - 50;
-			for (int index = 0; index < WorldGen.floatingIslandHouseX.Length; index++)
-			{
-				int islandX = WorldGen.floatingIslandHouseX[index];
-				if (crimsonLeft - 100 < islandX && crimsonRight + 100 > islandX)
-					minY = Math.Max(minY, WorldGen.floatingIslandHouseY[index] + 50);
-			}
+			
+			int minY = (from floatingIslandInfo in VanillaInterface.FloatingIslandInfos
+				let islandX = floatingIslandInfo.X
+				where crimsonRight - 100 < islandX && crimsonRight + 100 > islandX
+				select floatingIslandInfo.Y + 50).Prepend((int) WorldGen.worldSurfaceLow - 50).Max();
 
 			WorldGen.CrimStart(crimsonCenter, minY - 10);
 			for (int x = crimsonLeft; x < crimsonRight; x++)

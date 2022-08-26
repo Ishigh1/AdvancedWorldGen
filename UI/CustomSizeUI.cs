@@ -1,5 +1,3 @@
-using AdvancedWorldGen.Helper.Accessors;
-
 namespace AdvancedWorldGen.UI;
 
 public class CustomSizeUI : UIState

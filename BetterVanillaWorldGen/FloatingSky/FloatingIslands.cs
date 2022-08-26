@@ -1,4 +1,4 @@
-namespace AdvancedWorldGen.BetterVanillaWorldGen;
+namespace AdvancedWorldGen.BetterVanillaWorldGen.FloatingSky;
 
 public class FloatingIslands : ControlledWorldGenPass
 {
@@ -14,6 +14,8 @@ public class FloatingIslands : ControlledWorldGenPass
 
 		int skyLakes = Main.maxTilesX / 2500;
 		int totalSkyBiomes = skyIslands + skyLakes;
+		List<(int left, int right)> placedBiomes = new();
+		int malus = 300;
 		for (int currentSkyItem = 0; currentSkyItem < totalSkyBiomes; currentSkyItem++)
 		{
 			Progress.Set(currentSkyItem, totalSkyBiomes);
@@ -22,18 +24,17 @@ public class FloatingIslands : ControlledWorldGenPass
 			{
 				bool flag54 = true;
 				int x = WorldGen.genRand.Next((int)(Main.maxTilesX * 0.1),
-					(int)(Main.maxTilesX * 0.9));
-				while (x > Main.maxTilesX / 2 - 150 && x < Main.maxTilesX / 2 + 150)
-					x = WorldGen.genRand.Next((int)(Main.maxTilesX * 0.1),
-						(int)(Main.maxTilesX * 0.9));
-
-				for (int num822 = 0; num822 < WorldGen.numIslandHouses; num822++)
-					if (x > WorldGen.floatingIslandHouseX[num822] - 180 &&
-					    x < WorldGen.floatingIslandHouseX[num822] + 180)
-					{
-						flag54 = false;
+					(int)(Main.maxTilesX * 0.9) - malus);
+				if (x > Main.maxTilesX / 2 - 150)
+					x += 300;
+				int rightest = 0;
+				foreach ((int left, int right) in placedBiomes)
+				{
+					if (x < left)
 						break;
-					}
+					x += right - Math.Max(left, rightest);
+					rightest = right;
+				}
 
 				if (flag54)
 				{
@@ -49,48 +50,60 @@ public class FloatingIslands : ControlledWorldGenPass
 
 					if (flag54)
 					{
-						WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = 0;
 						num820 = -1;
 						int y = WorldGen.genRand.Next(Math.Max(50, Math.Min(90, (int)WorldGen.worldSurfaceLow - 50)), num823 - 100);
 
+						FloatingIslandInfo floatingIslandInfo = new()
+						{
+							X = x,
+							Y = y
+						};
 						bool lake = WorldGen.genRand.NextBool(skyLakes, skyLakes + skyIslands);
 						if (lake)
 						{
 							skyLakes--;
-							WorldGen.skyLake[WorldGen.numIslandHouses] = true;
+							floatingIslandInfo.IsLake = true;
 							WorldGen.CloudLake(x, y);
 						}
 						else
 						{
 							skyIslands--;
-							WorldGen.skyLake[WorldGen.numIslandHouses] = false;
 							if (WorldGen.drunkWorldGen)
 							{
 								if (WorldGen.genRand.NextBool(2))
 								{
-									WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = 3;
+									floatingIslandInfo.Style = 3;
 									WorldGen.SnowCloudIsland(x, y);
 								}
 								else
 								{
-									WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = 1;
+									floatingIslandInfo.Style = 1;
 									WorldGen.DesertCloudIsland(x, y);
 								}
 							}
 							else
 							{
 								if (WorldGen.getGoodWorldGen)
-									WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = !WorldGen.crimson ? 4 : 5;
+									floatingIslandInfo.Style = !WorldGen.crimson ? 4 : 5;
 
 								if (Main.tenthAnniversaryWorld)
-									WorldGen.floatingIslandStyle[WorldGen.numIslandHouses] = 6;
+									floatingIslandInfo.Style = 6;
 
 								WorldGen.CloudIsland(x, y);
 							}
 						}
-
-						WorldGen.floatingIslandHouseX[WorldGen.numIslandHouses] = x;
-						WorldGen.floatingIslandHouseY[WorldGen.numIslandHouses] = y;
+						
+						VanillaInterface.FloatingIslandInfos.Add(floatingIslandInfo);
+						malus += 361;
+						foreach ((int left, int right) in placedBiomes)
+						{
+							if (x - 180 < right && x + 180 > right)
+								malus -= right - x + 180;
+							if (x - 180 < left && x + 180 > left)
+								malus -= x + 180 - left;
+						}
+						placedBiomes.Add((x - 180, x + 180));
+						placedBiomes.Sort((biome1, biome2) => biome1.CompareTo(biome2));
 						WorldGen.numIslandHouses++;
 					}
 				}

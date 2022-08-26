@@ -15,7 +15,27 @@ public class OptionsParser
 			return;
 		}
 
-		if (jsonObject.TryGetValue("options", out JToken? jsonNode) && jsonNode is JArray optionArray)
+		if (jsonObject.TryGetValue("vanillaParams", out JToken? jsonNode) && jsonNode is JObject vanillaParams)
+		{
+			JToken? seed = vanillaParams.GetValue("seed");
+			if (seed is { Type: JTokenType.String })
+			{
+				ReflectionAccessor<string> seedAccessor = new FieldAccessor<string>(typeof(UIWorldCreation), "_optionSeed", OptionHelper.WorldSettings.UIWorldCreation);
+				seedAccessor.Value = seed.ToString();
+				new ReflectionCaller(typeof(UIWorldCreation), "UpdateInputFields", OptionHelper.WorldSettings.UIWorldCreation).Call();
+			}
+
+			JToken? evil = vanillaParams.GetValue("evil");
+			if (evil is { Type: JTokenType.String })
+			{
+				ReflectionAccessor<int> evilAccessor = new FieldAccessor<int>(typeof(UIWorldCreation), "_optionEvil", OptionHelper.WorldSettings.UIWorldCreation);
+				evilAccessor.Value = int.Parse(evil.Value<string>());
+				new ReflectionCaller(typeof(UIWorldCreation), "UpdateSliders", OptionHelper.WorldSettings.UIWorldCreation).Call();
+				new ReflectionCaller(typeof(UIWorldCreation), "UpdatePreviewPlate", OptionHelper.WorldSettings.UIWorldCreation).Call();
+			}
+		}
+
+		if (jsonObject.TryGetValue("options", out jsonNode) && jsonNode is JArray optionArray)
 		{
 			List<string> optionNames = new();
 			foreach (JToken? node in optionArray)
@@ -68,6 +88,13 @@ public class OptionsParser
 	{
 		JObject jsonObject = new();
 
+		JObject vanillaParams = new();
+		ReflectionAccessor<string> seedAccessor = new FieldAccessor<string>(typeof(UIWorldCreation), "_optionSeed", OptionHelper.WorldSettings.UIWorldCreation);
+		vanillaParams.Add("seed", seedAccessor.Value);
+		ReflectionAccessor<int> evilAccessor = new FieldAccessor<int>(typeof(UIWorldCreation), "_optionEvil", OptionHelper.WorldSettings.UIWorldCreation);
+		vanillaParams.Add("evil", evilAccessor.Value.ToString());
+		jsonObject.Add("vanillaParams", vanillaParams);
+
 		JArray optionArray = new();
 		foreach (string optionName in OptionHelper.Export())
 			optionArray.Add(optionName);
@@ -79,7 +106,6 @@ public class OptionsParser
 				customParams.Add(key, Enum.GetName(value.GetType(), value));
 			else
 				customParams.Add(key, new JValue(value));
-
 		jsonObject.Add("customParams", customParams);
 
 		JObject legacyParams = new();
@@ -88,9 +114,9 @@ public class OptionsParser
 			         .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
 			         .Select(fieldInfo => (JObject)fieldInfo.GetValue(worldGenConfiguration)!))
 		foreach ((string key, JToken? value) in jObject)
-			legacyParams.Add(key, value);
+			if (value is not JObject jObject2 || jObject2.Count > 0)
+				legacyParams.Add(key, value);
 		jsonObject.Add("legacyParams", legacyParams);
-
 		return jsonObject.ToString();
 	}
 }

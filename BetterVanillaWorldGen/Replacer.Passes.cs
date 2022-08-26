@@ -49,6 +49,9 @@ public static partial class Replacer
 		index = genPasses.FindIndex(pass => pass.Name == "Shell Piles");
 		if (index != -1) genPasses[index] = new ShellPiles();
 
+		index = genPasses.FindIndex(pass => pass.Name == "Floating Island Houses");
+		if (index != -1) genPasses[index] = new FloatingHouses();
+		
 		index = genPasses.FindIndex(pass => pass.Name == "Surface Ore and Stone");
 		if (index != -1) genPasses[index] = new SurfaceOreAndStone();
 

@@ -38,7 +38,9 @@ public class TerrainPass : ControlledWorldGenPass
 			worldSurface = (int)(Main.maxTilesY * 0.07);
 		int worldSurfaceMax = (int)(Main.maxTilesY * 0.23);
 		int totalBeachSize = leftBeachSize + lowDepthBeachSize;
+#if !SPECIALDEBUG
 		Stopwatch.Stop();
+#endif
 		AdvancedWorldGenMod.Instance.UiChanger.Stopwatch.Stop();
 		Dictionary<string, object> currentState = new()
 		{
@@ -58,7 +60,9 @@ public class TerrainPass : ControlledWorldGenPass
 		rockLayer = (int)currentState[nameof(rockLayer)];
 		worldSurfaceMax = (int)currentState[nameof(worldSurfaceMax)];
 		totalBeachSize = (int)currentState[nameof(totalBeachSize)];
+#if !SPECIALDEBUG
 		Stopwatch.Start();
+#endif
 		AdvancedWorldGenMod.Instance.UiChanger.Stopwatch.Start();
 
 		double worldSurfaceLow = worldSurface;

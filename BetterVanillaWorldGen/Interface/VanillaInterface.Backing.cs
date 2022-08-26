@@ -1,6 +1,4 @@
-﻿using AdvancedWorldGen.Helper.Accessors;
-
-namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface;
+﻿namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 
 public partial class VanillaInterface
 {
