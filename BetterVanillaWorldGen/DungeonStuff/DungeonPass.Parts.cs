@@ -1535,9 +1535,12 @@ public partial class DungeonPass
 				tile.WallType = wallType;
 			}
 
-			dungeonPosition = new Vector2(MathHelper.Clamp(dungeonPosition.X + zero.X, 
+			if (VanillaInterface.Calamity.Enabled)
+				dungeonPosition = new Vector2(MathHelper.Clamp(dungeonPosition.X + zero.X, 
 				VanillaInterface.Calamity.SulphurousSeaBiomeWidth + 25, 
 				Main.maxTilesX - VanillaInterface.Calamity.SulphurousSeaBiomeWidth - 25), dungeonPosition.Y + zero.Y);
+			else
+				dungeonPosition += zero;
 			if (flag3 && num9 > WorldGen.genRand.Next(10, 20))
 			{
 				num9 = 0;
