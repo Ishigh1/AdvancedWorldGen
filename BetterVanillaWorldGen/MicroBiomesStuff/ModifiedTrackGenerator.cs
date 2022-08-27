@@ -255,7 +255,7 @@ public class ModifiedTrackGenerator
 			Tile.SmoothSlope(trackHistory.X, trackHistory.Y - PlayerHeight);
 			Tile tile = Main.tile[trackHistory.X, trackHistory.Y];
 			bool wire = tile.RedWire;
-			if (array[k] && k < CurrentTrack.Count && k > 0 && CurrentTrack[k - 1].Y == trackHistory.Y && CurrentTrack[k + 1].Y == trackHistory.Y)
+			if (array[k] && k < CurrentTrack.Count - 1 && k > 0 && CurrentTrack[k - 1].Y == trackHistory.Y && CurrentTrack[k + 1].Y == trackHistory.Y)
 			{
 				tile.ClearEverything();
 				WorldGen.PlaceTile(trackHistory.X, trackHistory.Y, 314, false, true, -1, 1);
