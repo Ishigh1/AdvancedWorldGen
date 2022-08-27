@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 
 public class JungleChests : ControlledWorldGenPass
 {
-	public JungleChests() : base("Jungle Chests", 195.6581f)
+	public JungleChests() : base("Jungle Chests", 0.5896f)
 	{
 	}
 

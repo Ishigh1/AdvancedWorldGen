@@ -150,7 +150,7 @@ public class ModifiedWorld : ModSystem
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 	{
 		Replacer.ReplaceGenPasses(tasks);
-
+		return;
 		DrunkOptions.AddDrunkEdits(tasks);
 
 		int passIndex = tasks.FindIndex(pass => pass.Name == "Guide");
@@ -291,41 +291,11 @@ public class ModifiedWorld : ModSystem
 
 	public void LastMinuteChecks(OnUIWorldCreation.orig_FinishCreatingWorld orig, UIWorldCreation self)
 	{
-		Params worldSettingsParams = OptionHelper.WorldSettings.Params;
-
 		void OrigWithLog()
 		{
 			Mod.Logger.Info($"Overhauled : {WorldgenSettings.Revamped}");
 			Mod.Logger.Info("Options : " + OptionsParser.GetJsonText());
 			orig(self);
-		}
-
-		if (ModLoader.TryGetMod("CalamityMod", out Mod _))
-		{
-			UIState currentState = UserInterface.ActiveInstance.CurrentState;
-
-			UIState? Prev()
-			{
-				return currentState;
-			}
-
-			UIState? Next()
-			{
-				OrigWithLog();
-				return null;
-			}
-
-			switch (worldSettingsParams.SizeX)
-			{
-				case < KnownLimits.ClamityMinX:
-					Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
-						"Mods.AdvancedWorldGen.InvalidSizes.ClamityMinX"), Prev, Next));
-					return;
-				case > KnownLimits.ClamityMaxX:
-					Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
-						"Mods.AdvancedWorldGen.InvalidSizes.ClamityMaxX"), Prev, Next));
-					return;
-			}
 		}
 
 		OrigWithLog();

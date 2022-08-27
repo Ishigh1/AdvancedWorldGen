@@ -5,13 +5,14 @@ public class MicroBiomes : ControlledWorldGenPass
 	private readonly int Index;
 	private readonly string? Variation;
 
-	public MicroBiomes(int index) : base("Micro Biomes", 973.0463f)
+	public MicroBiomes(int index) : base("Micro Biomes", 0)
 	{
 		Index = index;
 		if (index != -1)
 		{
 			Variation = GetVariationFromIndex();
 			Name = "Micro Biomes " + Variation;
+			Weight = 3547.4304f / 8;
 		}
 	}
 
@@ -192,19 +193,10 @@ public class MicroBiomes : ControlledWorldGenPass
 		const int mahoganyMaxAttempts = 20000;
 
 		while (placed < treeNumber && tries < mahoganyMaxAttempts)
-		{
 			if (mahoganyTreeBiome.Place(RandomUnderSurfaceWorldPoint(top, bottom, left, right), WorldGen.structures))
 				placed++;
 			else
 				tries++;
-			if (tries % 5000 == 0)
-			{
-				top -= 50;
-				bottom -= 50;
-				left -= 50;
-				right -= 50;
-			}
-		}
 	}
 
 	private void MakeMinecartTracks(ModifiedTrackGenerator trackGenerator, WorldGenRange worldGenLongRange, int tracks)

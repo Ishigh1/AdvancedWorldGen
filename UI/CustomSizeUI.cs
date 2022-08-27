@@ -226,7 +226,7 @@ public class CustomSizeUI : UIState
 				return;
 			}
 
-			if (WorldSettings.Params.SizeY > KnownLimits.NormalMaxX)
+			else if (WorldSettings.Params.SizeY > KnownLimits.NormalMaxX)
 			{
 				Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.NormalMaxX"), Prev, Next));

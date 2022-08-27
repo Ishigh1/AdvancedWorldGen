@@ -13,5 +13,5 @@ public class WorldgenSettings : ModConfig
 
 	public static bool AbortedSaving => ModContent.GetInstance<WorldgenSettings>().SaveOnFail;
 
-	public override ConfigScope Mode => ConfigScope.ClientSide;
+	public override ConfigScope Mode => ConfigScope.ServerSide;
 }

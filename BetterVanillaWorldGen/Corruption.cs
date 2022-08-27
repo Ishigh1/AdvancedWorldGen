@@ -40,7 +40,7 @@ public class Corruption : ControlledWorldGenPass
 		WorldGen.crimson = oldCrimson;
 	}
 
-	private void GenerateCorruption(double biomeNumber, bool left)
+	public void GenerateCorruption(double biomeNumber, bool left)
 	{
 		Progress.Message = Lang.gen[20].Value;
 
@@ -55,112 +55,117 @@ public class Corruption : ControlledWorldGenPass
 				where corruptionLeft - 100 < islandX && corruptionRight + 100 > islandX
 				select floatingIslandInfo.Y + 50).Prepend((int) WorldGen.worldSurfaceLow - 50).Max();
 
-			int num737 = 0;
-			for (int x = corruptionLeft; x < corruptionRight; x++)
-			{
-				num737--;
+			MakeSingleCorruptionBiome(corruptionLeft, corruptionRight, corruptionCenter, minY);
+		}
+	}
 
-				if (x == corruptionCenter || (WorldGen.genRand.NextBool(35) && num737 <= 0))
-					for (int y = minY; y < Main.worldSurface - 1; y++)
-						if (Main.tile[x, y].HasTile || Main.tile[x, y].WallType > 0)
-						{
-							const int depth = 50;
-							if (x == corruptionCenter)
-							{
-								num737 = 20;
-								WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(depth * 3, depth * 6), true);
-							}
-							else
-							{
-								num737 = 30;
-								WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(depth, depth * 2), true);
-							}
+	public static void MakeSingleCorruptionBiome(int corruptionLeft, int corruptionRight, int corruptionCenter, int minY)
+	{
+		int num737 = 0;
+		for (int x = corruptionLeft; x < corruptionRight; x++)
+		{
+			num737--;
 
-							break;
-						}
-
-				for (int y = (int)WorldGen.worldSurfaceLow; y < Main.worldSurface - 1.0; y++)
-					if (Main.tile[x, y].HasTile)
+			if (x == corruptionCenter || (WorldGen.genRand.NextBool(35) && num737 <= 0))
+				for (int y = minY; y < Main.worldSurface - 1; y++)
+					if (Main.tile[x, y].HasTile || Main.tile[x, y].WallType > 0)
 					{
-						int num741 = y + WorldGen.genRand.Next(10, 14);
-						for (int num742 = y; num742 < num741; num742++)
-							if (Main.tile[x, num742].TileType is 59 or 60 && x >= corruptionLeft + WorldGen.genRand.Next(5) && x < corruptionRight - WorldGen.genRand.Next(5))
-								Main.tile[x, num742].TileType = 0;
+						const int depth = 50;
+						if (x == corruptionCenter)
+						{
+							num737 = 20;
+							WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(depth * 3, depth * 6), true);
+						}
+						else
+						{
+							num737 = 30;
+							WorldGen.ChasmRunner(x, y, WorldGen.genRand.Next(depth, depth * 2), true);
+						}
 
 						break;
 					}
-			}
 
-			double deepEnough = WorldGen.worldSurfaceHigh + 60.0;
-
-			for (int x = corruptionLeft; x < corruptionRight; x++)
-			{
-				bool flag52 = false;
-				for (int y = minY; y < deepEnough; y++)
-					if (Main.tile[x, y].HasTile)
-					{
-						if (Main.tile[x, y].TileType == 53 && x >= corruptionLeft + WorldGen.genRand.Next(5) &&
-						    x <= corruptionRight - WorldGen.genRand.Next(5))
-							Main.tile[x, y].TileType = 112;
-
-						if (Main.tile[x, y].TileType == 0 && y < Main.worldSurface - 1.0 && !flag52)
-						{
-							WorldGen.grassSpread = 0;
-							WorldGen.SpreadGrass(x, y, 0, 23);
-						}
-
-						flag52 = true;
-						if (Main.tile[x, y].TileType == 1 && x >= corruptionLeft + WorldGen.genRand.Next(5) && x <= corruptionRight - WorldGen.genRand.Next(5))
-							Main.tile[x, y].TileType = 25;
-
-						Main.tile[x, y].WallType = Main.tile[x, y].WallType switch
-						{
-							216 => 217,
-							187 => 220,
-							_ => Main.tile[x, y].WallType
-						};
-
-						Main.tile[x, y].TileType = Main.tile[x, y].TileType switch
-						{
-							2 => 23,
-							161 => 163,
-							396 => 400,
-							397 => 398,
-							_ => Main.tile[x, y].TileType
-						};
-					}
-			}
-
-			#region protecc the orbs
-
-			for (int x1 = corruptionLeft; x1 < corruptionRight; x1 += 2)
-			for (int y1 = 0; y1 < Main.maxTilesY - 50; y1 += 2) // Main.maxTilesY - 50 is too deep
-				if (Main.tile[x1, y1].HasTile && Main.tile[x1, y1].TileType == TileID.ShadowOrbs)
+			for (int y = (int)WorldGen.worldSurfaceLow; y < Main.worldSurface - 1.0; y++)
+				if (Main.tile[x, y].HasTile)
 				{
-					int xMin = Math.Max(x1 - 13, 10);
-					int xMax = Math.Min(x1 + 13, Main.maxTilesX - 10);
-					int yMin = Math.Max(y1 - 13, 10);
-					int yMax = Math.Min(y1 + 13, Main.maxTilesY - 10);
-					for (int x2 = xMin; x2 <= xMax; x2++)
-					for (int y2 = yMin; y2 <= yMax; y2++)
-					{
-						Tile tile = Main.tile[x2, y2];
-						int xDiff = Math.Abs(x2 - x1);
-						int yDiff = Math.Abs(y2 - y1);
-						if (tile.HasTile && tile.TileType == TileID.ShadowOrbs)
-						{
-						}
-						else if (xDiff <= 2 + WorldGen.genRand.Next(3) &&
-						         yDiff <= 2 + WorldGen.genRand.Next(3))
-							WorldGen.KillTile(x2, y2);
-						else if (xDiff + yDiff < 9 + WorldGen.genRand.Next(11) &&
-						         WorldGen.genRand.NextBool(2, 3))
-							WorldGen.PlaceTile(x2, y2, TileID.Ebonstone, true);
-					}
-				}
+					int num741 = y + WorldGen.genRand.Next(10, 14);
+					for (int num742 = y; num742 < num741; num742++)
+						if (Main.tile[x, num742].TileType is 59 or 60 && x >= corruptionLeft + WorldGen.genRand.Next(5) && x < corruptionRight - WorldGen.genRand.Next(5))
+							Main.tile[x, num742].TileType = 0;
 
-			#endregion
+					break;
+				}
 		}
+
+		double deepEnough = WorldGen.worldSurfaceHigh + 60.0;
+
+		for (int x = corruptionLeft; x < corruptionRight; x++)
+		{
+			bool flag52 = false;
+			for (int y = minY; y < deepEnough; y++)
+				if (Main.tile[x, y].HasTile)
+				{
+					if (Main.tile[x, y].TileType == 53 && x >= corruptionLeft + WorldGen.genRand.Next(5) &&
+					    x <= corruptionRight - WorldGen.genRand.Next(5))
+						Main.tile[x, y].TileType = 112;
+
+					if (Main.tile[x, y].TileType == 0 && y < Main.worldSurface - 1.0 && !flag52)
+					{
+						WorldGen.grassSpread = 0;
+						WorldGen.SpreadGrass(x, y, 0, 23);
+					}
+
+					flag52 = true;
+					if (Main.tile[x, y].TileType == 1 && x >= corruptionLeft + WorldGen.genRand.Next(5) && x <= corruptionRight - WorldGen.genRand.Next(5))
+						Main.tile[x, y].TileType = 25;
+
+					Main.tile[x, y].WallType = Main.tile[x, y].WallType switch
+					{
+						216 => 217,
+						187 => 220,
+						_ => Main.tile[x, y].WallType
+					};
+
+					Main.tile[x, y].TileType = Main.tile[x, y].TileType switch
+					{
+						2 => 23,
+						161 => 163,
+						396 => 400,
+						397 => 398,
+						_ => Main.tile[x, y].TileType
+					};
+				}
+		}
+
+		#region protecc the orbs
+
+		for (int x1 = corruptionLeft; x1 < corruptionRight; x1 += 2)
+		for (int y1 = 0; y1 < Main.maxTilesY - 50; y1 += 2) // Main.maxTilesY - 50 is too deep
+			if (Main.tile[x1, y1].HasTile && Main.tile[x1, y1].TileType == TileID.ShadowOrbs)
+			{
+				int xMin = Math.Max(x1 - 13, 10);
+				int xMax = Math.Min(x1 + 13, Main.maxTilesX - 10);
+				int yMin = Math.Max(y1 - 13, 10);
+				int yMax = Math.Min(y1 + 13, Main.maxTilesY - 10);
+				for (int x2 = xMin; x2 <= xMax; x2++)
+				for (int y2 = yMin; y2 <= yMax; y2++)
+				{
+					Tile tile = Main.tile[x2, y2];
+					int xDiff = Math.Abs(x2 - x1);
+					int yDiff = Math.Abs(y2 - y1);
+					if (tile.HasTile && tile.TileType == TileID.ShadowOrbs)
+					{
+					}
+					else if (xDiff <= 2 + WorldGen.genRand.Next(3) &&
+					         yDiff <= 2 + WorldGen.genRand.Next(3))
+						WorldGen.KillTile(x2, y2);
+					else if (xDiff + yDiff < 9 + WorldGen.genRand.Next(11) &&
+					         WorldGen.genRand.NextBool(2, 3))
+						WorldGen.PlaceTile(x2, y2, TileID.Ebonstone, true);
+				}
+			}
+
+		#endregion
 	}
 
 	private (int left, int center, int right) FindSuitableCenter(bool left, int pity = 0)

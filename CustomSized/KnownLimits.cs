@@ -8,9 +8,6 @@ public static class KnownLimits
 	public const int NormalMaxX = 12_000;
 	public const int OverhauledMinY = 500;
 
-	public const int ClamityMinX = 6_400;
-	public const int ClamityMaxX = 10_000;
-
 	public const int DataLoad = 8;
 	public const int MapLoad = 4;
 	public const int LiquidLoad = 2;

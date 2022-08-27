@@ -13,10 +13,14 @@ public static class ModifiedDesertHive
 	{
 		Dictionary<(int, int), List<int>> hive = RegisterInterestingTiles(clusters);
 		PlaceClustersArea(clusters, hive);
-		foreach (((int x, int y), List<int> _) in hive) Tile.SmoothSlope(x, y, false);
+		foreach (((int x, int y), List<int> _) in hive)
+		{
+			Tile.SmoothSlope(x, y, false);
+			WorldGenerator.CurrentGenerationProgress.Add(1, hive.Count, 1/6f);
+		}
 	}
 
-	public static Dictionary<(int, int), List<int>> RegisterInterestingTiles(ClusterGroup clusters)
+	public static Dictionary<(int, int), List<int>> RegisterInterestingTiles(ClusterGroup clusters) // Weight : 1/3
 	{
 		Dictionary<(int, int), List<int>> registerInterestingTiles = new();
 		int spreadX = (int)(10 * clusters.SpreadX);
@@ -35,17 +39,19 @@ public static class ModifiedDesertHive
 				{
 					clusterList = new List<int>();
 					registerInterestingTiles[(x, y)] = clusterList;
+					WorldGen.UpdateDesertHiveBounds(x, y);
 				}
 
 				clusterList.Add(index);
-				WorldGen.UpdateDesertHiveBounds(x, y);
 			}
+
+			WorldGenerator.CurrentGenerationProgress.Set(index, clusters.Count, 1 / 3f);
 		}
 
 		return registerInterestingTiles;
 	}
 
-	public static void PlaceClustersArea(ClusterGroup clusterGroup, Dictionary<(int, int), List<int>> hive)
+	public static void PlaceClustersArea(ClusterGroup clusterGroup, Dictionary<(int, int), List<int>> hive) // Weight : 1/3
 	{
 		foreach (((int x, int y), List<int> interestingClusters) in hive)
 		{
@@ -114,15 +120,19 @@ public static class ModifiedDesertHive
 
 					break;
 			}
+
+			WorldGenerator.CurrentGenerationProgress.Add(1, hive.Count, 1 / 3f);
 		}
 	}
 
-	public static void AddTileVariance(DesertDescription description)
+	public static void AddTileVariance(DesertDescription description) //Weight : 1/6
 	{
 		int xMin = Math.Max(description.Hive.X - 20, 5);
 		int xMax = Math.Max(description.Hive.X + description.Hive.Width + 20, Main.maxTilesX - 5);
 		int yMin = Math.Max(description.Hive.Y - 20, 5);
 		int yMax = Math.Max(description.Hive.Y + description.Hive.Height + 20, Main.maxTilesY - 5);
+
+		int size = (xMax - xMin) * (yMax - yMin);
 		for (int x = xMin; x < xMax; x++)
 		for (int y = yMin; y < yMax; y++)
 		{
@@ -131,48 +141,50 @@ public static class ModifiedDesertHive
 			Tile testTile2 = Main.tile[x, y + 2];
 			if (tile.TileType == 53 && (!WorldGen.SolidTile(testTile) || !WorldGen.SolidTile(testTile2)))
 				tile.TileType = 397;
+			WorldGenerator.CurrentGenerationProgress.Add(1, size, 1/12f);
 		}
 
 		for (int x = xMin; x < xMax; x++)
 		for (int y = yMin; y < yMax; y++)
 		{
 			Tile tile2 = Main.tile[x, y];
-			if (!tile2.HasTile || tile2.TileType != 396)
-				continue;
-
-			bool flag = true;
-			for (int num5 = -1; num5 >= -3; num5--)
-				if (Main.tile[x, y + num5].HasTile)
-				{
-					flag = false;
-					break;
-				}
-
-			bool flag2 = true;
-			for (int m = 1; m <= 3; m++)
-				if (Main.tile[x, y + m].HasTile)
-				{
-					flag2 = false;
-					break;
-				}
-
-			switch (flag)
+			if (tile2.HasTile && tile2.TileType == 396)
 			{
-				case true when WorldGen.genRand.NextBool(20):
-					WorldGen.PlaceTile(x, y - 1, 485, true, true, -1, WorldGen.genRand.Next(4));
-					break;
-				case true when WorldGen.genRand.NextBool(5):
-					WorldGen.PlaceTile(x, y - 1, 484, true, true);
-					break;
-				default:
+				bool flag = true;
+				for (int num5 = -1; num5 >= -3; num5--)
+					if (Main.tile[x, y + num5].HasTile)
+					{
+						flag = false;
+						break;
+					}
+
+				bool flag2 = true;
+				for (int m = 1; m <= 3; m++)
+					if (Main.tile[x, y + m].HasTile)
+					{
+						flag2 = false;
+						break;
+					}
+
+				switch (flag)
 				{
-					if (flag ^ flag2 && WorldGen.genRand.NextBool(5))
-						WorldGen.PlaceTile(x, y + (!flag ? 1 : -1), 165, true, true);
-					else if (flag && WorldGen.genRand.NextBool(5))
-						WorldGen.PlaceTile(x, y - 1, 187, true, true, -1, 29 + WorldGen.genRand.Next(6));
-					break;
+					case true when WorldGen.genRand.NextBool(20):
+						WorldGen.PlaceTile(x, y - 1, 485, true, true, -1, WorldGen.genRand.Next(4));
+						break;
+					case true when WorldGen.genRand.NextBool(5):
+						WorldGen.PlaceTile(x, y - 1, 484, true, true);
+						break;
+					default:
+					{
+						if (flag ^ flag2 && WorldGen.genRand.NextBool(5))
+							WorldGen.PlaceTile(x, y + (!flag ? 1 : -1), 165, true, true);
+						else if (flag && WorldGen.genRand.NextBool(5))
+							WorldGen.PlaceTile(x, y - 1, 187, true, true, -1, 29 + WorldGen.genRand.Next(6));
+						break;
+					}
 				}
 			}
+			WorldGenerator.CurrentGenerationProgress.Add(1, size, 1/12f);
 		}
 	}
 
@@ -302,7 +314,7 @@ public static class ModifiedDesertHive
 			{
 				if (item5.Count < 4)
 					continue;
-				
+
 				Cluster cluster = new();
 				cluster.AddRange(item5.Select(item6 => (
 					(int)(item6.X * SpreadX) + description.Hive.X,

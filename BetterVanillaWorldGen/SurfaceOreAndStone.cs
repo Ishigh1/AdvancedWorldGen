@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class SurfaceOreAndStone : ControlledWorldGenPass
 {
-	public SurfaceOreAndStone() : base("Surface Ore and Stone", 64.9990f)
+	public SurfaceOreAndStone() : base("Surface Ore and Stone", 1f)
 	{
 	}
 

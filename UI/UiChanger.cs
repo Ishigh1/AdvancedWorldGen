@@ -98,6 +98,7 @@ public class UiChanger
 
 	public void Abort(UIMouseEvent evt, UIElement listeningElement)
 	{
+		AdvancedWorldGenMod.Instance.Logger.Info("Worldgen aborted, ignore any exception below");
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		Tilemap tiles = Main.tile;
 		Main.tile = new Tilemap();

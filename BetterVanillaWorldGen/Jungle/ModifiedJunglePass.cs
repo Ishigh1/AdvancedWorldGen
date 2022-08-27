@@ -9,7 +9,7 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 	public float WorldScaleX;
 	public float WorldScaleY;
 
-	public ModifiedJunglePass() : base("Jungle", 14834.1467f)
+	public ModifiedJunglePass() : base("Jungle", 10154.652f)
 	{
 	}
 
@@ -67,6 +67,8 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 
 		WorldGen.mudWall = false;
 		DelimitJungle((int)((WorldGen.rockLayer + Main.UnderworldLayer) / 2));
+		DelimitJungle((int)((WorldGen.rockLayer + Main.UnderworldLayer) / 3), true);
+		DelimitJungle((int)((WorldGen.rockLayer + Main.UnderworldLayer) * 2 / 3), true);
 		Progress.Set(9, 11);
 
 		GenerateHolesInMudWalls();
@@ -201,41 +203,40 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 	{
 		int importantX = JungleOriginX;
 		int currentX = JungleOriginX;
-		Tile tile1;
-		Tile tile2;
-		Tile tile3;
-		do
+		int lastSeen = 0;
+		Tile tile;
+		while(lastSeen < 7 && currentX > 10)
 		{
-			tile1 = Main.tile[currentX, y];
-			tile2 = Main.tile[currentX, y - 10];
-			tile3 = Main.tile[currentX, y + 10];
-			if (tile1.HasTile || tile2.HasTile || tile3.HasTile) importantX = currentX;
-			currentX--;
-		} while (!tile1.HasTile || tile1.TileType is TileID.Mud ||
-		         !tile2.HasTile || tile2.TileType is TileID.Mud ||
-		         !tile3.HasTile || tile3.TileType is TileID.Mud);
+			tile = Main.tile[currentX, y];
+			if (tile.HasTile && tile.TileType is TileID.Mud)
+			{
+				importantX = currentX;
+				lastSeen = 0;
+			}
+			else
+				lastSeen += 1;
+			currentX -= 3;
+		}
 
-		if (secondTry)
-			VanillaInterface.JungleLeft = Math.Min(VanillaInterface.JungleLeft, importantX + 1);
-		else
-			VanillaInterface.JungleLeft = importantX + 1;
+		VanillaInterface.JungleLeft = secondTry ? Math.Min(VanillaInterface.JungleLeft, importantX) : importantX;
 
+		importantX = JungleOriginX;
 		currentX = JungleOriginX;
-		do
+		lastSeen = 0;
+		while(lastSeen < 7 && currentX < Main.maxTilesX - 10)
 		{
-			tile1 = Main.tile[currentX, y];
-			tile2 = Main.tile[currentX, y - 10];
-			tile3 = Main.tile[currentX, y + 10];
-			if (tile1.HasTile || tile2.HasTile || tile3.HasTile) importantX = currentX;
-			currentX++;
-		} while (!tile1.HasTile || tile1.TileType is TileID.Mud ||
-		         !tile2.HasTile || tile2.TileType is TileID.Mud ||
-		         !tile3.HasTile || tile3.TileType is TileID.Mud);
+			tile = Main.tile[currentX, y];
+			if (tile.HasTile && tile.TileType is TileID.Mud)
+			{
+				importantX = currentX;
+				lastSeen = 0;
+			}
+			else
+				lastSeen += 1;
+			currentX += 3;
+		}
 
-		if (secondTry)
-			VanillaInterface.JungleRight = Math.Min(VanillaInterface.JungleRight, importantX + 1);
-		else
-			VanillaInterface.JungleRight = importantX - 1;
+		VanillaInterface.JungleRight = secondTry ? Math.Max(VanillaInterface.JungleRight, importantX) : importantX;
 	}
 
 	public void GenerateFinishingTouches(int middleX, int middleY)

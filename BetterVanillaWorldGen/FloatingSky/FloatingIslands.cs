@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.FloatingSky;
 
 public class FloatingIslands : ControlledWorldGenPass
 {
-	public FloatingIslands() : base("Floating Islands", 2582.8511f)
+	public FloatingIslands() : base("Floating Islands", 1364.3461f)
 	{
 	}
 

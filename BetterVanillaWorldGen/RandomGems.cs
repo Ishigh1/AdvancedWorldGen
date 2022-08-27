@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class RandomGems : ControlledWorldGenPass
 {
-	public RandomGems() : base("Random Gems", 31.3070f)
+	public RandomGems() : base("Random Gems", 18.4925f)
 	{
 	}
 
