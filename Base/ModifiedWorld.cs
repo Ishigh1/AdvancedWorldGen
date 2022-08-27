@@ -150,7 +150,6 @@ public class ModifiedWorld : ModSystem
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 	{
 		Replacer.ReplaceGenPasses(tasks);
-		return;
 		DrunkOptions.AddDrunkEdits(tasks);
 
 		int passIndex = tasks.FindIndex(pass => pass.Name == "Guide");

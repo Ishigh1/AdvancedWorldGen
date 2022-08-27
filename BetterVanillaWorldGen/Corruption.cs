@@ -6,13 +6,13 @@ public class Corruption : ControlledWorldGenPass
 
 	public Corruption() : base("Corruption", 1094.237f)
 	{
+		OtherBiomes = new List<(int start, int end)>();
 	}
 
 	protected override void ApplyPass()
 	{
 		double biomeNumber = Main.maxTilesX * 0.00045;
 		bool oldCrimson = WorldGen.crimson;
-		OtherBiomes = new List<(int start, int end)>();
 		int middlePadding = OptionHelper.OptionsContains("Drunk.Crimruption") ? 100 : 200;
 
 		OtherBiomes.Add((Main.maxTilesX / 2 - middlePadding, Main.maxTilesX / 2 + middlePadding)); //Center
