@@ -72,11 +72,15 @@ public static class HalloweenCommon
 		cursor.MarkLabel(label);
 	}
 
-	public static void InsertTasks(List<GenPass> tasks, ref int passIndex)
+	public static void InsertTasks(List<GenPass> tasks)
 	{
 		if (!OptionHelper.OptionsContains("Spooky"))
 			return;
-		tasks.Insert(++passIndex, new PassLegacy("Graveyards", Graveyards.GenerateStructures));
-		tasks.Insert(++passIndex, new PassLegacy("HalloweenTraps", Traps.PlaceTraps));
+		int passIndex = tasks.FindIndex(pass => pass.Name == "Micro Biomes");
+		if (passIndex != -1)
+		{
+			tasks.Insert(++passIndex, new Graveyards());
+			tasks.Insert(++passIndex, new HaloweenTraps());
+		}
 	}
 }

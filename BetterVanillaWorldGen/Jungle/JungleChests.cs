@@ -45,7 +45,11 @@ public class JungleChests : ControlledWorldGenPass
 
 			(x, y) = TileFinder.SpiralSearch(x, y, IsValid);
 			if ((x, y) is (-1, -1))
-				throw new Exception("Jungle grass not found for jungle chest !");
+			{
+				AdvancedWorldGenMod.Instance.Logger.Info("Jungle grass not found for jungle chest");
+				step--;
+				continue;
+			}
 
 			int width = WorldGen.genRand.Next(2, 4);
 			int height = WorldGen.genRand.Next(2, 4);

@@ -6,56 +6,24 @@ public static partial class Replacer
 
 	public static void ReplaceGenPasses(List<GenPass> genPasses)
 	{
+		VanillaInterface = new VanillaInterface();
 		if (!WorldgenSettings.Revamped)
 			return;
-		int index = genPasses.FindIndex(pass => pass.Name == "Reset");
-		if (index != -1)
-		{
-			VanillaInterface = new VanillaInterface();
-			genPasses[index] = new ResetPass();
-		}
-		else
-		{
-			return;
-		}
-
-		index = genPasses.FindIndex(pass => pass.Name == "Terrain");
-		if (index != -1) genPasses[index] = new TerrainPass();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Generate Ice Biome");
-		if (index != -1) genPasses[index] = new GenerateIceBiome();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Jungle");
-		if (index != -1) genPasses[index] = new ModifiedJunglePass();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Floating Islands");
-		if (index != -1) genPasses[index] = new FloatingIslands();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Mushroom Patches");
-		if (index != -1) genPasses[index] = new MushroomPatches();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Corruption");
-		if (index != -1) genPasses[index] = new Corruption();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Dungeon");
-		if (index != -1) genPasses[index] = new DungeonPass();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Jungle Temple");
-		if (index != -1) genPasses[index] = new JungleTemple();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Jungle Chests");
-		if (index != -1) genPasses[index] = new JungleChests();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Shell Piles");
-		if (index != -1) genPasses[index] = new ShellPiles();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Floating Island Houses");
-		if (index != -1) genPasses[index] = new FloatingHouses();
+		genPasses.TryReplacePass("Reset", new ResetPass());
+		genPasses.TryReplacePass("Terrain", new TerrainPass());
+		genPasses.TryReplacePass("Generate Ice Biome", new GenerateIceBiome());
+		genPasses.TryReplacePass("Jungle", new ModifiedJunglePass());
+		genPasses.TryReplacePass("Floating Islands", new FloatingIslands());
+		genPasses.TryReplacePass("Mushroom Patches", new MushroomPatches());
+		genPasses.TryReplacePass("Corruption", new Corruption());
+		genPasses.TryReplacePass("Dungeon", new DungeonPass());
+		genPasses.TryReplacePass("Jungle Temple", new JungleTemple());
+		genPasses.TryReplacePass("Jungle Chests", new JungleChests());
+		genPasses.TryReplacePass("Shell Piles", new ShellPiles());
+		genPasses.TryReplacePass("Floating Island Houses", new FloatingHouses());
+		genPasses.TryReplacePass("Surface Ore and Stone", new SurfaceOreAndStone());
 		
-		index = genPasses.FindIndex(pass => pass.Name == "Surface Ore and Stone");
-		if (index != -1) genPasses[index] = new SurfaceOreAndStone();
-
-		index = genPasses.FindIndex(pass => pass.Name == "Micro Biomes");
+		int index = genPasses.FindIndex(pass => pass.Name == "Micro Biomes");
 		if (index != -1)
 		{
 			for (int i = 1; i <= 8; i++)

@@ -142,7 +142,7 @@ public class TerrainPass : ControlledWorldGenPass
 		waterLine += WorldGen.genRand.Next(-100, 20);
 		int lavaLine = waterLine + WorldGen.genRand.Next(50, 80);
 		if (rockLayer > Main.UnderworldLayer)
-			throw new RockUnderHellException();
+			throw new Exception(Language.GetTextValue("Mods.AdvancedWorldGen.Exceptions.RockUnderHell"));
 		while (lavaLine > Main.UnderworldLayer)
 		{
 			waterLine -= (waterLine - rockLayer) / 8;

@@ -1,7 +1,22 @@
+using Terraria.ModLoader.Core;
+
 namespace AdvancedWorldGen.Helper;
 
 public static class Extensions
 {
+	#region PassInsertion
+
+	public static bool TryReplacePass(this List<GenPass> genPasses, string passName, GenPass newPass)
+	{
+		int index = genPasses.FindIndex(pass => pass.Name == passName);
+		if (index == -1 || genPasses[index].GetType().Assembly != typeof(PassLegacy).Assembly)
+			return false;
+		genPasses[index] = newPass;
+		return true;
+	}
+
+	#endregion
+	
 	#region GenerationProgress
 
 	public static void Set(this GenerationProgress generationProgress, float currentValue, float maxValue,
@@ -32,7 +47,7 @@ public static class Extensions
 
 	public static Type? GetType(this Mod mod, string typeName)
 	{
-		Assembly assembly = mod.GetType().Assembly;
+		Assembly assembly = mod.Code;
 		Type? type = assembly.GetType(typeName);
 		if (type == null) AdvancedWorldGenMod.Instance.Logger.Info($"{typeName} not found");
 

@@ -8,8 +8,8 @@ public class SnowWorld
 	public static void FallSnow()
 	{
 		if (!OptionHelper.OptionsContains("Santa")) return;
-		if (Main.rand.Next((int)(10000 / (Main.maxRaining + .01))) >=
-		    Main.maxTilesX) return;
+		if (Main.rand.Next((int)(10000 / (Main.maxRaining + .01))) >= Main.maxTilesX)
+			return;
 		int x = Main.rand.Next(Main.maxTilesX);
 		int y = Main.rand.Next((int)Main.worldSurface);
 		Tile tile = Main.tile[x, y];

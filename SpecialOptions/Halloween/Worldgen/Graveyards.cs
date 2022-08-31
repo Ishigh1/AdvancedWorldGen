@@ -1,8 +1,12 @@
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen;
 
-public static class Graveyards
+public class Graveyards : GenPass
 {
-	public static void GenerateStructures(GenerationProgress progress, GameConfiguration configuration)
+	public Graveyards() : base("Graveyards", 100f)
+	{
+	}
+	
+	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 	{
 		for (int i = 0; i < Utilities.WorldSize; i++) PlaceSimpleGraveyard();
 	}
@@ -288,12 +292,12 @@ public static class Graveyards
 			case 1: //From paintings
 				return Language.RandomFromCategory("PaintingArtist").Value;
 			default: //From NPC names
-				int npcs = ModifiedWorld.NPCs.Count;
+				int npcs = NPCPass.NPCs.Count;
 				List<int> petList = new() { NPCID.TownCat, NPCID.TownDog, NPCID.TownBunny };
 				int pets = petList.Count;
 
 				int npcId = Main.rand.Next(npcs + pets);
-				npcId = npcId < npcs ? ModifiedWorld.NPCs[npcId] : petList[npcId - npcs];
+				npcId = npcId < npcs ? NPCPass.NPCs[npcId] : petList[npcId - npcs];
 
 				NPC tmpNPC = new()
 				{

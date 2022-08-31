@@ -1,8 +1,11 @@
 namespace AdvancedWorldGen.SpecialOptions;
 
-public static class EvilReplacer
+public class EvilReplacer : GenPass
 {
-	public static void CorruptWorld(GenerationProgress progress)
+	public EvilReplacer() : base("Evil", 200f)
+	{}
+	
+	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 	{
 		progress.Message = Language.GetTextValue("Mods.AdvancedWorldGen.WorldGenMessage.Evil");
 		bool isDrunk = OptionHelper.OptionsContains("Drunk.Crimruption");

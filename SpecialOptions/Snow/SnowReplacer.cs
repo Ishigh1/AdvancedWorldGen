@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.SpecialOptions.Snow;
 
 public class SnowReplacer : TileReplacer
 {
-	public SnowReplacer()
+	public SnowReplacer() : base("SnowReplace")
 	{
 		UpdateDictionary(TileID.SnowBlock, TileID.Dirt, TileID.Grass, TileID.CorruptGrass,
 			TileID.ClayBlock, TileID.CrimsonGrass);

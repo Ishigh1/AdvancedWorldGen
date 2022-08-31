@@ -2,12 +2,16 @@ using static Terraria.ID.TileID;
 
 namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen;
 
-public static class Traps
+public class HaloweenTraps : GenPass
 {
+	public HaloweenTraps() : base("HalloweenTraps", 100f)
+	{
+	}
+
 	public const int Left = -1;
 	public const int Right = 1;
 
-	public static void PlaceTraps(GenerationProgress progress, GameConfiguration configuration)
+	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 	{
 		if (!OptionHelper.OptionsContains("Spooky")) return;
 		progress.Message = "Placing Halloween traps";
