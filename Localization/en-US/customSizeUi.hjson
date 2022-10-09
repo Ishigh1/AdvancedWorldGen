@@ -4,6 +4,9 @@
         "SizeY": "Vertical size :",
         "TempleMultiplier": "Temple size multiplier :",
         "DungeonMultiplier": "Dungeon size multiplier :",
-        "BeachMultiplier": "Beach size multiplier :"
+        "BeachMultiplier": "Beach size multiplier :",
+        "ScaledBeaches": "Scale beaches with world size",
+        "EditTerrainPass": "Enable another customisation during worldgen",
+        "TerrainType": "Terrain type"
     }
 }
