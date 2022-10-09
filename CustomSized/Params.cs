@@ -69,6 +69,12 @@ public class Params
 		set => Data[nameof(Gold)] = value;
 	}
 
+	public bool ScaledBeaches
+	{
+		get => (bool)Data[nameof(ScaledBeaches)];
+		set => Data[nameof(ScaledBeaches)] = value;
+	}
+
 	public bool EditTerrainPass
 	{
 		get => (bool)Data[nameof(EditTerrainPass)];
@@ -100,6 +106,7 @@ public class Params
 		Silver = TileExpandableList.Random;
 		Gold = TileExpandableList.Random;
 
+		ScaledBeaches = false;
 		EditTerrainPass = false;
 		TerrainType = TerrainType.Normal;
 	}

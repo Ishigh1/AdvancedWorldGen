@@ -140,11 +140,14 @@ public class ResetPass : ControlledWorldGenPass
 		WorldGen.snowOriginLeft = snowOriginLeft;
 		WorldGen.snowOriginRight = snowOriginRight;
 
-		worldSize *= OptionHelper.WorldSettings.Params.BeachMultiplier;
-		int beachSandDungeonExtraWidth = (int)(40 * worldSize);
-		int beachSandJungleExtraWidth = (int)(20 * worldSize);
-		int beachBordersWidth = (int)(275 * worldSize);
-		int beachSandRandomWidthRange = (int)(20 * worldSize);
+		float beachMultiplier = OptionHelper.WorldSettings.Params.BeachMultiplier;
+		if (OptionHelper.WorldSettings.Params.ScaledBeaches)
+			beachMultiplier *= worldSize;
+
+		int beachSandDungeonExtraWidth = (int)(40 * beachMultiplier);
+		int beachSandJungleExtraWidth = (int)(20 * beachMultiplier);
+		int beachBordersWidth = (int)(275 * beachMultiplier);
+		int beachSandRandomWidthRange = (int)(20 * beachMultiplier);
 		int beachSandRandomCenter = beachBordersWidth + 5 + 2 * beachSandRandomWidthRange;
 		WorldGen.evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
 		if (worldSize < 1)
@@ -154,21 +157,14 @@ public class ResetPass : ControlledWorldGenPass
 		}
 		else
 		{
-			WorldGen.oceanDistance = (int)(WorldGen.oceanDistance *
-			                               OptionHelper.WorldSettings.Params.BeachMultiplier);
-			WorldGen.beachDistance = (int)(WorldGen.beachDistance *
-			                               OptionHelper.WorldSettings.Params.BeachMultiplier);
+			WorldGen.oceanDistance = (int)(WorldGen.oceanDistance * beachMultiplier);
+			WorldGen.beachDistance = (int)(WorldGen.beachDistance * beachMultiplier);
 		}
 
-		WorldGen.oceanWaterStartRandomMin = (int)(WorldGen.oceanWaterStartRandomMin *
-		                                          OptionHelper.WorldSettings.Params
-			                                          .BeachMultiplier);
-		WorldGen.oceanWaterStartRandomMax = (int)(WorldGen.oceanWaterStartRandomMax *
-		                                          OptionHelper.WorldSettings.Params
-			                                          .BeachMultiplier);
+		WorldGen.oceanWaterStartRandomMin = (int)(WorldGen.oceanWaterStartRandomMin * beachMultiplier);
+		WorldGen.oceanWaterStartRandomMax = (int)(WorldGen.oceanWaterStartRandomMax * beachMultiplier);
 		WorldGen.oceanWaterForcedJungleLength =
-			(int)(WorldGen.oceanWaterForcedJungleLength *
-			      OptionHelper.WorldSettings.Params.BeachMultiplier);
+			(int)(WorldGen.oceanWaterForcedJungleLength * beachMultiplier);
 
 		int leftBeachEnd = beachSandRandomCenter +
 		                   WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);

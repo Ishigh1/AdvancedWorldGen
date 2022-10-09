@@ -110,6 +110,12 @@ public class CustomSizeUI : UIState
 				Order = index++
 			};
 			uiList.Add(goldList);
+			
+			BooleanExpandableList beachList = new(data, nameof(Params.ScaledBeaches))
+			{
+				Order = index++
+			};
+			uiList.Add(beachList);
 
 			BooleanExpandableList terrainList = new(data, nameof(Params.EditTerrainPass))
 			{
@@ -122,6 +128,14 @@ public class CustomSizeUI : UIState
 				Order = index++
 			};
 			uiList.Add(terrainTypeList);
+		}
+		else
+		{
+			UITextPanel<string> overhauledDisabled = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.OverhauledDisabled"))
+			{
+				Width = new StyleDimension(0f, 1f)
+			};
+			uiList.Add(overhauledDisabled);
 		}
 
 		UITextPanel<string> gotoConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.Config"))
