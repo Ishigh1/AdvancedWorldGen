@@ -4,13 +4,13 @@ public abstract class InputBox<T> : OrderedUIItem
 {
 	public UIPanel Background = null!;
 	public string Name;
+	private string? LocalizationPath;
 
-	protected InputBox(string name)
+	protected InputBox(string name, string? localizationPath)
 	{
 		Name = name;
+		LocalizationPath = localizationPath;
 	}
-
-	public string? LocalizationPath { get; set; }
 
 	public abstract T? Value { get; set; }
 
@@ -42,6 +42,7 @@ public abstract class InputBox<T> : OrderedUIItem
 		if (LocalizationPath is not null)
 		{
 			localization = $"{LocalizationPath}.{Name}";
+			localization = localization.Replace(' ', '_');
 			if (!Language.Exists(localization)) localization = Name;
 		}
 

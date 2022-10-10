@@ -1,14 +1,14 @@
 namespace AdvancedWorldGen.UI;
 
-public class WorldGenConfigurator : UIState
+public class VanillaWorldGenConfigurator : UIState
 {
-	public WorldGenConfiguration WorldGenConfiguration;
+	public WorldGenConfiguration Configuration;
 
-	public WorldGenConfigurator()
+	public VanillaWorldGenConfigurator()
 	{
-		WorldGenConfiguration =
+		Configuration =
 			WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
-		WorldGen.Hooks.ProcessWorldGenConfig(ref WorldGenConfiguration);
+		WorldGen.Hooks.ProcessWorldGenConfig(ref Configuration);
 		WorldGen.Hooks.OnWorldGenConfigProcess += SetConfig;
 
 		SetupUI();
@@ -62,7 +62,7 @@ public class WorldGenConfigurator : UIState
 
 		foreach (JObject jObject in typeof(WorldGenConfiguration)
 			         .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-			         .Select(fieldInfo => (JObject)fieldInfo.GetValue(WorldGenConfiguration)!))
+			         .Select(fieldInfo => (JObject)fieldInfo.GetValue(Configuration)!))
 			TransformJsonToUI(uiList, ref index, jObject);
 
 
@@ -81,17 +81,18 @@ public class WorldGenConfigurator : UIState
 
 	public static void TransformJsonToUI(UIList uiPanel, ref int index, JToken jToken)
 	{
+		const string localizationPath = "Mods.AdvancedWorldGen.UI.Vanilla";
 		switch (jToken.Type)
 		{
 			case JTokenType.Object:
 				JObject jObject = (JObject)jToken;
-				foreach ((string? _, JToken? child) in jObject)
-					if (child is not null)
+				foreach ((string? name, JToken? child) in jObject)
+					if (child is not null && name != "CorruptionPitCount")
 						TransformJsonToUI(uiPanel, ref index, child);
-				return;
+				break;
 			case JTokenType.Integer:
 				//Create an long number text box.
-				NumberTextBox<long> longInput = new JsonNumberTextBox<long>((JValue)jToken, 0, ushort.MaxValue)
+				NumberTextBox<long> longInput = new JsonNumberTextBox<long>((JValue)jToken, 0, ushort.MaxValue, localizationPath)
 				{
 					Order = index++
 				};
@@ -100,7 +101,7 @@ public class WorldGenConfigurator : UIState
 			case JTokenType.Float:
 				//Create a double number text box.
 				NumberTextBox<double> doubleInput =
-					new JsonNumberTextBox<double>((JValue)jToken, 0, double.PositiveInfinity)
+					new JsonNumberTextBox<double>((JValue)jToken, 0, double.PositiveInfinity, localizationPath)
 					{
 						Order = index++
 					};
@@ -108,7 +109,7 @@ public class WorldGenConfigurator : UIState
 				break;
 			case JTokenType.String:
 				//Create a world scaling text box.
-				EnumInputListBox<WorldGenRange.ScalingMode> enumInput = new((JValue)jToken)
+				EnumInputListBox<WorldGenRange.ScalingMode> enumInput = new((JValue)jToken, localizationPath)
 				{
 					Order = index++
 				};
@@ -121,7 +122,7 @@ public class WorldGenConfigurator : UIState
 
 	public void SetConfig(ref WorldGenConfiguration config)
 	{
-		config = WorldGenConfiguration;
+		config = Configuration;
 	}
 
 	public static void GoBack(UIMouseEvent evt, UIElement listeningElement)

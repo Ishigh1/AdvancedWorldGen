@@ -5,14 +5,14 @@ public class EnumInputListBox<T> : InputBox<string> where T : struct, Enum
 	private JValue? JValue;
 	private Params? Params;
 
-	public EnumInputListBox(JValue jValue) : base(jValue.Path)
+	public EnumInputListBox(JValue jValue, string? localizationPath) : base(jValue.Path, localizationPath)
 	{
 		JValue = jValue;
 
 		CreateUIElement();
 	}
 	
-	public EnumInputListBox(Params @params, string name) : base(name)
+	public EnumInputListBox(Params @params, string name, string? localizationPath) : base(name, localizationPath)
 	{
 		Params = @params;
 		

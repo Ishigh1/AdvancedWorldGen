@@ -83,47 +83,47 @@ public class CustomSizeUI : UIState
 			beachModifier.Order = index++;
 			uiList.Add(beachModifier);
 
-			TileExpandableList copperList = new(data, nameof(Params.Copper), false,
+			TileExpandableList copperList = new(data, nameof(Params.Copper), localizationPath, false,
 				TileExpandableList.Random, TileID.Copper, TileID.Tin)
 			{
 				Order = index++
 			};
 			uiList.Add(copperList);
 
-			TileExpandableList ironList = new(data, nameof(Params.Iron), false,
+			TileExpandableList ironList = new(data, nameof(Params.Iron), localizationPath, false,
 				TileExpandableList.Random, TileID.Iron, TileID.Lead)
 			{
 				Order = index++
 			};
 			uiList.Add(ironList);
 
-			TileExpandableList silverList = new(data, nameof(Params.Silver), false,
+			TileExpandableList silverList = new(data, nameof(Params.Silver), localizationPath, false,
 				TileExpandableList.Random, TileID.Silver, TileID.Tungsten)
 			{
 				Order = index++
 			};
 			uiList.Add(silverList);
 
-			TileExpandableList goldList = new(data, nameof(Params.Gold), false,
+			TileExpandableList goldList = new(data, nameof(Params.Gold), localizationPath, false,
 				TileExpandableList.Random, TileID.Gold, TileID.Platinum)
 			{
 				Order = index++
 			};
 			uiList.Add(goldList);
 			
-			BooleanExpandableList beachList = new(data, nameof(Params.ScaledBeaches))
+			BooleanExpandableList beachList = new(data, nameof(Params.ScaledBeaches), localizationPath)
 			{
 				Order = index++
 			};
 			uiList.Add(beachList);
 
-			BooleanExpandableList terrainList = new(data, nameof(Params.EditTerrainPass))
+			BooleanExpandableList terrainList = new(data, nameof(Params.EditTerrainPass), localizationPath)
 			{
 				Order = index++
 			};
 			uiList.Add(terrainList);
 
-			EnumInputListBox<TerrainType> terrainTypeList = new(data, nameof(Params.TerrainType))
+			EnumInputListBox<TerrainType> terrainTypeList = new(data, nameof(Params.TerrainType), localizationPath)
 			{
 				Order = index++
 			};
@@ -138,15 +138,25 @@ public class CustomSizeUI : UIState
 			uiList.Add(overhauledDisabled);
 		}
 
-		UITextPanel<string> gotoConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.Config"))
+		UITextPanel<string> goToVanillaConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.VanillaConfig"))
 		{
 			Width = new StyleDimension(0f, 1f)
 		};
-		uiList.Add(gotoConfig);
+		uiList.Add(goToVanillaConfig);
 
-		gotoConfig.OnMouseDown += ConfigWorldGen;
-		gotoConfig.OnMouseOver += UiChanger.FadedMouseOver;
-		gotoConfig.OnMouseOut += UiChanger.FadedMouseOut;
+		goToVanillaConfig.OnMouseDown += ConfigVanillaWorldGen;
+		goToVanillaConfig.OnMouseOver += UiChanger.FadedMouseOver;
+		goToVanillaConfig.OnMouseOut += UiChanger.FadedMouseOut;
+
+		UITextPanel<string> goToOverhauledConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.OverhauledConfig"))
+		{
+			Width = new StyleDimension(0f, 1f)
+		};
+		uiList.Add(goToOverhauledConfig);
+
+		goToOverhauledConfig.OnMouseDown += ConfigOverhauledWorldGen;
+		goToOverhauledConfig.OnMouseOver += UiChanger.FadedMouseOver;
+		goToOverhauledConfig.OnMouseOut += UiChanger.FadedMouseOut;
 
 		UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 		{
@@ -160,10 +170,16 @@ public class CustomSizeUI : UIState
 		Append(goBack);
 	}
 
-	public static void ConfigWorldGen(UIMouseEvent evt, UIElement listeningElement)
+	public static void ConfigVanillaWorldGen(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.WorldGenConfigurator);
+		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator);
+	}
+
+	public static void ConfigOverhauledWorldGen(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.OverhauledWorldGenConfigurator);
 	}
 
 	public void GoBack(UIMouseEvent evt, UIElement listeningElement)

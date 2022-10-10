@@ -30,7 +30,8 @@
         },
         "Timer": "Time remaining : {0}",
         "UI": {
-            "Config": "Vanilla configuration",
+            "VanillaConfig": "Vanilla configuration",
+            "OverhauledConfig": "Overhauled configuration",
             "OverhauledDisabled": "Enable overhauled worldgen to have more options"
         },
         "Warning": "Warning"

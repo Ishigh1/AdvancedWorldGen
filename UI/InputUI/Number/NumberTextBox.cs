@@ -5,7 +5,7 @@ public abstract class NumberTextBox<T> : InputBox<T> where T : IConvertible, ICo
 	public T Max;
 	public T Min;
 
-	protected NumberTextBox(string name, T min, T max) : base(name)
+	protected NumberTextBox(string name, T min, T max, string? localizationPath) : base(name, localizationPath)
 	{
 		Min = min;
 		Max = max;

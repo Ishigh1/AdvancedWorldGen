@@ -5,18 +5,16 @@ public class ConfigNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, I
 	public Dictionary<string, object>? Data;
 	public Params? Params;
 
-	public ConfigNumberTextBox(Dictionary<string, object> data, string name, T min, T max, string? localizationPath = null) : base(name, min, max)
+	public ConfigNumberTextBox(Dictionary<string, object> data, string name, T min, T max, string? localizationPath = null) : base(name, min, max, localizationPath)
 	{
 		Data = data;
-		LocalizationPath = localizationPath;
 
 		CreateUIElement();
 	}
 
-	public ConfigNumberTextBox(Params @params, string name, T min, T max, string? localizationPath = null) : base(name, min, max)
+	public ConfigNumberTextBox(Params @params, string name, T min, T max, string? localizationPath = null) : base(name, min, max, localizationPath)
 	{
 		Params = @params;
-		LocalizationPath = localizationPath;
 
 		CreateUIElement();
 	}

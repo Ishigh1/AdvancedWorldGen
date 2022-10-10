@@ -1,0 +1,14 @@
+{
+  "Evil": {
+    "BiomeAmount": {
+      "Min": 1.89,
+      "Max": 1.89,
+      "ScaleWith": "WorldWidth"
+    },
+    "EvilBiomeSizeAroundCenter": {
+      "Min": 100,
+      "Max": 300,
+      "ScaleWith": "None"
+    }
+  }
+}

@@ -6,7 +6,7 @@ public abstract class ExpandableList : InputBox<string>
 	public Params Data;
 	public string[] PossibleValues;
 
-	protected ExpandableList(Params data, string name, bool allowOther) : base(name)
+	protected ExpandableList(Params data, string name, string? localizationPath, bool allowOther) : base(name, localizationPath)
 	{
 		AllowOther = allowOther;
 		Data = data;

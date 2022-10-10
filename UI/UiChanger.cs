@@ -8,7 +8,8 @@ public class UiChanger
 	public OptionsSelector OptionsSelector = null!;
 	private GenerationProgress? Progress;
 	public Thread Thread = null!;
-	public WorldGenConfigurator? WorldGenConfigurator;
+	public VanillaWorldGenConfigurator? VanillaWorldGenConfigurator;
+	public OverhauledWorldGenConfigurator? OverhauledWorldGenConfigurator;
 	public Stopwatch Stopwatch;
 
 	public UiChanger(Mod mod)

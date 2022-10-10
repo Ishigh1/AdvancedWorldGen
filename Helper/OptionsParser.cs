@@ -1,6 +1,6 @@
 namespace AdvancedWorldGen.Helper;
 
-public class OptionsParser
+public static class OptionsParser
 {
 	public static void Parse(string jsonText)
 	{
@@ -61,16 +61,23 @@ public class OptionsParser
 
 		if (jsonObject.TryGetValue("legacyParams", out jsonNode) && jsonNode is JObject legacyParams)
 		{
-			WorldGenConfiguration worldGenConfiguration = AdvancedWorldGenMod.Instance.UiChanger.WorldGenConfigurator!.WorldGenConfiguration;
-			foreach (JObject jObject in typeof(WorldGenConfiguration)
+			WorldGenConfiguration worldGenConfiguration = AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator!.Configuration;
+			foreach (JObject? jObject in typeof(WorldGenConfiguration)
 				         .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
 				         .Select(fieldInfo => (JObject)fieldInfo.GetValue(worldGenConfiguration)!))
 				CopyJson(jObject, legacyParams);
 		}
+
+		if (jsonObject.TryGetValue("overhauledParams", out jsonNode) && jsonNode is JObject overhauledParams)
+		{
+			JObject? worldGenConfiguration = OverhauledWorldGenConfigurator.Root;
+			CopyJson(worldGenConfiguration, overhauledParams);
+		}
 	}
 
-	private static void CopyJson(JObject source, JObject target)
+	private static void CopyJson(JObject? source, JObject target)
 	{
+		if (source is null) return;
 		foreach ((string? key, JToken? jToken1) in source)
 			if (target.TryGetValue(key, out JToken? jToken2))
 				switch (jToken1)
@@ -109,7 +116,7 @@ public class OptionsParser
 		jsonObject.Add("customParams", customParams);
 
 		JObject legacyParams = new();
-		WorldGenConfiguration worldGenConfiguration = AdvancedWorldGenMod.Instance.UiChanger.WorldGenConfigurator!.WorldGenConfiguration;
+		WorldGenConfiguration worldGenConfiguration = AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator!.Configuration;
 		foreach (JObject jObject in typeof(WorldGenConfiguration)
 			         .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
 			         .Select(fieldInfo => (JObject)fieldInfo.GetValue(worldGenConfiguration)!))
@@ -117,6 +124,9 @@ public class OptionsParser
 			if (value is not JObject jObject2 || jObject2.Count > 0)
 				legacyParams.Add(key, value);
 		jsonObject.Add("legacyParams", legacyParams);
+		
+		jsonObject.Add("overhauledParams", OverhauledWorldGenConfigurator.Root);
+		
 		return jsonObject.ToString();
 	}
 }
