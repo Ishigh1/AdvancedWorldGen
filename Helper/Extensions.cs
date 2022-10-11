@@ -26,7 +26,7 @@ public static class Extensions
     {
         return random.NextDouble() * (max - min) + min;
     }
-    
+
     #region GenerationProgress
 
     public static void Set(this GenerationProgress generationProgress, float currentValue, float maxValue,
@@ -62,6 +62,24 @@ public static class Extensions
         if (type == null) AdvancedWorldGenMod.Instance.Logger.Info($"{typeName} not found");
 
         return type;
+    }
+
+    public static object? GetFieldValue(this Type type, string fieldName, object? arg = null)
+    {
+        FieldInfo? fieldInfo = type.GetField(fieldName,
+            BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        if (fieldInfo == null) AdvancedWorldGenMod.Instance.Logger.Info($"{fieldName} not found");
+
+        return fieldInfo?.GetValue(arg);
+    }
+
+    public static object? GetPropertyValue(this Type type, string fieldName, object? arg = null)
+    {
+        PropertyInfo? propertyInfo = type.GetProperty(fieldName,
+            BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        if (propertyInfo == null) AdvancedWorldGenMod.Instance.Logger.Info($"{fieldName} not found");
+
+        return propertyInfo?.GetValue(arg);
     }
 
     public static bool TryGetMethod(this Mod mod, string typeName, string methodName, BindingFlags bindingFlags,
