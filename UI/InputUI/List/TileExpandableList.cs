@@ -4,7 +4,7 @@ public class TileExpandableList : ExpandableList
 {
 	public const int Random = -1;
 
-	public TileExpandableList(Params data, string name, string? localizationPath, bool allowOther, params int[] possibleValues) : base(data, name, localizationPath, allowOther)
+	public TileExpandableList(string name, string? localizationPath, bool allowOther, params int[] possibleValues) : base(name, localizationPath, allowOther)
 	{
 		PossibleValues = new string[possibleValues.Length];
 		for (int index = 0; index < possibleValues.Length; index++)
@@ -23,15 +23,15 @@ public class TileExpandableList : ExpandableList
 	{
 		get
 		{
-			int value = (int)Data[Name];
+			int value = (int)Params.Get(Name);
 			return value == Random ? nameof(Random) : TileID.Search.GetName(value);
 		}
 		set
 		{
 			if (value == nameof(Random))
-				Data[Name] = Random;
+				Params.Set(Name, Random);
 			else
-				Data[Name] = TileID.Search.GetId(value);
+				Params.Set(Name, TileID.Search.GetId(value));
 		}
 	}
 }

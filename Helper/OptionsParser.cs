@@ -48,14 +48,13 @@ public static class OptionsParser
 
 		if (jsonObject.TryGetValue("customParams", out jsonNode) && jsonNode is JObject customParams)
 		{
-			Params @params = Params.Instance;
 			foreach ((string? key, JToken? value) in customParams)
-				if (value is JValue jValue && @params.TryGetValue(key, out object? dataValue) && jValue.Value != null && dataValue != null)
+				if (value is JValue jValue && Params.TryGetValue(key, out object? dataValue) && jValue.Value != null && dataValue != null)
 				{
-					if (dataValue is Enum)
-						@params[key] = Enum.Parse(dataValue.GetType(), (string)jValue.Value);
-					else
-						@params[key] = Convert.ChangeType(jValue.Value, dataValue.GetType());
+					Params.Set(key,
+						dataValue is Enum
+							? Enum.Parse(dataValue.GetType(), (string)jValue.Value)
+							: Convert.ChangeType(jValue.Value, dataValue.GetType()));
 				}
 		}
 
@@ -108,7 +107,7 @@ public static class OptionsParser
 		jsonObject.Add("options", optionArray);
 
 		JObject customParams = new();
-		foreach ((string key, object? value) in Params.Instance)
+		foreach ((string key, object? value) in Params.Data)
 			if (value is Enum)
 				customParams.Add(key, Enum.GetName(value.GetType(), value));
 			else

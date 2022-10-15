@@ -35,9 +35,9 @@ public class ResetPass : ControlledWorldGenPass
 		Main.slimeRainTime = -WorldGen.genRand.Next(num917 * 2, num917 * 3);
 		Main.cloudBGActive = -WorldGen.genRand.Next(8640, num917);
 		WorldGen.skipFramingDuringGen = false;
-		if ((Params.Instance.Copper == TileExpandableList.Random &&
+		if ((Params.Copper == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || Params.Instance.Copper == TileID.Copper)
+		    || Params.Copper == TileID.Copper)
 		{
 			WorldGen.SavedOreTiers.Copper = 7;
 			WorldGen.copperBar = 20;
@@ -50,9 +50,9 @@ public class ResetPass : ControlledWorldGenPass
 		}
 
 		if ((WorldGen.dontStarveWorldGen &&
-		     Params.Instance.Iron == TileExpandableList.Random &&
+		     Params.Iron == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || Params.Instance.Iron == TileID.Iron)
+		    || Params.Iron == TileID.Iron)
 		{
 			WorldGen.SavedOreTiers.Iron = 6;
 			WorldGen.ironBar = 22;
@@ -64,9 +64,9 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.SavedOreTiers.Iron = 167;
 		}
 
-		if ((Params.Instance.Silver == TileExpandableList.Random &&
+		if ((Params.Silver == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || Params.Instance.Silver == TileID.Silver)
+		    || Params.Silver == TileID.Silver)
 		{
 			WorldGen.SavedOreTiers.Silver = 9;
 			WorldGen.silverBar = 21;
@@ -79,9 +79,9 @@ public class ResetPass : ControlledWorldGenPass
 		}
 
 		if ((WorldGen.dontStarveWorldGen &&
-		     Params.Instance.Gold == TileExpandableList.Random &&
+		     Params.Gold == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || Params.Instance.Gold == TileID.Gold)
+		    || Params.Gold == TileID.Gold)
 		{
 			WorldGen.SavedOreTiers.Gold = 8;
 			WorldGen.goldBar = 19;
@@ -140,8 +140,8 @@ public class ResetPass : ControlledWorldGenPass
 		WorldGen.snowOriginLeft = snowOriginLeft;
 		WorldGen.snowOriginRight = snowOriginRight;
 
-		float beachMultiplier = Params.Instance.BeachMultiplier;
-		if (Params.Instance.ScaledBeaches)
+		float beachMultiplier = Params.BeachMultiplier;
+		if (Params.ScaledBeaches)
 			beachMultiplier *= worldSize;
 
 		int beachSandDungeonExtraWidth = (int)(40 * beachMultiplier);

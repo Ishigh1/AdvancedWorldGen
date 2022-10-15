@@ -14,7 +14,7 @@ public class Corruption : ControlledWorldGenPass
         int biomeNumber = (int)OverhauledWorldGenConfigurator.Configuration.Next("Evil")
             .Get<JsonRange>("BiomeAmount").GetRandom(WorldGen.genRand);
         bool oldCrimson = WorldGen.crimson;
-        int middlePadding = OptionHelper.OptionsContains("Drunk.Crimruption") ? 100 : 200;
+        int middlePadding = OptionHelper.OptionsContains("Drunk.Crimruption") ? 200 : 400;
 
         OtherBiomes.Add((Main.maxTilesX / 2 - middlePadding, Main.maxTilesX / 2 + middlePadding)); //Center
         OtherBiomes.Add((WorldGen.UndergroundDesertLocation.Left, WorldGen.UndergroundDesertLocation.Right)); //Desert

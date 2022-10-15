@@ -3,13 +3,11 @@ namespace AdvancedWorldGen.UI.InputUI.List;
 public abstract class ExpandableList : InputBox<string>
 {
 	public bool AllowOther;
-	public Params Data;
 	public string[] PossibleValues;
 
-	protected ExpandableList(Params data, string name, string? localizationPath, bool allowOther) : base(name, localizationPath)
+	protected ExpandableList(string name, string? localizationPath, bool allowOther) : base(name, localizationPath)
 	{
 		AllowOther = allowOther;
-		Data = data;
 	}
 
 	public override void CreateUIElement()

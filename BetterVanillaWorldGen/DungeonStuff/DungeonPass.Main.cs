@@ -92,7 +92,7 @@ public partial class DungeonPass
 		DungeonXStrength2 = WorldGen.genRand.Next(35, 50);
 		DungeonYStrength2 = WorldGen.genRand.Next(10, 15);
 
-		int maxRooms = (int)(Main.maxTilesX * Main.maxTilesY * Params.Instance.DungeonMultiplier / (1200 * 60));
+		int maxRooms = (int)(Main.maxTilesX * Main.maxTilesY * Params.DungeonMultiplier / (1200 * 60));
 		maxRooms += WorldGen.genRand.Next(maxRooms / 3);
 
 		int num6 = 5;

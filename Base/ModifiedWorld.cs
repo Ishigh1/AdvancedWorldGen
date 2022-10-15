@@ -193,7 +193,7 @@ public class ModifiedWorld : ModSystem
 		if (state is UIWorldSelect)
 		{
 			OptionHelper.ClearAll();
-			Params.Instance.Wipe();
+			Params.Wipe();
 		}
 	}
 

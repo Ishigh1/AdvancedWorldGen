@@ -41,7 +41,7 @@ public class ClassicOptions
 
 	public static int GetTempleRooms(ref int y, float worldSize)
 	{
-		float templeSize = Params.Instance.TempleMultiplier;
+		float templeSize = Params.TempleMultiplier;
 		if (WorldGen.getGoodWorldGen && WorldGen.drunkWorldGen)
 			templeSize *= 6;
 		else if (WorldGen.getGoodWorldGen || WorldGen.drunkWorldGen) templeSize *= 3;

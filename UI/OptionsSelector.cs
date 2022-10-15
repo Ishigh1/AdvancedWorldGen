@@ -2,13 +2,13 @@ namespace AdvancedWorldGen.UI;
 
 public class OptionsSelector : UIState
 {
-	public static bool ShowHidden;
-	public LocalizedText Description;
-	public new Option? Parent;
+	private static bool ShowHidden;
+	private readonly LocalizedText Description;
+	private new readonly Option? Parent;
 
-	public UIState PreviousState;
-	public UIText UIDescription = null!;
-	public UIList UIList = null!;
+	private readonly UIState PreviousState;
+	private UIText UIDescription = null!;
+	private UIList UIList = null!;
 
 	public OptionsSelector(UIState previousState, Option? parent)
 	{
@@ -19,13 +19,13 @@ public class OptionsSelector : UIState
 		CreateOptionPanel();
 	}
 
-	public void GoBack(UIMouseEvent evt, UIElement listeningElement)
+	private void GoBack(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		Main.MenuUI.SetState(PreviousState);
 	}
 
-	public void CreateOptionPanel()
+	private void CreateOptionPanel()
 	{
 		UIPanel uiPanel = new()
 		{
@@ -134,13 +134,13 @@ public class OptionsSelector : UIState
 		Append(randomizeButton);
 	}
 
-	public static void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
+	private static void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Main.MenuUI.SetState(new CustomSizeUI());
 	}
 
-	public void CreateSelectableOptions(UIElement uiPanel)
+	private void CreateSelectableOptions(UIElement uiPanel)
 	{
 		UIScrollbar uiScrollbar = new()
 		{
@@ -304,7 +304,7 @@ public class OptionsSelector : UIState
 	{
 		if (Main.rand.NextBool(1_000))
 		{
-			Params.Instance.TempleMultiplier = float.PositiveInfinity;
+			Params.TempleMultiplier = float.PositiveInfinity;
 			return;
 		}
 		
@@ -312,25 +312,23 @@ public class OptionsSelector : UIState
 			RandomizeOption(option);
 		
 		CreateOptionList();
-
-		Params @params = Params.Instance;
 		
 		double maxSize = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (double) KnownLimits.DataLoad;
 		double ratio = Main.rand.NextFloat(2, 5);
 		double lambda = 7 / maxSize;
 		double size = -Math.Log(Main.rand.NextDouble()) / lambda + 1_000_000;
-		@params.SizeX = (int)(Math.Sqrt(size / (ratio + 1)) * ratio);
-		@params.SizeY = (int)(size / @params.SizeX);
+		Params.SizeX = (int)(Math.Sqrt(size / (ratio + 1)) * ratio);
+		Params.SizeY = (int)(size / Params.SizeX);
 		
 		FieldAccessor<int> optionSize = VanillaInterface.OptionSize(OptionHelper.WorldSettings.UIWorldCreation);
 		optionSize.Value = -1;
 
-		@params.BeachMultiplier = Main.rand.NextFloat(0.5f, 2);
-		@params.DungeonMultiplier = Main.rand.NextFloat(0.4f, 5f);
+		Params.BeachMultiplier = Main.rand.NextFloat(0.5f, 2);
+		Params.DungeonMultiplier = Main.rand.NextFloat(0.4f, 5f);
 		if (Main.rand.NextBool(4))
-			@params.TempleMultiplier = (float)(-Math.Log(Main.rand.NextDouble()) * 7 + 5);
+			Params.TempleMultiplier = (float)(-Math.Log(Main.rand.NextDouble()) * 7 + 5);
 		else 
-			@params.TempleMultiplier = Main.rand.NextFloat(0.4f, 5f);
+			Params.TempleMultiplier = Main.rand.NextFloat(0.4f, 5f);
 	}
 
 	private static void RandomizeOption(Option option)

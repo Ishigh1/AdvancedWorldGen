@@ -2,19 +2,19 @@ namespace AdvancedWorldGen.UI.InputUI.List;
 
 public class BooleanExpandableList : ExpandableList
 {
-	public BooleanExpandableList(Params data, string name, string? localizationPath) : base(data, name, localizationPath, false)
-	{
-		PossibleValues = new[]
-		{
-			bool.TrueString, bool.FalseString
-		};
+    public BooleanExpandableList(string name, string? localizationPath) : base(name, localizationPath, false)
+    {
+        PossibleValues = new[]
+        {
+            bool.TrueString, bool.FalseString
+        };
 
-		CreateUIElement();
-	}
+        CreateUIElement();
+    }
 
-	public override string Value
-	{
-		get => Data[Name].ToString()!;
-		set => Data[Name] = bool.Parse(value);
-	}
+    public override string Value
+    {
+        get => Params.Get(Name).ToString()!;
+        set => Params.Set(Name, bool.Parse(value));
+    }
 }

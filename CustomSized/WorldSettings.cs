@@ -6,6 +6,8 @@ public class WorldSettings
 
 	public WorldSettings()
 	{
+		Params.Wipe();
+		
 		OnUIWorldCreation.SetDefaultOptions += ResetSize;
 		OnUIWorldCreation.ClickSizeOption += SetSize;
 		OnWorldGen.setWorldSize += SetWorldSize;
@@ -40,16 +42,16 @@ public class WorldSettings
 		switch (sizeId)
 		{
 			case 0:
-				Params.Instance.SizeX = 4200;
-				Params.Instance.SizeY = 1200;
+				Params.SizeX = 4200;
+				Params.SizeY = 1200;
 				break;
 			case 1:
-				Params.Instance.SizeX = 6400;
-				Params.Instance.SizeY = 1800;
+				Params.SizeX = 6400;
+				Params.SizeY = 1800;
 				break;
 			case 2:
-				Params.Instance.SizeX = 8400;
-				Params.Instance.SizeY = 2400;
+				Params.SizeX = 8400;
+				Params.SizeY = 2400;
 				break;
 		}
 	}
@@ -70,10 +72,10 @@ public class WorldSettings
 
 	private static void SetWorldSize()
 	{
-		if (Params.Instance.SizeX != -1)
+		if (Params.SizeX != -1)
 		{
-			Main.maxTilesX = Params.Instance.SizeX;
-			Main.maxTilesY = Params.Instance.SizeY;
+			Main.maxTilesX = Params.SizeX;
+			Main.maxTilesY = Params.SizeY;
 		}
 
 		if (8400 < Main.maxTilesX || 2400 < Main.maxTilesY)

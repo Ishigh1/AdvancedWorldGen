@@ -45,15 +45,15 @@ public class MicroBiomes : ControlledWorldGenPass
 			case 7:
 				Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Long Minecart Tracks";
 
-				WorldGenRange worldGenLongRange = Configuration.Get<WorldGenRange>("LongTrackLength");
-				WorldGenRange worldGenShortRange = Configuration.Get<WorldGenRange>("StandardTrackLength");
+				JsonRange worldGenLongRange = Configuration.Get<JsonRange>("LongTrackLength");
+				JsonRange worldGenShortRange = Configuration.Get<JsonRange>("StandardTrackLength");
 
-				ModifiedTrackGenerator trackGenerator = new(worldGenShortRange.ScaledMinimum);
-				int longTracks = Configuration.Get<WorldGenRange>("LongTrackCount").GetRandom(WorldGen.genRand);
+				ModifiedTrackGenerator trackGenerator = new((int)worldGenShortRange.ScaledMinimum);
+				int longTracks = (int)Configuration.Get<JsonRange>("LongTrackCount").GetRandom(WorldGen.genRand);
 				MakeMinecartTracks(trackGenerator, worldGenLongRange, longTracks);
 
 				Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + "..Standard Minecart Tracks";
-				int shortTracks = Configuration.Get<WorldGenRange>("StandardTrackCount").GetRandom(WorldGen.genRand);
+				int shortTracks = (int)Configuration.Get<JsonRange>("StandardTrackCount").GetRandom(WorldGen.genRand);
 				MakeMinecartTracks(trackGenerator, worldGenShortRange, shortTracks);
 				break;
 			case 8:
@@ -62,7 +62,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		}
 	}
 
-	public string GetVariationFromIndex()
+	private string GetVariationFromIndex()
 	{
 		return Index switch
 		{
@@ -82,7 +82,7 @@ public class MicroBiomes : ControlledWorldGenPass
 	{
 		DeadMansChestBiome deadMansChestBiome = configuration.CreateBiome<DeadMansChestBiome>();
 		List<int> possibleChestsToTrapify = deadMansChestBiome.GetPossibleChestsToTrapify(WorldGen.structures);
-		int random = Configuration.Get<WorldGenRange>("DeadManChests").GetRandom(WorldGen.genRand);
+		int random = (int)Configuration.Get<JsonRange>("DeadManChests").GetRandom(WorldGen.genRand);
 		int num31 = 0;
 		while (num31 < random && possibleChestsToTrapify.Count > 0)
 		{
@@ -99,7 +99,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		if (!WorldGen.notTheBees)
 		{
 			ThinIceBiome thinIceBiome = configuration.CreateBiome<ThinIceBiome>();
-			int random2 = Configuration.Get<WorldGenRange>("ThinIcePatchCount").GetRandom(WorldGen.genRand);
+			int random2 = (int)Configuration.Get<JsonRange>("ThinIcePatchCount").GetRandom(WorldGen.genRand);
 			int num33 = 0;
 			const int iceMaxAttempts = 1000;
 			int num35 = 0;
@@ -126,7 +126,7 @@ public class MicroBiomes : ControlledWorldGenPass
 	private void MakeEnchantedSwordShrines(WorldGenConfiguration configuration)
 	{
 		EnchantedSwordBiome enchantedSwordBiome = configuration.CreateBiome<EnchantedSwordBiome>();
-		int swordShrines = Configuration.Get<WorldGenRange>("SwordShrineAttempts").GetRandom(WorldGen.genRand);
+		int swordShrines = (int)Configuration.Get<JsonRange>("SwordShrineAttempts").GetRandom(WorldGen.genRand);
 		float num36 = Configuration.Get<float>("SwordShrinePlacementChance");
 		Point origin2 = default;
 		for (int num37 = 0; num37 < swordShrines; num37++)
@@ -151,7 +151,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		if (!WorldGen.notTheBees)
 		{
 			CampsiteBiome campsiteBiome = configuration.CreateBiome<CampsiteBiome>();
-			int random4 = Configuration.Get<WorldGenRange>("CampsiteCount").GetRandom(WorldGen.genRand);
+			int random4 = (int)Configuration.Get<JsonRange>("CampsiteCount").GetRandom(WorldGen.genRand);
 			int num39 = 0;
 			while (num39 < random4)
 				if (campsiteBiome.Place(
@@ -166,7 +166,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		if (!WorldGen.notTheBees)
 		{
 			MiningExplosivesBiome miningExplosivesBiome = configuration.CreateBiome<MiningExplosivesBiome>();
-			int num40 = Configuration.Get<WorldGenRange>("ExplosiveTrapCount").GetRandom(WorldGen.genRand);
+			int num40 = (int)Configuration.Get<JsonRange>("ExplosiveTrapCount").GetRandom(WorldGen.genRand);
 			if (WorldGen.getGoodWorldGen)
 				num40 = (int)(num40 * 1.5);
 
@@ -182,12 +182,12 @@ public class MicroBiomes : ControlledWorldGenPass
 	private void MakeMahoganyTrees(WorldGenConfiguration configuration)
 	{
 		MahoganyTreeBiome mahoganyTreeBiome = configuration.CreateBiome<MahoganyTreeBiome>();
-		int treeNumber = Configuration.Get<WorldGenRange>("LivingTreeCount").GetRandom(WorldGen.genRand);
+		int treeNumber = (int)Configuration.Get<JsonRange>("LivingTreeCount").GetRandom(WorldGen.genRand);
 		int placed = 0;
 
 		int tries = 0;
 		int top = (int)Main.worldSurface + 50;
-		int bottom = 500;
+		const int bottom = 500;
 		int left = VanillaInterface.JungleLeft;
 		int right = Main.maxTilesX - VanillaInterface.JungleRight;
 		const int mahoganyMaxAttempts = 20000;
@@ -199,7 +199,7 @@ public class MicroBiomes : ControlledWorldGenPass
 				tries++;
 	}
 
-	private void MakeMinecartTracks(ModifiedTrackGenerator trackGenerator, WorldGenRange worldGenLongRange, int tracks)
+	private void MakeMinecartTracks(ModifiedTrackGenerator trackGenerator, JsonRange worldGenLongRange, int tracks)
 	{
 		int attempts = 0;
 		int longTrackGenerated = 0;
@@ -208,7 +208,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		while (longTrackGenerated < tracks && attempts < maxAttempts)
 			if (trackGenerator.Place(
 				    RandomUnderSurfaceWorldPoint((int)Main.worldSurface, 200, 10, 10),
-				    worldGenLongRange.ScaledMinimum, worldGenLongRange.ScaledMaximum))
+				    (int)worldGenLongRange.ScaledMinimum, (int)worldGenLongRange.ScaledMaximum))
 			{
 				Progress.Add(1, tracks, 0.5f);
 				longTrackGenerated++;
@@ -239,7 +239,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		}
 	}
 
-	public static Point RandomUnderSurfaceWorldPoint(int top = 0, int bottom = 0, int left = 0, int right = 0)
+	private static Point RandomUnderSurfaceWorldPoint(int top = 0, int bottom = 0, int left = 0, int right = 0)
 	{
 		while (left + right > Main.maxTilesX)
 		{

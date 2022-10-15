@@ -51,20 +51,18 @@ public class CustomSizeUI : UIState
 
 		const string localizationPath = "Mods.AdvancedWorldGen.UI.CustomSizes";
 
-		Params data = Params.Instance; 
-
 		NumberTextBox<int> sizeXInput =
-			new ConfigNumberTextBox<int>(data, nameof(Params.SizeX), 100, ushort.MaxValue, localizationPath);
+			new ConfigNumberTextBox<int>(nameof(Params.SizeX), 100, ushort.MaxValue, localizationPath);
 		sizeXInput.Order = index++;
 		uiList.Add(sizeXInput);
 
 		NumberTextBox<int> sizeYInput =
-			new ConfigNumberTextBox<int>(data, nameof(Params.SizeY), 100, ushort.MaxValue, localizationPath);
+			new ConfigNumberTextBox<int>(nameof(Params.SizeY), 100, ushort.MaxValue, localizationPath);
 		sizeYInput.Order = index++;
 		uiList.Add(sizeYInput);
 
 		NumberTextBox<float> templeModifier =
-			new ConfigNumberTextBox<float>(data, nameof(Params.TempleMultiplier), 0,
+			new ConfigNumberTextBox<float>(nameof(Params.TempleMultiplier), 0,
 				float.PositiveInfinity, localizationPath);
 		templeModifier.Order = index++;
 		uiList.Add(templeModifier);
@@ -72,58 +70,57 @@ public class CustomSizeUI : UIState
 		if (WorldgenSettings.Revamped)
 		{
 			NumberTextBox<float> dungeonModifier =
-				new ConfigNumberTextBox<float>(data, nameof(Params.DungeonMultiplier), 0,
+				new ConfigNumberTextBox<float>(nameof(Params.DungeonMultiplier), 0,
 					float.MaxValue, localizationPath);
 			dungeonModifier.Order = index++;
 			uiList.Add(dungeonModifier);
 
-			NumberTextBox<float> beachModifier = new ConfigNumberTextBox<float>(data,
-				nameof(Params.BeachMultiplier), 0,
+			NumberTextBox<float> beachModifier = new ConfigNumberTextBox<float>(nameof(Params.BeachMultiplier), 0,
 				float.PositiveInfinity, localizationPath);
 			beachModifier.Order = index++;
 			uiList.Add(beachModifier);
 
-			TileExpandableList copperList = new(data, nameof(Params.Copper), localizationPath, false,
+			TileExpandableList copperList = new(nameof(Params.Copper), localizationPath, false,
 				TileExpandableList.Random, TileID.Copper, TileID.Tin)
 			{
 				Order = index++
 			};
 			uiList.Add(copperList);
 
-			TileExpandableList ironList = new(data, nameof(Params.Iron), localizationPath, false,
+			TileExpandableList ironList = new(nameof(Params.Iron), localizationPath, false,
 				TileExpandableList.Random, TileID.Iron, TileID.Lead)
 			{
 				Order = index++
 			};
 			uiList.Add(ironList);
 
-			TileExpandableList silverList = new(data, nameof(Params.Silver), localizationPath, false,
+			TileExpandableList silverList = new(nameof(Params.Silver), localizationPath, false,
 				TileExpandableList.Random, TileID.Silver, TileID.Tungsten)
 			{
 				Order = index++
 			};
 			uiList.Add(silverList);
 
-			TileExpandableList goldList = new(data, nameof(Params.Gold), localizationPath, false,
+			TileExpandableList goldList = new(nameof(Params.Gold), localizationPath, false,
 				TileExpandableList.Random, TileID.Gold, TileID.Platinum)
 			{
 				Order = index++
 			};
 			uiList.Add(goldList);
 			
-			BooleanExpandableList beachList = new(data, nameof(Params.ScaledBeaches), localizationPath)
+			BooleanExpandableList beachList = new(nameof(Params.ScaledBeaches), localizationPath)
 			{
 				Order = index++
 			};
 			uiList.Add(beachList);
 
-			BooleanExpandableList terrainList = new(data, nameof(Params.EditTerrainPass), localizationPath)
+			BooleanExpandableList terrainList = new(nameof(Params.EditTerrainPass), localizationPath)
 			{
 				Order = index++
 			};
 			uiList.Add(terrainList);
 
-			EnumInputListBox<TerrainType> terrainTypeList = new(data, nameof(Params.TerrainType), localizationPath)
+			EnumInputListBox<TerrainType> terrainTypeList = new(nameof(Params.TerrainType), localizationPath)
 			{
 				Order = index++
 			};
@@ -185,11 +182,11 @@ public class CustomSizeUI : UIState
 	private void GoBack(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		int size = Params.Instance.SizeX switch
+		int size = Params.SizeX switch
 		{
-			4200 when Params.Instance.SizeY == 1200 => 0,
-			6400 when Params.Instance.SizeY == 1800 => 1,
-			8400 when Params.Instance.SizeY == 2400 => 2,
+			4200 when Params.SizeY == 1200 => 0,
+			6400 when Params.SizeY == 1800 => 1,
+			8400 when Params.SizeY == 2400 => 2,
 			_ => -1
 		};
 
