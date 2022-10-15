@@ -11,7 +11,7 @@ public class Special : ModSystem
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 	{
-		TempleWorld = float.IsInfinity(OptionHelper.WorldSettings.Params.TempleMultiplier);
+		TempleWorld = float.IsInfinity(Params.Instance.TempleMultiplier);
 		if (TempleWorld)
 		{
 			tasks.RemoveAll(pass =>

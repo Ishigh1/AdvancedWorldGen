@@ -3,11 +3,11 @@ namespace AdvancedWorldGen.UI;
 public class UiChanger
 {
 	public static Asset<Texture2D> CopyOptionsTexture = null!;
-	public readonly Asset<Texture2D> OptionsTexture;
-	public UIText Description = null!;
+	private readonly Asset<Texture2D> OptionsTexture;
+	private UIText Description = null!;
 	public OptionsSelector OptionsSelector = null!;
 	private GenerationProgress? Progress;
-	public Thread Thread = null!;
+	private Thread Thread = null!;
 	public VanillaWorldGenConfigurator? VanillaWorldGenConfigurator;
 	public OverhauledWorldGenConfigurator? OverhauledWorldGenConfigurator;
 	public Stopwatch Stopwatch;

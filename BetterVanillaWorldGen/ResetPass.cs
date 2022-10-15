@@ -35,9 +35,9 @@ public class ResetPass : ControlledWorldGenPass
 		Main.slimeRainTime = -WorldGen.genRand.Next(num917 * 2, num917 * 3);
 		Main.cloudBGActive = -WorldGen.genRand.Next(8640, num917);
 		WorldGen.skipFramingDuringGen = false;
-		if ((OptionHelper.WorldSettings.Params.Copper == TileExpandableList.Random &&
+		if ((Params.Instance.Copper == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || OptionHelper.WorldSettings.Params.Copper == TileID.Copper)
+		    || Params.Instance.Copper == TileID.Copper)
 		{
 			WorldGen.SavedOreTiers.Copper = 7;
 			WorldGen.copperBar = 20;
@@ -50,9 +50,9 @@ public class ResetPass : ControlledWorldGenPass
 		}
 
 		if ((WorldGen.dontStarveWorldGen &&
-		     OptionHelper.WorldSettings.Params.Iron == TileExpandableList.Random &&
+		     Params.Instance.Iron == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || OptionHelper.WorldSettings.Params.Iron == TileID.Iron)
+		    || Params.Instance.Iron == TileID.Iron)
 		{
 			WorldGen.SavedOreTiers.Iron = 6;
 			WorldGen.ironBar = 22;
@@ -64,9 +64,9 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.SavedOreTiers.Iron = 167;
 		}
 
-		if ((OptionHelper.WorldSettings.Params.Silver == TileExpandableList.Random &&
+		if ((Params.Instance.Silver == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || OptionHelper.WorldSettings.Params.Silver == TileID.Silver)
+		    || Params.Instance.Silver == TileID.Silver)
 		{
 			WorldGen.SavedOreTiers.Silver = 9;
 			WorldGen.silverBar = 21;
@@ -79,9 +79,9 @@ public class ResetPass : ControlledWorldGenPass
 		}
 
 		if ((WorldGen.dontStarveWorldGen &&
-		     OptionHelper.WorldSettings.Params.Gold == TileExpandableList.Random &&
+		     Params.Instance.Gold == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
-		    || OptionHelper.WorldSettings.Params.Gold == TileID.Gold)
+		    || Params.Instance.Gold == TileID.Gold)
 		{
 			WorldGen.SavedOreTiers.Gold = 8;
 			WorldGen.goldBar = 19;
@@ -140,8 +140,8 @@ public class ResetPass : ControlledWorldGenPass
 		WorldGen.snowOriginLeft = snowOriginLeft;
 		WorldGen.snowOriginRight = snowOriginRight;
 
-		float beachMultiplier = OptionHelper.WorldSettings.Params.BeachMultiplier;
-		if (OptionHelper.WorldSettings.Params.ScaledBeaches)
+		float beachMultiplier = Params.Instance.BeachMultiplier;
+		if (Params.Instance.ScaledBeaches)
 			beachMultiplier *= worldSize;
 
 		int beachSandDungeonExtraWidth = (int)(40 * beachMultiplier);

@@ -173,7 +173,7 @@ public class TerrainPass : ControlledWorldGenPass
 
 	private static void DrawTerrainUI(Dictionary<string, object> currentState)
 	{
-		if (Main.dedServ || !OptionHelper.WorldSettings.Params.EditTerrainPass)
+		if (Main.dedServ || !Params.Instance.EditTerrainPass)
 			return;
 		
 		UIState uiState = Main.MenuUI.CurrentState;
@@ -299,9 +299,9 @@ public class TerrainPass : ControlledWorldGenPass
 		}
 	}
 
-	public static int GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
+	private static int GenerateWorldSurfaceOffset(TerrainFeatureType featureType)
 	{
-		switch (OptionHelper.WorldSettings.Params.TerrainType)
+		switch (Params.Instance.TerrainType)
 		{
 			case TerrainType.Superflat:
 				return 0;
@@ -310,7 +310,7 @@ public class TerrainPass : ControlledWorldGenPass
 				break;
 		}
 		int num = 0;
-		if (OptionHelper.WorldSettings.Params.TerrainType == TerrainType.Mountainous)
+		if (Params.Instance.TerrainType == TerrainType.Mountainous)
 			switch (featureType)
 			{
 				case TerrainFeatureType.Plateau:

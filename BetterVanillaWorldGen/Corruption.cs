@@ -11,8 +11,8 @@ public class Corruption : ControlledWorldGenPass
 
     protected override void ApplyPass()
     {
-        int biomeNumber = OverhauledWorldGenConfigurator.Configuration.Next("Evil")
-            .Get<WorldGenRange>("BiomeAmount").GetRandom(WorldGen.genRand);
+        int biomeNumber = (int)OverhauledWorldGenConfigurator.Configuration.Next("Evil")
+            .Get<JsonRange>("BiomeAmount").GetRandom(WorldGen.genRand);
         bool oldCrimson = WorldGen.crimson;
         int middlePadding = OptionHelper.OptionsContains("Drunk.Crimruption") ? 100 : 200;
 
@@ -52,7 +52,7 @@ public class Corruption : ControlledWorldGenPass
         WorldGen.crimson = oldCrimson;
     }
 
-    public void GenerateCorruption(double biomeNumber, bool left)
+    private void GenerateCorruption(double biomeNumber, bool left)
     {
         Progress.Message = Lang.gen[20].Value;
 
@@ -203,13 +203,14 @@ public class Corruption : ControlledWorldGenPass
     private (int left, int center, int right) FindSuitableCenter(bool left)
     {
         int pity = 0;
-        WorldGenRange biomeSideSize = OverhauledWorldGenConfigurator.Configuration.Next("Evil")
-            .Get<WorldGenRange>("EvilBiomeSizeAroundCenter");
+        JsonRange biomeSideSize = OverhauledWorldGenConfigurator.Configuration.Next("Evil")
+            .Get<JsonRange>("EvilBiomeSizeAroundCenter");
         while (true)
         {
             int half = Main.maxTilesX / 2;
-            int center = biomeSideSize.GetRandom(WorldGen.genRand);
-            int biomeSize = center + biomeSideSize.GetRandom(WorldGen.genRand);
+            double doubleCenter = biomeSideSize.GetRandom(WorldGen.genRand);
+            int center = (int)Math.Round(doubleCenter);
+            int biomeSize = (int)(doubleCenter + biomeSideSize.GetRandom(WorldGen.genRand));
 
             int min = left ? WorldGen.evilBiomeBeachAvoidance : half;
             int currentX = min;

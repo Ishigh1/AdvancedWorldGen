@@ -74,7 +74,7 @@ public partial class DungeonPass
 		if (VanillaInterface.Calamity.Enabled)
 		{
 			WorldGen.dungeonX = Utils.Clamp(dungeonX, VanillaInterface.Calamity.SulphurousSeaBiomeWidth + 100, Main.maxTilesX - VanillaInterface.Calamity.SulphurousSeaBiomeWidth - 100);
-			WorldUtils.Find(new Point(dungeonX, dungeonY), Searches.Chain(new Searches.Down(9001), new Conditions.IsSolid()), out var result);
+			WorldUtils.Find(new Point(dungeonX, dungeonY), Searches.Chain(new Searches.Down(9001), new Conditions.IsSolid()), out Point result);
 			WorldGen.dungeonY = result.Y - 10;
 		}
 		else
@@ -92,7 +92,7 @@ public partial class DungeonPass
 		DungeonXStrength2 = WorldGen.genRand.Next(35, 50);
 		DungeonYStrength2 = WorldGen.genRand.Next(10, 15);
 
-		int maxRooms = (int)(Main.maxTilesX * Main.maxTilesY * OptionHelper.WorldSettings.Params.DungeonMultiplier / (1200 * 60));
+		int maxRooms = (int)(Main.maxTilesX * Main.maxTilesY * Params.Instance.DungeonMultiplier / (1200 * 60));
 		maxRooms += WorldGen.genRand.Next(maxRooms / 3);
 
 		int num6 = 5;

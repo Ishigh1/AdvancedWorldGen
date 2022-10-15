@@ -2,13 +2,10 @@ namespace AdvancedWorldGen.CustomSized;
 
 public class WorldSettings
 {
-	public Params Params;
-
 	public UIWorldCreation UIWorldCreation = null!;
 
 	public WorldSettings()
 	{
-		Params = new Params();
 		OnUIWorldCreation.SetDefaultOptions += ResetSize;
 		OnUIWorldCreation.ClickSizeOption += SetSize;
 		OnWorldGen.setWorldSize += SetWorldSize;
@@ -18,7 +15,7 @@ public class WorldSettings
 		OnWorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
 	}
 
-	public void ResetSize(OnUIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)
+	private void ResetSize(OnUIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)
 	{
 		orig(self);
 		UIWorldCreation = self;
@@ -28,7 +25,7 @@ public class WorldSettings
 		AdvancedWorldGenMod.Instance.UiChanger.OverhauledWorldGenConfigurator = new OverhauledWorldGenConfigurator();
 	}
 
-	public void SetSize(OnUIWorldCreation.orig_ClickSizeOption orig, UIWorldCreation self, UIMouseEvent evt,
+	private static void SetSize(OnUIWorldCreation.orig_ClickSizeOption orig, UIWorldCreation self, UIMouseEvent evt,
 		UIElement listeningElement)
 	{
 		orig(self, evt, listeningElement);
@@ -38,45 +35,45 @@ public class WorldSettings
 		SetSizeTo(newSize);
 	}
 
-	public void SetSizeTo(int sizeId)
+	private static void SetSizeTo(int sizeId)
 	{
 		switch (sizeId)
 		{
 			case 0:
-				Params.SizeX = 4200;
-				Params.SizeY = 1200;
+				Params.Instance.SizeX = 4200;
+				Params.Instance.SizeY = 1200;
 				break;
 			case 1:
-				Params.SizeX = 6400;
-				Params.SizeY = 1800;
+				Params.Instance.SizeX = 6400;
+				Params.Instance.SizeY = 1800;
 				break;
 			case 2:
-				Params.SizeX = 8400;
-				Params.SizeY = 2400;
+				Params.Instance.SizeX = 8400;
+				Params.Instance.SizeY = 2400;
 				break;
 		}
 	}
 
-	public void SetWorldSize(OnWorldGen.orig_setWorldSize orig)
+	private static void SetWorldSize(OnWorldGen.orig_setWorldSize orig)
 	{
 		SetWorldSize();
 
 		orig();
 	}
 
-	public void SetWorldSize(OnWorldGen.orig_clearWorld orig)
+	private static void SetWorldSize(OnWorldGen.orig_clearWorld orig)
 	{
 		SetWorldSize();
 
 		orig();
 	}
 
-	public void SetWorldSize()
+	private static void SetWorldSize()
 	{
-		if (Params.SizeX != -1)
+		if (Params.Instance.SizeX != -1)
 		{
-			Main.maxTilesX = Params.SizeX;
-			Main.maxTilesY = Params.SizeY;
+			Main.maxTilesX = Params.Instance.SizeX;
+			Main.maxTilesY = Params.Instance.SizeY;
 		}
 
 		if (8400 < Main.maxTilesX || 2400 < Main.maxTilesY)

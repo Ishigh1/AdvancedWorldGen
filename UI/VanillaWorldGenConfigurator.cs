@@ -79,7 +79,7 @@ public class VanillaWorldGenConfigurator : UIState
 		Recalculate();
 	}
 
-	public static void TransformJsonToUI(UIList uiPanel, ref int index, JToken jToken)
+	private static void TransformJsonToUI(UIList uiPanel, ref int index, JToken jToken)
 	{
 		const string localizationPath = "Mods.AdvancedWorldGen.UI.Vanilla";
 		switch (jToken.Type)
@@ -109,7 +109,7 @@ public class VanillaWorldGenConfigurator : UIState
 				break;
 			case JTokenType.String:
 				//Create a world scaling text box.
-				EnumInputListBox<WorldGenRange.ScalingMode> enumInput = new((JValue)jToken, localizationPath)
+				EnumInputListBox<JsonRange.ScalingMode> enumInput = new((JValue)jToken, localizationPath)
 				{
 					Order = index++
 				};

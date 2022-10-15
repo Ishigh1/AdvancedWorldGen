@@ -48,7 +48,7 @@ public static class OptionsParser
 
 		if (jsonObject.TryGetValue("customParams", out jsonNode) && jsonNode is JObject customParams)
 		{
-			Params @params = OptionHelper.WorldSettings.Params;
+			Params @params = Params.Instance;
 			foreach ((string? key, JToken? value) in customParams)
 				if (value is JValue jValue && @params.TryGetValue(key, out object? dataValue) && jValue.Value != null && dataValue != null)
 				{
@@ -108,7 +108,7 @@ public static class OptionsParser
 		jsonObject.Add("options", optionArray);
 
 		JObject customParams = new();
-		foreach ((string key, object? value) in OptionHelper.WorldSettings.Params)
+		foreach ((string key, object? value) in Params.Instance)
 			if (value is Enum)
 				customParams.Add(key, Enum.GetName(value.GetType(), value));
 			else

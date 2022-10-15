@@ -2,10 +2,13 @@ namespace AdvancedWorldGen.CustomSized;
 
 public class Params
 {
+	public static Params Instance;
+	
 	private Dictionary<string, object> Data = new();
 
 	public Params()
 	{
+		Instance = this;
 		Initialize();
 	}
 

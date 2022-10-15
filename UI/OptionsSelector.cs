@@ -304,7 +304,7 @@ public class OptionsSelector : UIState
 	{
 		if (Main.rand.NextBool(1_000))
 		{
-			OptionHelper.WorldSettings.Params.TempleMultiplier = float.PositiveInfinity;
+			Params.Instance.TempleMultiplier = float.PositiveInfinity;
 			return;
 		}
 		
@@ -313,7 +313,8 @@ public class OptionsSelector : UIState
 		
 		CreateOptionList();
 
-		Params @params = OptionHelper.WorldSettings.Params;
+		Params @params = Params.Instance;
+		
 		double maxSize = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (double) KnownLimits.DataLoad;
 		double ratio = Main.rand.NextFloat(2, 5);
 		double lambda = 7 / maxSize;

@@ -51,7 +51,7 @@ public class CustomSizeUI : UIState
 
 		const string localizationPath = "Mods.AdvancedWorldGen.UI.CustomSizes";
 
-		Params data = WorldSettings.Params; 
+		Params data = Params.Instance; 
 
 		NumberTextBox<int> sizeXInput =
 			new ConfigNumberTextBox<int>(data, nameof(Params.SizeX), 100, ushort.MaxValue, localizationPath);
@@ -176,20 +176,20 @@ public class CustomSizeUI : UIState
 		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator);
 	}
 
-	public static void ConfigOverhauledWorldGen(UIMouseEvent evt, UIElement listeningElement)
+	private static void ConfigOverhauledWorldGen(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.OverhauledWorldGenConfigurator);
 	}
 
-	public void GoBack(UIMouseEvent evt, UIElement listeningElement)
+	private void GoBack(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		int size = WorldSettings.Params.SizeX switch
+		int size = Params.Instance.SizeX switch
 		{
-			4200 when WorldSettings.Params.SizeY == 1200 => 0,
-			6400 when WorldSettings.Params.SizeY == 1800 => 1,
-			8400 when WorldSettings.Params.SizeY == 2400 => 2,
+			4200 when Params.Instance.SizeY == 1200 => 0,
+			6400 when Params.Instance.SizeY == 1800 => 1,
+			8400 when Params.Instance.SizeY == 2400 => 2,
 			_ => -1
 		};
 

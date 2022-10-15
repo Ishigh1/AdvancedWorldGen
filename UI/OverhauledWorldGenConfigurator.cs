@@ -14,7 +14,7 @@ public class OverhauledWorldGenConfigurator : UIState
 		SetupUI();
 	}
 
-	public void SetupUI()
+	private void SetupUI()
 	{
 		UIPanel uiPanel = new()
 		{
@@ -70,7 +70,7 @@ public class OverhauledWorldGenConfigurator : UIState
 		Recalculate();
 	}
 
-	public static void TransformJsonToUI(UIList uiPanel, ref int index, JToken? jToken)
+	private static void TransformJsonToUI(UIList uiPanel, ref int index, JToken? jToken)
 	{
 		const string localizationPath = "Mods.AdvancedWorldGen.UI.Overhauled";
 		switch (jToken.Type)
@@ -111,7 +111,7 @@ public class OverhauledWorldGenConfigurator : UIState
 		}
 	}
 
-	public static void GoBack(UIMouseEvent evt, UIElement listeningElement)
+	private static void GoBack(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		Main.MenuUI.SetState(new CustomSizeUI());
