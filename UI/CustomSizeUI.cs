@@ -215,10 +215,10 @@ public class CustomSizeUI : UIState
 
 		int oldSizeX = Main.tile.Width;
 		int oldSizeY = Main.tile.Height;
-		if (oldSizeX < WorldSettings.Params.SizeX || oldSizeY < WorldSettings.Params.SizeY)
+		if (oldSizeX < Params.SizeX || oldSizeY < Params.SizeY)
 		{
-			int newSizeX = Math.Max(WorldSettings.Params.SizeX, 8400);
-			int newSizeY = Math.Max(WorldSettings.Params.SizeY, 2100);
+			int newSizeX = Math.Max(Params.SizeX, 8400);
+			int newSizeY = Math.Max(Params.SizeY, 2100);
 
 			if (KnownLimits.WillCrashMissingEwe(newSizeX, newSizeY))
 			{
@@ -230,14 +230,14 @@ public class CustomSizeUI : UIState
 
 		if (WorldgenSettings.Revamped)
 		{
-			if (WorldSettings.Params.SizeX < KnownLimits.OverhauledMinX)
+			if (Params.SizeX < KnownLimits.OverhauledMinX)
 			{
 				Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.OverhauledMinX", KnownLimits.OverhauledMinX), Prev, Next));
 				return;
 			}
 
-			if (WorldSettings.Params.SizeY < KnownLimits.OverhauledMinY)
+			if (Params.SizeY < KnownLimits.OverhauledMinY)
 			{
 				Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.OverhauledMinY", KnownLimits.OverhauledMinY), Prev, Next));
@@ -246,20 +246,20 @@ public class CustomSizeUI : UIState
 		}
 		else
 		{
-			if (WorldSettings.Params.SizeX < KnownLimits.NormalMinX)
+			if (Params.SizeX < KnownLimits.NormalMinX)
 			{
 				Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.NormalMinX", KnownLimits.NormalMinX), Prev, Next));
 				return;
 			}
 
-			else if (WorldSettings.Params.SizeY > KnownLimits.NormalMaxX)
+			else if (Params.SizeY > KnownLimits.NormalMaxX)
 			{
 				Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.NormalMaxX"), Prev, Next));
 				return;
 			}
-			else if (WorldSettings.Params.SizeY > KnownLimits.ComfortNormalMaxX)
+			else if (Params.SizeY > KnownLimits.ComfortNormalMaxX)
 			{
 				Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.ComfortNormalMaxX"), Prev, Next));
