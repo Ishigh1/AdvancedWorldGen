@@ -78,6 +78,7 @@ public class Corruption : ControlledWorldGenPass
             if (Main.tile[corruptionCenter, y].HasTile || Main.tile[corruptionCenter, y].WallType > 0)
             {
                 WorldGen.ChasmRunner(corruptionCenter, y, WorldGen.genRand.Next(150, 300), true);
+                break;
             }
 
         int pitSpacing = 20;
@@ -227,7 +228,7 @@ public class Corruption : ControlledWorldGenPass
                 int nextIndex = -1;
                 for (int i = 0; i < OtherBiomes.Count; i++)
                 {
-                    int start = OtherBiomes[i].start + pity;
+                    int start = OtherBiomes[i].start + i == 0 ? 0 : pity;
                     if (start < nextX)
                     {
                         nextX = start;
@@ -242,7 +243,7 @@ public class Corruption : ControlledWorldGenPass
                 if (nextX > currentX)
                 {
                     int start = Math.Max(nextX - biomeSize, currentX);
-                    int end = Math.Max(OtherBiomes[nextIndex].end - pity, start);
+                    int end = Math.Max(OtherBiomes[nextIndex].end - nextIndex == 0 ? 0 : pity, start);
                     if (start != end)
                     {
                         skips.Add((start, end - start));
@@ -255,7 +256,7 @@ public class Corruption : ControlledWorldGenPass
 
             if (allowedX == 0)
             {
-                pity += 50;
+                pity += 10;
                 continue;
             }
 

@@ -59,8 +59,8 @@ public class MushroomPatches : ControlledWorldGenPass
 					ShroomPatch(x2, y2);
 				}
 
-				const int halfDistanceBetweenBiomes = 250;
-				mushroomBiomesRectangles.Insert(new Rectangle(x - halfDistanceBetweenBiomes, y - halfDistanceBetweenBiomes, 2 * halfDistanceBetweenBiomes, 2 * halfDistanceBetweenBiomes));
+				const int distanceBetweenBiomes = 500;
+				mushroomBiomesRectangles.Insert(new Rectangle(x - distanceBetweenBiomes, y - distanceBetweenBiomes, 2 * distanceBetweenBiomes, 2 * distanceBetweenBiomes));
 			}
 
 			if (tries > Main.maxTilesX / 2)
@@ -179,7 +179,7 @@ public class MushroomPatches : ControlledWorldGenPass
 				else if (num12 < num5 * 0.4 * (0.95 + WorldGen.genRand.NextFloat() * 0.1))
 				{
 					tile.TileType = 59;
-					if (num2 == num4 && y > vector.Y)
+					if (Math.Abs(num2 - num4) < 0.1f && y > vector.Y)
 						tile.HasTile = true;
 
 					if (tile.WallType > 0)

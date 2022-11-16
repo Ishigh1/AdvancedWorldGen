@@ -30,6 +30,7 @@ public class ResetPass : ControlledWorldGenPass
 		WorldGen.UndergroundDesertHiveLocation = Rectangle.Empty;
 		WorldGen.numLarva = 0;
 		GenerationChests.ShuffleChests(WorldGen.genRand);
+		WorldGen.houseCount = 0;
 
 		const int num917 = 86400;
 		Main.slimeRainTime = -WorldGen.genRand.Next(num917 * 2, num917 * 3);
@@ -177,9 +178,10 @@ public class ResetPass : ControlledWorldGenPass
 		WorldGen.rightBeachStart = rightBeachStart;
 
 		int dungeonShift = (int)(50 * worldSize);
-		WorldGen.dungeonLocation = dungeonSide == -1
-			? WorldGen.genRand.Next(leftBeachEnd + dungeonShift, (int)(Main.maxTilesX * 0.2))
-			: WorldGen.genRand.Next((int)(Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
+		if (dungeonSide == -1)
+			WorldGen.dungeonLocation = WorldGen.genRand.Next(leftBeachEnd + dungeonShift, (int)(Main.maxTilesX * 0.2));
+		else
+			WorldGen.dungeonLocation = WorldGen.genRand.Next((int)(Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
 
 		// Allow worlds to be bigger than x >= 31000, I don't like this fix though, fixed size arrays are bad.
 		int numCaves = Math.Max(30, (int) (Main.maxTilesX * 0.001));
