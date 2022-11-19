@@ -9,7 +9,7 @@ public class MushroomPatches : ControlledWorldGenPass
 	protected override void ApplyPass()
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.13");
-		int mushroomBiomes = Math.Max(1, Main.maxTilesX / 700);
+		int mushroomBiomes = (int)Math.Max(1, Math.Sqrt(Main.maxTilesX * Main.maxTilesY) / 374);
 
 		RTree mushroomBiomesRectangles = RTree.Root();
 
@@ -131,8 +131,8 @@ public class MushroomPatches : ControlledWorldGenPass
 	private static void ShroomPatch(int baseX, int baseY)
 	{
 		int num = WorldGen.genRand.Next(80, 100);
-		int num2 = WorldGen.genRand.Next(20, 26);
-		float multiplier = Main.maxTilesX / 4200f;
+		float num2 = WorldGen.genRand.Next(20, 26);
+		float multiplier = Main.maxTilesX * Main.maxTilesY / (4200f * 1200f);
 		if (WorldGen.getGoodWorldGen)
 			multiplier *= 2f;
 
@@ -147,8 +147,8 @@ public class MushroomPatches : ControlledWorldGenPass
 
 		while (num > 0 && num2 > 0)
 		{
-			num -= WorldGen.genRand.Next(3);
-			num2 -= 1;
+			num -= WorldGen.genRand.Next((int)(3 * multiplier));
+			num2 -= multiplier;
 			int xMin = (int)Math.Max(0, centerX - num * 0.5);
 			int xMax = (int)Math.Min(Main.maxTilesX, centerX + num * 0.5);
 			int yMin = (int)Math.Max(0, centerY - num * 0.5);

@@ -14,12 +14,12 @@ public class Corruption : ControlledWorldGenPass
 		int biomeNumber = (int)OverhauledWorldGenConfigurator.Configuration.Next("Evil")
 			.Get<JsonRange>("BiomeAmount").GetRandom(WorldGen.genRand);
 		bool oldCrimson = WorldGen.crimson;
-		int middlePadding = OptionHelper.OptionsContains("Drunk.Crimruption") ? 200 : 400;
+		int middlePadding = OptionHelper.OptionsContains("Drunk.Crimruption") ? 100 : 200;
 
 		OtherBiomes.Add((Main.maxTilesX / 2 - middlePadding, Main.maxTilesX / 2 + middlePadding)); //Center
 		OtherBiomes.Add((WorldGen.UndergroundDesertLocation.Left, WorldGen.UndergroundDesertLocation.Right)); //Desert
 		OtherBiomes.Add((WorldGen.snowOriginLeft, WorldGen.snowOriginRight)); //Snow
-		OtherBiomes.Add((VanillaInterface.JungleLeft - 10, VanillaInterface.JungleRight + 10)); //Jungle
+		OtherBiomes.Add((VanillaInterface.JungleLeft, VanillaInterface.JungleRight)); //Jungle
 		OtherBiomes.Add(WorldGen.dungeonSide < 0 ? (0, 400) : (Main.maxTilesX - 400, Main.maxTilesX)); // Dungeon beach
 		OtherBiomes.Add((WorldGen.dungeonLocation - 100, WorldGen.dungeonLocation + 100)); // Dungeon
 		if (OptionHelper.OptionsContains("Drunk.Crimruption"))
@@ -217,14 +217,15 @@ public class Corruption : ControlledWorldGenPass
 			int allowedX = 0;
 
 			List<(int start, int size)> skips = new();
+			List<(int start, int end)> otherBiomes = new(OtherBiomes);
 
 			while (true)
 			{
 				int nextX = max;
 				int nextIndex = -1;
-				for (int i = 0; i < OtherBiomes.Count; i++)
+				for (int i = 0; i < otherBiomes.Count; i++)
 				{
-					int start = OtherBiomes[i].start + i == 0 ? 0 : pity;
+					int start = otherBiomes[i].start + (i == 0 ? 0 : pity);
 					if (start < nextX)
 					{
 						nextX = start;
@@ -239,7 +240,7 @@ public class Corruption : ControlledWorldGenPass
 				if (nextX > currentX)
 				{
 					int start = Math.Max(nextX - biomeSize, currentX);
-					int end = Math.Max(OtherBiomes[nextIndex].end - nextIndex == 0 ? 0 : pity, start);
+					int end = Math.Max(otherBiomes[nextIndex].end - (nextIndex == 0 ? 0 : pity), start);
 					if (start != end)
 					{
 						skips.Add((start, end - start));
@@ -247,7 +248,7 @@ public class Corruption : ControlledWorldGenPass
 					}
 				}
 
-				OtherBiomes.RemoveAt(nextIndex);
+				otherBiomes.RemoveAt(nextIndex);
 			}
 
 			if (allowedX == 0)
@@ -271,7 +272,6 @@ public class Corruption : ControlledWorldGenPass
 	private void GenerateCrimson(double biomeNumber, bool left)
 	{
 		Progress.Message = Lang.gen[72].Value;
-
 		WorldGen.crimson = true;
 
 		for (int biome = 0; biome < biomeNumber; biome++)
@@ -279,10 +279,9 @@ public class Corruption : ControlledWorldGenPass
 			Progress.Set(biome, (float)biomeNumber);
 			(int crimsonLeft, int crimsonCenter, int crimsonRight) = FindSuitableCenter(left);
 
-
 			int minY = (from floatingIslandInfo in VanillaInterface.FloatingIslandInfos
 				let islandX = floatingIslandInfo.X
-				where crimsonRight - 100 < islandX && crimsonRight + 100 > islandX
+				where crimsonLeft - 100 < islandX && crimsonRight + 100 > islandX
 				select floatingIslandInfo.Y + 50).Prepend((int)WorldGen.worldSurfaceLow - 50).Max();
 
 			WorldGen.CrimStart(crimsonCenter, minY - 10);
