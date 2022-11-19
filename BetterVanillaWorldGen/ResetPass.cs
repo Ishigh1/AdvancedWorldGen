@@ -181,10 +181,11 @@ public class ResetPass : ControlledWorldGenPass
 		if (dungeonSide == -1)
 			WorldGen.dungeonLocation = WorldGen.genRand.Next(leftBeachEnd + dungeonShift, (int)(Main.maxTilesX * 0.2));
 		else
-			WorldGen.dungeonLocation = WorldGen.genRand.Next((int)(Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
+			WorldGen.dungeonLocation =
+				WorldGen.genRand.Next((int)(Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
 
 		// Allow worlds to be bigger than x >= 31000, I don't like this fix though, fixed size arrays are bad.
-		int numCaves = Math.Max(30, (int) (Main.maxTilesX * 0.001));
+		int numCaves = Math.Max(30, (int)(Main.maxTilesX * 0.001));
 		WorldGen.mCaveX = new int[numCaves];
 		WorldGen.mCaveY = new int[numCaves];
 	}

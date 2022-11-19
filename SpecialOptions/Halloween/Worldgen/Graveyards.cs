@@ -5,7 +5,7 @@ public class Graveyards : GenPass
 	public Graveyards() : base("Graveyards", 100f)
 	{
 	}
-	
+
 	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 	{
 		for (int i = 0; i < Utilities.WorldSize; i++) PlaceSimpleGraveyard();

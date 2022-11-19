@@ -77,7 +77,8 @@ public static partial class Replacer
 				(float weight, int found) = weights[genPass.Name];
 				if (weight != 0) genPass.Weight = weight / found;
 				Type type = genPass.GetType();
-				MethodInfo? methodInfo = type.GetMethod("ApplyPass", BindingFlags.Instance | BindingFlags.NonPublic, new []{typeof(GenerationProgress), typeof(GameConfiguration)});
+				MethodInfo? methodInfo =
+ type.GetMethod("ApplyPass", BindingFlags.Instance | BindingFlags.NonPublic, new []{typeof(GenerationProgress), typeof(GameConfiguration)});
 				if (methodInfo != null)
 				{
 					if (!MethodInfos.Contains(methodInfo) && MethodInfos.All(info => info.DeclaringType != methodInfo.DeclaringType))

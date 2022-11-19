@@ -307,19 +307,19 @@ public class OptionsSelector : UIState
 			Params.TempleMultiplier = float.PositiveInfinity;
 			return;
 		}
-		
+
 		foreach ((string? _, Option? option) in OptionHelper.OptionDict)
 			RandomizeOption(option);
-		
+
 		CreateOptionList();
-		
-		double maxSize = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (double) KnownLimits.DataLoad;
+
+		double maxSize = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (double)KnownLimits.DataLoad;
 		double ratio = Main.rand.NextFloat(2, 5);
 		double lambda = 7 / maxSize;
 		double size = -Math.Log(Main.rand.NextDouble()) / lambda + 1_000_000;
 		Params.SizeX = (int)(Math.Sqrt(size / (ratio + 1)) * ratio);
 		Params.SizeY = (int)(size / Params.SizeX);
-		
+
 		FieldAccessor<int> optionSize = VanillaInterface.OptionSize(OptionHelper.WorldSettings.UIWorldCreation);
 		optionSize.Value = -1;
 
@@ -327,7 +327,7 @@ public class OptionsSelector : UIState
 		Params.DungeonMultiplier = Main.rand.NextFloat(0.4f, 5f);
 		if (Main.rand.NextBool(4))
 			Params.TempleMultiplier = (float)(-Math.Log(Main.rand.NextDouble()) * 7 + 5);
-		else 
+		else
 			Params.TempleMultiplier = Main.rand.NextFloat(0.4f, 5f);
 	}
 
@@ -341,7 +341,9 @@ public class OptionsSelector : UIState
 				option.Disable();
 		}
 		else
+		{
 			foreach (Option? childOption in option.Children)
 				RandomizeOption(childOption);
+		}
 	}
 }

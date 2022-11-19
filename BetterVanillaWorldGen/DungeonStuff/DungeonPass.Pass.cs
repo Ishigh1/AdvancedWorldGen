@@ -18,7 +18,8 @@ public partial class DungeonPass : ControlledWorldGenPass
 		}
 		else
 		{
-			dungeonY = (int)((Main.worldSurface + Main.rockLayer) / 2.0) + WorldGen.genRand.Next(-200, 200) * Main.maxTilesY / 1200;
+			dungeonY = (int)((Main.worldSurface + Main.rockLayer) / 2.0) +
+			           WorldGen.genRand.Next(-200, 200) * Main.maxTilesY / 1200;
 			for (int num665 = 0; num665 < 10; num665++)
 				if (WorldGen.SolidTile(dungeonX, dungeonY + num665))
 				{

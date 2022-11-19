@@ -12,7 +12,7 @@ public static class DedServUi
 		bool showHidden = false;
 		string errorMessage = "";
 
-        OptionHelper.ClearAll();
+		OptionHelper.ClearAll();
 
 		while (!finished)
 		{
@@ -101,7 +101,7 @@ public static class DedServUi
 				if (options.Count == 0)
 					errorMessage = Language.GetTextValue("Mods.AdvancedWorldGen.Conflict.InvalidImport");
 				else
-                    OptionHelper.Import(options);
+					OptionHelper.Import(options);
 			}
 			else
 			{

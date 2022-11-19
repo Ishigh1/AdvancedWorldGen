@@ -4,12 +4,12 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.Worldgen;
 
 public class HaloweenTraps : GenPass
 {
+	public const int Left = -1;
+	public const int Right = 1;
+
 	public HaloweenTraps() : base("HalloweenTraps", 100f)
 	{
 	}
-
-	public const int Left = -1;
-	public const int Right = 1;
 
 	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 	{

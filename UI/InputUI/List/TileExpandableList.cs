@@ -4,7 +4,8 @@ public class TileExpandableList : ExpandableList
 {
 	public const int Random = -1;
 
-	public TileExpandableList(string name, string? localizationPath, bool allowOther, params int[] possibleValues) : base(name, localizationPath, allowOther)
+	public TileExpandableList(string name, string? localizationPath, bool allowOther, params int[] possibleValues) :
+		base(name, localizationPath, allowOther)
 	{
 		PossibleValues = new string[possibleValues.Length];
 		for (int index = 0; index < possibleValues.Length; index++)

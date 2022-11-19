@@ -2,22 +2,26 @@ namespace AdvancedWorldGen.Base;
 
 public class NPCPass : GenPass
 {
+	public static readonly List<int> NPCs = new()
+	{
+		NPCID.Merchant, NPCID.Nurse, NPCID.ArmsDealer, NPCID.Dryad, NPCID.Guide, NPCID.Demolitionist, NPCID.Clothier,
+		NPCID.GoblinTinkerer, NPCID.Wizard, NPCID.Mechanic,
+		NPCID.Truffle, NPCID.Steampunker, NPCID.DyeTrader, NPCID.PartyGirl, NPCID.Cyborg, NPCID.Painter,
+		NPCID.WitchDoctor, NPCID.Pirate, NPCID.Stylist, NPCID.Angler,
+		NPCID.TaxCollector, NPCID.DD2Bartender, NPCID.Golfer, NPCID.BestiaryGirl, NPCID.Princess, NPCID.TownBunny,
+		NPCID.TownDog
+	};
+
 	public NPCPass() : base("Guide", 0.016f)
 	{
 	}
-	
-	public static readonly List<int> NPCs = new()
-	{
-		NPCID.Merchant, NPCID.Nurse, NPCID.ArmsDealer, NPCID.Dryad, NPCID.Guide, NPCID.Demolitionist, NPCID.Clothier, NPCID.GoblinTinkerer, NPCID.Wizard, NPCID.Mechanic,
-		NPCID.Truffle, NPCID.Steampunker, NPCID.DyeTrader, NPCID.PartyGirl, NPCID.Cyborg, NPCID.Painter, NPCID.WitchDoctor, NPCID.Pirate, NPCID.Stylist, NPCID.Angler,
-		NPCID.TaxCollector, NPCID.DD2Bartender, NPCID.Golfer, NPCID.BestiaryGirl, NPCID.Princess, NPCID.TownBunny, NPCID.TownDog
-	};
 
 	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 	{
 		HashSet<int> availableNPCs = NPCs.ToHashSet();
 		int alreadyPlaced = 0;
-		if (OptionHelper.OptionsContains("Random.Painted")) TryAddNpc(availableNPCs, NPCID.Painter, ref alreadyPlaced, out _);
+		if (OptionHelper.OptionsContains("Random.Painted"))
+			TryAddNpc(availableNPCs, NPCID.Painter, ref alreadyPlaced, out _);
 
 		if (WorldGen.notTheBees) TryAddNpc(availableNPCs, NPCID.Merchant, ref alreadyPlaced, out _);
 
@@ -59,7 +63,8 @@ public class NPCPass : GenPass
 
 		if (OptionHelper.OptionsContains("Santa")) TryAddNpc(availableNPCs, NPCID.SantaClaus, ref alreadyPlaced, out _);
 
-		if (OptionHelper.OptionsContains("Random")) TryAddNpc(availableNPCs, RandomNpc(availableNPCs), ref alreadyPlaced, out _);
+		if (OptionHelper.OptionsContains("Random"))
+			TryAddNpc(availableNPCs, RandomNpc(availableNPCs), ref alreadyPlaced, out _);
 
 		if (alreadyPlaced == 0) TryAddNpc(availableNPCs, NPCID.Guide, ref alreadyPlaced, out _);
 	}

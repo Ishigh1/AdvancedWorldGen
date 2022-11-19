@@ -78,7 +78,10 @@ public class AdvancedWorldGenMod : Mod
 								parentNames = args[4] as string;
 							if (parentNames != null)
 								parent = parentNames.Split('.').Aggregate(parent,
-									(current, parentName) => current is null ? OptionHelper.OptionDict[parentName] : current.Children.Find(option => option.Name == parentName));
+									(current, parentName) =>
+										current is null
+											? OptionHelper.OptionDict[parentName]
+											: current.Children.Find(option => option.Name == parentName));
 						}
 
 						if (parent is null)

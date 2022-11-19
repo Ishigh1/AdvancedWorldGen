@@ -8,9 +8,9 @@ public class TileReplacer : GenPass
 	public const int Honey = -4;
 
 	public static HashSet<int> NotReplaced = null!;
+	private readonly Dictionary<int, int> DirectReplacements;
 
-	private new string Name;
-	private Dictionary<int, int> DirectReplacements;
+	private new readonly string Name;
 	public Dictionary<int, SpecialCase> SpecialCases;
 
 	public TileReplacer(string name) : base("replace_" + name, 200f)

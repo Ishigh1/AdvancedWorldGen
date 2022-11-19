@@ -16,7 +16,7 @@ public static class ModifiedDesertHive
 		foreach (((int x, int y), List<int> _) in hive)
 		{
 			Tile.SmoothSlope(x, y, false);
-			WorldGenerator.CurrentGenerationProgress.Add(1, hive.Count, 1/6f);
+			WorldGenerator.CurrentGenerationProgress.Add(1, hive.Count, 1 / 6f);
 		}
 	}
 
@@ -51,7 +51,8 @@ public static class ModifiedDesertHive
 		return registerInterestingTiles;
 	}
 
-	public static void PlaceClustersArea(ClusterGroup clusterGroup, Dictionary<(int, int), List<int>> hive) // Weight : 1/3
+	public static void
+		PlaceClustersArea(ClusterGroup clusterGroup, Dictionary<(int, int), List<int>> hive) // Weight : 1/3
 	{
 		foreach (((int x, int y), List<int> interestingClusters) in hive)
 		{
@@ -141,7 +142,7 @@ public static class ModifiedDesertHive
 			Tile testTile2 = Main.tile[x, y + 2];
 			if (tile.TileType == 53 && (!WorldGen.SolidTile(testTile) || !WorldGen.SolidTile(testTile2)))
 				tile.TileType = 397;
-			WorldGenerator.CurrentGenerationProgress.Add(1, size, 1/12f);
+			WorldGenerator.CurrentGenerationProgress.Add(1, size, 1 / 12f);
 		}
 
 		for (int x = xMin; x < xMax; x++)
@@ -184,7 +185,8 @@ public static class ModifiedDesertHive
 					}
 				}
 			}
-			WorldGenerator.CurrentGenerationProgress.Add(1, size, 1/12f);
+
+			WorldGenerator.CurrentGenerationProgress.Add(1, size, 1 / 12f);
 		}
 	}
 

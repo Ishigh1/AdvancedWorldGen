@@ -6,11 +6,11 @@ public class UiChanger
 	private readonly Asset<Texture2D> OptionsTexture;
 	private UIText Description = null!;
 	public OptionsSelector OptionsSelector = null!;
+	public OverhauledWorldGenConfigurator? OverhauledWorldGenConfigurator;
 	private GenerationProgress? Progress;
+	public Stopwatch Stopwatch;
 	private Thread Thread = null!;
 	public VanillaWorldGenConfigurator? VanillaWorldGenConfigurator;
-	public OverhauledWorldGenConfigurator? OverhauledWorldGenConfigurator;
-	public Stopwatch Stopwatch;
 
 	public UiChanger(Mod mod)
 	{
@@ -94,6 +94,7 @@ public class UiChanger
 			uiTextPanel.OnMouseOut += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
 			uiTextPanel.OnClick += Abort;
 		}
+
 		Stopwatch.Start();
 	}
 
@@ -139,7 +140,7 @@ public class UiChanger
 
 		container.Append(groupOptionButton);
 
-        OptionHelper.ClearAll();
+		OptionHelper.ClearAll();
 		OptionsSelector = new OptionsSelector(self, null);
 	}
 
@@ -211,7 +212,8 @@ public class UiChanger
 		return options;
 	}
 
-	public static HashSet<string> SetupCopyButton(UIImageButton copyOptionButton, HashSet<string> options, UIText uiText)
+	public static HashSet<string> SetupCopyButton(UIImageButton copyOptionButton, HashSet<string> options,
+		UIText uiText)
 	{
 		copyOptionButton.OnMouseOver += delegate
 		{
@@ -259,7 +261,7 @@ public class UiChanger
 		return options;
 	}
 
-	public static void SetSpecialName(On.Terraria.IO.WorldFileData.orig_SetWorldSize orig, WorldFileData self, int x, int y)
+	public static void SetSpecialName(OnWorldFileData.orig_SetWorldSize orig, WorldFileData self, int x, int y)
 	{
 		self.WorldSizeX = x;
 		self.WorldSizeY = y;

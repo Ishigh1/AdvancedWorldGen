@@ -1,9 +1,9 @@
 ﻿{
-    "Mods.AdvancedWorldGen.UI.CustomSizes": {
-        "SizeX": "Ширина :",
-        "SizeY": "Высота :",
-        "TempleMultiplier": "Множитель размера Храма джунглей :",
-        "DungeonMultiplier": "Множитель размера Данжа :",
-        "BeachMultiplier": "Множитель размера пляжа :"
-    }
+  "Mods.AdvancedWorldGen.UI.CustomSizes": {
+    "SizeX": "Ширина :",
+    "SizeY": "Высота :",
+    "TempleMultiplier": "Множитель размера Храма джунглей :",
+    "DungeonMultiplier": "Множитель размера Данжа :",
+    "BeachMultiplier": "Множитель размера пляжа :"
+  }
 }

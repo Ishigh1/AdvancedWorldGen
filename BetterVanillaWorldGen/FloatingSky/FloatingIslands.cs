@@ -51,7 +51,8 @@ public class FloatingIslands : ControlledWorldGenPass
 					if (flag54)
 					{
 						num820 = -1;
-						int y = WorldGen.genRand.Next(Math.Max(50, Math.Min(90, (int)WorldGen.worldSurfaceLow - 50)), num823 - 100);
+						int y = WorldGen.genRand.Next(Math.Max(50, Math.Min(90, (int)WorldGen.worldSurfaceLow - 50)),
+							num823 - 100);
 
 						FloatingIslandInfo floatingIslandInfo = new()
 						{
@@ -92,7 +93,7 @@ public class FloatingIslands : ControlledWorldGenPass
 								WorldGen.CloudIsland(x, y);
 							}
 						}
-						
+
 						VanillaInterface.FloatingIslandInfos.Add(floatingIslandInfo);
 						malus += 361;
 						foreach ((int left, int right) in placedBiomes)
@@ -102,6 +103,7 @@ public class FloatingIslands : ControlledWorldGenPass
 							if (x - 180 < left && x + 180 > left)
 								malus -= x + 180 - left;
 						}
+
 						placedBiomes.Add((x - 180, x + 180));
 						placedBiomes.Sort((biome1, biome2) => biome1.CompareTo(biome2));
 						WorldGen.numIslandHouses++;

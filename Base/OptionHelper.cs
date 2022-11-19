@@ -4,7 +4,7 @@ public class OptionHelper
 {
 	public static Dictionary<string, Option> OptionDict = null!;
 	public static WorldSettings WorldSettings;
-	
+
 	public static void InitializeDict(Mod mod)
 	{
 		WorldSettings = new WorldSettings();
@@ -48,7 +48,7 @@ public class OptionHelper
 
 	public static void Import(ICollection<string> optionNames)
 	{
-        ClearAll();
+		ClearAll();
 		Legacy.ReplaceOldOptions(optionNames);
 		foreach (string optionName in optionNames)
 			if (OptionDict.TryGetValue(optionName, out Option? option))

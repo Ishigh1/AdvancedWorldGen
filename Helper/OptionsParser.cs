@@ -20,18 +20,23 @@ public static class OptionsParser
 			JToken? seed = vanillaParams.GetValue("seed");
 			if (seed is { Type: JTokenType.String })
 			{
-				ReflectionAccessor<string> seedAccessor = new FieldAccessor<string>(typeof(UIWorldCreation), "_optionSeed", OptionHelper.WorldSettings.UIWorldCreation);
+				ReflectionAccessor<string> seedAccessor = new FieldAccessor<string>(typeof(UIWorldCreation),
+					"_optionSeed", OptionHelper.WorldSettings.UIWorldCreation);
 				seedAccessor.Value = seed.ToString();
-				new ReflectionCaller(typeof(UIWorldCreation), "UpdateInputFields", OptionHelper.WorldSettings.UIWorldCreation).Call();
+				new ReflectionCaller(typeof(UIWorldCreation), "UpdateInputFields",
+					OptionHelper.WorldSettings.UIWorldCreation).Call();
 			}
 
 			JToken? evil = vanillaParams.GetValue("evil");
 			if (evil is { Type: JTokenType.String })
 			{
-				ReflectionAccessor<int> evilAccessor = new FieldAccessor<int>(typeof(UIWorldCreation), "_optionEvil", OptionHelper.WorldSettings.UIWorldCreation);
+				ReflectionAccessor<int> evilAccessor = new FieldAccessor<int>(typeof(UIWorldCreation), "_optionEvil",
+					OptionHelper.WorldSettings.UIWorldCreation);
 				evilAccessor.Value = int.Parse(evil.Value<string>());
-				new ReflectionCaller(typeof(UIWorldCreation), "UpdateSliders", OptionHelper.WorldSettings.UIWorldCreation).Call();
-				new ReflectionCaller(typeof(UIWorldCreation), "UpdatePreviewPlate", OptionHelper.WorldSettings.UIWorldCreation).Call();
+				new ReflectionCaller(typeof(UIWorldCreation), "UpdateSliders",
+					OptionHelper.WorldSettings.UIWorldCreation).Call();
+				new ReflectionCaller(typeof(UIWorldCreation), "UpdatePreviewPlate",
+					OptionHelper.WorldSettings.UIWorldCreation).Call();
 			}
 		}
 
@@ -47,20 +52,18 @@ public static class OptionsParser
 
 
 		if (jsonObject.TryGetValue("customParams", out jsonNode) && jsonNode is JObject customParams)
-		{
 			foreach ((string? key, JToken? value) in customParams)
-				if (value is JValue jValue && Params.TryGetValue(key, out object? dataValue) && jValue.Value != null && dataValue != null)
-				{
+				if (value is JValue jValue && Params.TryGetValue(key, out object? dataValue) && jValue.Value != null &&
+				    dataValue != null)
 					Params.Set(key,
 						dataValue is Enum
 							? Enum.Parse(dataValue.GetType(), (string)jValue.Value)
 							: Convert.ChangeType(jValue.Value, dataValue.GetType()));
-				}
-		}
 
 		if (jsonObject.TryGetValue("legacyParams", out jsonNode) && jsonNode is JObject legacyParams)
 		{
-			WorldGenConfiguration worldGenConfiguration = AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator!.Configuration;
+			WorldGenConfiguration worldGenConfiguration =
+				AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator!.Configuration;
 			foreach (JObject? jObject in typeof(WorldGenConfiguration)
 				         .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
 				         .Select(fieldInfo => (JObject)fieldInfo.GetValue(worldGenConfiguration)!))
@@ -95,9 +98,11 @@ public static class OptionsParser
 		JObject jsonObject = new();
 
 		JObject vanillaParams = new();
-		ReflectionAccessor<string> seedAccessor = new FieldAccessor<string>(typeof(UIWorldCreation), "_optionSeed", OptionHelper.WorldSettings.UIWorldCreation);
+		ReflectionAccessor<string> seedAccessor = new FieldAccessor<string>(typeof(UIWorldCreation), "_optionSeed",
+			OptionHelper.WorldSettings.UIWorldCreation);
 		vanillaParams.Add("seed", seedAccessor.Value);
-		ReflectionAccessor<int> evilAccessor = new FieldAccessor<int>(typeof(UIWorldCreation), "_optionEvil", OptionHelper.WorldSettings.UIWorldCreation);
+		ReflectionAccessor<int> evilAccessor = new FieldAccessor<int>(typeof(UIWorldCreation), "_optionEvil",
+			OptionHelper.WorldSettings.UIWorldCreation);
 		vanillaParams.Add("evil", evilAccessor.Value.ToString());
 		jsonObject.Add("vanillaParams", vanillaParams);
 
@@ -115,7 +120,8 @@ public static class OptionsParser
 		jsonObject.Add("customParams", customParams);
 
 		JObject legacyParams = new();
-		WorldGenConfiguration worldGenConfiguration = AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator!.Configuration;
+		WorldGenConfiguration worldGenConfiguration =
+			AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator!.Configuration;
 		foreach (JObject jObject in typeof(WorldGenConfiguration)
 			         .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
 			         .Select(fieldInfo => (JObject)fieldInfo.GetValue(worldGenConfiguration)!))
@@ -123,9 +129,9 @@ public static class OptionsParser
 			if (value is not JObject jObject2 || jObject2.Count > 0)
 				legacyParams.Add(key, value);
 		jsonObject.Add("legacyParams", legacyParams);
-		
+
 		jsonObject.Add("overhauledParams", OverhauledWorldGenConfigurator.Root);
-		
+
 		return jsonObject.ToString();
 	}
 }

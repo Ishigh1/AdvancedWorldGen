@@ -73,8 +73,10 @@ public partial class DungeonPass
 		WorldGen.dungeonLake = true;
 		if (VanillaInterface.Calamity.Enabled)
 		{
-			WorldGen.dungeonX = Utils.Clamp(dungeonX, VanillaInterface.Calamity.SulphurousSeaBiomeWidth + 100, Main.maxTilesX - VanillaInterface.Calamity.SulphurousSeaBiomeWidth - 100);
-			WorldUtils.Find(new Point(dungeonX, dungeonY), Searches.Chain(new Searches.Down(9001), new Conditions.IsSolid()), out Point result);
+			WorldGen.dungeonX = Utils.Clamp(dungeonX, VanillaInterface.Calamity.SulphurousSeaBiomeWidth + 100,
+				Main.maxTilesX - VanillaInterface.Calamity.SulphurousSeaBiomeWidth - 100);
+			WorldUtils.Find(new Point(dungeonX, dungeonY),
+				Searches.Chain(new Searches.Down(9001), new Conditions.IsSolid()), out Point result);
 			WorldGen.dungeonY = result.Y - 10;
 		}
 		else
@@ -849,7 +851,8 @@ public partial class DungeonPass
 								};
 
 								WorldGen.PlaceTile(x, y, type, true);
-								if (Main.tile[x, y].TileType == TileID.Bottles) Main.tile[x, y].TileFrameX = WorldGen.genRand.NextBool(2) ? (short)18 : (short)36;
+								if (Main.tile[x, y].TileType == TileID.Bottles)
+									Main.tile[x, y].TileFrameX = WorldGen.genRand.NextBool(2) ? (short)18 : (short)36;
 							}
 						}
 					}

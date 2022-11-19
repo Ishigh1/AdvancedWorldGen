@@ -1,10 +1,9 @@
-using AdvancedWorldGen.Helper.Accessors;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 
 public partial class VanillaInterface // Yes, I know, bad name...
 {
 	public CalamityInterface Calamity;
+
 	public VanillaInterface()
 	{
 		Calamity = new CalamityInterface();
@@ -23,7 +22,7 @@ public partial class VanillaInterface // Yes, I know, bad name...
 				if (sulphurousSea == null)
 					return;
 				SulphurousSeaBiomeWidth = new PropertyAccessor<int>(sulphurousSea, "BiomeWidth");
-				
+
 				Enabled = true;
 			}
 		}

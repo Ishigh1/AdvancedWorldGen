@@ -245,7 +245,7 @@ public static class GenerationChests
 				HellChest = 0;
 		}
 
-		Terraria.Chest chest = Main.chest[chestIndex];
+		Chest chest = Main.chest[chestIndex];
 		int index = 0;
 		while (index == 0)
 		{

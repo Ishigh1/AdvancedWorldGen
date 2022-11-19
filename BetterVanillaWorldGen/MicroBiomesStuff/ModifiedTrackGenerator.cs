@@ -87,9 +87,12 @@ public class ModifiedTrackGenerator
 	public bool Place(Point origin, int minLength, int maxLength)
 	{
 		CurrentTrack = new List<TrackHistory>(maxLength);
-		foreach (List<TrackHistory> trackHistories in TrackList.Where(trackHistories => trackHistories.Count >= minLength))
+		foreach (List<TrackHistory> trackHistories in TrackList.Where(trackHistories =>
+			         trackHistories.Count >= minLength))
 		{
-			CurrentTrack = trackHistories.Count > maxLength ? trackHistories.GetRange(trackHistories.Count - maxLength, maxLength) : trackHistories;
+			CurrentTrack = trackHistories.Count > maxLength
+				? trackHistories.GetRange(trackHistories.Count - maxLength, maxLength)
+				: trackHistories;
 			TrackList.Remove(trackHistories);
 			break;
 		}
@@ -200,7 +203,9 @@ public class ModifiedTrackGenerator
 				}
 			}
 
-			if (trackPlacementState != TrackPlacementState.Available && trackPlacementState2 == TrackPlacementState.Obstructed && (trackPlacementState != TrackPlacementState.Obstructed || trackSlope != TrackSlope.Straight))
+			if (trackPlacementState != TrackPlacementState.Available &&
+			    trackPlacementState2 == TrackPlacementState.Obstructed &&
+			    (trackPlacementState != TrackPlacementState.Obstructed || trackSlope != TrackSlope.Straight))
 			{
 				trackSlope = trackSlope2;
 				num = 10;
@@ -255,7 +260,8 @@ public class ModifiedTrackGenerator
 			Tile.SmoothSlope(trackHistory.X, trackHistory.Y - PlayerHeight);
 			Tile tile = Main.tile[trackHistory.X, trackHistory.Y];
 			bool wire = tile.RedWire;
-			if (array[k] && k < CurrentTrack.Count - 1 && k > 0 && CurrentTrack[k - 1].Y == trackHistory.Y && CurrentTrack[k + 1].Y == trackHistory.Y)
+			if (array[k] && k < CurrentTrack.Count - 1 && k > 0 && CurrentTrack[k - 1].Y == trackHistory.Y &&
+			    CurrentTrack[k + 1].Y == trackHistory.Y)
 			{
 				tile.ClearEverything();
 				WorldGen.PlaceTile(trackHistory.X, trackHistory.Y, 314, false, true, -1, 1);
@@ -279,7 +285,8 @@ public class ModifiedTrackGenerator
 
 	public void RegisterBadRectangle()
 	{
-		RTree.Insert(new Rectangle(CurrentTrackRectangle.X - 5, CurrentTrackRectangle.Y - 5, CurrentTrackRectangle.Width + 10, CurrentTrackRectangle.Height + 10));
+		RTree.Insert(new Rectangle(CurrentTrackRectangle.X - 5, CurrentTrackRectangle.Y - 5,
+			CurrentTrackRectangle.Width + 10, CurrentTrackRectangle.Height + 10));
 	}
 
 	private void AppendToHistory(TrackSlope slope, TrackMode mode = TrackMode.Normal)
@@ -313,7 +320,8 @@ public class ModifiedTrackGenerator
 		{
 			if (CurrentTrack[num].Slope == TrackSlope.Down)
 			{
-				TrackPlacementState historySegmentPlacementState = GetHistorySegmentPlacementState(num, CurrentTrack.Count - num);
+				TrackPlacementState historySegmentPlacementState =
+					GetHistorySegmentPlacementState(num, CurrentTrack.Count - num);
 
 				if (historySegmentPlacementState == TrackPlacementState.Available)
 					return historySegmentPlacementState;
@@ -330,7 +338,8 @@ public class ModifiedTrackGenerator
 		for (num = CurrentTrack.Count - 1; num >= CurrentTrack.Count - num2 + 1; num--)
 			if (CurrentTrack[num].Slope == TrackSlope.Straight)
 			{
-				TrackPlacementState historySegmentPlacementState2 = GetHistorySegmentPlacementState(CurrentTrack.Count - num2, num2);
+				TrackPlacementState historySegmentPlacementState2 =
+					GetHistorySegmentPlacementState(CurrentTrack.Count - num2, num2);
 				if (historySegmentPlacementState2 == TrackPlacementState.Available)
 					return historySegmentPlacementState2;
 
@@ -448,7 +457,10 @@ public class ModifiedTrackGenerator
 		if (InvalidTiles.Contains(type)) return true;
 
 		for (int k = -1; k <= 1; k++)
-			if (Main.tile[x + k, y].HasTile && (Main.tile[x + k, y].TileType == 314 || !TileID.Sets.GeneralPlacementTiles[Main.tile[x + k, y].TileType]) && !(WorldGen.notTheBees && Main.tile[x + k, y].TileType == 225))
+			if (Main.tile[x + k, y].HasTile &&
+			    (Main.tile[x + k, y].TileType == 314 ||
+			     !TileID.Sets.GeneralPlacementTiles[Main.tile[x + k, y].TileType]) &&
+			    !(WorldGen.notTheBees && Main.tile[x + k, y].TileType == 225))
 				return true;
 
 		return false;

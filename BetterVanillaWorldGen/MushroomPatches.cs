@@ -19,52 +19,10 @@ public class MushroomPatches : ControlledWorldGenPass
 		                   jungleMinX;
 		int xMax = Main.maxTilesX - jungleSpread - spread;
 
-		int tries = 0;
 		for (int numBiome = 0; numBiome < mushroomBiomes; numBiome++)
 		{
 			Progress.Set(numBiome, mushroomBiomes, 0.5f);
-			bool isValid = false;
-			while (!isValid)
-			{
-				tries++;
-				if (tries > Main.maxTilesX / 2)
-					break;
-
-				int x = WorldGen.genRand.Next(spread, xMax);
-				if (x >= jungleMinX)
-					x += jungleSpread;
-
-				int y;
-				y = Main.rockLayer + 200 < Main.UnderworldLayer
-					? WorldGen.genRand.Next((int)Main.rockLayer + 50, Main.UnderworldLayer - 100)
-					: WorldGen.genRand.Next((int)Main.rockLayer, Main.UnderworldLayer);
-
-				isValid = !mushroomBiomesRectangles.Contains(x, y);
-
-				for (int x2 = x - spread; x2 < x + spread && isValid; x2 += 10)
-				for (int y2 = y - spread; y2 < y + spread && isValid; y2 += 10)
-					if (Main.tile[x2, y2].TileType is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce or
-					    TileID.JungleGrass or TileID.Granite or TileID.Marble)
-						isValid = false;
-					else if (WorldGen.UndergroundDesertLocation.Contains(new Point(x2, y2))) isValid = false;
-
-				if (!isValid)
-					continue;
-
-				ShroomPatch(x, y);
-				for (int it = 0; it < 5; it++)
-				{
-					int x2 = x + WorldGen.genRand.Next(-40, 41);
-					int y2 = y + WorldGen.genRand.Next(-40, 41);
-					ShroomPatch(x2, y2);
-				}
-
-				const int distanceBetweenBiomes = 500;
-				mushroomBiomesRectangles.Insert(new Rectangle(x - distanceBetweenBiomes, y - distanceBetweenBiomes, 2 * distanceBetweenBiomes, 2 * distanceBetweenBiomes));
-			}
-
-			if (tries > Main.maxTilesX / 2)
-				break;
+			TryToShroomPatch(spread, xMax, jungleMinX, jungleSpread, mushroomBiomesRectangles);
 		}
 
 		for (int x = 50; x < Main.maxTilesX - 50; x++)
@@ -123,19 +81,67 @@ public class MushroomPatches : ControlledWorldGenPass
 		}
 	}
 
-	public static void ShroomPatch(int x, int y)
+	private static void TryToShroomPatch(int spread, int xMax, int jungleMinX, int jungleSpread,
+		RTree mushroomBiomesRectangles)
+	{
+		bool isValid = false;
+		int tries = 0;
+		while (true)
+		{
+			if (tries++ > 350)
+				break;
+
+			int x = WorldGen.genRand.Next(spread, xMax);
+			if (x >= jungleMinX)
+				x += jungleSpread;
+
+			int y;
+			y = Main.rockLayer + 200 < Main.UnderworldLayer
+				? WorldGen.genRand.Next((int)Main.rockLayer + 50, Main.UnderworldLayer - 100)
+				: WorldGen.genRand.Next((int)Main.rockLayer, Main.UnderworldLayer);
+
+			isValid = !mushroomBiomesRectangles.Contains(x, y);
+			if (!isValid)
+				continue;
+
+			for (int x2 = x - spread; x2 < x + spread && isValid; x2 += 10)
+			for (int y2 = y - spread; y2 < y + spread && isValid; y2 += 10)
+				if (Main.tile[x2, y2].TileType is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce or
+				    TileID.JungleGrass or TileID.Granite or TileID.Marble)
+					isValid = false;
+				else if (WorldGen.UndergroundDesertLocation.Contains(new Point(x2, y2))) isValid = false;
+
+			if (!isValid)
+				continue;
+
+			ShroomPatch(x, y);
+			for (int it = 0; it < 5; it++)
+			{
+				int x2 = x + WorldGen.genRand.Next(-40, 41);
+				int y2 = y + WorldGen.genRand.Next(-40, 41);
+				ShroomPatch(x2, y2);
+			}
+
+			const int distanceBetweenBiomes = 500;
+			mushroomBiomesRectangles.Insert(new Rectangle(x - distanceBetweenBiomes, y - distanceBetweenBiomes,
+				2 * distanceBetweenBiomes, 2 * distanceBetweenBiomes));
+		}
+	}
+
+	private static void ShroomPatch(int baseX, int baseY)
 	{
 		int num = WorldGen.genRand.Next(80, 100);
 		int num2 = WorldGen.genRand.Next(20, 26);
-		float worldSize = Main.maxTilesX / 4200f;
+		float multiplier = Main.maxTilesX / 4200f;
 		if (WorldGen.getGoodWorldGen)
-			worldSize *= 2f;
+			multiplier *= 2f;
 
-		num = (int)(num * worldSize);
-		num2 = (int)(num2 * worldSize);
+		num = (int)(num * multiplier);
+		num2 = (int)(num2 * multiplier);
 		float num4 = num2 - 1f;
 
-		Vector2 vector = new(x, y - num2 * 0.3f);
+		float centerX = baseX;
+		float centerY = baseY - num2 * 0.3f;
 		Vector2 vector2 = new(WorldGen.genRand.Next(-100, 101) * 0.005f,
 			WorldGen.genRand.Next(-200, -100) * 0.005f);
 
@@ -143,78 +149,54 @@ public class MushroomPatches : ControlledWorldGenPass
 		{
 			num -= WorldGen.genRand.Next(3);
 			num2 -= 1;
-			int xMin = (int)(vector.X - num * 0.5);
-			int xMax = (int)(vector.X + num * 0.5);
-			int yMin = (int)(vector.Y - num * 0.5);
-			int yMax = (int)(vector.Y + num * 0.5);
-			if (xMin < 0)
-				xMin = 0;
-
-			if (xMax > Main.maxTilesX)
-				xMax = Main.maxTilesX;
-
-			if (yMin < 0)
-				yMin = 0;
-
-			if (yMax > Main.maxTilesY)
-				yMax = Main.maxTilesY;
+			int xMin = (int)Math.Max(0, centerX - num * 0.5);
+			int xMax = (int)Math.Min(Main.maxTilesX, centerX + num * 0.5);
+			int yMin = (int)Math.Max(0, centerY - num * 0.5);
+			int yMax = (int)Math.Min(Main.maxTilesY, centerY + num * 0.5);
 
 			double num5 = num * WorldGen.genRand.Next(80, 120) * 0.01;
-			for (x = xMin; x < xMax; x++)
-			for (y = yMin; y < yMax; y++)
+			for (baseX = xMin; baseX < xMax; baseX++)
+			for (baseY = yMin; baseY < yMax; baseY++)
 			{
-				float num10 = Math.Abs(x - vector.X);
-				float num11 = Math.Abs((y - vector.Y) * 2.3f);
+				float num10 = Math.Abs(baseX - centerX);
+				float num11 = Math.Abs((baseY - centerY) * 2.3f);
 				double num12 = Math.Sqrt(num10 * num10 + num11 * num11);
-				Tile tile = Main.tile[x, y];
+				Tile tile = Main.tile[baseX, baseY];
 				if (num12 < num5 * 0.8 && tile.LiquidType == LiquidID.Lava)
 					tile.LiquidAmount = 0;
 
-				if (num12 < num5 * 0.2 && y < vector.Y)
+				if (num12 < num5 * 0.2 && baseY < centerY)
 				{
 					tile.HasTile = false;
-					if (tile.WallType > 0)
-						tile.WallType = 80;
+					if (tile.WallType is not WallID.None)
+						tile.WallType = WallID.MushroomUnsafe;
 				}
 				else if (num12 < num5 * 0.4 * (0.95 + WorldGen.genRand.NextFloat() * 0.1))
 				{
-					tile.TileType = 59;
-					if (Math.Abs(num2 - num4) < 0.1f && y > vector.Y)
+					tile.TileType = TileID.Mud;
+					if (Math.Abs(num2 - num4) < 0.1f && baseY > centerY)
 						tile.HasTile = true;
 
-					if (tile.WallType > 0)
-						tile.WallType = 80;
+					if (tile.WallType is not WallID.None)
+						tile.WallType = WallID.MushroomUnsafe;
 				}
 			}
 
-			vector += vector2;
-			vector.X += vector2.X;
+			centerX += 2 * vector2.X;
+			centerY += vector2.Y;
 			vector2.X += WorldGen.genRand.Next(-100, 110) * 0.005f;
 			vector2.Y -= WorldGen.genRand.Next(110) * 0.005f;
-			if (vector2.X > -0.5 && vector2.X < 0.5)
-			{
-				if (vector2.X < 0f)
-					vector2.X = -0.5f;
-				else
-					vector2.X = 0.5f;
-			}
 
-			if (vector2.X > 0.5)
-				vector2.X = 0.5f;
-
-			if (vector2.X < -0.5)
+			if (vector2.X < 0f)
 				vector2.X = -0.5f;
-
-			if (vector2.Y > 0.5)
-				vector2.Y = 0.5f;
-
-			if (vector2.Y < -0.5)
-				vector2.Y = -0.5f;
+			else
+				vector2.X = 0.5f;
+			vector2.Y = Utils.Clamp(vector2.Y, -0.5f, 0.5f);
 
 			for (int m = 0; m < 2; m++)
 			{
-				x = (int)vector.X + WorldGen.genRand.Next(-20, 20);
-				y = (int)vector.Y + WorldGen.genRand.Next(0, 20);
+				int x = (int)centerX + WorldGen.genRand.Next(-20, 20);
+				int y = (int)centerY + WorldGen.genRand.Next(0, 20);
 				(x, y) = TileFinder.SpiralSearch(x, y, (i1, i2) => Main.tile[i1, i2].HasTile);
 				if ((x, y) is (-1, -1))
 					throw new Exception("Solid tile not found for mushroom biome !");

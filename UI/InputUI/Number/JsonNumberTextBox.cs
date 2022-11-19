@@ -4,7 +4,8 @@ public class JsonNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, ICo
 {
 	public JValue JValue;
 
-	public JsonNumberTextBox(JValue jValue, T min, T max, string? localizationPath) : base(jValue.Path, min, max, localizationPath)
+	public JsonNumberTextBox(JValue jValue, T min, T max, string? localizationPath) : base(jValue.Path, min, max,
+		localizationPath)
 	{
 		JValue = jValue;
 

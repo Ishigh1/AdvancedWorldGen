@@ -8,7 +8,8 @@ public class FloatingHouses : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		foreach (FloatingIslandInfo floatingIslandInfo in VanillaInterface.FloatingIslandInfos.Where(floatingIslandInfo => !floatingIslandInfo.IsLake))
+		foreach (FloatingIslandInfo floatingIslandInfo in VanillaInterface.FloatingIslandInfos.Where(
+			         floatingIslandInfo => !floatingIslandInfo.IsLake))
 			WorldGen.IslandHouse(floatingIslandInfo.X, floatingIslandInfo.Y, floatingIslandInfo.Style);
 	}
 }

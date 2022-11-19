@@ -7,7 +7,7 @@ public class WorldSettings
 	public WorldSettings()
 	{
 		Params.Wipe();
-		
+
 		OnUIWorldCreation.SetDefaultOptions += ResetSize;
 		OnUIWorldCreation.ClickSizeOption += SetSize;
 		OnWorldGen.setWorldSize += SetWorldSize;
@@ -21,7 +21,9 @@ public class WorldSettings
 	{
 		orig(self);
 		UIWorldCreation = self;
-		SetSizeTo(ModLoader.TryGetMod("CalamityMod", out Mod _) ? 2 : 0); //Calamity have large worlds by defaults and do it in a way that fucks with this logic
+		SetSizeTo(ModLoader.TryGetMod("CalamityMod", out Mod _)
+			? 2
+			: 0); //Calamity have large worlds by defaults and do it in a way that fucks with this logic
 		AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator?.Dispose();
 		AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator = new VanillaWorldGenConfigurator();
 		AdvancedWorldGenMod.Instance.UiChanger.OverhauledWorldGenConfigurator = new OverhauledWorldGenConfigurator();

@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.UI.InputUI.List;
 
 public class EnumInputListBox<T> : InputBox<string> where T : struct, Enum
 {
-	private JValue? JValue;
+	private readonly JValue? JValue;
 
 	public EnumInputListBox(JValue jValue, string? localizationPath) : base(jValue.Path, localizationPath)
 	{
@@ -10,7 +10,7 @@ public class EnumInputListBox<T> : InputBox<string> where T : struct, Enum
 
 		CreateUIElement();
 	}
-	
+
 	public EnumInputListBox(string name, string? localizationPath) : base(name, localizationPath)
 	{
 		CreateUIElement();
@@ -22,8 +22,7 @@ public class EnumInputListBox<T> : InputBox<string> where T : struct, Enum
 		{
 			if (JValue != null)
 				return (string?)JValue.Value;
-			else
-				return Enum.GetName((T) Params.Get(Name));
+			return Enum.GetName((T)Params.Get(Name));
 		}
 		set
 		{

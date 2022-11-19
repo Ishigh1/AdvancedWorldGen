@@ -89,9 +89,9 @@ public class TerrainPass : ControlledWorldGenPass
 			if (i > Main.maxTilesX * 0.48 && i < Main.maxTilesX * 0.52)
 				terrainFeatureType = TerrainFeatureType.Plateau;
 			else if (i > Main.maxTilesX * 0.45 && i < Main.maxTilesX * 0.55 &&
-			    terrainFeatureType is TerrainFeatureType.Mountain or TerrainFeatureType.Valley)
+			         terrainFeatureType is TerrainFeatureType.Mountain or TerrainFeatureType.Valley)
 				terrainFeatureType = (TerrainFeatureType)WorldGen.genRand.Next(3);
-			
+
 			worldSurface += GenerateWorldSurfaceOffset(terrainFeatureType);
 			float num10 = 0.17f;
 			float num11 = 0.26f;
@@ -175,7 +175,7 @@ public class TerrainPass : ControlledWorldGenPass
 	{
 		if (Main.dedServ || !Params.EditTerrainPass)
 			return;
-		
+
 		UIState uiState = Main.MenuUI.CurrentState;
 		UIState newState = new();
 		UIPanel uiPanel = new()
@@ -236,13 +236,16 @@ public class TerrainPass : ControlledWorldGenPass
 		goBack.OnMouseOver += UiChanger.FadedMouseOver;
 		goBack.OnMouseOut += UiChanger.FadedMouseOut;
 		newState.Append(goBack);
-		
+
 		Main.MenuUI.SetState(newState);
-		try {
+		try
+		{
 			Thread.Sleep(Timeout.Infinite);
 		}
-		catch (ThreadInterruptedException) {
+		catch (ThreadInterruptedException)
+		{
 		}
+
 		Main.MenuUI.SetState(uiState);
 	}
 
@@ -309,6 +312,7 @@ public class TerrainPass : ControlledWorldGenPass
 				featureType = TerrainFeatureType.Plateau;
 				break;
 		}
+
 		int num = 0;
 		if (Params.TerrainType == TerrainType.Mountainous)
 			switch (featureType)

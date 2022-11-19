@@ -96,7 +96,8 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 		WorldGen.mudWall = true;
 		float mul = WorldScaleY / WorldScaleX;
 		WorldGen.TileRunner(x, y, WorldGen.genRand.Next((int)(250f * WorldScaleX), (int)(500f * WorldScaleX)),
-			WorldGen.genRand.Next((int)(50f * WorldScaleY * mul), (int)(150f * WorldScaleY * mul)), 59, false, DungeonSide * xSpeedScale);
+			WorldGen.genRand.Next((int)(50f * WorldScaleY * mul), (int)(150f * WorldScaleY * mul)), 59, false,
+			DungeonSide * xSpeedScale);
 		WorldGen.mudWall = false;
 	}
 
@@ -114,7 +115,8 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 
 	public (int x, int y) RandomPoint(int xDeviation)
 	{
-		return (JungleOriginX + WorldGen.genRand.Next(-xDeviation, xDeviation), WorldGen.genRand.Next((int)WorldGen.rockLayer, Main.UnderworldLayer));
+		return (JungleOriginX + WorldGen.genRand.Next(-xDeviation, xDeviation),
+			WorldGen.genRand.Next((int)WorldGen.rockLayer, Main.UnderworldLayer));
 	}
 
 	public static void GenerateTunnelToSurface(int x, int y)
@@ -205,7 +207,7 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 		int currentX = JungleOriginX;
 		int lastSeen = 0;
 		Tile tile;
-		while(lastSeen < 7 && currentX > 10)
+		while (lastSeen < 7 && currentX > 10)
 		{
 			tile = Main.tile[currentX, y];
 			if (tile.HasTile && tile.TileType is TileID.Mud)
@@ -214,7 +216,10 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 				lastSeen = 0;
 			}
 			else
+			{
 				lastSeen += 1;
+			}
+
 			currentX -= 3;
 		}
 
@@ -223,7 +228,7 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 		importantX = JungleOriginX;
 		currentX = JungleOriginX;
 		lastSeen = 0;
-		while(lastSeen < 7 && currentX < Main.maxTilesX - 10)
+		while (lastSeen < 7 && currentX < Main.maxTilesX - 10)
 		{
 			tile = Main.tile[currentX, y];
 			if (tile.HasTile && tile.TileType is TileID.Mud)
@@ -232,7 +237,10 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 				lastSeen = 0;
 			}
 			else
+			{
 				lastSeen += 1;
+			}
+
 			currentX += 3;
 		}
 

@@ -4,9 +4,6 @@ public static class Params
 {
 	public static Dictionary<string, object> Data = new();
 
-	public static object Get(string name) => Data[name];
-	public static void Set(string name, object value) => Data[name] = value;
-
 	public static int SizeX
 	{
 		get => (int)Data[nameof(SizeX)];
@@ -77,6 +74,16 @@ public static class Params
 	{
 		get => (TerrainType)Data[nameof(TerrainType)];
 		set => Data[nameof(TerrainType)] = value;
+	}
+
+	public static object Get(string name)
+	{
+		return Data[name];
+	}
+
+	public static void Set(string name, object value)
+	{
+		Data[name] = value;
 	}
 
 	public static void Wipe()

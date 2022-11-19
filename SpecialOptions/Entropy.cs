@@ -55,8 +55,7 @@ public class Entropy
 			for (int j = SquareSize - 1; j >= 0; j--)
 			{
 				int y = (j + Y) % Main.maxTilesY;
-				Tile tile = Framing.GetTileSafely(x, y);
-				if (tile == null) continue;
+				Tile tile = Main.tile[x, y];
 				List<Tuple<int, int>>? coords;
 				if (tile.HasTile)
 				{
@@ -237,8 +236,7 @@ public class Entropy
 			for (int j = 0; j < SquareSize; j++)
 			{
 				int y = (j + Y) % Main.maxTilesY;
-				Tile tile = Framing.GetTileSafely(x, y);
-				if (tile == null) continue;
+				Tile tile = Main.tile[x, y];
 				if (tile.TileType == OldTile && NewTile != -1)
 				{
 					tile.TileType = (ushort)NewTile;

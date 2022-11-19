@@ -83,10 +83,11 @@ public class OverhauledWorldGenConfigurator : UIState
 				break;
 			case JTokenType.Integer:
 				//Create an long number text box.
-				NumberTextBox<long> longInput = new JsonNumberTextBox<long>((JValue)jToken, 0, ushort.MaxValue, localizationPath)
-				{
-					Order = index++
-				};
+				NumberTextBox<long> longInput =
+					new JsonNumberTextBox<long>((JValue)jToken, 0, ushort.MaxValue, localizationPath)
+					{
+						Order = index++
+					};
 				uiPanel.Add(longInput);
 				break;
 			case JTokenType.Float:

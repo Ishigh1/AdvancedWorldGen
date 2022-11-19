@@ -3,8 +3,9 @@ namespace AdvancedWorldGen.SpecialOptions;
 public class EvilReplacer : GenPass
 {
 	public EvilReplacer() : base("Evil", 200f)
-	{}
-	
+	{
+	}
+
 	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
 	{
 		progress.Message = Language.GetTextValue("Mods.AdvancedWorldGen.WorldGenMessage.Evil");
@@ -23,7 +24,8 @@ public class EvilReplacer : GenPass
 					corruptOnLeft = x < Main.maxTilesX / 2;
 					break;
 				}
-				else if (TileID.Sets.Crimson[tileType])
+
+				if (TileID.Sets.Crimson[tileType])
 				{
 					corruptOnLeft = x >= Main.maxTilesX / 2;
 					break;

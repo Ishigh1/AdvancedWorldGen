@@ -107,7 +107,7 @@ public class CustomSizeUI : UIState
 				Order = index++
 			};
 			uiList.Add(goldList);
-			
+
 			BooleanExpandableList beachList = new(nameof(Params.ScaledBeaches), localizationPath)
 			{
 				Order = index++
@@ -128,10 +128,11 @@ public class CustomSizeUI : UIState
 		}
 		else
 		{
-			UITextPanel<string> overhauledDisabled = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.OverhauledDisabled"))
-			{
-				Width = new StyleDimension(0f, 1f)
-			};
+			UITextPanel<string> overhauledDisabled =
+				new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.OverhauledDisabled"))
+				{
+					Width = new StyleDimension(0f, 1f)
+				};
 			uiList.Add(overhauledDisabled);
 		}
 
@@ -145,10 +146,11 @@ public class CustomSizeUI : UIState
 		goToVanillaConfig.OnMouseOver += UiChanger.FadedMouseOver;
 		goToVanillaConfig.OnMouseOut += UiChanger.FadedMouseOut;
 
-		UITextPanel<string> goToOverhauledConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.OverhauledConfig"))
-		{
-			Width = new StyleDimension(0f, 1f)
-		};
+		UITextPanel<string> goToOverhauledConfig =
+			new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.OverhauledConfig"))
+			{
+				Width = new StyleDimension(0f, 1f)
+			};
 		uiList.Add(goToOverhauledConfig);
 
 		goToOverhauledConfig.OnMouseDown += ConfigOverhauledWorldGen;

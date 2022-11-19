@@ -13,7 +13,8 @@ public partial class DungeonPass
 			int x1 = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
 			int y1 = WorldGen.genRand.Next(yMin, WorldGen.dMaxY);
 
-			if ((Main.wallDungeon[Main.tile[x1, y1].WallType] && WorldGen.placeTrap(x1, y1, 0)) || failCount++ > failMax)
+			if ((Main.wallDungeon[Main.tile[x1, y1].WallType] && WorldGen.placeTrap(x1, y1, 0)) ||
+			    failCount++ > failMax)
 			{
 				numAdd++;
 				failCount = 0;
@@ -39,7 +40,8 @@ public partial class DungeonPass
 		{
 			int num = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
 			int num2 = WorldGen.genRand.Next(WorldGen.dMinY, WorldGen.dMaxY);
-			if ((Main.wallDungeon[Main.tile[num, num2].WallType] && PlaceTrap(tileType, roomWall, num2, num, array)) || failCount++ > failMax)
+			if ((Main.wallDungeon[Main.tile[num, num2].WallType] && PlaceTrap(tileType, roomWall, num2, num, array)) ||
+			    failCount++ > failMax)
 			{
 				numAdd++;
 				failCount = 0;
@@ -725,7 +727,8 @@ public partial class DungeonPass
 					num2--;
 				continue;
 			}
-			else if (num3 > 0)
+
+			if (num3 > 0)
 			{
 				WorldGen.PlaceTile(num7, j, TileID.BewitchingTable, true);
 				if (Main.tile[num7, j].TileType == 354)
@@ -1536,9 +1539,10 @@ public partial class DungeonPass
 			}
 
 			if (VanillaInterface.Calamity.Enabled)
-				dungeonPosition = new Vector2(MathHelper.Clamp(dungeonPosition.X + zero.X, 
-				VanillaInterface.Calamity.SulphurousSeaBiomeWidth + 25, 
-				Main.maxTilesX - VanillaInterface.Calamity.SulphurousSeaBiomeWidth - 25), dungeonPosition.Y + zero.Y);
+				dungeonPosition = new Vector2(MathHelper.Clamp(dungeonPosition.X + zero.X,
+						VanillaInterface.Calamity.SulphurousSeaBiomeWidth + 25,
+						Main.maxTilesX - VanillaInterface.Calamity.SulphurousSeaBiomeWidth - 25),
+					dungeonPosition.Y + zero.Y);
 			else
 				dungeonPosition += zero;
 			if (flag3 && num9 > WorldGen.genRand.Next(10, 20))
@@ -2007,7 +2011,8 @@ public partial class DungeonPass
 		PlaceFirstDoor(vector, dungeonXStrength, dungeonSide, dungeonYStrength);
 	}
 
-	private static void MakeOldManRoom(int wallType, Vector2 vector, double dungeonXStrength, int dungeonSide, int yMin, int yMax)
+	private static void MakeOldManRoom(int wallType, Vector2 vector, double dungeonXStrength, int dungeonSide, int yMin,
+		int yMax)
 	{
 		int columnSize = WorldGen.genRand.Next(2, 6);
 		int currentSize = 0;
@@ -2120,7 +2125,8 @@ public partial class DungeonPass
 		}
 	}
 
-	private static void MakeEntranceRoomBorder(int wallType, Vector2 vector, double dungeonXStrength, double dungeonYStrength)
+	private static void MakeEntranceRoomBorder(int wallType, Vector2 vector, double dungeonXStrength,
+		double dungeonYStrength)
 	{
 		int xMin = (int)Math.Max(vector.X - dungeonXStrength * 0.6 - 1, 0);
 		int xMax = (int)Math.Min(vector.X + dungeonXStrength * 0.6 + 1, Main.maxTilesX);

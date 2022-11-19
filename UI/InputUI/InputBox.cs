@@ -3,8 +3,8 @@ namespace AdvancedWorldGen.UI.InputUI;
 public abstract class InputBox<T> : OrderedUIItem
 {
 	public UIPanel Background = null!;
+	private readonly string? LocalizationPath;
 	public string Name;
-	private string? LocalizationPath;
 
 	protected InputBox(string name, string? localizationPath)
 	{

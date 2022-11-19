@@ -3,20 +3,20 @@ namespace AdvancedWorldGen.Helper;
 public class RTree
 {
 	private bool Forbidden;
-	private bool Vertical;
-	private Rectangle Rectangle;
 	private RTree LeftChild = null!;
 	private RTree? MiddleChild;
+	private Rectangle Rectangle;
 	private RTree RightChild = null!;
+	private bool Vertical;
+
+	private RTree(Rectangle rectangle)
+	{
+		Rectangle = rectangle;
+	}
 
 	public static RTree Root()
 	{
 		return new RTree(new Rectangle(0, 0, Main.maxTilesX, Main.maxTilesY));
-	}
-	
-	private RTree(Rectangle rectangle)
-	{
-		Rectangle = rectangle;
 	}
 
 	public bool Contains(Point point)
@@ -32,20 +32,16 @@ public class RTree
 		{
 			if (x < MiddleChild.Rectangle.Left)
 				return LeftChild.Contains(x, y);
-			else if (x > MiddleChild.Rectangle.Right)
+			if (x > MiddleChild.Rectangle.Right)
 				return RightChild.Contains(x, y);
-			else
-				return MiddleChild.Contains(x, y);
+			return MiddleChild.Contains(x, y);
 		}
-		else
-		{
-			if (y < MiddleChild.Rectangle.Top)
-				return LeftChild.Contains(x, y);
-			else if (y > MiddleChild.Rectangle.Bottom)
-				return RightChild.Contains(x, y);
-			else
-				return MiddleChild.Contains(x, y);
-		}
+
+		if (y < MiddleChild.Rectangle.Top)
+			return LeftChild.Contains(x, y);
+		if (y > MiddleChild.Rectangle.Bottom)
+			return RightChild.Contains(x, y);
+		return MiddleChild.Contains(x, y);
 	}
 
 	public void Insert(Rectangle rectangle)

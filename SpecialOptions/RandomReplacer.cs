@@ -5,7 +5,7 @@ public class RandomReplacer : GenPass
 	public RandomReplacer() : base("Random", 200f)
 	{
 	}
-	
+
 	protected override void ApplyPass(GenerationProgress progress, GameConfiguration gameConfiguration)
 	{
 		Dictionary<ushort, ushort> tileRandom = new();

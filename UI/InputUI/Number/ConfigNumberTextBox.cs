@@ -4,14 +4,16 @@ public class ConfigNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, I
 {
 	public Dictionary<string, object>? Data;
 
-	public ConfigNumberTextBox(Dictionary<string, object> data, string name, T min, T max, string? localizationPath = null) : base(name, min, max, localizationPath)
+	public ConfigNumberTextBox(Dictionary<string, object> data, string name, T min, T max,
+		string? localizationPath = null) : base(name, min, max, localizationPath)
 	{
 		Data = data;
 
 		CreateUIElement();
 	}
 
-	public ConfigNumberTextBox(string name, T min, T max, string? localizationPath = null) : base(name, min, max, localizationPath)
+	public ConfigNumberTextBox(string name, T min, T max, string? localizationPath = null) : base(name, min, max,
+		localizationPath)
 	{
 		CreateUIElement();
 	}
@@ -22,8 +24,7 @@ public class ConfigNumberTextBox<T> : NumberTextBox<T> where T : IConvertible, I
 		{
 			if (Data != null)
 				return (T?)Data![Name];
-			else
-				return (T?)Params.Get(Name);
+			return (T?)Params.Get(Name);
 		}
 		set
 		{

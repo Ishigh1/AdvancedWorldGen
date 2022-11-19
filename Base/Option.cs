@@ -17,8 +17,7 @@ public class Option
 		{
 			if (Parent == null)
 				return Name;
-			else
-				return Parent.FullName + "." + Name;
+			return Parent.FullName + "." + Name;
 		}
 	}
 

@@ -1,16 +1,14 @@
-using static Terraria.ID.NPCID;
-
 namespace AdvancedWorldGen.Base;
 
 public class ModifiedWorld : ModSystem
 {
-	public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
-
-	public static string DataPath => Main.SavePath + Path.DirectorySeparatorChar + "AdvancedWorldGenPassesData.json";
+	public Dictionary<string, TimeSpan>? Times;
 
 
 	public List<Dictionary<string, float>> Weights = null!;
-	public Dictionary<string, TimeSpan>? Times;
+	public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
+
+	public static string DataPath => Main.SavePath + Path.DirectorySeparatorChar + "AdvancedWorldGenPassesData.json";
 
 	public override void OnModLoad()
 	{
@@ -27,7 +25,9 @@ public class ModifiedWorld : ModSystem
 			Weights = JsonConvert.DeserializeObject<List<Dictionary<string, float>>>(json);
 		}
 		else
+		{
 			Weights = new List<Dictionary<string, float>>();
+		}
 	}
 
 	public void SaveWeights()
@@ -147,18 +147,18 @@ public class ModifiedWorld : ModSystem
 		DrunkOptions.AddDrunkEdits(tasks);
 
 		tasks.TryReplacePass("Guide", new NPCPass());
-		
+
 		HalloweenCommon.InsertTasks(tasks);
 
-		if (OptionHelper.OptionsContains("Santa")) 
+		if (OptionHelper.OptionsContains("Santa"))
 			tasks.Add(new SnowReplacer());
-		
-		if (OptionHelper.OptionsContains("Evil")) 
+
+		if (OptionHelper.OptionsContains("Evil"))
 			tasks.Add(new EvilReplacer());
-		
-		if (OptionHelper.OptionsContains("Random") || OptionHelper.OptionsContains("Random.Painted")) 
+
+		if (OptionHelper.OptionsContains("Random") || OptionHelper.OptionsContains("Random.Painted"))
 			tasks.Add(new RandomReplacer());
-		
+
 		if (OptionHelper.OptionsContains("Santa") ||
 		    OptionHelper.OptionsContains("Evil") ||
 		    OptionHelper.OptionsContains("Random") ||
