@@ -84,7 +84,6 @@ public class MushroomPatches : ControlledWorldGenPass
 	private static void TryToShroomPatch(int spread, int xMax, int jungleMinX, int jungleSpread,
 		RTree mushroomBiomesRectangles)
 	{
-		bool isValid = false;
 		int tries = 0;
 		while (true)
 		{
@@ -100,7 +99,7 @@ public class MushroomPatches : ControlledWorldGenPass
 				? WorldGen.genRand.Next((int)Main.rockLayer + 50, Main.UnderworldLayer - 100)
 				: WorldGen.genRand.Next((int)Main.rockLayer, Main.UnderworldLayer);
 
-			isValid = !mushroomBiomesRectangles.Contains(x, y);
+			bool isValid = !mushroomBiomesRectangles.Contains(x, y);
 			if (!isValid)
 				continue;
 
@@ -125,6 +124,7 @@ public class MushroomPatches : ControlledWorldGenPass
 			const int distanceBetweenBiomes = 500;
 			mushroomBiomesRectangles.Insert(new Rectangle(x - distanceBetweenBiomes, y - distanceBetweenBiomes,
 				2 * distanceBetweenBiomes, 2 * distanceBetweenBiomes));
+			break;
 		}
 	}
 
