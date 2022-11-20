@@ -233,7 +233,7 @@ public class Corruption : ControlledWorldGenPass
 					}
 				}
 
-				if (nextX > currentX + biomeSize) allowedX = nextX - currentX - biomeSize;
+				if (nextX > currentX + biomeSize) allowedX += nextX - currentX - biomeSize;
 
 				if (nextIndex == -1) break;
 

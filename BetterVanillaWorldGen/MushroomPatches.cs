@@ -132,7 +132,7 @@ public class MushroomPatches : ControlledWorldGenPass
 	{
 		int num = WorldGen.genRand.Next(80, 100);
 		float num2 = WorldGen.genRand.Next(20, 26);
-		float multiplier = Main.maxTilesX * Main.maxTilesY / (4200f * 1200f);
+		float multiplier = (float)Math.Sqrt(Main.maxTilesX * Main.maxTilesY / (4200f * 1200f));
 		if (WorldGen.getGoodWorldGen)
 			multiplier *= 2f;
 
