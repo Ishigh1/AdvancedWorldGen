@@ -7,6 +7,9 @@ public class AdvancedWorldGenMod : Mod
 
 	public override void Load()
 	{
+		//Remove ThreadInterruptedException from logging (interrupting thread.sleep)
+		Logging.IgnoreExceptionContents("ThreadInterruptedException");
+		
 		TileReplacer.Initialize();
 
 		UiChanger = new UiChanger(this);

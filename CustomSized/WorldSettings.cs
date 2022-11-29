@@ -15,6 +15,7 @@ public class WorldSettings
 
 		OnWorldGen.SmashAltar += AltarSmash.SmashAltar;
 		OnWorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
+		OnWorldGen.UpdateMapTile += MapRelated.UpdateMapTileInBounds;
 	}
 
 	private void ResetSize(OnUIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)

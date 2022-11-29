@@ -245,11 +245,16 @@ public class TerrainPass : ControlledWorldGenPass
 		catch (ThreadInterruptedException)
 		{
 		}
+		
+		foreach ((string? key, object? value) in currentState)
+		{
+			AdvancedWorldGenMod.Instance.Logger.Info($"{key} : {value}");
+		}
 
 		Main.MenuUI.SetState(uiState);
 	}
 
-	public static void FillColumn(int x, double worldSurface, double rockLayer)
+	private static void FillColumn(int x, double worldSurface, double rockLayer)
 	{
 		for (int i = 0; i < worldSurface; i++)
 		{
