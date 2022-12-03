@@ -26,10 +26,12 @@ public class JungleChests : ControlledWorldGenPass
 			_ => WallID.GoldBrick
 		};
 
-		float stepCount = WorldGen.genRand.Next(7 * Main.maxTilesX / 4200, 12 * Main.maxTilesX / 4200);
-		for (int step = 0; step < stepCount; step++)
+		WorldGen.numJChests = WorldGen.genRand.Next(7 * Main.maxTilesX / 4200, 12 * Main.maxTilesX / 4200);
+		WorldGen.JChestX = new int[WorldGen.numJChests];
+		WorldGen.JChestY = new int[WorldGen.numJChests];
+		for (int step = 0; step < WorldGen.numJChests; step++)
 		{
-			Progress.Set(step, stepCount);
+			Progress.Set(step, WorldGen.numJChests);
 			int minX = VanillaInterface.JungleLeft;
 			int maxX = VanillaInterface.JungleRight;
 			int x = WorldGen.genRand.Next(minX, maxX);
@@ -122,18 +124,15 @@ public class JungleChests : ControlledWorldGenPass
 				j--;
 			}
 
-			int[] jChestX = WorldGen.JChestX;
-			int[] jChestY = WorldGen.JChestY;
-			jChestX[WorldGen.numJChests] = x;
-			jChestY[WorldGen.numJChests] = y;
+			WorldGen.JChestX[step] = x;
+			WorldGen.JChestY[step] = y;
 			WorldGen.structures.AddProtectedStructure(area);
-			WorldGen.numJChests++;
 		}
 
 		Main.tileSolid[TileID.Traps] = false;
 	}
 
-	public static bool IsValid(int x, int y)
+	private static bool IsValid(int x, int y)
 	{
 		if (Main.tile[x, y].TileType == TileID.JungleGrass)
 		{
