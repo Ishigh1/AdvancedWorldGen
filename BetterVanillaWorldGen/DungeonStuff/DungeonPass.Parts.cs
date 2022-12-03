@@ -7,11 +7,11 @@ public partial class DungeonPass
 		int failCount = 0;
 		const int failMax = 1000;
 		int numAdd = 0;
-		int yMin = (int)Math.Max(WorldGen.dMinY, Main.worldSurface);
+		int yMin = (int)Math.Max(GenVars.dMinY, Main.worldSurface);
 		while (numAdd < Main.maxTilesX / 500)
 		{
-			int x1 = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
-			int y1 = WorldGen.genRand.Next(yMin, WorldGen.dMaxY);
+			int x1 = WorldGen.genRand.Next(GenVars.dMinX, GenVars.dMaxX);
+			int y1 = WorldGen.genRand.Next(yMin, GenVars.dMaxY);
 
 			if ((Main.wallDungeon[Main.tile[x1, y1].WallType] && WorldGen.placeTrap(x1, y1, 0)) ||
 			    failCount++ > failMax)
@@ -38,8 +38,8 @@ public partial class DungeonPass
 
 		while (numAdd < Main.maxTilesX / 150)
 		{
-			int num = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
-			int num2 = WorldGen.genRand.Next(WorldGen.dMinY, WorldGen.dMaxY);
+			int num = WorldGen.genRand.Next(GenVars.dMinX, GenVars.dMaxX);
+			int num2 = WorldGen.genRand.Next(GenVars.dMinY, GenVars.dMaxY);
 			if ((Main.wallDungeon[Main.tile[num, num2].WallType] && PlaceTrap(tileType, roomWall, num2, num, array)) ||
 			    failCount++ > failMax)
 			{
@@ -51,7 +51,7 @@ public partial class DungeonPass
 
 	private static bool PlaceTrap(ushort tileType, int[] roomWall, int num2, int num, int[] array)
 	{
-		for (int num3 = num2; num3 > WorldGen.dMinY; num3--)
+		for (int num3 = num2; num3 > GenVars.dMinY; num3--)
 			if (Main.tile[num, num3 - 1].HasTile && Main.tile[num, num3 - 1].TileType == tileType)
 			{
 				bool flag = false;
@@ -220,17 +220,17 @@ public partial class DungeonPass
 		return false;
 	}
 
-	public void MakeDungeon_Banners(int[] roomWall)
+	private void MakeDungeon_Banners(int[] roomWall)
 	{
 		float count = 840000f / Main.maxTilesX;
 		for (int i = 0; i < count; i++)
 		{
-			int num = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
-			int num2 = WorldGen.genRand.Next(WorldGen.dMinY, WorldGen.dMaxY);
+			int num = WorldGen.genRand.Next(GenVars.dMinX, GenVars.dMaxX);
+			int num2 = WorldGen.genRand.Next(GenVars.dMinY, GenVars.dMaxY);
 			while (!Main.wallDungeon[Main.tile[num, num2].WallType] || Main.tile[num, num2].HasTile)
 			{
-				num = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
-				num2 = WorldGen.genRand.Next(WorldGen.dMinY, WorldGen.dMaxY);
+				num = WorldGen.genRand.Next(GenVars.dMinX, GenVars.dMaxX);
+				num2 = WorldGen.genRand.Next(GenVars.dMinY, GenVars.dMaxY);
 			}
 
 			while (!WorldGen.SolidTile(num, num2) && num2 > 10) num2--;
@@ -268,12 +268,12 @@ public partial class DungeonPass
 		float count = 420000f / Main.maxTilesX;
 		for (int i = 0; i < count; i++)
 		{
-			int num = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
-			int num2 = WorldGen.genRand.Next((int)Main.worldSurface, WorldGen.dMaxY);
+			int num = WorldGen.genRand.Next(GenVars.dMinX, GenVars.dMaxX);
+			int num2 = WorldGen.genRand.Next((int)Main.worldSurface, GenVars.dMaxY);
 			while (!Main.wallDungeon[Main.tile[num, num2].WallType] || Main.tile[num, num2].HasTile)
 			{
-				num = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
-				num2 = WorldGen.genRand.Next((int)Main.worldSurface, WorldGen.dMaxY);
+				num = WorldGen.genRand.Next(GenVars.dMinX, GenVars.dMaxX);
+				num2 = WorldGen.genRand.Next((int)Main.worldSurface, GenVars.dMaxY);
 			}
 
 			int num3;
@@ -367,12 +367,12 @@ public partial class DungeonPass
 			{
 				case 0:
 				{
-					Vector2 vector2 = RandPictureTile();
+					PaintingEntry vector2 = WorldGen.RandPictureTile();
 					if (Main.tile[num, num2].WallType != roomWall[0])
-						vector2 = RandBoneTile();
+						vector2 = WorldGen.RandBonePicture();
 
-					int type2 = (int)vector2.X;
-					int style2 = (int)vector2.Y;
+					int type2 = vector2.tileType;
+					int style2 = vector2.style;
 					if (!WorldGen.nearPicture(num, num2))
 						WorldGen.PlaceTile(num, num2, type2, true, false, -1, style2);
 
@@ -380,12 +380,12 @@ public partial class DungeonPass
 				}
 				case 1:
 				{
-					Vector2 vector3 = RandPictureTile();
+					PaintingEntry vector3 = WorldGen.RandPictureTile();
 					if (Main.tile[num, num2].WallType != roomWall[0])
-						vector3 = RandBoneTile();
+						vector3 = WorldGen.RandBonePicture();
 
-					int type3 = (int)vector3.X;
-					int style3 = (int)vector3.Y;
+					int type3 = vector3.tileType;
+					int style3 = vector3.style;
 					if (!Main.tile[num, num2].HasTile)
 						WorldGen.PlaceTile(num, num2, type3, true, false, -1, style3);
 
@@ -409,12 +409,12 @@ public partial class DungeonPass
 
 						num6--;
 						num15 = (num5 + num6) / 2;
-						vector3 = RandPictureTile();
+						vector3 = WorldGen.RandPictureTile();
 						if (Main.tile[num, num15].WallType != roomWall[0])
-							vector3 = RandBoneTile();
+							vector3 = WorldGen.RandBonePicture();
 
-						type3 = (int)vector3.X;
-						style3 = (int)vector3.Y;
+						type3 = vector3.tileType;
+						style3 = vector3.style;
 						if (Math.Abs(num2 - num15) >= 4 || WorldGen.nearPicture(num, num15))
 							break;
 
@@ -441,12 +441,15 @@ public partial class DungeonPass
 
 						num6--;
 						num15 = (num5 + num6) / 2;
-						vector3 = RandPictureTile();
 						if (Main.tile[num, num15].WallType != roomWall[0])
-							vector3 = RandBoneTile();
+							vector3 = WorldGen.RandBonePicture();
+						else
+						{
+							vector3 = WorldGen.RandPictureTile();
+						}
 
-						type3 = (int)vector3.X;
-						style3 = (int)vector3.Y;
+						type3 = vector3.tileType;
+						style3 = vector3.style;
 						if (Math.Abs(num2 - num15) >= 4 || WorldGen.nearPicture(num, num15))
 							break;
 
@@ -457,12 +460,16 @@ public partial class DungeonPass
 				}
 				case 2:
 				{
-					Vector2 vector = RandPictureTile();
+					PaintingEntry paintingStyle;
 					if (Main.tile[num, num2].WallType != roomWall[0])
-						vector = RandBoneTile();
+						paintingStyle = WorldGen.RandBonePicture();
+					else
+					{
+						paintingStyle = WorldGen.RandPictureTile();
+					}
 
-					int type = (int)vector.X;
-					int style = (int)vector.Y;
+					int type = paintingStyle.tileType;
+					int style = paintingStyle.style;
 					if (!Main.tile[num, num2].HasTile) WorldGen.PlaceTile(num, num2, type, true, false, -1, style);
 
 					int num10 = num2;
@@ -485,12 +492,13 @@ public partial class DungeonPass
 
 						num4--;
 						num12 = (num3 + num4) / 2;
-						vector = RandPictureTile();
-						if (Main.tile[num12, num2].WallType != roomWall[0])
-							vector = RandBoneTile();
+						if (Main.tile[num12, num2].WallType == roomWall[0])
+							paintingStyle = WorldGen.RandPictureTile();
+						else
+							paintingStyle = WorldGen.RandBonePicture();
 
-						type = (int)vector.X;
-						style = (int)vector.Y;
+						type = paintingStyle.tileType;
+						style = paintingStyle.style;
 						if (Math.Abs(num - num12) >= 4 || WorldGen.nearPicture(num12, num2))
 							break;
 
@@ -517,12 +525,13 @@ public partial class DungeonPass
 
 						num4--;
 						num12 = (num3 + num4) / 2;
-						vector = RandPictureTile();
 						if (Main.tile[num12, num2].WallType != roomWall[0])
-							vector = RandBoneTile();
+							paintingStyle = WorldGen.RandBonePicture();
+						else
+							paintingStyle = WorldGen.RandPictureTile();
 
-						type = (int)vector.X;
-						style = (int)vector.Y;
+						type = paintingStyle.tileType;
+						style = paintingStyle.style;
 						if (Math.Abs(num - num12) >= 4 || WorldGen.nearPicture(num12, num2))
 							break;
 
@@ -535,19 +544,19 @@ public partial class DungeonPass
 		}
 	}
 
-	public static void MakeDungeon_GroundFurniture(int wallType)
+	private static void MakeDungeon_GroundFurniture(int wallType)
 	{
 		int num = (int)(Main.maxTilesX * (2000 / 4200f));
 		int num2 = 1 + Main.maxTilesX / 4200;
 		int num3 = 1 + Main.maxTilesX / 4200;
 		for (int i = 0; i < num; i++)
 		{
-			int num4 = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
-			int j = WorldGen.genRand.Next((int)Main.worldSurface + 10, WorldGen.dMaxY);
+			int num4 = WorldGen.genRand.Next(GenVars.dMinX, GenVars.dMaxX);
+			int j = WorldGen.genRand.Next((int)Main.worldSurface + 10, GenVars.dMaxY);
 			while (!Main.wallDungeon[Main.tile[num4, j].WallType] || Main.tile[num4, j].HasTile)
 			{
-				num4 = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
-				j = WorldGen.genRand.Next((int)Main.worldSurface + 10, WorldGen.dMaxY);
+				num4 = WorldGen.genRand.Next(GenVars.dMinX, GenVars.dMaxX);
+				j = WorldGen.genRand.Next((int)Main.worldSurface + 10, GenVars.dMaxY);
 			}
 
 			if (!Main.wallDungeon[Main.tile[num4, j].WallType] || Main.tile[num4, j].HasTile)
@@ -878,80 +887,7 @@ public partial class DungeonPass
 			}
 		}
 	}
-
-	public static Vector2 RandBoneTile()
-	{
-		int num = WorldGen.genRand.Next(2);
-		int num2 = 0;
-		switch (num)
-		{
-			case 0:
-				num = 240;
-				num2 = num2 switch
-				{
-					0 => 16,
-					1 => 17,
-					_ => WorldGen.genRand.Next(2)
-				};
-
-				break;
-			case 1:
-				num = 241;
-				num2 = WorldGen.genRand.Next(9);
-				break;
-		}
-
-		return new Vector2(num, num2);
-	}
-
-	public static Vector2 RandPictureTile()
-	{
-		int x = WorldGen.genRand.Next(3);
-		int y = 0;
-		switch (x)
-		{
-			case <= 1:
-			{
-				x = 240;
-				y = WorldGen.genRand.Next(7);
-				if (y == 6)
-					y = WorldGen.genRand.Next(7);
-
-				y = y switch
-				{
-					0 => 12,
-					1 => 13,
-					2 => 14,
-					3 => 15,
-					4 => 18,
-					5 => 19,
-					6 => 23,
-					_ => y
-				};
-				break;
-			}
-			case 2:
-				x = 242;
-				y = WorldGen.genRand.Next(17);
-				switch (y)
-				{
-					case 14:
-						y = 15;
-						break;
-					case 15:
-						y = 16;
-						break;
-					case 16:
-						y = 30;
-						break;
-				}
-
-				break;
-		}
-
-		return new Vector2(x, y);
-	}
-
+	
 	public void DungeonStairs(int x, int y, ushort tileType, int wallType)
 	{
 		int step = WorldGen.genRand.Next(5, 9);
@@ -975,8 +911,8 @@ public partial class DungeonPass
 		else if (WorldGen.genRand.NextBool(6))
 			delta.Y *= 2f;
 
-		if ((WorldGen.dungeonX < Main.maxTilesX / 2 && delta.X < 0.5f) ||
-		    (WorldGen.dungeonX > Main.maxTilesX / 2 && delta.X > 0.5f))
+		if ((GenVars.dungeonX < Main.maxTilesX / 2 && delta.X < 0.5f) ||
+		    (GenVars.dungeonX > Main.maxTilesX / 2 && delta.X > 0.5f))
 			delta.X = -0.5f;
 
 		if (WorldGen.drunkWorldGen)
@@ -1047,11 +983,11 @@ public partial class DungeonPass
 				break;
 		}
 
-		WorldGen.dungeonX = (int)currentPosition.X;
-		WorldGen.dungeonY = (int)currentPosition.Y;
+		GenVars.dungeonX = (int)currentPosition.X;
+		GenVars.dungeonY = (int)currentPosition.Y;
 	}
 
-	public bool DungeonPitTrap(int i, int j, ushort tileType, ushort wallType)
+	private bool DungeonPitTrap(int i, int j, ushort tileType, ushort wallType)
 	{
 		const int depth = 30;
 		int num2 = j;
@@ -1105,15 +1041,15 @@ public partial class DungeonPass
 		for (int y = num2; y <= num2 + offY; y++)
 		{
 			Tile tile2 = Main.tile[x, y];
-			if (tile2.HasTile && (Main.tileDungeon[tile2.TileType] || tile2.TileType == WorldGen.crackedType))
+			if (tile2.HasTile && (Main.tileDungeon[tile2.TileType] || tile2.TileType == GenVars.crackedType))
 				return false;
 		}
 
 		bool flag2 = false;
-		if (WorldGen.dungeonLake)
+		if (GenVars.dungeonLake)
 		{
 			flag2 = true;
-			WorldGen.dungeonLake = false;
+			GenVars.dungeonLake = false;
 		}
 		else if (WorldGen.genRand.NextBool(8))
 		{
@@ -1124,7 +1060,7 @@ public partial class DungeonPass
 		for (int y = j; y <= num2 + offY; y++)
 			if (Main.tileDungeon[Main.tile[x, y].TileType])
 			{
-				Main.tile[x, y].TileType = WorldGen.crackedType;
+				Main.tile[x, y].TileType = GenVars.crackedType;
 				Main.tile[x, y].WallType = wallType;
 			}
 
@@ -1134,7 +1070,7 @@ public partial class DungeonPass
 			Tile tile = Main.tile[x, y];
 			tile.LiquidType = LiquidID.Water;
 			tile.LiquidAmount = 0;
-			if (!Main.wallDungeon[tile.WallType] && tile.TileType != WorldGen.crackedType)
+			if (!Main.wallDungeon[tile.WallType] && tile.TileType != GenVars.crackedType)
 			{
 				tile.Clear(TileDataType.Slope);
 				tile.TileType = tileType;
@@ -1148,7 +1084,7 @@ public partial class DungeonPass
 		for (int y = j; y <= num2 + offY; y++)
 		{
 			Tile tile = Main.tile[x, y];
-			if (tile.TileType != WorldGen.crackedType)
+			if (tile.TileType != GenVars.crackedType)
 			{
 				if (flag2)
 					tile.LiquidAmount = byte.MaxValue;
@@ -1167,22 +1103,22 @@ public partial class DungeonPass
 		return true;
 	}
 
-	public void DungeonHalls(int x, int y, ushort tileType, ushort wallType, bool forceX = false)
+	private void DungeonHalls(int x, int y, ushort tileType, ushort wallType, bool forceX = false)
 	{
 		Vector2 zero = Vector2.Zero;
 		double num = WorldGen.genRand.Next(4, 6);
 		double num2 = num;
-		Vector2 zero2 = Vector2.Zero;
-		Vector2 zero3 = Vector2.Zero;
+		Vector2D zero2 = Vector2D.Zero;
+		Vector2D zero3 = Vector2D.Zero;
 		int num3;
 		Vector2 dungeonPosition = new(x, y);
 		int num4 = WorldGen.genRand.Next(35, 80);
-		bool flag = WorldGen.genRand.NextBool(5);
+		bool flag = WorldGen.genRand.NextBool(6);
 
 		if (forceX)
 		{
 			num4 += 20;
-			WorldGen.lastDungeonHall = Vector2.Zero;
+			GenVars.lastDungeonHall = Vector2D.Zero;
 		}
 		else if (WorldGen.genRand.NextBool(5))
 		{
@@ -1347,11 +1283,16 @@ public partial class DungeonPass
 				}
 			}
 
-			if (WorldGen.lastDungeonHall != zero3)
+			if (GenVars.lastDungeonHall != zero3)
 				flag2 = true;
 		}
 
 		int num9 = 0;
+		bool flag11 = dungeonPosition.Y < Main.rockLayer + 100.0;
+		if (WorldGen.remixWorldGen)
+		{
+			flag11 = dungeonPosition.Y < Main.worldSurface + 100.0;
+		}
 		if (!forceX)
 		{
 			if (dungeonPosition.X > Main.maxTilesX - 200)
@@ -1400,7 +1341,7 @@ public partial class DungeonPass
 						zero.X = -WorldGen.genRand.Next(20, 50) * 0.01f;
 				}
 			}
-			else if (dungeonPosition.Y < Main.rockLayer + 100.0)
+			else if (flag11)
 			{
 				num3 = 1;
 				num += 1.0;
@@ -1461,20 +1402,17 @@ public partial class DungeonPass
 		else
 			DungeonPlatforms.Add(((int x, int y))(dungeonPosition.X, dungeonPosition.Y));
 
-		WorldGen.lastDungeonHall = zero2;
+		GenVars.lastDungeonHall = zero2;
 		if (Math.Abs(zero.X) > Math.Abs(zero.Y) && WorldGen.genRand.Next(3) != 0)
 			num = (int)((float)num2 * (WorldGen.genRand.Next(110, 150) * 0.01));
 
 		while (num4 > 0)
 		{
 			num9++;
-			if (zero2.X > 0f && dungeonPosition.X > Main.maxTilesX - 100)
-				num4 = 0;
-			else if (zero2.X < 0f && dungeonPosition.X < 100f)
-				num4 = 0;
-			else if (zero2.Y > 0f && dungeonPosition.Y > Main.maxTilesY - 100)
-				num4 = 0;
-			else if (zero2.Y < 0f && dungeonPosition.Y < Main.rockLayer + 50.0)
+			if (zero2.X > 0f && (dungeonPosition.X > Main.maxTilesX - 100 || dungeonPosition.Y > Main.maxTilesY - 100)
+			    || zero2.X < 0f && dungeonPosition.X < 100f
+				|| WorldGen.remixWorldGen && zero2.Y < 0.0 && dungeonPosition.Y < (Main.rockLayer + Main.worldSurface) / 2.0
+				|| !WorldGen.remixWorldGen && zero2.Y < 0f && dungeonPosition.Y < Main.rockLayer + 50.0)
 				num4 = 0;
 
 			num4--;
@@ -1483,9 +1421,9 @@ public partial class DungeonPass
 			int yMin = (int)Math.Max(dungeonPosition.Y - num - 4.0 - WorldGen.genRand.Next(6), 0);
 			int yMax = (int)Math.Min(dungeonPosition.Y + num + 4.0 + WorldGen.genRand.Next(6), Main.maxTilesY);
 
-			WorldGen.dMinX = Math.Min(xMin, WorldGen.dMinX);
-			WorldGen.dMaxX = Math.Max(xMax, WorldGen.dMaxX);
-			WorldGen.dMaxY = Math.Max(yMax, WorldGen.dMaxY);
+			GenVars.dMinX = Math.Min(xMin, GenVars.dMinX);
+			GenVars.dMaxX = Math.Max(xMax, GenVars.dMaxX);
+			GenVars.dMaxY = Math.Max(yMax, GenVars.dMaxY);
 			for (int x1 = xMin; x1 < xMax; x1++)
 			for (int y1 = yMin; y1 < yMax; y1++)
 			{
@@ -1526,7 +1464,7 @@ public partial class DungeonPass
 					if (tile.HasTile || tile.WallType != wallType)
 					{
 						tile.HasTile = true;
-						tile.TileType = WorldGen.crackedType;
+						tile.TileType = GenVars.crackedType;
 					}
 				}
 				else
@@ -1552,8 +1490,8 @@ public partial class DungeonPass
 			}
 		}
 
-		WorldGen.dungeonX = (int)dungeonPosition.X;
-		WorldGen.dungeonY = (int)dungeonPosition.Y;
+		GenVars.dungeonX = (int)dungeonPosition.X;
+		GenVars.dungeonY = (int)dungeonPosition.Y;
 		if (zero2.Y == 0f)
 			Doors.Add(((int x, int y, int pos))(dungeonPosition.X, dungeonPosition.Y, 0));
 		else
@@ -1573,10 +1511,10 @@ public partial class DungeonPass
 		while (num2 > 0)
 		{
 			num2--;
-			int xMin = (int)Math.Max(vector2.X - num * 0.8 - 5.0, WorldGen.dMinX);
-			int xMax = (int)Math.Min(vector2.X + num * 0.8 + 5.0, WorldGen.dMaxX);
-			int yMin = (int)Math.Max(vector2.Y - num * 0.8 - 5.0, WorldGen.dMinY);
-			int yMax = (int)Math.Min(vector2.Y + num * 0.8 + 5.0, WorldGen.dMaxY);
+			int xMin = (int)Math.Max(vector2.X - num * 0.8 - 5.0, GenVars.dMinX);
+			int xMax = (int)Math.Min(vector2.X + num * 0.8 + 5.0, GenVars.dMaxX);
+			int yMin = (int)Math.Max(vector2.Y - num * 0.8 - 5.0, GenVars.dMinY);
+			int yMax = (int)Math.Min(vector2.Y + num * 0.8 + 5.0, GenVars.dMaxY);
 
 			for (int x1 = xMin; x1 < xMax; x1++)
 			for (int y1 = yMin; y1 < yMax; y1++)
@@ -1631,14 +1569,14 @@ public partial class DungeonPass
 		DungeonRoomB.Add((int)num6);
 	}
 
-	public void DungeonEntrance(int x, int y, ushort tileType, int wallType)
+	private void DungeonEntrance(int x, int y, ushort tileType, int wallType)
 	{
 		ClearEntrance(x, y);
 
 		double dungeonXStrength = DungeonXStrength1;
 		double dungeonYStrength = DungeonYStrength1;
-		WorldGen.dMinY = y - (int)(dungeonYStrength / 2f);
-		Vector2 vector = new(x, WorldGen.dMinY);
+		GenVars.dMinY = y - (int)(dungeonYStrength / 2f);
+		Vector2 vector = new(x, GenVars.dMinY);
 		int dungeonSide = x > Main.maxTilesX / 2 ? -1 : 1;
 
 		if (WorldGen.drunkWorldGen || WorldGen.getGoodWorldGen)
@@ -2062,12 +2000,12 @@ public partial class DungeonPass
 
 	private static void MakeDungeonTree()
 	{
-		int y1 = (int)WorldGen.worldSurfaceHigh;
+		int y1 = (int)GenVars.worldSurfaceHigh;
 		int found = 0;
 		int firstY = 45;
 		while (y1 >= 45 && found < 5)
 		{
-			if (Main.tile[WorldGen.dungeonX, y1].HasTile || Main.tile[WorldGen.dungeonX, y1].WallType > 0)
+			if (Main.tile[GenVars.dungeonX, y1].HasTile || Main.tile[GenVars.dungeonX, y1].WallType > 0)
 			{
 				found = 0;
 			}
@@ -2084,7 +2022,7 @@ public partial class DungeonPass
 		if (y1 < 45)
 			y1 = firstY;
 
-		WorldGen.GrowDungeonTree(WorldGen.dungeonX, y1 + 5);
+		WorldGen.GrowDungeonTree(GenVars.dungeonX, y1 + 5);
 	}
 
 	private static void PlaceFirstDoor(Vector2 vector, double dungeonXStrength, int num4, double dungeonYStrength)
@@ -2115,8 +2053,12 @@ public partial class DungeonPass
 	private static void ClearEntrance(int x, int y)
 	{
 		const int spread = 60;
-		for (int x1 = x - spread; x1 < x + spread; x1++)
-		for (int y1 = y - spread; y1 < y + spread; y1++)
+		int xMin = Math.Max(0, x - spread);
+		int xMax = Math.Min(Main.maxTilesX, x - spread);
+		int yMin = Math.Max(0, y - spread);
+		int yMax = Math.Min(Main.maxTilesY, y - spread);
+		for (int x1 = xMin; x1 < xMax; x1++)
+		for (int y1 = yMin; y1 < yMax; y1++)
 		{
 			Tile tile = Main.tile[x1, y1];
 			tile.LiquidAmount = 0;

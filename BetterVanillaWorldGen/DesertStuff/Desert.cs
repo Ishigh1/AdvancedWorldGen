@@ -16,6 +16,9 @@ public static class Desert
 		if (x < Main.maxTilesX * 0.15 || x > Main.maxTilesX * 0.85)
 			return false;
 
+		if (WorldGen.remixWorldGen && y > Main.rockLayer)
+			return false;
+
 		const int spread = 15;
 		for (int i = x - spread; i <= x + spread; i += 10)
 		for (int j = y - spread; j <= y + spread; j += 10)
