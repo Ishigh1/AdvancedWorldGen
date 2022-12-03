@@ -159,7 +159,7 @@ public class GraniteBiome : MicroBiome
 		int length2 = _sourceMagmaMap.GetLength(1);
 		int num = length / 2;
 		int num2 = length2 / 2;
-		if (tileOrigin.Y + num2 <= WorldGen.lavaLine - 30)
+		if (tileOrigin.Y + num2 <= GenVars.lavaLine - 30)
 			return false;
 
 		for (int i = -50; i < 50; i++)

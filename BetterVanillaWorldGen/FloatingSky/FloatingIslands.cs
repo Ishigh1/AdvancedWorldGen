@@ -9,7 +9,7 @@ public class FloatingIslands : ControlledWorldGenPass
 	protected override void ApplyPass()
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.12");
-		WorldGen.numIslandHouses = 0;
+		GenVars.numIslandHouses = 0;
 		int skyIslands = Main.maxTilesX / 1250;
 
 		int skyLakes = Main.maxTilesX / 2500;
@@ -51,7 +51,7 @@ public class FloatingIslands : ControlledWorldGenPass
 					if (flag54)
 					{
 						num820 = -1;
-						int y = WorldGen.genRand.Next(Math.Max(50, Math.Min(90, (int)WorldGen.worldSurfaceLow - 50)),
+						int y = WorldGen.genRand.Next(Math.Max(50, Math.Min(90, (int)GenVars.worldSurfaceLow - 50)),
 							num823 - 100);
 
 						FloatingIslandInfo floatingIslandInfo = new()
@@ -84,10 +84,11 @@ public class FloatingIslands : ControlledWorldGenPass
 							}
 							else
 							{
-								if (WorldGen.getGoodWorldGen)
+								if (WorldGen.remixWorldGen && WorldGen.drunkWorldGen)
+									floatingIslandInfo.Style = GenVars.crimsonLeft && x < Main.maxTilesX / 2 || !GenVars.crimsonLeft && x > Main.maxTilesX / 2 ? 5 : 4;
+								else if (WorldGen.getGoodWorldGen || WorldGen.remixWorldGen)
 									floatingIslandInfo.Style = !WorldGen.crimson ? 4 : 5;
-
-								if (Main.tenthAnniversaryWorld)
+								else if (Main.tenthAnniversaryWorld)
 									floatingIslandInfo.Style = 6;
 
 								WorldGen.CloudIsland(x, y);
@@ -106,7 +107,7 @@ public class FloatingIslands : ControlledWorldGenPass
 
 						placedBiomes.Add((x - 180, x + 180));
 						placedBiomes.Sort((biome1, biome2) => biome1.CompareTo(biome2));
-						WorldGen.numIslandHouses++;
+						GenVars.numIslandHouses++;
 					}
 				}
 			}
