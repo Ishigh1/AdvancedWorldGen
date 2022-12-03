@@ -141,7 +141,7 @@ public class ModifiedWorld : ModSystem
 			cursor.Remove();
 	}
 
-	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
+	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 	{
 		Replacer.ReplaceGenPasses(tasks);
 		DrunkOptions.AddDrunkEdits(tasks);
@@ -175,19 +175,19 @@ public class ModifiedWorld : ModSystem
 		if (Main.netMode != NetmodeID.MultiplayerClient) OptionHelper.OnTick();
 	}
 
-	public static void OnDawn(OnMain.orig_UpdateTime_StartDay orig, ref bool stopEvents)
+	public static void OnDawn(On_Main.orig_UpdateTime_StartDay orig, ref bool stopEvents)
 	{
 		orig(ref stopEvents);
 		OptionHelper.OnDawn();
 	}
 
-	public static void OnDusk(OnMain.orig_UpdateTime_StartNight orig, ref bool stopEvents)
+	public static void OnDusk(On_Main.orig_UpdateTime_StartNight orig, ref bool stopEvents)
 	{
 		orig(ref stopEvents);
 		OptionHelper.OnDusk();
 	}
 
-	public static void ResetSettings(OnUserInterface.orig_SetState orig, UserInterface self, UIState state)
+	public static void ResetSettings(On_UserInterface.orig_SetState orig, UserInterface self, UIState state)
 	{
 		orig(self, state);
 		if (state is UIWorldSelect)
@@ -197,7 +197,7 @@ public class ModifiedWorld : ModSystem
 		}
 	}
 
-	public void LastMinuteChecks(OnUIWorldCreation.orig_FinishCreatingWorld orig, UIWorldCreation self)
+	public void LastMinuteChecks(On_UIWorldCreation.orig_FinishCreatingWorld orig, UIWorldCreation self)
 	{
 		void OrigWithLog()
 		{

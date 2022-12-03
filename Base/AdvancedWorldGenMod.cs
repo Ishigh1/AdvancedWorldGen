@@ -14,28 +14,28 @@ public class AdvancedWorldGenMod : Mod
 
 		UiChanger = new UiChanger(this);
 
-		OnUIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
-		OnUIWorldCreation.FinishCreatingWorld += ModifiedWorld.Instance.LastMinuteChecks;
-		OnWorldFileData.SetWorldSize += UiChanger.SetSpecialName;
-		// OnUIWorldListItem.ctor += UiChanger.CopySettingsButton; // Removed until twld can be loaded in a reasonable time
+		On_UIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
+		On_UIWorldCreation.FinishCreatingWorld += ModifiedWorld.Instance.LastMinuteChecks;
+		On_WorldFileData.SetWorldSize += UiChanger.SetSpecialName;
+		// On_UIWorldListItem.ctor += UiChanger.CopySettingsButton; // Removed until twld can be loaded in a reasonable time
 
-		ILWorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
-		OnWorldFile.CreateMetadata += DedServUi.DedServOptions;
+		IL_WorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
+		On_WorldFile.CreateMetadata += DedServUi.DedServOptions;
 
-		OnUIWorldLoad.ctor += UiChanger.AddCancel;
-		OnWorldGen.do_worldGenCallBack += UiChanger.ThreadifyWorldGen;
+		On_UIWorldLoad.ctor += UiChanger.AddCancel;
+		On_WorldGen.do_worldGenCallBack += UiChanger.ThreadifyWorldGen;
 
-		OnUserInterface.SetState += ModifiedWorld.ResetSettings;
+		On_UserInterface.SetState += ModifiedWorld.ResetSettings;
 
-		OnWorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
-		ILWorldGen.makeTemple += ClassicOptions.ReduceTemple;
+		On_WorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
+		IL_WorldGen.makeTemple += ClassicOptions.ReduceTemple;
 
-		OnMain.UpdateTime_StartDay += ModifiedWorld.OnDawn;
-		OnMain.UpdateTime_StartNight += ModifiedWorld.OnDusk;
-		OnMain.checkXMas += SnowWorld.MainOnCheckXMas;
-		ILProjectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
+		On_Main.UpdateTime_StartDay += ModifiedWorld.OnDawn;
+		On_Main.UpdateTime_StartNight += ModifiedWorld.OnDusk;
+		On_Main.checkXMas += SnowWorld.MainOnCheckXMas;
+		IL_Projectile.Kill += SnowWorld.RemoveSnowDropDuringChristmas;
 
-		ILWorldGen.MakeDungeon += DrunkOptions.CrimruptionChest;
+		IL_WorldGen.MakeDungeon += DrunkOptions.CrimruptionChest;
 
 		Replacer.Replace();
 
