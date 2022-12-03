@@ -51,7 +51,7 @@ public static class ModifiedDesertHive
 		return registerInterestingTiles;
 	}
 
-	public static void
+	private static void
 		PlaceClustersArea(ClusterGroup clusterGroup, Dictionary<(int, int), List<int>> hive) // Weight : 1/3
 	{
 		foreach (((int x, int y), List<int> interestingClusters) in hive)
@@ -89,32 +89,48 @@ public static class ModifiedDesertHive
 			{
 				case > 3.5f:
 					tile.ClearEverything();
-					if (closestCluster % 15 == 2)
-						tile.ResetToType(404);
-					tile.WallType = 187;
+					if (!WorldGen.remixWorldGen || !(y > Main.rockLayer + WorldGen.genRand.Next(-1, 2)))
+					{
+						if (closestCluster % 15 == 2)
+							tile.ResetToType(404);
+						tile.WallType = 187;
+					}
+
 					break;
 				case > 1.8f:
 					if (tile.HasTile) tile.ResetToType(TileID.Sandstone);
-					tile.WallType = 187;
-					if (y < Main.worldSurface)
-						tile.LiquidAmount = 0;
-					else
-						tile.LiquidType = LiquidID.Lava;
+					if (!WorldGen.remixWorldGen || !(y > Main.rockLayer + WorldGen.genRand.Next(-1, 2)))
+						tile.WallType = 187;
+					if (!WorldGen.remixWorldGen)
+						if (y < Main.worldSurface)
+							tile.LiquidAmount = 0;
+						else
+							tile.LiquidType = LiquidID.Lava;
 					break;
 				case > 0.7f:
 					if (tile.HasTile) tile.ResetToType(type);
-					tile.WallType = 216;
-					tile.LiquidAmount = 0;
+					if (!WorldGen.remixWorldGen)
+					{
+						tile.WallType = 216;
+						tile.LiquidAmount = 0;
+					}
+					else if (!(y > Main.rockLayer + WorldGen.genRand.Next(-1, 2)))
+					{
+						tile.WallType = 216;
+					}
+
 					break;
 				case > 0.25f:
 					float num8 = (score - 0.25f) / 0.45f;
 					if (WorldGen.genRand.NextFloat() < num8)
 					{
-						tile.WallType = 187;
-						if (y < Main.worldSurface)
-							tile.LiquidAmount = 0;
-						else
-							tile.LiquidType = LiquidID.Lava;
+						if (!WorldGen.remixWorldGen || !(y > Main.rockLayer + WorldGen.genRand.Next(-1, 2)))
+							tile.WallType = 187;
+						if (!WorldGen.remixWorldGen)
+							if (y < Main.worldSurface)
+								tile.LiquidAmount = 0;
+							else
+								tile.LiquidType = LiquidID.Lava;
 
 						if (tile.HasTile) tile.ResetToType(type);
 					}
@@ -126,7 +142,7 @@ public static class ModifiedDesertHive
 		}
 	}
 
-	public static void AddTileVariance(DesertDescription description) //Weight : 1/6
+	private static void AddTileVariance(DesertDescription description) //Weight : 1/6
 	{
 		int xMin = Math.Max(description.Hive.X - 20, 5);
 		int xMax = Math.Max(description.Hive.X + description.Hive.Width + 20, Main.maxTilesX - 6);
@@ -167,21 +183,24 @@ public static class ModifiedDesertHive
 						break;
 					}
 
-				switch (flag)
+				if (!(WorldGen.remixWorldGen && y > Main.rockLayer + WorldGen.genRand.Next(-1, 2)))
 				{
-					case true when WorldGen.genRand.NextBool(20):
-						WorldGen.PlaceTile(x, y - 1, 485, true, true, -1, WorldGen.genRand.Next(4));
-						break;
-					case true when WorldGen.genRand.NextBool(5):
-						WorldGen.PlaceTile(x, y - 1, 484, true, true);
-						break;
-					default:
+					switch (flag)
 					{
-						if (flag ^ flag2 && WorldGen.genRand.NextBool(5))
-							WorldGen.PlaceTile(x, y + (!flag ? 1 : -1), 165, true, true);
-						else if (flag && WorldGen.genRand.NextBool(5))
-							WorldGen.PlaceTile(x, y - 1, 187, true, true, -1, 29 + WorldGen.genRand.Next(6));
-						break;
+						case true when WorldGen.genRand.NextBool(20):
+							WorldGen.PlaceTile(x, y - 1, 485, true, true, -1, WorldGen.genRand.Next(4));
+							break;
+						case true when WorldGen.genRand.NextBool(5):
+							WorldGen.PlaceTile(x, y - 1, 484, true, true);
+							break;
+						default:
+						{
+							if (flag ^ flag2 && WorldGen.genRand.NextBool(5))
+								WorldGen.PlaceTile(x, y + (!flag ? 1 : -1), 165, true, true);
+							else if (flag && WorldGen.genRand.NextBool(5))
+								WorldGen.PlaceTile(x, y - 1, 187, true, true, -1, 29 + WorldGen.genRand.Next(6));
+							break;
+						}
 					}
 				}
 			}

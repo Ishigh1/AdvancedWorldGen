@@ -6,7 +6,7 @@ public static class Desert
 		typeof(DesertDescription).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance,
 			null, Array.Empty<Type>(), null)!;
 
-	public static readonly Vector2 DefaultBlockScale = new(4f, 2f);
+	private static readonly Vector2 DefaultBlockScale = new(4f, 2f);
 
 	public static bool IsUndergroundDesert(int x, int y)
 	{
@@ -70,9 +70,9 @@ public static class Desert
 		return placement;
 	}
 
-	public static bool RowHasInvalidTiles(int startX, int startY, int width)
+	private static bool RowHasInvalidTiles(int startX, int startY, int width)
 	{
-		if (WorldGen.skipDesertTileCheck)
+		if (GenVars.skipDesertTileCheck)
 			return false;
 
 		int xMin = Math.Max(startX, 0);
