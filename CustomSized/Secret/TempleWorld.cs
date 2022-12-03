@@ -39,11 +39,11 @@ public class TempleWorld : ControlledWorldGenPass
 
 		JungleTemple.MakeTraps(templeRoomCount, rooms);
 
-		WorldGen.tLeft = 50;
-		WorldGen.tRight = Main.maxTilesX - 50;
-		WorldGen.tTop = 50;
-		WorldGen.tBottom = Main.maxTilesY - 50;
-		WorldGen.tRooms = templeRoomCount;
+		GenVars.tLeft = 50;
+		GenVars.tRight = Main.maxTilesX - 50;
+		GenVars.tTop = 50;
+		GenVars.tBottom = Main.maxTilesY - 50;
+		GenVars.tRooms = templeRoomCount;
 
 		WorldGen.templePart2();
 
@@ -89,7 +89,7 @@ public class TempleWorld : ControlledWorldGenPass
 		}
 	}
 
-	public void AllocateRooms(out int templeRoomCount, List<Rectangle> rooms, int direction, out int templeX,
+	private void AllocateRooms(out int templeRoomCount, List<Rectangle> rooms, int direction, out int templeX,
 		out int templeY)
 	{
 		if (direction == 1)

@@ -28,7 +28,6 @@ public class AdvancedWorldGenMod : Mod
 		On_UserInterface.SetState += ModifiedWorld.ResetSettings;
 
 		On_WorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
-		IL_WorldGen.makeTemple += ClassicOptions.ReduceTemple;
 
 		On_Main.UpdateTime_StartDay += ModifiedWorld.OnDawn;
 		On_Main.UpdateTime_StartNight += ModifiedWorld.OnDusk;

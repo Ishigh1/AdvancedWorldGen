@@ -26,12 +26,12 @@ public class JungleChests : ControlledWorldGenPass
 			_ => WallID.GoldBrick
 		};
 
-		WorldGen.numJChests = WorldGen.genRand.Next(7 * Main.maxTilesX / 4200, 12 * Main.maxTilesX / 4200);
-		WorldGen.JChestX = new int[WorldGen.numJChests];
-		WorldGen.JChestY = new int[WorldGen.numJChests];
-		for (int step = 0; step < WorldGen.numJChests; step++)
+		GenVars.numJChests = WorldGen.genRand.Next(7 * Main.maxTilesX / 4200, 12 * Main.maxTilesX / 4200);
+		GenVars.JChestX = new int[GenVars.numJChests];
+		GenVars.JChestY = new int[GenVars.numJChests];
+		for (int step = 0; step < GenVars.numJChests; step++)
 		{
-			Progress.Set(step, WorldGen.numJChests);
+			Progress.Set(step, GenVars.numJChests);
 			int minX = VanillaInterface.JungleLeft;
 			int maxX = VanillaInterface.JungleRight;
 			int x = WorldGen.genRand.Next(minX, maxX);
@@ -124,9 +124,9 @@ public class JungleChests : ControlledWorldGenPass
 				j--;
 			}
 
-			WorldGen.JChestX[step] = x;
-			WorldGen.JChestY[step] = y;
-			WorldGen.structures.AddProtectedStructure(area);
+			GenVars.JChestX[step] = x;
+			GenVars.JChestY[step] = y;
+			GenVars.structures.AddProtectedStructure(area);
 		}
 
 		Main.tileSolid[TileID.Traps] = false;

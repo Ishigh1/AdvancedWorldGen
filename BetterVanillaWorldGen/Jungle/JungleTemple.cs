@@ -23,22 +23,28 @@ public class JungleTemple : ControlledWorldGenPass
 			or WallID.JungleUnsafe3 or WallID.JungleUnsafe4;
 	}
 
-	public static void MakeTemple(GenerationProgress generationProgress, int templeX)
+	private static void MakeTemple(GenerationProgress generationProgress, int templeX)
 	{
 		List<Rectangle> rooms = new();
 		float worldSize = Main.maxTilesX / 4200f;
-		int ignored = 0;
-		int templeRoomCount = ClassicOptions.GetTempleRooms(ref ignored, worldSize);
+		
+		float templeSize = Params.TempleMultiplier;
+		if (WorldGen.drunkWorldGen) templeSize *= 3;
+		else if (WorldGen.getGoodWorldGen) templeSize *= 3;
+		else if (WorldGen.remixWorldGen) templeSize *= 2;
+		
+		int templeRoomCount = WorldGen.genRand.Next((int)(10 * worldSize * templeSize),
+			(int)(16f * templeSize * worldSize));
 
 		int direction = WorldGen.genRand.NextBool(2) ? 1 : -1;
 
 		AllocateRooms(generationProgress, templeX, templeRoomCount, rooms, out int num4, ref direction, out int height);
 
 		int templeY;
-		if (height > Main.UnderworldLayer - WorldGen.rockLayer)
-			templeY = Main.UnderworldLayer - height - WorldGen.genRand.Next(Main.UnderworldLayer - WorldGen.lavaLine);
+		if (height > Main.UnderworldLayer - GenVars.rockLayer)
+			templeY = Main.UnderworldLayer - height - WorldGen.genRand.Next(Main.UnderworldLayer - GenVars.lavaLine);
 		else
-			templeY = WorldGen.genRand.Next((int)WorldGen.rockLayer, Main.UnderworldLayer - height);
+			templeY = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.UnderworldLayer - height);
 
 		MoveRooms(generationProgress, rooms, templeY);
 
@@ -57,11 +63,11 @@ public class JungleTemple : ControlledWorldGenPass
 
 		MakeTraps(templeRoomCount, rooms);
 
-		WorldGen.tLeft = templeLeft;
-		WorldGen.tRight = templeRight;
-		WorldGen.tTop = templeTop;
-		WorldGen.tBottom = templeBottom;
-		WorldGen.tRooms = templeRoomCount;
+		GenVars.tLeft = templeLeft;
+		GenVars.tRight = templeRight;
+		GenVars.tTop = templeTop;
+		GenVars.tBottom = templeBottom;
+		GenVars.tRooms = templeRoomCount;
 	}
 
 	public static void MakeTraps(int templeRoomCount, List<Rectangle> rooms)
@@ -242,8 +248,8 @@ public class JungleTemple : ControlledWorldGenPass
 				WorldGen.PlaceTile(x, y, TileID.LihzahrdAltar);
 				if (Main.tile[x, y].TileType == TileID.LihzahrdAltar)
 				{
-					WorldGen.lAltarX = x - Main.tile[x, y].TileFrameX / 18;
-					WorldGen.lAltarY = y - Main.tile[x, y].TileFrameY / 18;
+					GenVars.lAltarX = x - Main.tile[x, y].TileFrameX / 18;
+					GenVars.lAltarY = y - Main.tile[x, y].TileFrameY / 18;
 					break;
 				}
 
@@ -283,8 +289,8 @@ public class JungleTemple : ControlledWorldGenPass
 					tile3.HasTile = false;
 				}
 
-				WorldGen.lAltarX = x;
-				WorldGen.lAltarY = y;
+				GenVars.lAltarX = x;
+				GenVars.lAltarY = y;
 				for (int num94 = 0; num94 <= 2; num94++)
 				for (int num95 = 0; num95 <= 1; num95++)
 				{
@@ -310,11 +316,11 @@ public class JungleTemple : ControlledWorldGenPass
 		}
 	}
 
-	public static void CleanOutside(GenerationProgress generationProgress, int templeX, int num4, int templeY,
+	private static void CleanOutside(GenerationProgress generationProgress, int templeX, int num4, int templeY,
 		int templeLeft, int templeRight, int templeTop, int templeBottom)
 	{
-		int direction;
-		direction = -num4;
+		int maybeTempleRight = templeY;
+		int direction = -num4;
 		Vector2 vector = new(templeX, templeY);
 		int num63 = WorldGen.genRand.Next(2, 5);
 		bool flag3 = true;
@@ -341,26 +347,40 @@ public class JungleTemple : ControlledWorldGenPass
 
 				if (tile.HasTile && tile.TileType == 226)
 				{
+					if (num67 > maybeTempleRight)
+						maybeTempleRight = num67;
 					tile.HasTile = false;
 					tile.WallType = 87;
 				}
 			}
 		}
 
-		int num68 = templeX;
-		int num69;
-		for (num69 = templeY; !Main.tile[num68, num69].HasTile; num69++)
+		maybeTempleRight += 2;
+
+		int numX = templeX;
+		int numY = templeY;
+		while (!Main.tile[numX, numY].HasTile)
 		{
+			numY++;
+			if (numY >= num63)
+			{
+				numY = num63;
+				Tile tile = Main.tile[numX, numY];
+				tile.ClearEverything();
+				tile.HasTile = true;
+				tile.TileType = 226;
+				break;
+			}
 		}
 
-		num69 -= 4;
-		int num70 = num69;
-		while ((Main.tile[num68, num70].HasTile && Main.tile[num68, num70].TileType == 226) ||
-		       Main.tile[num68, num70].WallType == 87) num70--;
+		numY -= 4;
+		int num70 = numY;
+		while ((Main.tile[numX, num70].HasTile && Main.tile[numX, num70].TileType == 226) ||
+		       Main.tile[numX, num70].WallType == 87) num70--;
 
 		num70 += 2;
-		for (int num71 = num68 - 1; num71 <= num68 + 1; num71++)
-		for (int num72 = num70; num72 <= num69; num72++)
+		for (int num71 = numX - 1; num71 <= numX + 1; num71++)
+		for (int num72 = num70; num72 <= numY; num72++)
 		{
 			Tile tile = Main.tile[num71, num72];
 			tile.HasTile = true;
@@ -370,16 +390,16 @@ public class JungleTemple : ControlledWorldGenPass
 			tile.IsHalfBlock = false;
 		}
 
-		for (int num73 = num68 - 4; num73 <= num68 + 4; num73++)
-		for (int num74 = num69 - 1; num74 < num69 + 3; num74++)
+		for (int num73 = numX - 4; num73 <= numX + 4; num73++)
+		for (int num74 = numY - 1; num74 < numY + 3; num74++)
 		{
 			Tile tile = Main.tile[num73, num74];
 			tile.HasTile = false;
 			tile.WallType = 87;
 		}
 
-		for (int num75 = num68 - 1; num75 <= num68 + 1; num75++)
-		for (int num76 = num69 - 5; num76 <= num69 + 8; num76++)
+		for (int num75 = numX - 1; num75 <= numX + 1; num75++)
+		for (int num76 = numY - 5; num76 <= numY + 8; num76++)
 		{
 			Tile tile = Main.tile[num75, num76];
 			tile.HasTile = true;
@@ -389,16 +409,16 @@ public class JungleTemple : ControlledWorldGenPass
 			tile.IsHalfBlock = false;
 		}
 
-		for (int num77 = num68 - 3; num77 <= num68 + 3; num77++)
-		for (int num78 = num69 - 2; num78 < num69 + 3; num78++)
-			if (num78 >= num69 || num77 < templeX - 1 || num77 > templeX + 1)
+		for (int num77 = numX - 3; num77 <= numX + 3; num77++)
+		for (int num78 = numY - 2; num78 < numY + 3; num78++)
+			if (num78 >= numY || num77 < numX - 1 || num77 > numX + 1)
 			{
 				Tile tile = Main.tile[num77, num78];
 				tile.HasTile = false;
 				tile.WallType = 87;
 			}
 
-		WorldGen.PlaceTile(num68, num69, 10, true, false, -1, 11);
+		WorldGen.PlaceTile(numX, numY, 10, true, false, -1, 11);
 		for (int num79 = templeLeft; num79 < templeRight; num79++)
 		{
 			generationProgress.Set(num79, templeRight, 1 / 12f, 9 / 12f);
@@ -487,7 +507,7 @@ public class JungleTemple : ControlledWorldGenPass
 		int templeRoomCount,
 		List<Rectangle> rooms, int direction)
 	{
-		Vector2 templePath = new(templeX, templeY);
+		Vector2D templePath = new(templeX, templeY);
 		for (int num39 = 0; num39 < templeRoomCount; num39++)
 		{
 			generationProgress.Set(num39, templeRoomCount, 1 / 12f, 4 / 12f);

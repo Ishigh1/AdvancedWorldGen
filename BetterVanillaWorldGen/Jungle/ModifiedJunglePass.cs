@@ -2,12 +2,12 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 
 public class ModifiedJunglePass : ControlledWorldGenPass
 {
-	public int DungeonSide;
-	public int JungleOriginX;
-	public int LeftBeachEnd;
-	public int RightBeachStart;
-	public float WorldScaleX;
-	public float WorldScaleY;
+	private int DungeonSide;
+	private int JungleOriginX;
+	private int LeftBeachEnd;
+	private int RightBeachStart;
+	private float WorldScaleX;
+	private float WorldScaleY;
 
 	public ModifiedJunglePass() : base("Jungle", 10154.652f)
 	{
@@ -17,10 +17,10 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.11");
 
-		JungleOriginX = WorldGen.jungleOriginX;
-		DungeonSide = WorldGen.dungeonSide;
-		LeftBeachEnd = WorldGen.leftBeachEnd;
-		RightBeachStart = WorldGen.rightBeachStart;
+		JungleOriginX = GenVars.jungleOriginX;
+		DungeonSide = GenVars.dungeonSide;
+		LeftBeachEnd = GenVars.leftBeachEnd;
+		RightBeachStart = GenVars.rightBeachStart;
 
 		WorldScaleY = Main.maxTilesY * (1.5f / 1200f);
 		WorldScaleX = Main.maxTilesX * (1.5f / 4200f);
@@ -58,17 +58,17 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 		meanX = (int)Utils.Clamp(meanX, LeftBeachEnd + num / 2 + 25f * WorldScaleX,
 			RightBeachStart - num / 2f - 25f * WorldScaleX);
 
-		WorldGen.mudWall = true;
+		GenVars.mudWall = true;
 		WorldGen.TileRunner(meanX, meanY, num, (int)(5000 * WorldScaleY), 59, false, 0f, -20f, true);
 		Progress.Set(7, 11);
 
 		GenerateTunnelToSurface(meanX, meanY);
 		Progress.Set(8, 11);
 
-		WorldGen.mudWall = false;
-		DelimitJungle((int)((WorldGen.rockLayer + Main.UnderworldLayer) / 2));
-		DelimitJungle((int)((WorldGen.rockLayer + Main.UnderworldLayer) / 3), true);
-		DelimitJungle((int)((WorldGen.rockLayer + Main.UnderworldLayer) * 2 / 3), true);
+		GenVars.mudWall = false;
+		DelimitJungle((int)((GenVars.rockLayer + Main.UnderworldLayer) / 2));
+		DelimitJungle((int)((GenVars.rockLayer + Main.UnderworldLayer) / 3), true);
+		DelimitJungle((int)((GenVars.rockLayer + Main.UnderworldLayer) * 2 / 3), true);
 		Progress.Set(9, 11);
 
 		GenerateHolesInMudWalls();
@@ -78,7 +78,7 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 		Progress.Set(11, 11);
 	}
 
-	public void PlaceGemsAt(int x, int y, ushort baseGem, int gemVariants)
+	private void PlaceGemsAt(int x, int y, ushort baseGem, int gemVariants)
 	{
 		for (int _ = 0; _ < 6f * Math.Sqrt(WorldScaleX * WorldScaleY); _++)
 		{
@@ -91,14 +91,14 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 		}
 	}
 
-	public void PlaceFirstPassMud(int x, int y, int xSpeedScale)
+	private void PlaceFirstPassMud(int x, int y, int xSpeedScale)
 	{
-		WorldGen.mudWall = true;
+		GenVars.mudWall = true;
 		float mul = WorldScaleY / WorldScaleX;
 		WorldGen.TileRunner(x, y, WorldGen.genRand.Next((int)(250f * WorldScaleX), (int)(500f * WorldScaleX)),
 			WorldGen.genRand.Next((int)(50f * WorldScaleY * mul), (int)(150f * WorldScaleY * mul)), 59, false,
 			DungeonSide * xSpeedScale);
-		WorldGen.mudWall = false;
+		GenVars.mudWall = false;
 	}
 
 	public (int x, int y) CreateStartPoint()
@@ -113,13 +113,13 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 		y = Utils.Clamp(y, (int)Main.rockLayer, Main.UnderworldLayer);
 	}
 
-	public (int x, int y) RandomPoint(int xDeviation)
+	private (int x, int y) RandomPoint(int xDeviation)
 	{
 		return (JungleOriginX + WorldGen.genRand.Next(-xDeviation, xDeviation),
-			WorldGen.genRand.Next((int)WorldGen.rockLayer, Main.UnderworldLayer));
+			WorldGen.genRand.Next((int)GenVars.rockLayer, Main.UnderworldLayer));
 	}
 
-	public static void GenerateTunnelToSurface(int x, int y)
+	private static void GenerateTunnelToSurface(int x, int y)
 	{
 		double num = WorldGen.genRand.Next(5, 11);
 		Vector2 vector = new(x, y);
@@ -175,8 +175,7 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 			{
 				if (WorldGen.drunkWorldGen)
 					return;
-
-
+				
 				if (Main.tile[x1, y1].WallType == 0 && !Main.tile[x1, y1].HasTile &&
 				    Main.tile[x1, y1 - 3].WallType == 0 && !Main.tile[x1, y1 - 3].HasTile &&
 				    Main.tile[x1, y1 - 1].WallType == 0 && !Main.tile[x1, y1 - 1].HasTile &&
