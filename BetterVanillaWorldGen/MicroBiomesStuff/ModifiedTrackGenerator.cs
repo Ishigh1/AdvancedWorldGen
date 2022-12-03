@@ -361,7 +361,7 @@ public class ModifiedTrackGenerator
 		for (int i = index; i < CurrentTrack.Count; i++)
 		{
 			TrackHistory history = CurrentTrack[i];
-			history.Y += (short)num;
+			history.Y += num;
 			CurrentTrack[i] = history;
 		}
 	}
@@ -476,15 +476,15 @@ public class ModifiedTrackGenerator
 	[DebuggerDisplay("X = {X}, Y = {Y}, Slope = {Slope}")]
 	public struct TrackHistory
 	{
-		public short X;
-		public short Y;
+		public int X;
+		public int Y;
 		public TrackSlope Slope;
 		public TrackMode Mode;
 
 		public TrackHistory(int x, int y, TrackSlope slope)
 		{
-			X = (short)x;
-			Y = (short)y;
+			X = x;
+			Y = y;
 			Slope = slope;
 			Mode = TrackMode.Normal;
 		}

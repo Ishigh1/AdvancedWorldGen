@@ -74,7 +74,7 @@ public partial class DungeonPass
 		if (VanillaInterface.Calamity.Enabled)
 		{
 			WorldGen.dungeonX = Utils.Clamp(dungeonX, VanillaInterface.Calamity.SulphurousSeaBiomeWidth + 100,
-				Main.maxTilesX - VanillaInterface.Calamity.SulphurousSeaBiomeWidth - 100);
+				Main.maxTilesX - VanillaInterface.Calamity.SulphurousSeaBiomeWidth - 101);
 			WorldUtils.Find(new Point(dungeonX, dungeonY),
 				Searches.Chain(new Searches.Down(9001), new Conditions.IsSolid()), out Point result);
 			WorldGen.dungeonY = result.Y - 10;
@@ -312,7 +312,7 @@ public partial class DungeonPass
 				if (WorldGen.genRand.NextBool(2))
 					num29 = -1;
 
-				for (; x > 5 && x < Main.maxTilesX - 5 && !Main.tile[x, y].HasTile; x += num29)
+				for (; x > 5 && x < Main.maxTilesX - 6 && !Main.tile[x, y].HasTile; x += num29)
 				{
 				}
 
@@ -768,7 +768,7 @@ public partial class DungeonPass
 				while (flag6 && !Main.tile[x, y].HasTile)
 				{
 					x -= direction;
-					if (x < 5 || x > Main.maxTilesX - 5)
+					if (x < 5 || x >= Main.maxTilesX - 5)
 						flag6 = false;
 					else if (Main.tile[x, y].HasTile && !Main.tileDungeon[Main.tile[x, y].TileType])
 						flag6 = false;

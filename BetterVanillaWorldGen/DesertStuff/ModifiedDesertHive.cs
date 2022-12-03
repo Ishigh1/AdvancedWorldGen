@@ -29,7 +29,7 @@ public static class ModifiedDesertHive
 		{
 			Cluster cluster = clusters[index];
 			int minX = Math.Max(cluster[0].x - spreadX, 5);
-			int maxX = Math.Min(cluster[0].x + spreadX, Main.maxTilesX - 5);
+			int maxX = Math.Min(cluster[0].x + spreadX, Main.maxTilesX - 6);
 			int minY = Math.Max(cluster[0].y - spreadY, 5);
 			int maxY = Math.Min(cluster[0].y + spreadY, Main.UnderworldLayer);
 			for (int x = minX; x <= maxX; x++)
@@ -129,7 +129,7 @@ public static class ModifiedDesertHive
 	public static void AddTileVariance(DesertDescription description) //Weight : 1/6
 	{
 		int xMin = Math.Max(description.Hive.X - 20, 5);
-		int xMax = Math.Max(description.Hive.X + description.Hive.Width + 20, Main.maxTilesX - 5);
+		int xMax = Math.Max(description.Hive.X + description.Hive.Width + 20, Main.maxTilesX - 6);
 		int yMin = Math.Max(description.Hive.Y - 20, 5);
 		int yMax = Math.Max(description.Hive.Y + description.Hive.Height + 20, Main.maxTilesY - 5);
 
