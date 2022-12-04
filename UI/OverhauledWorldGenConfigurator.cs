@@ -63,7 +63,7 @@ public class OverhauledWorldGenConfigurator : UIState
 			Top = new StyleDimension(0f, 0.75f),
 			HAlign = 0.5f
 		};
-		goBack.OnMouseDown += GoBack;
+		goBack.OnLeftClick += GoBack;
 		goBack.OnMouseOver += UiChanger.FadedMouseOver;
 		goBack.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(goBack);

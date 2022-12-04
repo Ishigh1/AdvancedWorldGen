@@ -18,7 +18,7 @@ public class MicroBiomes : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		WorldGenConfiguration configuration = WorldGen.configuration;
+		WorldGenConfiguration configuration = GenVars.configuration;
 		Configuration = configuration.GetPassConfiguration("Micro Biomes");
 
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.76") + ".." + Variation;
@@ -81,14 +81,14 @@ public class MicroBiomes : ControlledWorldGenPass
 	private void MakeDeadManChests(WorldGenConfiguration configuration)
 	{
 		DeadMansChestBiome deadMansChestBiome = configuration.CreateBiome<DeadMansChestBiome>();
-		List<int> possibleChestsToTrapify = deadMansChestBiome.GetPossibleChestsToTrapify(WorldGen.structures);
+		List<int> possibleChestsToTrapify = deadMansChestBiome.GetPossibleChestsToTrapify(GenVars.structures);
 		int random = (int)Configuration.Get<JsonRange>("DeadManChests").GetRandom(WorldGen.genRand);
 		int num31 = 0;
 		while (num31 < random && possibleChestsToTrapify.Count > 0)
 		{
 			int num32 = possibleChestsToTrapify[WorldGen.genRand.Next(possibleChestsToTrapify.Count)];
 			Point origin = new(Main.chest[num32].x, Main.chest[num32].y);
-			deadMansChestBiome.Place(origin, WorldGen.structures);
+			deadMansChestBiome.Place(origin, GenVars.structures);
 			num31++;
 			possibleChestsToTrapify.Remove(num32);
 		}
@@ -96,7 +96,7 @@ public class MicroBiomes : ControlledWorldGenPass
 
 	private void MakeThinIcePatches(WorldGenConfiguration configuration)
 	{
-		if (!WorldGen.notTheBees)
+		if (!WorldGen.notTheBees || WorldGen.remixWorldGen)
 		{
 			ThinIceBiome thinIceBiome = configuration.CreateBiome<ThinIceBiome>();
 			int random2 = (int)Configuration.Get<JsonRange>("ThinIcePatchCount").GetRandom(WorldGen.genRand);
@@ -106,7 +106,7 @@ public class MicroBiomes : ControlledWorldGenPass
 			while (num35 < random2)
 				if (thinIceBiome.Place(
 					    RandomUnderSurfaceWorldPoint((int)Main.worldSurface + 20, 200, 50, 50),
-					    WorldGen.structures))
+					    GenVars.structures))
 				{
 					num35++;
 					num33 = 0;
@@ -127,20 +127,25 @@ public class MicroBiomes : ControlledWorldGenPass
 	{
 		EnchantedSwordBiome enchantedSwordBiome = configuration.CreateBiome<EnchantedSwordBiome>();
 		int swordShrines = (int)Configuration.Get<JsonRange>("SwordShrineAttempts").GetRandom(WorldGen.genRand);
-		float num36 = Configuration.Get<float>("SwordShrinePlacementChance");
+		float shrineChance = Configuration.Get<float>("SwordShrinePlacementChance");
+		if (WorldGen.tenthAnniversaryWorldGen)
+		{
+			swordShrines *= 2;
+			shrineChance /= 2;
+		}
 		Point origin2 = default;
 		for (int num37 = 0; num37 < swordShrines; num37++)
-			if (!(WorldGen.genRand.NextFloat() > num36))
+			if ((num37 == 0 && WorldGen.tenthAnniversaryWorldGen) || !(WorldGen.genRand.NextFloat() > shrineChance))
 			{
 				int num38 = 0;
 				while (num38++ <= Main.maxTilesX)
 				{
-					origin2.Y = (int)WorldGen.worldSurface + WorldGen.genRand.Next(50, 100);
+					origin2.Y = (int)GenVars.worldSurface + WorldGen.genRand.Next(50, 100);
 					origin2.X = WorldGen.genRand.NextBool(2)
 						? WorldGen.genRand.Next(50, (int)(Main.maxTilesX * 0.3f))
 						: WorldGen.genRand.Next((int)(Main.maxTilesX * 0.7f), Main.maxTilesX - 50);
 
-					if (enchantedSwordBiome.Place(origin2, WorldGen.structures))
+					if (enchantedSwordBiome.Place(origin2, GenVars.structures))
 						break;
 				}
 			}
@@ -148,7 +153,7 @@ public class MicroBiomes : ControlledWorldGenPass
 
 	private void MakeCampsites(WorldGenConfiguration configuration)
 	{
-		if (!WorldGen.notTheBees)
+		if (!WorldGen.notTheBees || WorldGen.remixWorldGen)
 		{
 			CampsiteBiome campsiteBiome = configuration.CreateBiome<CampsiteBiome>();
 			int random4 = (int)Configuration.Get<JsonRange>("CampsiteCount").GetRandom(WorldGen.genRand);
@@ -156,26 +161,36 @@ public class MicroBiomes : ControlledWorldGenPass
 			while (num39 < random4)
 				if (campsiteBiome.Place(
 					    RandomUnderSurfaceWorldPoint((int)Main.worldSurface, 200,
-						    WorldGen.beachDistance, WorldGen.beachDistance), WorldGen.structures))
+						    WorldGen.beachDistance, WorldGen.beachDistance), GenVars.structures))
 					num39++;
 		}
 	}
 
 	private void MakeExplosiveTraps(WorldGenConfiguration configuration)
 	{
-		if (!WorldGen.notTheBees)
+		if (!WorldGen.notTheBees || WorldGen.remixWorldGen)
 		{
 			MiningExplosivesBiome miningExplosivesBiome = configuration.CreateBiome<MiningExplosivesBiome>();
 			int num40 = (int)Configuration.Get<JsonRange>("ExplosiveTrapCount").GetRandom(WorldGen.genRand);
-			if (WorldGen.getGoodWorldGen)
+			if ((WorldGen.getGoodWorldGen || WorldGen.noTrapsWorldGen) && !WorldGen.notTheBees)
 				num40 = (int)(num40 * 1.5);
 
 			int num41 = 0;
 			while (num41 < num40)
-				if (miningExplosivesBiome.Place(
-					    WorldGen.RandomWorldPoint((int)WorldGen.rockLayer, WorldGen.beachDistance, 200,
-						    WorldGen.beachDistance), WorldGen.structures))
-					num41++;
+				if (WorldGen.remixWorldGen)
+				{
+					if (miningExplosivesBiome.Place(
+						    WorldGen.RandomWorldPoint((int)Main.worldSurface, WorldGen.beachDistance, Main.maxTilesX - (int)GenVars.rockLayer,
+							    WorldGen.beachDistance), GenVars.structures))
+						num41++;
+				}
+				else
+				{
+					if (miningExplosivesBiome.Place(
+						    WorldGen.RandomWorldPoint((int)GenVars.rockLayer, WorldGen.beachDistance, 200,
+							    WorldGen.beachDistance), GenVars.structures))
+						num41++;
+				}
 		}
 	}
 
@@ -193,7 +208,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		const int mahoganyMaxAttempts = 20000;
 
 		while (placed < treeNumber && tries < mahoganyMaxAttempts)
-			if (mahoganyTreeBiome.Place(RandomUnderSurfaceWorldPoint(top, bottom, left, right), WorldGen.structures))
+			if (mahoganyTreeBiome.Place(RandomUnderSurfaceWorldPoint(top, bottom, left, right), GenVars.structures))
 				placed++;
 			else
 				tries++;
@@ -226,12 +241,16 @@ public class MicroBiomes : ControlledWorldGenPass
 		const int maxAttempts = 20000;
 		int attempts = 0;
 		double lavaTraps = Main.maxTilesX * 0.02;
+		if (WorldGen.noTrapsWorldGen)
+			lavaTraps *= 5;
+		else if (WorldGen.getGoodWorldGen) 
+			lavaTraps *= 2;
 
 		int generatedLavaTraps = 0;
 		while (generatedLavaTraps < lavaTraps && attempts < maxAttempts)
 		{
 			int x = WorldGen.genRand.Next(200, Main.maxTilesX - 200);
-			int y = WorldGen.genRand.Next(WorldGen.lavaLine - 100, Main.maxTilesY - 210);
+			int y = WorldGen.genRand.Next(GenVars.lavaLine - 100, Main.maxTilesY - 210);
 			if (WorldGen.placeLavaTrap(x, y))
 				generatedLavaTraps++;
 			else

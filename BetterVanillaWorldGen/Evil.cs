@@ -16,12 +16,31 @@ public class Corruption : ControlledWorldGenPass
 		bool oldCrimson = WorldGen.crimson;
 		int middlePadding = OptionHelper.OptionsContains("Drunk.Crimruption") ? 100 : 200;
 
+		int beachAvoidance = 500;
+		int dungeonAvoidance = 100;
+
+		if (WorldGen.remixWorldGen)
+		{
+			biomeNumber *= 2;
+			middlePadding = 0;
+		}
+		else if (WorldGen.tenthAnniversaryWorldGen)
+		{
+			beachAvoidance *= 2;
+			dungeonAvoidance *= 2;
+			middlePadding = 0;
+		}
+
 		OtherBiomes.Add((Main.maxTilesX / 2 - middlePadding, Main.maxTilesX / 2 + middlePadding)); //Center
-		OtherBiomes.Add((WorldGen.UndergroundDesertLocation.Left, WorldGen.UndergroundDesertLocation.Right)); //Desert
-		OtherBiomes.Add((WorldGen.snowOriginLeft, WorldGen.snowOriginRight)); //Snow
+		OtherBiomes.Add((0, beachAvoidance));
+		OtherBiomes.Add((Main.maxTilesX - beachAvoidance, Main.maxTilesX));
+		if (!WorldGen.remixWorldGen)
+			OtherBiomes.Add((GenVars.UndergroundDesertLocation.Left, GenVars.UndergroundDesertLocation.Right)); //Desert
+		OtherBiomes.Add((GenVars.snowOriginLeft, GenVars.snowOriginRight)); //Snow
 		OtherBiomes.Add((VanillaInterface.JungleLeft, VanillaInterface.JungleRight)); //Jungle
-		OtherBiomes.Add(WorldGen.dungeonSide < 0 ? (0, 400) : (Main.maxTilesX - 400, Main.maxTilesX)); // Dungeon beach
-		OtherBiomes.Add((WorldGen.dungeonLocation - 100, WorldGen.dungeonLocation + 100)); // Dungeon
+		OtherBiomes.Add((GenVars.dungeonLocation - dungeonAvoidance,
+			GenVars.dungeonLocation + dungeonAvoidance)); // Dungeon
+
 		if (OptionHelper.OptionsContains("Drunk.Crimruption"))
 		{
 			bool isOdd = biomeNumber % 2 == 0;
@@ -37,6 +56,7 @@ public class Corruption : ControlledWorldGenPass
 			}
 
 			bool left = WorldGen.genRand.NextBool(2);
+			GenVars.crimsonLeft = left;
 			GenerateCrimson(crimsonNumber, left);
 			GenerateCorruption(corruptionNumber, !left);
 		}
@@ -65,7 +85,7 @@ public class Corruption : ControlledWorldGenPass
 			int minY = (from floatingIslandInfo in VanillaInterface.FloatingIslandInfos
 				let islandX = floatingIslandInfo.X
 				where corruptionLeft - 100 < islandX && corruptionRight + 100 > islandX
-				select floatingIslandInfo.Y + 50).Prepend((int)WorldGen.worldSurfaceLow - 50).Max();
+				select floatingIslandInfo.Y + 50).Prepend((int)GenVars.worldSurfaceLow - 50).Max();
 
 			MakeSingleCorruptionBiome(corruptionLeft, corruptionRight, corruptionCenter, minY);
 		}
@@ -95,7 +115,7 @@ public class Corruption : ControlledWorldGenPass
 			pitSpacing--;
 		}
 
-		double deepEnough = WorldGen.worldSurfaceHigh + 60.0;
+		double deepEnough = GenVars.worldSurfaceHigh + 60.0;
 
 		for (int x = corruptionLeft; x < corruptionRight; x++)
 		{
@@ -107,10 +127,19 @@ public class Corruption : ControlledWorldGenPass
 					    x <= corruptionRight - WorldGen.genRand.Next(5))
 						Main.tile[x, y].TileType = 112;
 
-					if (Main.tile[x, y].TileType == 0 && y < Main.worldSurface - 1.0 && !flag52)
+					if (y < Main.worldSurface - 1.0 && !flag52)
 					{
-						WorldGen.grassSpread = 0;
-						WorldGen.SpreadGrass(x, y, 0, 23);
+						switch (Main.tile[x, y].TileType)
+						{
+							case 0:
+								WorldGen.grassSpread = 0;
+								WorldGen.SpreadGrass(x, y, 0, 23);
+								break;
+							case 59:
+								WorldGen.grassSpread = 0;
+								WorldGen.SpreadGrass(x, y, 59, TileID.CorruptJungleGrass);
+								break;
+						}
 					}
 
 					flag52 = true;
@@ -128,6 +157,7 @@ public class Corruption : ControlledWorldGenPass
 					Main.tile[x, y].TileType = Main.tile[x, y].TileType switch
 					{
 						2 => 23,
+						59 => TileID.CorruptJungleGrass,
 						161 => 163,
 						396 => 400,
 						397 => 398,
@@ -183,15 +213,15 @@ public class Corruption : ControlledWorldGenPass
 					break;
 				}
 
-		for (int y = (int)WorldGen.worldSurfaceLow; y < Main.worldSurface - 1.0; y++)
+		for (int y = (int)GenVars.worldSurfaceLow; y < Main.worldSurface - 1.0; y++)
 			if (Main.tile[x, y].HasTile)
 			{
 				int num741 = y + WorldGen.genRand.Next(10, 14);
 				for (int num742 = y; num742 < num741; num742++)
-					if (Main.tile[x, num742].TileType is TileID.Mud or TileID.JungleGrass &&
+					if (Main.tile[x, num742].TileType is TileID.JungleGrass &&
 					    x > corruptionLeft + WorldGen.genRand.Next(5) &&
 					    x < corruptionRight - WorldGen.genRand.Next(5))
-						Main.tile[x, num742].TileType = 0;
+						Main.tile[x, num742].TileType = TileID.CorruptJungleGrass;
 
 				break;
 			}
@@ -209,11 +239,11 @@ public class Corruption : ControlledWorldGenPass
 			int center = (int)Math.Round(doubleCenter);
 			int biomeSize = (int)(doubleCenter + biomeSideSize.GetRandom(WorldGen.genRand));
 
-			int min = left ? WorldGen.evilBiomeBeachAvoidance : half;
+			int min = left ? GenVars.evilBiomeBeachAvoidance : half;
 			int currentX = min;
 			int max = left && OptionHelper.OptionsContains("Drunk.Crimruption")
 				? half
-				: Main.maxTilesX - WorldGen.evilBiomeBeachAvoidance;
+				: Main.maxTilesX - GenVars.evilBiomeBeachAvoidance;
 			int allowedX = 0;
 
 			List<(int start, int size)> skips = new();
@@ -282,7 +312,7 @@ public class Corruption : ControlledWorldGenPass
 			int minY = (from floatingIslandInfo in VanillaInterface.FloatingIslandInfos
 				let islandX = floatingIslandInfo.X
 				where crimsonLeft - 100 < islandX && crimsonRight + 100 > islandX
-				select floatingIslandInfo.Y + 50).Prepend((int)WorldGen.worldSurfaceLow - 50).Max();
+				select floatingIslandInfo.Y + 50).Prepend((int)GenVars.worldSurfaceLow - 50).Max();
 
 			WorldGen.CrimStart(crimsonCenter, minY - 10);
 			for (int x = crimsonLeft; x < crimsonRight; x++)
@@ -291,14 +321,14 @@ public class Corruption : ControlledWorldGenPass
 				{
 					int num716 = y + WorldGen.genRand.Next(10, 14);
 					for (int num717 = y; num717 < num716; num717++)
-						if (Main.tile[x, num717].TileType is 59 or 60 && x >= crimsonLeft + WorldGen.genRand.Next(5) &&
+						if (Main.tile[x, num717].TileType is 60 && x >= crimsonLeft + WorldGen.genRand.Next(5) &&
 						    x < crimsonRight - WorldGen.genRand.Next(5))
-							Main.tile[x, num717].TileType = 0;
+							Main.tile[x, num717].TileType = TileID.CrimsonJungleGrass;
 
 					break;
 				}
 
-			double worldTop = WorldGen.worldSurfaceHigh + 60.0;
+			double worldTop = GenVars.worldSurfaceHigh + 60.0;
 
 			for (int x = crimsonLeft; x < crimsonRight; x++)
 			{
@@ -310,10 +340,19 @@ public class Corruption : ControlledWorldGenPass
 						    x <= crimsonRight - WorldGen.genRand.Next(5))
 							Main.tile[x, y].TileType = 234;
 
-						if (Main.tile[x, y].TileType == 0 && y < Main.worldSurface - 1.0 && !flag49)
+						if (y < Main.worldSurface - 1.0 && !flag49)
 						{
-							WorldGen.grassSpread = 0;
-							WorldGen.SpreadGrass(x, y, 0, 199);
+							switch (Main.tile[x, y].TileType)
+							{
+								case 0:
+									WorldGen.grassSpread = 0;
+									WorldGen.SpreadGrass(x, y, 0, TileID.CrimsonGrass);
+									break;
+								case 59:
+									WorldGen.grassSpread = 0;
+									WorldGen.SpreadGrass(x, y, 59, TileID.CrimsonJungleGrass);
+									break;
+							}
 						}
 
 						flag49 = true;
@@ -335,6 +374,9 @@ public class Corruption : ControlledWorldGenPass
 							}
 							case 2:
 								Main.tile[x, y].TileType = 199;
+								break;
+							case 59:
+								Main.tile[x, y].TileType = TileID.CrimsonJungleGrass;
 								break;
 							case 161:
 								Main.tile[x, y].TileType = 200;
