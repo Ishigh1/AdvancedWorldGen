@@ -9,18 +9,19 @@ public class GenerateIceBiome : ControlledWorldGenPass
 	protected override void ApplyPass()
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.56");
-		WorldGen.snowTop = (int)Main.worldSurface;
-		int num840 = WorldGen.lavaLine - WorldGen.genRand.Next(160, 200);
-		int snowLeft = WorldGen.snowOriginLeft;
-		int snowRight = WorldGen.snowOriginRight;
+		GenVars.snowTop = (int)Main.worldSurface;
+		int lavaLine = WorldGen.remixWorldGen ? Main.maxTilesY - 250 : GenVars.lavaLine;
+		int num840 = lavaLine - WorldGen.genRand.Next(160, 200);
+		int snowLeft = GenVars.snowOriginLeft;
+		int snowRight = GenVars.snowOriginRight;
 		int num843 = 10;
-		bool dungeonRight = WorldGen.dungeonSide > 0;
+		bool dungeonRight = GenVars.dungeonSide > 0;
 
-		int[] snowMinX = WorldGen.snowMinX;
-		int[] snowMaxX = WorldGen.snowMaxX;
-		for (int num844 = 0; num844 <= WorldGen.lavaLine - 140; num844++)
+		int[] snowMinX = GenVars.snowMinX;
+		int[] snowMaxX = GenVars.snowMaxX;
+		for (int num844 = 0; num844 <= lavaLine - 140; num844++)
 		{
-			Progress.Set(num844 / (float)(WorldGen.lavaLine - 140));
+			Progress.Set(num844 / (float)(lavaLine - 140));
 			snowLeft += WorldGen.genRand.Next(-4, 4);
 			snowRight += WorldGen.genRand.Next(-3, 5);
 			if (num844 > 0)
@@ -111,8 +112,8 @@ public class GenerateIceBiome : ControlledWorldGenPass
 					}
 				}
 
-			if (WorldGen.snowBottom < num844)
-				WorldGen.snowBottom = num844;
+			if (GenVars.snowBottom < num844)
+				GenVars.snowBottom = num844;
 		}
 	}
 }
