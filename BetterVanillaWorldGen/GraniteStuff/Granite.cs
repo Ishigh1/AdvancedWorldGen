@@ -19,17 +19,14 @@ public class Granite : ControlledWorldGenPass
 			float progress = tries / (float)count;
 			Progress.Set(progress);
 			Point point3 = WorldGen.RandomRectanglePoint((int)(progress * (Main.maxTilesX - 200)) + 100,
-				(int)GenVars.rockLayer + 20, (int)num797, Main.maxTilesY - ((int)GenVars.rockLayer + 40) - 200);
-			
+				(int)GenVars.rockLayer + 20, num797, Main.maxTilesY - ((int)GenVars.rockLayer + 40) - 200);
+
 			if (WorldGen.remixWorldGen)
-			{
-				point3 = WorldGen.RandomRectanglePoint((int)(progress * (double)(Main.maxTilesX - 200)) + 100, (int)GenVars.worldSurface + 100, (int)num797, (int)GenVars.rockLayer - (int)GenVars.worldSurface - 100);
-			}
-			
+				point3 = WorldGen.RandomRectanglePoint((int)(progress * (double)(Main.maxTilesX - 200)) + 100,
+					(int)GenVars.worldSurface + 100, num797, (int)GenVars.rockLayer - (int)GenVars.worldSurface - 100);
+
 			while (point3.X > Main.maxTilesX * 0.45 && point3.X < Main.maxTilesX * 0.55)
-			{
 				point3.X = WorldGen.genRand.Next(WorldGen.beachDistance, Main.maxTilesX - WorldGen.beachDistance);
-			}
 
 			num798++;
 			if (GraniteBiome.CanPlace(point3, GenVars.structures))
@@ -46,10 +43,7 @@ public class Granite : ControlledWorldGenPass
 		}
 
 		GraniteBiome graniteBiome = GenVars.configuration.CreateBiome<GraniteBiome>();
-		
-		foreach (Point point in list2)
-		{
-			graniteBiome.Place(point, GenVars.structures);
-		}
+
+		foreach (Point point in list2) graniteBiome.Place(point, GenVars.structures);
 	}
 }

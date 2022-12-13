@@ -40,7 +40,8 @@ public static partial class Replacer
 	}
 
 #if !SPECIALDEBUG
-	public static void ChangeWeights(OnWorldGenerator.orig_GenerateWorld orig, WorldGenerator self, GenerationProgress progress)
+	public static void ChangeWeights(OnWorldGenerator.orig_GenerateWorld orig, WorldGenerator self,
+		GenerationProgress progress)
 	{
 		if (GenPasses != null)
 		{
@@ -78,17 +79,22 @@ public static partial class Replacer
 				if (weight != 0) genPass.Weight = weight / found;
 				Type type = genPass.GetType();
 				MethodInfo? methodInfo =
- type.GetMethod("ApplyPass", BindingFlags.Instance | BindingFlags.NonPublic, new []{typeof(GenerationProgress), typeof(GameConfiguration)});
+					type.GetMethod("ApplyPass", BindingFlags.Instance | BindingFlags.NonPublic,
+						new[] { typeof(GenerationProgress), typeof(GameConfiguration) });
 				if (methodInfo != null)
 				{
-					if (!MethodInfos.Contains(methodInfo) && MethodInfos.All(info => info.DeclaringType != methodInfo.DeclaringType))
+					if (!MethodInfos.Contains(methodInfo) &&
+					    MethodInfos.All(info => info.DeclaringType != methodInfo.DeclaringType))
 					{
 						HookEndpointManager.Add(methodInfo, Timer);
 						MethodInfos.Add(methodInfo);
 					}
 				}
 				else
-					AdvancedWorldGenMod.Instance.Logger.Debug("Methodinfo not found for genpass " + genPass.Name + "(Mod : " + type.Assembly.FullName + ")");
+				{
+					AdvancedWorldGenMod.Instance.Logger.Debug("Methodinfo not found for genpass " + genPass.Name +
+					                                          "(Mod : " + type.Assembly.FullName + ")");
+				}
 			}
 
 			ModifiedWorld.Instance.Times = new Dictionary<string, TimeSpan>();
@@ -97,7 +103,8 @@ public static partial class Replacer
 		orig(self, progress);
 	}
 
-	public static void Timer(OnGenPass.orig_Apply orig, GenPass self, GenerationProgress progress, GameConfiguration configuration)
+	public static void Timer(OnGenPass.orig_Apply orig, GenPass self, GenerationProgress progress,
+		GameConfiguration configuration)
 	{
 		if (ModifiedWorld.Instance.Times != null)
 		{
@@ -110,7 +117,9 @@ public static partial class Replacer
 			ModifiedWorld.Instance.Times.TryAdd(self.Name, stopwatch.Elapsed);
 		}
 		else
+		{
 			orig(self, progress, configuration);
+		}
 	}
 #endif
 }

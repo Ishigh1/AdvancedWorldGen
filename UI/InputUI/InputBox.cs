@@ -2,8 +2,8 @@ namespace AdvancedWorldGen.UI.InputUI;
 
 public abstract class InputBox<T> : OrderedUIItem
 {
-	public UIPanel Background = null!;
 	private readonly string? LocalizationPath;
+	public UIPanel Background = null!;
 	public string Name;
 
 	protected InputBox(string name, string? localizationPath)

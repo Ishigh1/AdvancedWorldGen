@@ -85,7 +85,10 @@ public class FloatingIslands : ControlledWorldGenPass
 							else
 							{
 								if (WorldGen.remixWorldGen && WorldGen.drunkWorldGen)
-									floatingIslandInfo.Style = GenVars.crimsonLeft && x < Main.maxTilesX / 2 || !GenVars.crimsonLeft && x > Main.maxTilesX / 2 ? 5 : 4;
+									floatingIslandInfo.Style = (GenVars.crimsonLeft && x < Main.maxTilesX / 2) ||
+									                           (!GenVars.crimsonLeft && x > Main.maxTilesX / 2)
+										? 5
+										: 4;
 								else if (WorldGen.getGoodWorldGen || WorldGen.remixWorldGen)
 									floatingIslandInfo.Style = !WorldGen.crimson ? 4 : 5;
 								else if (Main.tenthAnniversaryWorld)

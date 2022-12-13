@@ -27,12 +27,12 @@ public class JungleTemple : ControlledWorldGenPass
 	{
 		List<Rectangle> rooms = new();
 		float worldSize = Main.maxTilesX / 4200f;
-		
+
 		float templeSize = Params.TempleMultiplier;
 		if (WorldGen.drunkWorldGen) templeSize *= 3;
 		else if (WorldGen.getGoodWorldGen) templeSize *= 3;
 		else if (WorldGen.remixWorldGen) templeSize *= 2;
-		
+
 		int templeRoomCount = WorldGen.genRand.Next((int)(10 * worldSize * templeSize),
 			(int)(16f * templeSize * worldSize));
 

@@ -184,7 +184,6 @@ public static class ModifiedDesertHive
 					}
 
 				if (!(WorldGen.remixWorldGen && y > Main.rockLayer + WorldGen.genRand.Next(-1, 2)))
-				{
 					switch (flag)
 					{
 						case true when WorldGen.genRand.NextBool(20):
@@ -202,7 +201,6 @@ public static class ModifiedDesertHive
 							break;
 						}
 					}
-				}
 			}
 
 			WorldGenerator.CurrentGenerationProgress.Add(1, size, 1 / 12f);

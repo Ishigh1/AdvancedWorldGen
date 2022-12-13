@@ -133,6 +133,7 @@ public class MicroBiomes : ControlledWorldGenPass
 			swordShrines *= 2;
 			shrineChance /= 2;
 		}
+
 		Point origin2 = default;
 		for (int num37 = 0; num37 < swordShrines; num37++)
 			if ((num37 == 0 && WorldGen.tenthAnniversaryWorldGen) || !(WorldGen.genRand.NextFloat() > shrineChance))
@@ -180,7 +181,8 @@ public class MicroBiomes : ControlledWorldGenPass
 				if (WorldGen.remixWorldGen)
 				{
 					if (miningExplosivesBiome.Place(
-						    WorldGen.RandomWorldPoint((int)Main.worldSurface, WorldGen.beachDistance, Main.maxTilesX - (int)GenVars.rockLayer,
+						    WorldGen.RandomWorldPoint((int)Main.worldSurface, WorldGen.beachDistance,
+							    Main.maxTilesX - (int)GenVars.rockLayer,
 							    WorldGen.beachDistance), GenVars.structures))
 						num41++;
 				}
@@ -243,7 +245,7 @@ public class MicroBiomes : ControlledWorldGenPass
 		double lavaTraps = Main.maxTilesX * 0.02;
 		if (WorldGen.noTrapsWorldGen)
 			lavaTraps *= 5;
-		else if (WorldGen.getGoodWorldGen) 
+		else if (WorldGen.getGoodWorldGen)
 			lavaTraps *= 2;
 
 		int generatedLavaTraps = 0;

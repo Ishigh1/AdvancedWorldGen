@@ -461,7 +461,7 @@ public partial class DungeonPass
 
 				for (int i = -2; i <= 2; i++)
 				{
-					if (i == 0) continue; 
+					if (i == 0) continue;
 					tile1 = Main.tile[x0 + i, num51];
 					if (tile1.TileType == tileType)
 					{
@@ -494,7 +494,7 @@ public partial class DungeonPass
 					tile1.Clear(TileDataType.Slope);
 					tile1.HasTile = true;
 					tile1.TileType = tileType;
-					
+
 					for (int i = -2; i < 0; i++)
 					{
 						tile1 = Main.tile[x0 + i, num53];
@@ -518,7 +518,7 @@ public partial class DungeonPass
 					tile1.HasTile = true;
 					tile1.Clear(TileDataType.Slope);
 					tile1.TileType = tileType;
-					
+
 					for (int i = 1; i <= 2; i++)
 					{
 						tile1 = Main.tile[x0 + i, num54];
@@ -533,20 +533,20 @@ public partial class DungeonPass
 
 			y0++;
 			x0--;
-			
-			for (int num51 = y0 - 8; num51 < y0; num51++) {
-				for (int i = -3; i <= 3; i++)
+
+			for (int num51 = y0 - 8; num51 < y0; num51++)
+			for (int i = -3; i <= 3; i++)
+			{
+				if (i is >= -1 and <= 1) continue;
+				Tile tile1 = Main.tile[x0 + i, num51];
+				if (tile1.TileType == tileType)
 				{
-					if (i is >= -1 and <= 1) continue;
-					Tile tile1 = Main.tile[x0 + i, num51];
-					if (tile1.TileType == tileType) {
-						tile1.HasTile = false;
-						tile1.ClearEverything();
-						tile1.WallType = wallType;
-					}
+					tile1.HasTile = false;
+					tile1.ClearEverything();
+					tile1.WallType = wallType;
 				}
 			}
-			
+
 			Tile tile2 = Main.tile[x0 - 1, y0];
 			tile2.HasTile = true;
 			tile2.TileType = tileType;

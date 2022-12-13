@@ -35,6 +35,19 @@ public static class Extensions
 
 	#endregion
 
+	#region Print
+
+	public static string ToStringList<T>(this IEnumerable<T> list)
+	{
+		StringBuilder stringBuilder = new();
+		int index = 0;
+		foreach (T value in list) stringBuilder.AppendLine($"{index++} : {value}");
+
+		return stringBuilder.ToString();
+	}
+
+	#endregion
+
 	#region GenerationProgress
 
 	public static void Set(this GenerationProgress generationProgress, float currentValue, float maxValue,
@@ -98,22 +111,6 @@ public static class Extensions
 		}
 
 		return true;
-	}
-
-	#endregion
-
-	#region Print
-
-	public static string ToStringList<T>(this IEnumerable<T> list)
-	{
-		StringBuilder stringBuilder = new();
-		int index = 0;
-		foreach (T value in list)
-		{
-			stringBuilder.AppendLine($"{index++} : {value}");
-		}
-	
-		return stringBuilder.ToString();
 	}
 
 	#endregion

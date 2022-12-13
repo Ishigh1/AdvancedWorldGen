@@ -2,8 +2,11 @@
 
 public class CalamityMod : ModSystem
 {
-	private static ILContext.Manipulator GetManipulator(ILContext.Manipulator self) => self;
-	
+	private static ILContext.Manipulator GetManipulator(ILContext.Manipulator self)
+	{
+		return self;
+	}
+
 	public override void Load()
 	{
 		if (ModLoader.TryGetMod("CalamityMod", out Mod mod) &&

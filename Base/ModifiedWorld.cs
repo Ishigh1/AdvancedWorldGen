@@ -102,7 +102,8 @@ public class ModifiedWorld : ModSystem
 			SaveWeights();
 
 #if !SPECIALDEBUG
-			foreach (MethodInfo methodInfo in Replacer.MethodInfos) HookEndpointManager.Remove(methodInfo, Replacer.Timer);
+			foreach (MethodInfo methodInfo in Replacer.MethodInfos)
+				HookEndpointManager.Remove(methodInfo, Replacer.Timer);
 			Replacer.MethodInfos.Clear();
 #endif
 

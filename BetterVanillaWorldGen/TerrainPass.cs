@@ -245,11 +245,9 @@ public class TerrainPass : ControlledWorldGenPass
 		catch (ThreadInterruptedException)
 		{
 		}
-		
+
 		foreach ((string? key, object? value) in currentState)
-		{
 			AdvancedWorldGenMod.Instance.Logger.Info($"{key} : {value}");
-		}
 
 		Main.MenuUI.SetState(uiState);
 	}

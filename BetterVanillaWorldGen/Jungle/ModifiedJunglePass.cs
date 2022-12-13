@@ -175,7 +175,7 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 			{
 				if (WorldGen.drunkWorldGen)
 					return;
-				
+
 				if (Main.tile[x1, y1].WallType == 0 && !Main.tile[x1, y1].HasTile &&
 				    Main.tile[x1, y1 - 3].WallType == 0 && !Main.tile[x1, y1 - 3].HasTile &&
 				    Main.tile[x1, y1 - 1].WallType == 0 && !Main.tile[x1, y1 - 1].HasTile &&

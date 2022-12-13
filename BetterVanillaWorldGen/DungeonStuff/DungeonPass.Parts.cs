@@ -444,9 +444,7 @@ public partial class DungeonPass
 						if (Main.tile[num, num15].WallType != roomWall[0])
 							vector3 = WorldGen.RandBonePicture();
 						else
-						{
 							vector3 = WorldGen.RandPictureTile();
-						}
 
 						type3 = vector3.tileType;
 						style3 = vector3.style;
@@ -464,9 +462,7 @@ public partial class DungeonPass
 					if (Main.tile[num, num2].WallType != roomWall[0])
 						paintingStyle = WorldGen.RandBonePicture();
 					else
-					{
 						paintingStyle = WorldGen.RandPictureTile();
-					}
 
 					int type = paintingStyle.tileType;
 					int style = paintingStyle.style;
@@ -887,7 +883,7 @@ public partial class DungeonPass
 			}
 		}
 	}
-	
+
 	public void DungeonStairs(int x, int y, ushort tileType, int wallType)
 	{
 		int step = WorldGen.genRand.Next(5, 9);
@@ -1289,10 +1285,7 @@ public partial class DungeonPass
 
 		int num9 = 0;
 		bool flag11 = dungeonPosition.Y < Main.rockLayer + 100.0;
-		if (WorldGen.remixWorldGen)
-		{
-			flag11 = dungeonPosition.Y < Main.worldSurface + 100.0;
-		}
+		if (WorldGen.remixWorldGen) flag11 = dungeonPosition.Y < Main.worldSurface + 100.0;
 		if (!forceX)
 		{
 			if (dungeonPosition.X > Main.maxTilesX - 200)
@@ -1409,10 +1402,11 @@ public partial class DungeonPass
 		while (num4 > 0)
 		{
 			num9++;
-			if (zero2.X > 0f && (dungeonPosition.X > Main.maxTilesX - 100 || dungeonPosition.Y > Main.maxTilesY - 100)
-			    || zero2.X < 0f && dungeonPosition.X < 100f
-				|| WorldGen.remixWorldGen && zero2.Y < 0.0 && dungeonPosition.Y < (Main.rockLayer + Main.worldSurface) / 2.0
-				|| !WorldGen.remixWorldGen && zero2.Y < 0f && dungeonPosition.Y < Main.rockLayer + 50.0)
+			if ((zero2.X > 0f && (dungeonPosition.X > Main.maxTilesX - 100 || dungeonPosition.Y > Main.maxTilesY - 100))
+			    || (zero2.X < 0f && dungeonPosition.X < 100f)
+			    || (WorldGen.remixWorldGen && zero2.Y < 0.0 &&
+			        dungeonPosition.Y < (Main.rockLayer + Main.worldSurface) / 2.0)
+			    || (!WorldGen.remixWorldGen && zero2.Y < 0f && dungeonPosition.Y < Main.rockLayer + 50.0))
 				num4 = 0;
 
 			num4--;

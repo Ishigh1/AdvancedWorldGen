@@ -128,7 +128,6 @@ public class Corruption : ControlledWorldGenPass
 						Main.tile[x, y].TileType = 112;
 
 					if (y < Main.worldSurface - 1.0 && !flag52)
-					{
 						switch (Main.tile[x, y].TileType)
 						{
 							case 0:
@@ -140,7 +139,6 @@ public class Corruption : ControlledWorldGenPass
 								WorldGen.SpreadGrass(x, y, 59, TileID.CorruptJungleGrass);
 								break;
 						}
-					}
 
 					flag52 = true;
 					if (Main.tile[x, y].TileType == 1 && x >= corruptionLeft + WorldGen.genRand.Next(5) &&
@@ -341,7 +339,6 @@ public class Corruption : ControlledWorldGenPass
 							Main.tile[x, y].TileType = 234;
 
 						if (y < Main.worldSurface - 1.0 && !flag49)
-						{
 							switch (Main.tile[x, y].TileType)
 							{
 								case 0:
@@ -353,7 +350,6 @@ public class Corruption : ControlledWorldGenPass
 									WorldGen.SpreadGrass(x, y, 59, TileID.CrimsonJungleGrass);
 									break;
 							}
-						}
 
 						flag49 = true;
 						Main.tile[x, y].WallType = Main.tile[x, y].WallType switch

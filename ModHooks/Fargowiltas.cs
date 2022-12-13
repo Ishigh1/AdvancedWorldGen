@@ -2,7 +2,11 @@
 
 public class Fargowiltas : ModSystem
 {
-	private static ILContext.Manipulator GetManipulator(ILContext.Manipulator self) => self;
+	private static ILContext.Manipulator GetManipulator(ILContext.Manipulator self)
+	{
+		return self;
+	}
+
 	// I'm too lazy to make their config work and it seems they don't care about mod compat, so that's fair
 	// This removes the effect of the config hard setting the "special seed"
 	// Could have changed the behavior to |= instead of =, but eh, easier to nullify it

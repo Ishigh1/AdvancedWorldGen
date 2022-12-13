@@ -2,16 +2,20 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public static class GenerationChests
 {
-	public static int HellChest;
-	public static List<int> HellChestItem = null!;
-	public static bool GeneratedShadowKey;
+	private static int HellChest;
+	private static List<int> HellChestItem = null!;
+	private static bool GeneratedShadowKey;
 
 	public static void ShuffleChests(UnifiedRandom unifiedRandom)
 	{
 		GeneratedShadowKey = false;
 		HellChest = 0;
 
-		HellChestItem = new List<int> { 0, 1, 2, 3, 4, 5, 6 };
+		HellChestItem = new List<int> { ItemID.Sunfury, ItemID.Flamelash, ItemID.DarkLance, ItemID.HellwingBow };
+		if (WorldGen.remixWorldGen)
+			HellChestItem.Add(ItemID.UnholyTrident);
+		else
+			HellChestItem.Add(ItemID.FlowerofFire);
 		for (int index = 0; index < HellChestItem.Count - 1; index++)
 		{
 			int indexToExchange = unifiedRandom.Next(HellChestItem.Count - index);
@@ -21,46 +25,42 @@ public static class GenerationChests
 		}
 	}
 
-	public static bool AddBuriedChest(int chestRightX, int groundY, int contain = 0,
+	public static bool AddBuriedChest(int chestRightX, int y, int contain = 0,
 		bool notNearOtherChests = false, int style = -1, ushort chestTileType = TileID.Containers)
 	{
 		int chestLeftX = chestRightX - 1;
 
-		int chestTopY = groundY - 2;
-		int chestBottomY = groundY - 1;
-
-		for (;
-		     WorldGen.SolidTile(chestLeftX, chestTopY) || WorldGen.SolidTile(chestRightX, chestTopY) ||
-		     !WorldGen.SolidTile(chestLeftX, groundY) || !WorldGen.SolidTile(chestRightX, groundY);
-		    )
-		{
-			if (groundY >= Main.maxTilesY - 50)
-				return false;
-
-			chestTopY = chestBottomY;
-			chestBottomY = groundY;
-			groundY++;
-		}
-
-		WorldGen.KillTile(chestLeftX, chestTopY);
-		WorldGen.KillTile(chestRightX, chestTopY);
-		WorldGen.KillTile(chestLeftX, chestBottomY);
-		WorldGen.KillTile(chestRightX, chestBottomY);
-
-		if (Main.tile[chestLeftX, chestTopY].HasTile || Main.tile[chestRightX, chestTopY].HasTile ||
-		    Main.tile[chestLeftX, chestBottomY].HasTile || Main.tile[chestRightX, chestBottomY].HasTile)
+		if (WorldGen.remixWorldGen && chestLeftX > Main.maxTilesX * 0.37 && chestRightX < Main.maxTilesX * 0.63 &&
+		    y > Main.maxTilesY - 250)
 			return false;
 
-		Tile leftTile = Main.tile[chestLeftX, groundY];
-		leftTile.Slope = SlopeType.Solid;
-		Tile rightTile = Main.tile[chestRightX, groundY];
-		rightTile.Slope = SlopeType.Solid;
+		int groundY;
+		for (groundY = y;; groundY++)
+		{
+			if (Main.tile[chestRightX, groundY].LiquidType == LiquidID.Shimmer)
+				return false;
+
+			const int spread = 2;
+			for (int n = chestRightX - spread - 1; n <= chestRightX + spread; n++)
+			for (int num6 = groundY - spread; num6 <= groundY + spread; num6++)
+				if (Main.tile[n, num6].HasTile && (TileID.Sets.Boulders[Main.tile[n, num6].TileType] ||
+				                                   Main.tile[n, num6].TileType is 26 or 237))
+					return false;
+
+			if (WorldGen.SolidTile(chestRightX, groundY) && WorldGen.SolidTile(chestLeftX, groundY))
+				break;
+			if (groundY == y - 10)
+				return false;
+		}
+
+		int chestBottomY = groundY - 1;
 
 		PreLoot(chestRightX, groundY,
 			ref contain, style,
 			ref chestTileType, out bool shadowChest, out style, out bool desertBiome,
 			out bool iceBiome, out bool jungleBiome, out bool underworld,
-			out bool water, out bool livingWood, out bool glowingMushroomBiome, out bool dungeon, out bool pyramid);
+			out bool water, out bool livingWood, out bool glowingMushroomBiome, out bool dungeon, out bool pyramid,
+			out bool sky);
 
 		int chestIndex = WorldGen.PlaceChest(chestLeftX, chestBottomY, chestTileType, notNearOtherChests, style);
 		if (chestIndex < 0)
@@ -68,17 +68,17 @@ public static class GenerationChests
 
 		VanillaLoot(chestRightX, groundY,
 			contain, chestTileType, shadowChest, chestIndex, style, pyramid, water, livingWood,
-			dungeon, glowingMushroomBiome, desertBiome, iceBiome, jungleBiome, underworld);
+			dungeon, glowingMushroomBiome, desertBiome, iceBiome, jungleBiome, underworld, sky);
 
 		return true;
 	}
 
-	public static void PreLoot(int x, int y,
+	private static void PreLoot(int x, int y,
 		ref int contain, int style, ref ushort chestTileType,
 		out bool shadowChest, out int outStyle,
 		out bool desertBiome, out bool iceBiome, out bool jungleBiome, out bool underworld,
 		out bool water, out bool livingWood, out bool glowingMushroomBiome,
-		out bool dungeon, out bool pyramid)
+		out bool dungeon, out bool pyramid, out bool sky)
 	{
 		if (chestTileType == 0)
 			chestTileType = TileID.Containers;
@@ -93,163 +93,176 @@ public static class GenerationChests
 		dungeon = false;
 		pyramid = false;
 		shadowChest = false;
-		const int angelChances = 15;
+		sky = false; //flag10 in 1.4.4.9
+		int angelChances = 15;
+		if (WorldGen.tenthAnniversaryWorldGen)
+			angelChances *= 3;
+
 		outStyle = 0;
-		if (y >= Main.worldSurface + 25.0 || contain > ItemID.None)
+		bool underground = y >= Main.worldSurface + 25.0; //flag12 in 1.4.4.9
+
+		bool remixUnderground;
+		if (WorldGen.remixWorldGen)
+			remixUnderground = y < Main.maxTilesY - 400;
+		else
+			remixUnderground = underground;
+
+		if (remixUnderground || contain > ItemID.None)
 			outStyle = 1;
 
 		if (style >= 0)
 			outStyle = style;
 
-		if (contain == ItemID.None && y >= Main.worldSurface + 25.0 && y <= Main.maxTilesY - 205 &&
-		    Desert.IsUndergroundDesert(x, y))
+		if (contain == ItemID.None && y <= Main.maxTilesY - 205 && Desert.IsUndergroundDesert(x, y))
 		{
-			desertBiome = true;
 			outStyle = 10;
 			chestTileType = TileID.Containers2;
-
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
-				contain = ItemID.AngelStatue;
-			else
-				contain = y <= (WorldGen.desertHiveHigh * 3 + WorldGen.desertHiveLow * 4) / 7
-					? Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
-						ItemID.MysticCoilSnake, ItemID.MagicConch)
-					: Utils.SelectRandom(WorldGen.genRand, ItemID.ThunderSpear, ItemID.ThunderStaff,
-						ItemID.DripplerFlail);
 		}
 
-		if (chestTileType == TileID.Containers && (outStyle == 11 || (contain == ItemID.None &&
-		                                                              y >= Main.worldSurface + 25.0 &&
-		                                                              y <= Main.maxTilesY - 205 &&
-		                                                              Main.tile[x, y].TileType is TileID.SnowBlock
-			                                                              or TileID.IceBlock or TileID.BreakableIce)))
+		switch (chestTileType)
 		{
-			iceBiome = true;
-			outStyle = 11;
-			contain = WorldGen.genRand.Next(6) switch
+			case TileID.Containers2 when outStyle == 10:
 			{
-				0 => ItemID.IceBoomerang,
-				1 => ItemID.IceBlade,
-				2 => ItemID.IceSkates,
-				3 => ItemID.SnowballCannon,
-				4 => ItemID.BlizzardinaBottle,
-				_ => ItemID.FlurryBoots
-			};
+				desertBiome = true;
 
-			if (WorldGen.genRand.NextBool(20))
-				contain = ItemID.Extractinator;
-
-			if (WorldGen.genRand.NextBool(50))
-				contain = ItemID.Fish;
-
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
-				contain = ItemID.AngelStatue;
-		}
-
-		if (chestTileType == TileID.Containers &&
-		    (style == 10 ||
-		     contain is ItemID.FeralClaws or ItemID.AnkletoftheWind or ItemID.StaffofRegrowth or ItemID.Seaweed))
-		{
-			jungleBiome = true;
-			outStyle = 10;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
-				contain = ItemID.AngelStatue;
-		}
-
-		if (chestTileType == TileID.Containers && y > Main.maxTilesY - 205 && contain == ItemID.None)
-		{
-			underworld = true;
-			if (HellChest == HellChestItem[1])
+				if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
+					contain = ItemID.AngelStatue;
+				else
+					contain = y <= (GenVars.desertHiveHigh * 3 + GenVars.desertHiveLow * 4) / 7
+						? Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
+							ItemID.MysticCoilSnake, ItemID.MagicConch)
+						: Utils.SelectRandom(WorldGen.genRand, ItemID.ThunderSpear, ItemID.ThunderStaff,
+							ItemID.DripplerFlail);
+				return;
+			}
+			case TileID.Containers when outStyle == 11 || (contain == ItemID.None &&
+			                                               underground &&
+			                                               y <= Main.maxTilesY - 205 &&
+			                                               Main.tile[x, y].TileType is TileID.SnowBlock
+				                                               or TileID.IceBlock
+				                                               or TileID.BreakableIce):
 			{
-				contain = ItemID.Sunfury;
+				iceBiome = true;
+				outStyle = 11;
+				if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
+					contain = ItemID.AngelStatue;
+				else if (WorldGen.genRand.NextBool(50))
+					contain = ItemID.Fish;
+				else if (WorldGen.genRand.NextBool(20))
+					contain = ItemID.Extractinator;
+				else
+					contain = WorldGen.genRand.Next(6) switch
+					{
+						0 => ItemID.IceBoomerang,
+						1 => ItemID.IceBlade,
+						2 => ItemID.IceSkates,
+						3 => WorldGen.remixWorldGen ? ItemID.IceBow : ItemID.SnowballCannon,
+						4 => ItemID.BlizzardinaBottle,
+						_ => ItemID.FlurryBoots
+					};
+				return;
+			}
+			case TileID.Containers when
+				style == 10 || contain is ItemID.FeralClaws or ItemID.AnkletoftheWind or ItemID.StaffofRegrowth
+					or ItemID.Seaweed:
+			{
+				jungleBiome = true;
+				outStyle = 10;
+				if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
+					contain = ItemID.AngelStatue;
+				return;
+			}
+			case TileID.Containers when y > Main.maxTilesY - 205 && contain == ItemID.None:
+			{
+				underworld = true;
+				contain = HellChestItem[HellChest];
 				outStyle = 4;
 				shadowChest = true;
-			}
-			else if (HellChest == HellChestItem[2])
-			{
-				contain = ItemID.FlowerofFire;
-				outStyle = 4;
-				shadowChest = true;
-			}
-			else if (HellChest == HellChestItem[3])
-			{
-				contain = ItemID.Flamelash;
-				outStyle = 4;
-				shadowChest = true;
-			}
-			else if (HellChest == HellChestItem[4])
-			{
-				contain = ItemID.DarkLance;
-				outStyle = 4;
-				shadowChest = true;
-			}
-			else if (HellChest == HellChestItem[5])
-			{
-				contain = ItemID.HellwingBow;
-				outStyle = 4;
-				shadowChest = true;
-			}
-			else
-			{
-				contain = ItemID.TreasureMagnet;
-				outStyle = 4;
-				shadowChest = true;
-			}
 
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
-				contain = ItemID.AngelStatue;
+				if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
+					contain = ItemID.AngelStatue;
+				return;
+			}
+			case TileID.Containers when outStyle == 17:
+			{
+				water = true;
+				if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
+					contain = ItemID.AngelStatue;
+				return;
+			}
+			case TileID.Containers when outStyle == 12:
+			{
+				livingWood = true;
+				if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
+					contain = ItemID.AngelStatue;
+				return;
+			}
+			case TileID.Containers when outStyle == 32:
+			{
+				glowingMushroomBiome = true;
+				if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
+					contain = ItemID.AngelStatue;
+				return;
+			}
+			case TileID.Containers when outStyle != 0 && DungeonPass.IsDungeon(x, y):
+			{
+				dungeon = true;
+				if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
+					contain = ItemID.AngelStatue;
+				return;
+			}
+			case TileID.Containers when outStyle != 0 &&
+			                            contain is ItemID.PharaohsMask or ItemID.SandstorminaBottle
+				                            or ItemID.FlyingCarpet:
+				pyramid = true;
+				return;
+			case TileID.Containers when outStyle == 13 ||
+			                            contain is ItemID.ShinyRedBalloon or ItemID.Starfury
+				                            or ItemID.LuckyHorseshoe or ItemID.CelestialMagnet:
+				sky = true;
+				if (WorldGen.remixWorldGen && !WorldGen.getGoodWorldGen)
+				{
+					if (WorldGen.crimson)
+					{
+						outStyle = 43;
+					}
+					else
+					{
+						chestTileType = TileID.Containers2;
+						outStyle = 3;
+					}
+				}
+
+				return;
 		}
 
-		if (chestTileType == TileID.Containers && outStyle == 17)
+		if (WorldGen.noTrapsWorldGen && WorldGen.remixWorldGen && outStyle == 1 && chestTileType == TileID.Containers &&
+		    !WorldGen.genRand.NextBool(3))
 		{
-			water = true;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
-				contain = ItemID.AngelStatue;
+			chestTileType = TileID.Containers2;
+			outStyle = 4;
 		}
-
-		if (chestTileType == TileID.Containers && outStyle == 12)
-		{
-			livingWood = true;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
-				contain = ItemID.AngelStatue;
-		}
-
-		if (chestTileType == TileID.Containers && outStyle == 32)
-		{
-			glowingMushroomBiome = true;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
-				contain = ItemID.AngelStatue;
-		}
-
-		if (chestTileType == TileID.Containers && outStyle != 0 && DungeonPass.IsDungeon(x, y))
-		{
-			dungeon = true;
-			if (WorldGen.getGoodWorldGen && WorldGen.genRand.NextBool(angelChances))
-				contain = ItemID.AngelStatue;
-		}
-
-		if (chestTileType == TileID.Containers && outStyle != 0 &&
-		    contain is ItemID.PharaohsMask or ItemID.SandstorminaBottle or ItemID.FlyingCarpet)
-			pyramid = true;
 	}
 
 
-	public static void VanillaLoot(int x, int y, int contain, ushort chestTileType, bool shadowChest,
+	private static void VanillaLoot(int x, int y, int contain, ushort chestTileType, bool shadowChest,
 		int chestIndex, int style, bool pyramid, bool water, bool livingWood, bool dungeon,
-		bool glowingMushroomBiome, bool desertBiome, bool iceBiome, bool jungleBiome, bool underworld)
+		bool glowingMushroomBiome, bool desertBiome, bool iceBiome, bool jungleBiome, bool underworld, bool sky)
 	{
 		if (shadowChest)
-		{
-			HellChest++;
-			if (HellChest > 4)
+			if (++HellChest == HellChestItem.Count)
 				HellChest = 0;
-		}
 
 		Chest chest = Main.chest[chestIndex];
 		int index = 0;
 		while (index == 0)
 		{
-			if ((style == 0 && y < Main.worldSurface + 25.0) || pyramid)
+			bool underground;
+			if (WorldGen.remixWorldGen)
+				underground = y >= (Main.rockLayer + (Main.maxTilesY - 350) * 2) / 3.0;
+			else
+				underground = y < Main.worldSurface + 25.0;
+			if ((style == 0 && underground) || pyramid)
 			{
 				if (contain > 0)
 				{
@@ -289,7 +302,7 @@ public static class GenerationChests
 				}
 				else
 				{
-					switch (WorldGen.genRand.Next(12))
+					switch (WorldGen.genRand.Next(10))
 					{
 						case 0:
 							chest.item[index].SetDefaults(ItemID.Spear);
@@ -304,31 +317,26 @@ public static class GenerationChests
 							chest.item[index].Prefix(-1);
 							break;
 						case 3:
-							chest.item[index].SetDefaults(ItemID.Glowstick);
-							chest.item[index].stack = WorldGen.genRand.Next(40, 75);
-							break;
-						case 4:
-							chest.item[index].SetDefaults(ItemID.ThrowingKnife);
-							chest.item[index].stack = WorldGen.genRand.Next(150, 300);
-							break;
-						case 5:
 							chest.item[index].SetDefaults(ItemID.Aglet);
 							chest.item[index].Prefix(-1);
 							break;
-						case 6:
+						case 4:
 							chest.item[index].SetDefaults(ItemID.ClimbingClaws);
 							chest.item[index].Prefix(-1);
 							break;
-						case 7:
+						case 5:
 							chest.item[index].SetDefaults(ItemID.Umbrella);
 							chest.item[index].Prefix(-1);
 							break;
-						case 8:
+						case 6:
 							chest.item[index].SetDefaults(ItemID.CordageGuide);
 							chest.item[index].Prefix(-1);
 							break;
-						case 9:
-							chest.item[index].SetDefaults(ItemID.WandofSparking);
+						case 7:
+							if (WorldGen.remixWorldGen)
+								chest.item[index].SetDefaults(ItemID.WandofSparking);
+							else
+								chest.item[index].SetDefaults(ItemID.MagicDagger);
 							chest.item[index].Prefix(-1);
 							break;
 						case 10:
@@ -342,6 +350,18 @@ public static class GenerationChests
 					}
 
 					index++;
+				}
+
+				if (WorldGen.genRand.NextBool(6))
+				{
+					chest.item[index].SetDefaults(ItemID.Glowstick);
+					chest.item[index++].stack = WorldGen.genRand.Next(40, 75);
+				}
+
+				if (WorldGen.genRand.NextBool(6))
+				{
+					chest.item[index].SetDefaults(ItemID.ThrowingKnife);
+					chest.item[index++].stack = WorldGen.genRand.Next(150, 300);
 				}
 
 				if (WorldGen.genRand.NextBool(6))
@@ -378,10 +398,10 @@ public static class GenerationChests
 					switch (WorldGen.genRand.Next(2))
 					{
 						case 0:
-							chest.item[index].SetDefaults(WorldGen.copperBar);
+							chest.item[index].SetDefaults(GenVars.copperBar);
 							break;
 						case 1:
-							chest.item[index].SetDefaults(WorldGen.ironBar);
+							chest.item[index].SetDefaults(GenVars.ironBar);
 							break;
 					}
 
@@ -485,7 +505,8 @@ public static class GenerationChests
 				}
 			}
 
-			else if (y < Main.rockLayer)
+			else if ((!WorldGen.remixWorldGen && y < Main.rockLayer)
+			         || (WorldGen.remixWorldGen && y > Main.rockLayer && y < Main.maxTilesY - 250))
 			{
 				if (contain > ItemID.None)
 				{
@@ -498,11 +519,16 @@ public static class GenerationChests
 					chest.item[index].SetDefaults(contain);
 					chest.item[index].Prefix(-1);
 					index++;
-					if (water && WorldGen.genRand.NextBool(2))
+					if (water)
 					{
-						chest.item[index].SetDefaults(ItemID.SandcastleBucket);
-						index++;
+						if (WorldGen.genRand.NextBool(2))
+							chest.item[index++].SetDefaults(ItemID.SharkBait);
+						if (WorldGen.genRand.NextBool(2))
+							chest.item[index++].SetDefaults(ItemID.SandcastleBucket);
 					}
+
+					if (sky && WorldGen.genRand.NextBool(40))
+						chest.item[index++].SetDefaults(ItemID.CreativeWings);
 
 					if (livingWood && WorldGen.genRand.NextBool(10))
 					{
@@ -624,10 +650,10 @@ public static class GenerationChests
 					switch (WorldGen.genRand.Next(2))
 					{
 						case 0:
-							chest.item[index].SetDefaults(WorldGen.ironBar);
+							chest.item[index].SetDefaults(GenVars.ironBar);
 							break;
 						case 1:
-							chest.item[index].SetDefaults(WorldGen.silverBar);
+							chest.item[index].SetDefaults(GenVars.silverBar);
 							break;
 					}
 
@@ -720,7 +746,8 @@ public static class GenerationChests
 					index++;
 				}
 			}
-			else if (y < Main.maxTilesY - 250)
+			else if (y < Main.maxTilesY - 250
+			         || (WorldGen.remixWorldGen && style is 7 or 14))
 			{
 				if (contain > 0)
 				{
@@ -757,10 +784,12 @@ public static class GenerationChests
 					if (jungleBiome && WorldGen.genRand.NextBool(10))
 						chest.item[index++].SetDefaults(ItemID.BeeMinecart);
 
-					if (water && WorldGen.genRand.NextBool(2))
+					if (water)
 					{
-						chest.item[index].SetDefaults(ItemID.SandcastleBucket);
-						index++;
+						if (WorldGen.genRand.NextBool(2))
+							chest.item[index++].SetDefaults(ItemID.SharkBait);
+						if (WorldGen.genRand.NextBool(2))
+							chest.item[index++].SetDefaults(ItemID.SandcastleBucket);
 					}
 
 					if (dungeon && (!GeneratedShadowKey || WorldGen.genRand.NextBool(3)))
@@ -772,7 +801,15 @@ public static class GenerationChests
 				}
 				else
 				{
-					if (WorldGen.genRand.NextBool(20) && y > WorldGen.lavaLine)
+					bool underLava;
+					if (WorldGen.remixWorldGen)
+						underLava = y > Main.worldSurface && y < Main.rockLayer;
+					else
+						underLava = y > GenVars.lavaLine;
+
+					int charmChance = WorldGen.tenthAnniversaryWorldGen ? 15 : 20;
+					
+					if (WorldGen.genRand.NextBool(charmChance) && underLava)
 					{
 						chest.item[index].SetDefaults(ItemID.LavaCharm);
 						chest.item[index].Prefix(-1);
@@ -784,7 +821,7 @@ public static class GenerationChests
 					}
 					else
 					{
-						switch (WorldGen.genRand.Next(8))
+						switch (WorldGen.genRand.Next(7))
 						{
 							case 0:
 								chest.item[index].SetDefaults(ItemID.BandofRegeneration);
@@ -811,10 +848,6 @@ public static class GenerationChests
 								chest.item[index].Prefix(-1);
 								break;
 							case 6:
-								chest.item[index].SetDefaults(ItemID.LuckyHorseshoe);
-								chest.item[index].Prefix(-1);
-								break;
-							case 7:
 								chest.item[index].SetDefaults(ItemID.FlareGun);
 								chest.item[index].Prefix(-1);
 								index++;
@@ -825,20 +858,18 @@ public static class GenerationChests
 					}
 
 					index++;
-					if (glowingMushroomBiome && WorldGen.genRand.NextBool(2))
+					if (glowingMushroomBiome)
 					{
-						chest.item[index].SetDefaults(ItemID.ShroomMinecart);
-						index++;
-					}
-
-					if (glowingMushroomBiome && WorldGen.genRand.NextBool(3))
-					{
-						chest.item[index].SetDefaults(ItemID.MushroomHat);
-						index++;
-						chest.item[index].SetDefaults(ItemID.MushroomVest);
-						index++;
-						chest.item[index].SetDefaults(ItemID.MushroomPants);
-						index++;
+						if (WorldGen.genRand.NextBool(2))
+						{
+							chest.item[index++].SetDefaults(ItemID.ShroomMinecart);
+						}
+						else
+						{
+							chest.item[index++].SetDefaults(ItemID.MushroomHat);
+							chest.item[index++].SetDefaults(ItemID.MushroomVest);
+							chest.item[index++].SetDefaults(ItemID.MushroomPants);
+						}
 					}
 				}
 
@@ -866,10 +897,10 @@ public static class GenerationChests
 					switch (WorldGen.genRand.Next(2))
 					{
 						case 0:
-							chest.item[index].SetDefaults(WorldGen.goldBar);
+							chest.item[index].SetDefaults(GenVars.goldBar);
 							break;
 						case 1:
-							chest.item[index].SetDefaults(WorldGen.silverBar);
+							chest.item[index].SetDefaults(GenVars.silverBar);
 							break;
 					}
 
@@ -998,21 +1029,29 @@ public static class GenerationChests
 					index++;
 					if (underworld)
 					{
+						if (WorldGen.genRand.NextBool(5))
+						{
+							chest.item[index++].SetDefaults(ItemID.TreasureMagnet);
+						}
+						
 						if (WorldGen.genRand.NextBool(10))
 						{
-							chest.item[index].SetDefaults(ItemID.HellMinecart);
-							index++;
+							chest.item[index++].SetDefaults(ItemID.HellMinecart);
+						}
+						
+						if (WorldGen.genRand.NextBool(10))
+						{
+							chest.item[index++].SetDefaults(ItemID.HellMinecart);
 						}
 
 						if (WorldGen.genRand.NextBool(10))
 						{
-							chest.item[index].SetDefaults(ItemID.OrnateShadowKey);
-							index++;
+							chest.item[index++].SetDefaults(ItemID.OrnateShadowKey);
 						}
-						else if (WorldGen.genRand.NextBool(10))
+						
+						if (WorldGen.genRand.NextBool(10))
 						{
-							chest.item[index].SetDefaults(ItemID.HellCake);
-							index++;
+							chest.item[index++].SetDefaults(ItemID.HellCake);
 						}
 					}
 				}
@@ -1055,7 +1094,7 @@ public static class GenerationChests
 							chest.item[index].SetDefaults(ItemID.MeteoriteBar);
 							break;
 						case 1:
-							chest.item[index].SetDefaults(WorldGen.goldBar);
+							chest.item[index].SetDefaults(GenVars.goldBar);
 							break;
 					}
 
@@ -1191,48 +1230,66 @@ public static class GenerationChests
 					index++;
 				}
 			}
-
-			if (index <= 0 || chestTileType != TileID.Containers)
-				continue;
-
-			switch (style)
+			
+			if (sky)
 			{
-				case 10 when WorldGen.genRand.NextBool(4):
-					chest.item[index].SetDefaults(ItemID.HoneyDispenser);
-					index++;
-					break;
-				case 11 when WorldGen.genRand.NextBool(7):
-					chest.item[index].SetDefaults(ItemID.IceMachine);
-					index++;
-					break;
-				case 13 when WorldGen.genRand.NextBool(3):
-					chest.item[index].SetDefaults(ItemID.SkyMill);
-					index++;
-					break;
-				case 16:
-					chest.item[index].SetDefaults(ItemID.LihzahrdFurnace);
-					index++;
-					break;
-			}
-
-			if (Main.wallDungeon[Main.tile[x, y].WallType] && WorldGen.genRand.NextBool(8))
-			{
-				chest.item[index].SetDefaults(ItemID.BoneWelder);
-				index++;
-			}
-
-			if (style == 16)
-			{
-				if (WorldGen.genRand.NextBool(5))
+				int drop = WorldGen.genRand.Next(6) switch
 				{
-					chest.item[index].SetDefaults(ItemID.SolarTablet);
-					index++;
+					0 => ItemID.SeeTheWorldForWhatItIs,
+					1 => ItemID.HighPitch,
+					2 => ItemID.BlessingfromTheHeavens,
+					3 => ItemID.Constellation,
+					4 => ItemID.LoveisintheTrashSlot,
+					5 => ItemID.SunOrnament, // not available in vanilla lesion chests, but fixed there because why not
+					_ => throw new ArgumentOutOfRangeException()
+				};
+				chest.item[index++].SetDefaults(drop);
+					
+				chest.item[index].SetDefaults(ItemID.Cloud);
+				chest.item[index++].stack = WorldGen.genRand.Next(50, 101);
+					
+				if (WorldGen.genRand.NextBool(3))
+					chest.item[index++].SetDefaults(ItemID.SkyMill);
+			}
+
+			if (chestTileType == TileID.Containers2 && style == 13 && WorldGen.genRand.NextBool(2))
+				chest.item[index++].SetDefaults(ItemID.RemnantsofDevotion);
+
+			if (index > 0 && chestTileType == TileID.Containers)
+			{
+				switch (style)
+				{
+					case 10 when WorldGen.genRand.NextBool(4):
+						chest.item[index++].SetDefaults(ItemID.HoneyDispenser);
+						break;
+					case 11 when WorldGen.genRand.NextBool(7):
+						chest.item[index++].SetDefaults(ItemID.IceMachine);
+						break;
+					case 13 when WorldGen.genRand.NextBool(3):
+						chest.item[index++].SetDefaults(ItemID.SkyMill);
+						break;
+					case 16:
+						chest.item[index++].SetDefaults(ItemID.LihzahrdFurnace);
+						break;
 				}
-				else
+
+				if (Main.wallDungeon[Main.tile[x, y].WallType] && WorldGen.genRand.NextBool(8))
 				{
-					chest.item[index].SetDefaults(ItemID.LunarTabletFragment);
-					chest.item[index].stack = WorldGen.genRand.Next(3, 8);
-					index++;
+					chest.item[index++].SetDefaults(ItemID.BoneWelder);
+				}
+				
+				switch (style)
+				{
+					case >= 23 and <= 27 when WorldGen.genRand.NextBool(2):
+						chest.item[index++].SetDefaults(ItemID.RemnantsofDevotion);
+						break;
+					case 16 when WorldGen.genRand.NextBool(5):
+						chest.item[index++].SetDefaults(ItemID.SolarTablet);
+						break;
+					case 16:
+						chest.item[index].SetDefaults(ItemID.LunarTabletFragment);
+						chest.item[index++].stack = WorldGen.genRand.Next(3, 8);
+						break;
 				}
 			}
 		}
