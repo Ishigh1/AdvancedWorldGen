@@ -808,7 +808,7 @@ public static class GenerationChests
 						underLava = y > GenVars.lavaLine;
 
 					int charmChance = WorldGen.tenthAnniversaryWorldGen ? 15 : 20;
-					
+
 					if (WorldGen.genRand.NextBool(charmChance) && underLava)
 					{
 						chest.item[index].SetDefaults(ItemID.LavaCharm);
@@ -1029,30 +1029,15 @@ public static class GenerationChests
 					index++;
 					if (underworld)
 					{
-						if (WorldGen.genRand.NextBool(5))
-						{
-							chest.item[index++].SetDefaults(ItemID.TreasureMagnet);
-						}
-						
-						if (WorldGen.genRand.NextBool(10))
-						{
-							chest.item[index++].SetDefaults(ItemID.HellMinecart);
-						}
-						
-						if (WorldGen.genRand.NextBool(10))
-						{
-							chest.item[index++].SetDefaults(ItemID.HellMinecart);
-						}
+						if (WorldGen.genRand.NextBool(5)) chest.item[index++].SetDefaults(ItemID.TreasureMagnet);
 
-						if (WorldGen.genRand.NextBool(10))
-						{
-							chest.item[index++].SetDefaults(ItemID.OrnateShadowKey);
-						}
-						
-						if (WorldGen.genRand.NextBool(10))
-						{
-							chest.item[index++].SetDefaults(ItemID.HellCake);
-						}
+						if (WorldGen.genRand.NextBool(10)) chest.item[index++].SetDefaults(ItemID.HellMinecart);
+
+						if (WorldGen.genRand.NextBool(10)) chest.item[index++].SetDefaults(ItemID.HellMinecart);
+
+						if (WorldGen.genRand.NextBool(10)) chest.item[index++].SetDefaults(ItemID.OrnateShadowKey);
+
+						if (WorldGen.genRand.NextBool(10)) chest.item[index++].SetDefaults(ItemID.HellCake);
 					}
 				}
 				else
@@ -1230,7 +1215,7 @@ public static class GenerationChests
 					index++;
 				}
 			}
-			
+
 			if (sky)
 			{
 				int drop = WorldGen.genRand.Next(6) switch
@@ -1244,10 +1229,10 @@ public static class GenerationChests
 					_ => throw new ArgumentOutOfRangeException()
 				};
 				chest.item[index++].SetDefaults(drop);
-					
+
 				chest.item[index].SetDefaults(ItemID.Cloud);
 				chest.item[index++].stack = WorldGen.genRand.Next(50, 101);
-					
+
 				if (WorldGen.genRand.NextBool(3))
 					chest.item[index++].SetDefaults(ItemID.SkyMill);
 			}
@@ -1274,10 +1259,8 @@ public static class GenerationChests
 				}
 
 				if (Main.wallDungeon[Main.tile[x, y].WallType] && WorldGen.genRand.NextBool(8))
-				{
 					chest.item[index++].SetDefaults(ItemID.BoneWelder);
-				}
-				
+
 				switch (style)
 				{
 					case >= 23 and <= 27 when WorldGen.genRand.NextBool(2):
