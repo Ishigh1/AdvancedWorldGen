@@ -9,6 +9,21 @@ public class MushroomPatches : ControlledWorldGenPass
 	protected override void ApplyPass()
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.13");
+		
+		if (WorldGen.remixWorldGen)
+		{
+			for (int num927 = 10; num927 < Main.maxTilesX - 10; num927++)
+			{
+				for (int num928 = Main.maxTilesY + WorldGen.genRand.Next(3) - 350; num928 < Main.maxTilesY - 10; num928++)
+				{
+					if (Main.tile[num927, num928].TileType == 0)
+					{
+						Main.tile[num927, num928].TileType = 59;
+					}
+				}
+			}
+		}
+		
 		int mushroomBiomes = (int)Math.Max(1, Math.Sqrt(Main.maxTilesX * Main.maxTilesY) / 374);
 
 		RTree mushroomBiomesRectangles = RTree.Root();
@@ -108,7 +123,7 @@ public class MushroomPatches : ControlledWorldGenPass
 				if (Main.tile[x2, y2].TileType is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce or
 				    TileID.JungleGrass or TileID.Granite or TileID.Marble)
 					isValid = false;
-				else if (WorldGen.UndergroundDesertLocation.Contains(new Point(x2, y2))) isValid = false;
+				else if (GenVars.UndergroundDesertLocation.Contains(new Point(x2, y2))) isValid = false;
 
 			if (!isValid)
 				continue;
