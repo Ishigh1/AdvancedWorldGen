@@ -11,8 +11,9 @@ public class ResetPass : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		WorldGen.numOceanCaveTreasure = 0;
-		WorldGen.skipDesertTileCheck = false;
+		GenVars.crimsonLeft = WorldGen.genRand.NextBool(2);
+		GenVars.numOceanCaveTreasure = 0;
+		GenVars.skipDesertTileCheck = false;
 		WorldGen.gen = true;
 		Liquid.ReInit();
 		WorldGen.noTileActions = true;
@@ -23,45 +24,45 @@ public class ResetPass : ControlledWorldGenPass
 		Main.maxRaining = 0f;
 		Main.raining = false;
 		WorldGen.heartCount = 0;
+		GenVars.extraBastStatueCount = 0;
+		GenVars.extraBastStatueCountMax = 2 + Main.maxTilesX / 2100;
 		Main.checkXMas();
 		Main.checkHalloween();
 		ResetGenerator.Invoke(null, null);
-		WorldGen.UndergroundDesertLocation = Rectangle.Empty;
-		WorldGen.UndergroundDesertHiveLocation = Rectangle.Empty;
-		WorldGen.numLarva = 0;
+		GenVars.UndergroundDesertLocation = Rectangle.Empty;
+		GenVars.UndergroundDesertHiveLocation = Rectangle.Empty;
+		GenVars.numLarva = 0;
 		GenerationChests.ShuffleChests(WorldGen.genRand);
-		WorldGen.houseCount = 0;
+		GenVars.skyIslandHouseCount = 0;
 
 		const int num917 = 86400;
 		Main.slimeRainTime = -WorldGen.genRand.Next(num917 * 2, num917 * 3);
 		Main.cloudBGActive = -WorldGen.genRand.Next(8640, num917);
-		WorldGen.skipFramingDuringGen = false;
 		if ((Params.Copper == TileExpandableList.Random &&
 		     WorldGen.genRand.NextBool(2))
 		    || Params.Copper == TileID.Copper)
 		{
 			WorldGen.SavedOreTiers.Copper = 7;
-			WorldGen.copperBar = 20;
+			GenVars.copperBar = 20;
 		}
 		else
 		{
-			WorldGen.copper = 166;
-			WorldGen.copperBar = 703;
+			GenVars.copper = 166;
+			GenVars.copperBar = 703;
 			WorldGen.SavedOreTiers.Copper = 166;
 		}
 
-		if ((WorldGen.dontStarveWorldGen &&
-		     Params.Iron == TileExpandableList.Random &&
-		     WorldGen.genRand.NextBool(2))
+		if ((Params.Iron == TileExpandableList.Random &&
+		     (WorldGen.genRand.NextBool(2) || (WorldGen.dontStarveWorldGen && !WorldGen.drunkWorldGen)))
 		    || Params.Iron == TileID.Iron)
 		{
 			WorldGen.SavedOreTiers.Iron = 6;
-			WorldGen.ironBar = 22;
+			GenVars.ironBar = 22;
 		}
 		else
 		{
-			WorldGen.iron = 167;
-			WorldGen.ironBar = 704;
+			GenVars.iron = 167;
+			GenVars.ironBar = 704;
 			WorldGen.SavedOreTiers.Iron = 167;
 		}
 
@@ -70,27 +71,26 @@ public class ResetPass : ControlledWorldGenPass
 		    || Params.Silver == TileID.Silver)
 		{
 			WorldGen.SavedOreTiers.Silver = 9;
-			WorldGen.silverBar = 21;
+			GenVars.silverBar = 21;
 		}
 		else
 		{
-			WorldGen.silver = 168;
-			WorldGen.silverBar = 705;
+			GenVars.silver = 168;
+			GenVars.silverBar = 705;
 			WorldGen.SavedOreTiers.Silver = 168;
 		}
 
-		if ((WorldGen.dontStarveWorldGen &&
-		     Params.Gold == TileExpandableList.Random &&
-		     WorldGen.genRand.NextBool(2))
+		if ((Params.Gold == TileExpandableList.Random &&
+		     ((WorldGen.dontStarveWorldGen && WorldGen.drunkWorldGen) || WorldGen.genRand.NextBool(2)))
 		    || Params.Gold == TileID.Gold)
 		{
 			WorldGen.SavedOreTiers.Gold = 8;
-			WorldGen.goldBar = 19;
+			GenVars.goldBar = 19;
 		}
 		else
 		{
-			WorldGen.gold = 169;
-			WorldGen.goldBar = 706;
+			GenVars.gold = 169;
+			GenVars.goldBar = 706;
 			WorldGen.SavedOreTiers.Gold = 169;
 		}
 
@@ -112,14 +112,31 @@ public class ResetPass : ControlledWorldGenPass
 		WorldGen.RandomizeTreeStyle();
 		WorldGen.RandomizeCaveBackgrounds();
 		WorldGen.RandomizeBackgrounds(WorldGen.genRand);
-		WorldGen.RandomizeMoonState();
+		WorldGen.RandomizeMoonState(WorldGen.genRand);
 		WorldGen.TreeTops.CopyExistingWorldInfoForWorldGeneration();
 
 		int dungeonSide = WorldGen.genRand.NextBool(2) ? 1 : -1;
-		WorldGen.dungeonSide = dungeonSide;
+		GenVars.dungeonSide = dungeonSide;
 
-		int shift = (int)(Main.maxTilesX * WorldGen.genRand.Next(15, 30) * 0.01f);
-		WorldGen.jungleOriginX = dungeonSide == 1 ? shift : Main.maxTilesX - shift;
+		int minShift;
+		int maxShift;
+		if (WorldGen.remixWorldGen)
+		{
+			minShift = 20;
+			maxShift = 35;
+		}
+		else if (WorldGen.tenthAnniversaryWorldGen)
+		{
+			minShift = 25;
+			maxShift = 35;
+		}
+		else
+		{
+			minShift = 15;
+			maxShift = 30;
+		}
+		int shift = (int)(Main.maxTilesX * WorldGen.genRand.Next(minShift, maxShift) * 0.01f);
+		GenVars.jungleOriginX = dungeonSide == 1 ? shift : Main.maxTilesX - shift;
 
 		int snowCenter;
 		if ((dungeonSide == 1 && !WorldGen.drunkWorldGen) || (dungeonSide == -1 && WorldGen.drunkWorldGen))
@@ -138,8 +155,8 @@ public class ResetPass : ControlledWorldGenPass
 		num921 += (int)(WorldGen.genRand.Next(20, 40) * worldSize);
 		int snowOriginRight = Math.Min(Main.maxTilesX, snowCenter + num921);
 
-		WorldGen.snowOriginLeft = snowOriginLeft;
-		WorldGen.snowOriginRight = snowOriginRight;
+		GenVars.snowOriginLeft = snowOriginLeft;
+		GenVars.snowOriginRight = snowOriginRight;
 
 		float beachMultiplier = Params.BeachMultiplier;
 		if (Params.ScaledBeaches)
@@ -150,7 +167,7 @@ public class ResetPass : ControlledWorldGenPass
 		int beachBordersWidth = (int)(275 * beachMultiplier);
 		int beachSandRandomWidthRange = (int)(20 * beachMultiplier);
 		int beachSandRandomCenter = beachBordersWidth + 5 + 2 * beachSandRandomWidthRange;
-		WorldGen.evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
+		GenVars.evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
 		if (worldSize < 1)
 		{
 			WorldGen.oceanDistance = beachBordersWidth - 25;
@@ -162,31 +179,47 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.beachDistance = (int)(WorldGen.beachDistance * beachMultiplier);
 		}
 
-		WorldGen.oceanWaterStartRandomMin = (int)(WorldGen.oceanWaterStartRandomMin * beachMultiplier);
-		WorldGen.oceanWaterStartRandomMax = (int)(WorldGen.oceanWaterStartRandomMax * beachMultiplier);
-		WorldGen.oceanWaterForcedJungleLength =
-			(int)(WorldGen.oceanWaterForcedJungleLength * beachMultiplier);
+		GenVars.oceanWaterStartRandomMin = (int)(GenVars.oceanWaterStartRandomMin * beachMultiplier);
+		GenVars.oceanWaterStartRandomMax = (int)(GenVars.oceanWaterStartRandomMax * beachMultiplier);
+		GenVars.oceanWaterForcedJungleLength =
+			(int)(GenVars.oceanWaterForcedJungleLength * beachMultiplier);
 
-		int leftBeachEnd = beachSandRandomCenter +
-		                   WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
-		leftBeachEnd += dungeonSide == 1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
-		WorldGen.leftBeachEnd = leftBeachEnd;
+		int leftBeachEnd;
+		if (WorldGen.tenthAnniversaryWorldGen && !WorldGen.remixWorldGen)
+			leftBeachEnd = beachSandRandomCenter + beachSandRandomWidthRange;
+		else
+		{
+			leftBeachEnd = beachSandRandomCenter +
+			               WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange + 1);
+			leftBeachEnd += dungeonSide == 1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
+		}
 
-		int rightBeachStart = Main.maxTilesX - beachSandRandomCenter +
-		                      WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange);
+		GenVars.leftBeachEnd = leftBeachEnd;
+
+		int rightBeachStart;
+		if (WorldGen.tenthAnniversaryWorldGen && !WorldGen.remixWorldGen)
+			rightBeachStart = Main.maxTilesX - beachSandRandomCenter + beachSandRandomWidthRange;
+		else
+		{
+			rightBeachStart = Main.maxTilesX - beachSandRandomCenter +
+			                  WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange + 1);
+		}
+
 		rightBeachStart -= dungeonSide == -1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
-		WorldGen.rightBeachStart = rightBeachStart;
+		GenVars.rightBeachStart = rightBeachStart;
 
 		int dungeonShift = (int)(50 * worldSize);
 		if (dungeonSide == -1)
-			WorldGen.dungeonLocation = WorldGen.genRand.Next(leftBeachEnd + dungeonShift, (int)(Main.maxTilesX * 0.2));
+			GenVars.dungeonLocation = WorldGen.genRand.Next(leftBeachEnd + dungeonShift, (int)(Main.maxTilesX * 0.2));
 		else
-			WorldGen.dungeonLocation =
+			GenVars.dungeonLocation =
 				WorldGen.genRand.Next((int)(Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
 
+		Main.tileSolid[659] = false;
+		
 		// Allow worlds to be bigger than x >= 31000, I don't like this fix though, fixed size arrays are bad.
 		int numCaves = Math.Max(30, (int)(Main.maxTilesX * 0.001));
-		WorldGen.mCaveX = new int[numCaves];
-		WorldGen.mCaveY = new int[numCaves];
+		GenVars.mCaveX = new int[numCaves];
+		GenVars.mCaveY = new int[numCaves];
 	}
 }

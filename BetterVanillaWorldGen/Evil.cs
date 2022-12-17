@@ -55,8 +55,7 @@ public class Corruption : ControlledWorldGenPass
 					corruptionNumber += 1;
 			}
 
-			bool left = WorldGen.genRand.NextBool(2);
-			GenVars.crimsonLeft = left;
+			bool left = GenVars.crimsonLeft;
 			GenerateCrimson(crimsonNumber, left);
 			GenerateCorruption(corruptionNumber, !left);
 		}
