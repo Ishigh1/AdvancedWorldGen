@@ -7,16 +7,16 @@ public static partial class Replacer
 
 	public static void Replace()
 	{
-		OnDesertHive.Place += ReplaceDesertHive;
-		OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
-		OnDesertDescription.CreateFromPlacement += ReplaceDesertDescriptionCreation;
+		On_DesertHive.Place += ReplaceDesertHive;
+		On_WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
+		On_DesertDescription.CreateFromPlacement += ReplaceDesertDescriptionCreation;
 
 #if !SPECIALDEBUG
-		OnWorldGenerator.GenerateWorld += ChangeWeights;
+		On_WorldGenerator.GenerateWorld += ChangeWeights;
 #endif
 	}
 
-	public static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
+	private static void ReplaceDesertHive(On_DesertHive.orig_Place orig,
 		DesertDescription description)
 	{
 		if (WorldgenSettings.Revamped)
@@ -25,7 +25,7 @@ public static partial class Replacer
 			orig(description);
 	}
 
-	public static bool ReplaceChest(OnWorldGen.orig_AddBuriedChest_int_int_int_bool_int_bool_ushort orig, int i,
+	private static bool ReplaceChest(On_WorldGen.orig_AddBuriedChest_int_int_int_bool_int_bool_ushort orig, int i,
 		int j, int contain, bool notNearOtherChests, int style, bool trySlope, ushort chestTileType)
 	{
 		return WorldgenSettings.Revamped
@@ -33,20 +33,20 @@ public static partial class Replacer
 			: orig(i, j, contain, notNearOtherChests, style, trySlope, chestTileType);
 	}
 
-	public static DesertDescription ReplaceDesertDescriptionCreation(
-		OnDesertDescription.orig_CreateFromPlacement orig, Point origin)
+	private static DesertDescription ReplaceDesertDescriptionCreation(
+		On_DesertDescription.orig_CreateFromPlacement orig, Point origin)
 	{
 		return WorldgenSettings.Revamped ? Desert.CreateFromPlacement(origin) : orig(origin);
 	}
 
 #if !SPECIALDEBUG
-	public static void ChangeWeights(OnWorldGenerator.orig_GenerateWorld orig, WorldGenerator self,
+	private static void ChangeWeights(On_WorldGenerator.orig_GenerateWorld orig, WorldGenerator self,
 		GenerationProgress progress)
 	{
 		if (GenPasses != null)
 		{
-			Dictionary<string, (float weight, int found)> weights = new();
-			float originalWeights = 0f;
+			Dictionary<string, (double weight, int found)> weights = new();
+			double originalWeights = 0;
 			foreach (GenPass pass in GenPasses)
 			{
 				weights.TryAdd(pass.Name, (0, 0));
@@ -55,8 +55,8 @@ public static partial class Replacer
 
 			foreach (Dictionary<string, float> instanceWeight in ModifiedWorld.Instance.Weights)
 			{
-				float totalWeight = 0;
-				float passWeights = originalWeights;
+				double totalWeight = 0;
+				double passWeights = originalWeights;
 				foreach (GenPass genPass in GenPasses)
 					if (instanceWeight.TryGetValue(genPass.Name, out float weight))
 						totalWeight += weight;
@@ -68,14 +68,14 @@ public static partial class Replacer
 				foreach (GenPass genPass in GenPasses)
 					if (instanceWeight.TryGetValue(genPass.Name, out float weight))
 					{
-						(float currentWeight, int found) = weights[genPass.Name];
+						(double currentWeight, int found) = weights[genPass.Name];
 						weights[genPass.Name] = (currentWeight + weight / totalWeight, found + 1);
 					}
 			}
 
 			foreach (GenPass genPass in GenPasses)
 			{
-				(float weight, int found) = weights[genPass.Name];
+				(double weight, int found) = weights[genPass.Name];
 				if (weight != 0) genPass.Weight = weight / found;
 				Type type = genPass.GetType();
 				MethodInfo? methodInfo =
@@ -103,7 +103,7 @@ public static partial class Replacer
 		orig(self, progress);
 	}
 
-	public static void Timer(OnGenPass.orig_Apply orig, GenPass self, GenerationProgress progress,
+	public static void Timer(On_GenPass.orig_Apply orig, GenPass self, GenerationProgress progress,
 		GameConfiguration configuration)
 	{
 		if (ModifiedWorld.Instance.Times != null)
