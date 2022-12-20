@@ -22,7 +22,7 @@ public class CorruptionOrb : ModItem
 		int corruptionLeft = centerX - Main.rand.Next(100, 300);
 		int corruptionRight = centerX + Main.rand.Next(100, 300);
 		int positionY = (int)(player.position.Y / 16);
-		WorldGen.worldSurfaceHigh = positionY + 50;
+		GenVars.worldSurfaceHigh = positionY + 50;
 		Corruption.MakeSingleCorruptionBiome(corruptionLeft, corruptionRight, centerX, positionY);
 		for (int x = corruptionLeft; x < corruptionRight; x++)
 		for (int y = positionY - 20; y < Main.rockLayer; y++)

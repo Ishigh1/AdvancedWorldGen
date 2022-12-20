@@ -83,9 +83,9 @@ public static class Utilities
 
 	public static bool IsValidStructure(int x, int y, int width, int height, int padding)
 	{
-		if (!WorldGen.structures.CanPlace(new Rectangle(x, y, width, height),
+		if (!GenVars.structures.CanPlace(new Rectangle(x, y, width, height),
 			    padding)) return false;
-		WorldGen.structures.AddStructure(new Rectangle(x, y, width, height),
+		GenVars.structures.AddStructure(new Rectangle(x, y, width, height),
 			padding);
 		return true;
 	}

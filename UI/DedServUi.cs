@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.UI;
 
 public static class DedServUi
 {
-	public static WorldFileData DedServOptions(OnWorldFile.orig_CreateMetadata orig, string name, bool cloudSave,
+	public static WorldFileData DedServOptions(On_WorldFile.orig_CreateMetadata orig, string name, bool cloudSave,
 		int gamemode)
 	{
 		if (!Main.dedServ)

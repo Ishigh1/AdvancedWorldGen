@@ -80,7 +80,7 @@ public class OptionsSelector : UIState
 			Top = new StyleDimension(0f, 0.8f),
 			HAlign = 0.4f
 		};
-		goBack.OnMouseDown += GoBack;
+		goBack.OnLeftClick += GoBack;
 		goBack.OnMouseOver += UiChanger.FadedMouseOver;
 		goBack.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(goBack);
@@ -91,7 +91,7 @@ public class OptionsSelector : UIState
 			Top = new StyleDimension(0f, 0.8f),
 			HAlign = 0.6f
 		};
-		customSize.OnMouseDown += GoToCustomSize;
+		customSize.OnLeftClick += GoToCustomSize;
 		customSize.OnMouseOver += UiChanger.FadedMouseOver;
 		customSize.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(customSize);
@@ -102,7 +102,7 @@ public class OptionsSelector : UIState
 			Top = new StyleDimension(0f, 0.75f),
 			HAlign = 0.4f
 		};
-		importButton.OnMouseDown += delegate
+		importButton.OnLeftClick += delegate
 		{
 			OptionsParser.Parse(Platform.Get<IClipboard>().Value);
 			CreateOptionList();
@@ -117,7 +117,7 @@ public class OptionsSelector : UIState
 			Top = new StyleDimension(0f, 0.75f),
 			HAlign = 0.6f
 		};
-		exportButton.OnMouseDown += delegate { Platform.Get<IClipboard>().Value = OptionsParser.GetJsonText(); };
+		exportButton.OnLeftClick += delegate { Platform.Get<IClipboard>().Value = OptionsParser.GetJsonText(); };
 		exportButton.OnMouseOver += UiChanger.FadedMouseOver;
 		exportButton.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(exportButton);
@@ -128,7 +128,7 @@ public class OptionsSelector : UIState
 			Top = new StyleDimension(0f, 0.85f),
 			HAlign = 0.5f
 		};
-		randomizeButton.OnMouseDown += RandomizeSettings;
+		randomizeButton.OnLeftClick += RandomizeSettings;
 		randomizeButton.OnMouseOver += UiChanger.FadedMouseOver;
 		randomizeButton.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(randomizeButton);
@@ -165,7 +165,7 @@ public class OptionsSelector : UIState
 		{
 			HAlign = 1f
 		};
-		uiImage.OnMouseDown += delegate
+		uiImage.OnLeftClick += delegate
 		{
 			SoundEngine.PlaySound(SoundID.MenuTick);
 			ShowHidden = !ShowHidden;
@@ -215,7 +215,7 @@ public class OptionsSelector : UIState
 			UIList.Add(clickableText);
 
 			clickableText.SetCurrentOption(option.Enabled);
-			clickableText.OnMouseDown += delegate
+			clickableText.OnLeftClick += delegate
 			{
 				if (Main.MenuUI.CurrentState != this)
 					return;
@@ -260,7 +260,7 @@ public class OptionsSelector : UIState
 					UIDescription.SetText(clickableText.Description);
 					isLookingAtSomething = false;
 				};
-				uiImage.OnMouseDown += delegate
+				uiImage.OnLeftClick += delegate
 				{
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					Main.MenuUI.SetState(new OptionsSelector(this, option));

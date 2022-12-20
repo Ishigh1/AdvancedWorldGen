@@ -35,7 +35,7 @@ public class WarningUI : UIState
 			Top = new StyleDimension(0f, 0.75f),
 			HAlign = 0.35f
 		};
-		goBack.OnMouseDown += delegate
+		goBack.OnLeftClick += delegate
 		{
 			SoundEngine.PlaySound(SoundID.MenuClose);
 			UIState? state = back.Invoke();
@@ -52,7 +52,7 @@ public class WarningUI : UIState
 			Top = new StyleDimension(0f, 0.75f),
 			HAlign = 0.65f
 		};
-		goForward.OnMouseDown += delegate
+		goForward.OnLeftClick += delegate
 		{
 			SoundEngine.PlaySound(SoundID.MenuClose);
 			UIState? state = next.Invoke();

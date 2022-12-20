@@ -6,14 +6,14 @@ public static class HalloweenCommon
 {
 	public static void Setup()
 	{
-		OnMain.checkHalloween += MainOnCheckHalloween;
-		OnNPC.SetDefaults += HalloweenSwap;
-		OnPlayer.KillMe += SpawnGhostOnPlayerDeath;
-		OnNPC.DoesntDespawnToInactivity += NoGhostDespawn;
-		ILPlayer.UpdateGraveyard += PermanentGraveyard;
+		On_Main.checkHalloween += MainOnCheckHalloween;
+		On_NPC.SetDefaults += HalloweenSwap;
+		On_Player.KillMe += SpawnGhostOnPlayerDeath;
+		On_NPC.DoesntDespawnToInactivity += NoGhostDespawn;
+		IL_Player.UpdateGraveyard += PermanentGraveyard;
 	}
 
-	public static void MainOnCheckHalloween(OnMain.orig_checkHalloween orig)
+	private static void MainOnCheckHalloween(On_Main.orig_checkHalloween orig)
 	{
 		if (OptionHelper.OptionsContains("Spooky"))
 			Main.halloween = true;
@@ -21,7 +21,7 @@ public static class HalloweenCommon
 			orig();
 	}
 
-	public static void HalloweenSwap(OnNPC.orig_SetDefaults orig, NPC self, int type,
+	private static void HalloweenSwap(On_NPC.orig_SetDefaults orig, NPC self, int type,
 		NPCSpawnParams spawnParams)
 	{
 		orig(self, type, spawnParams);
@@ -39,7 +39,7 @@ public static class HalloweenCommon
 		self.netUpdate = true;
 	}
 
-	public static void SpawnGhostOnPlayerDeath(OnPlayer.orig_KillMe orig, Player self,
+	private static void SpawnGhostOnPlayerDeath(On_Player.orig_KillMe orig, Player self,
 		PlayerDeathReason damageSource, double dmg, int hitDirection, bool pvp)
 	{
 		orig(self, damageSource, dmg, hitDirection, pvp);
@@ -51,13 +51,13 @@ public static class HalloweenCommon
 		npc.netUpdate = true;
 	}
 
-	public static bool NoGhostDespawn(OnNPC.orig_DoesntDespawnToInactivity orig, NPC self)
+	private static bool NoGhostDespawn(On_NPC.orig_DoesntDespawnToInactivity orig, NPC self)
 	{
 		if (self.type == Ghost && OptionHelper.OptionsContains("Spooky")) return true;
 		return orig(self);
 	}
 
-	public static void PermanentGraveyard(ILContext il)
+	private static void PermanentGraveyard(ILContext il)
 	{
 		ILCursor cursor = new(il);
 		cursor.GotoNext(MoveType.After, instruction => instruction.MatchStloc(0));

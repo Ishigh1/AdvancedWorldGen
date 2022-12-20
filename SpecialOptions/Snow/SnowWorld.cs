@@ -47,7 +47,7 @@ public class SnowWorld
 		Main.projectile[projectile].netUpdate = true;
 	}
 
-	public static void ComputeSnowBall(out double damages, out double knockback)
+	private static void ComputeSnowBall(out double damages, out double knockback)
 	{
 		damages = 10;
 		knockback = 4.5;
@@ -82,7 +82,7 @@ public class SnowWorld
 		}
 	}
 
-	public static void MainOnCheckXMas(OnMain.orig_checkXMas orig)
+	public static void MainOnCheckXMas(On_Main.orig_checkXMas orig)
 	{
 		if (OptionHelper.OptionsContains("Santa"))
 			Main.xMas = true;

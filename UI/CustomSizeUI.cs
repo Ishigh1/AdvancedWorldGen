@@ -142,7 +142,7 @@ public class CustomSizeUI : UIState
 		};
 		uiList.Add(goToVanillaConfig);
 
-		goToVanillaConfig.OnMouseDown += ConfigVanillaWorldGen;
+		goToVanillaConfig.OnLeftClick += ConfigVanillaWorldGen;
 		goToVanillaConfig.OnMouseOver += UiChanger.FadedMouseOver;
 		goToVanillaConfig.OnMouseOut += UiChanger.FadedMouseOut;
 
@@ -153,7 +153,7 @@ public class CustomSizeUI : UIState
 			};
 		uiList.Add(goToOverhauledConfig);
 
-		goToOverhauledConfig.OnMouseDown += ConfigOverhauledWorldGen;
+		goToOverhauledConfig.OnLeftClick += ConfigOverhauledWorldGen;
 		goToOverhauledConfig.OnMouseOver += UiChanger.FadedMouseOver;
 		goToOverhauledConfig.OnMouseOut += UiChanger.FadedMouseOut;
 
@@ -163,7 +163,7 @@ public class CustomSizeUI : UIState
 			Top = new StyleDimension(0f, 0.75f),
 			HAlign = 0.5f
 		};
-		goBack.OnMouseDown += GoBack;
+		goBack.OnLeftClick += GoBack;
 		goBack.OnMouseOver += UiChanger.FadedMouseOver;
 		goBack.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(goBack);

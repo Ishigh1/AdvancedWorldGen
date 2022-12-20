@@ -64,7 +64,7 @@ public class ValuesList : FocusElement
 				Width = new StyleDimension(windowDimension.Width * 0.7f, 0f)
 			};
 			top += 44;
-			option.OnMouseDown += (_, _) =>
+			option.OnLeftClick += (_, _) =>
 			{
 				ParentBox.Value = enumString;
 				Unfocus();

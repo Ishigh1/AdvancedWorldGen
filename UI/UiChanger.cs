@@ -25,7 +25,7 @@ public class UiChanger
 		}
 	}
 
-	public void ThreadifyWorldGen(OnWorldGen.orig_do_worldGenCallBack orig, object? threadContext)
+	public void ThreadifyWorldGen(On_WorldGen.orig_do_worldGenCallBack orig, object? threadContext)
 	{
 		if (!Main.dedServ)
 		{
@@ -50,7 +50,7 @@ public class UiChanger
 		}
 	}
 
-	public static void EmergencySaving(string suffix)
+	private static void EmergencySaving(string suffix)
 	{
 		if (WorldgenSettings.AbortedSaving)
 		{
@@ -66,7 +66,7 @@ public class UiChanger
 		}
 	}
 
-	public void AddCancel(OnUIWorldLoad.orig_ctor orig, UIWorldLoad self)
+	public void AddCancel(On_UIWorldLoad.orig_ctor orig, UIWorldLoad self)
 	{
 		orig(self);
 		if (!Main.dedServ)
@@ -92,7 +92,7 @@ public class UiChanger
 			uiTextPanel.Recalculate();
 			uiTextPanel.OnMouseOver += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
 			uiTextPanel.OnMouseOut += (_, _) => SoundEngine.PlaySound(SoundID.MenuTick);
-			uiTextPanel.OnClick += Abort;
+			uiTextPanel.OnLeftClick += Abort;
 		}
 
 		Stopwatch.Start();
@@ -111,7 +111,7 @@ public class UiChanger
 		EmergencySaving("Aborted");
 	}
 
-	public void TweakWorldGenUi(OnUIWorldCreation.orig_AddDescriptionPanel origAddDescriptionPanel,
+	public void TweakWorldGenUi(On_UIWorldCreation.orig_AddDescriptionPanel origAddDescriptionPanel,
 		UIWorldCreation self, UIElement container, float accumulatedHeight, string tagGroup)
 	{
 		origAddDescriptionPanel(self, container, accumulatedHeight, tagGroup);
@@ -134,7 +134,7 @@ public class UiChanger
 
 		Description = VanillaInterface.DescriptionText(self).Value;
 
-		groupOptionButton.OnMouseDown += ToOptionsMenu;
+		groupOptionButton.OnLeftClick += ToOptionsMenu;
 		groupOptionButton.OnMouseOver += ShowOptionDescription;
 		groupOptionButton.OnMouseOut += self.ClearOptionDescription;
 
@@ -170,7 +170,7 @@ public class UiChanger
 		panel.BorderColor = Color.Black;
 	}
 
-	public static void CopySettingsButton(OnUIWorldListItem.orig_ctor orig,
+	public static void CopySettingsButton(On_UIWorldListItem.orig_ctor orig,
 		UIWorldListItem self, WorldFileData data, int orderInList,
 		bool canBePlayed)
 	{
@@ -243,7 +243,7 @@ public class UiChanger
 
 			uiText.SetText(text + "\"");
 		};
-		copyOptionButton.OnMouseDown += delegate
+		copyOptionButton.OnLeftClick += delegate
 		{
 			if (options.Count == 0) return;
 			string text = "";
@@ -261,7 +261,7 @@ public class UiChanger
 		return options;
 	}
 
-	public static void SetSpecialName(OnWorldFileData.orig_SetWorldSize orig, WorldFileData self, int x, int y)
+	public static void SetSpecialName(On_WorldFileData.orig_SetWorldSize orig, WorldFileData self, int x, int y)
 	{
 		self.WorldSizeX = x;
 		self.WorldSizeY = y;
