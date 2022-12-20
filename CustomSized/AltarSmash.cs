@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.CustomSized;
 
 public static class AltarSmash
 {
-	public static void SmashAltar(OnWorldGen.orig_SmashAltar orig, int x, int y)
+	public static void SmashAltar(On_WorldGen.orig_SmashAltar orig, int x, int y)
 	{
 		if (!WorldgenSettings.Revamped || ModLoader.TryGetMod("CalamityMod", out Mod _))
 		{
@@ -155,8 +155,24 @@ public static class AltarSmash
 
 			int xx = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
 			int yy = WorldGen.genRand.Next((int)minY, Main.maxTilesY - 150);
-			WorldGen.OreRunner(xx, yy, WorldGen.genRand.Next(5, 9 + num4),
-				WorldGen.genRand.Next(5, 9 + num4), (ushort)num);
+			if (Main.remixWorld)
+			{
+				double max = num switch
+				{
+					108 or 222 => (Main.rockLayer + Main.rockLayer + Main.maxTilesY - 350.0) / 3.0,
+					111 or 223 => Main.rockLayer - 25.0,
+					_ => Main.maxTilesX - 350
+				};
+				yy = WorldGen.genRand.Next((int)Main.worldSurface + 15, (int)max);
+			}
+			if (Main.tenthAnniversaryWorld)
+			{
+				WorldGen.OreRunner(xx, yy, WorldGen.genRand.Next(5, 11 + num4), WorldGen.genRand.Next(5, 11 + num4), (ushort)num);
+			}
+			else
+			{
+				WorldGen.OreRunner(xx, yy, WorldGen.genRand.Next(5, 9 + num4), WorldGen.genRand.Next(5, 9 + num4), (ushort)num);
+			}
 		}
 
 		int num9 = WorldGen.genRand.Next(3);

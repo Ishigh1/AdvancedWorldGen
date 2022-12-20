@@ -6,10 +6,10 @@ public class Special : ModSystem
 
 	public override void Load()
 	{
-		OnMain.UpdateTime_SpawnTownNPCs += HandleNotHousableWorlds;
+		On_Main.UpdateTime_SpawnTownNPCs += HandleNotHousableWorlds;
 	}
 
-	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
+	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 	{
 		TempleWorld = float.IsInfinity(Params.TempleMultiplier);
 		if (TempleWorld)
@@ -41,7 +41,7 @@ public class Special : ModSystem
 		TempleWorld = tag.ContainsKey("TempleWorld");
 	}
 
-	public static void HandleNotHousableWorlds(OnMain.orig_UpdateTime_SpawnTownNPCs orig)
+	private static void HandleNotHousableWorlds(On_Main.orig_UpdateTime_SpawnTownNPCs orig)
 	{
 		if (!TempleWorld)
 		{

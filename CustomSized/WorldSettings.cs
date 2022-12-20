@@ -8,17 +8,17 @@ public class WorldSettings
 	{
 		Params.Wipe();
 
-		OnUIWorldCreation.SetDefaultOptions += ResetSize;
-		OnUIWorldCreation.ClickSizeOption += SetSize;
-		OnWorldGen.setWorldSize += SetWorldSize;
-		OnWorldGen.clearWorld += SetWorldSize;
+		On_UIWorldCreation.SetDefaultOptions += ResetSize;
+		On_UIWorldCreation.ClickSizeOption += SetSize;
+		On_WorldGen.setWorldSize += SetWorldSize;
+		On_WorldGen.clearWorld += SetWorldSize;
 
-		OnWorldGen.SmashAltar += AltarSmash.SmashAltar;
-		OnWorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
-		OnWorldGen.UpdateMapTile += MapRelated.UpdateMapTileInBounds;
+		On_WorldGen.SmashAltar += AltarSmash.SmashAltar;
+		On_WorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
+		On_WorldGen.UpdateMapTile += MapRelated.UpdateMapTileInBounds;
 	}
 
-	private void ResetSize(OnUIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)
+	private void ResetSize(On_UIWorldCreation.orig_SetDefaultOptions orig, UIWorldCreation self)
 	{
 		orig(self);
 		UIWorldCreation = self;
@@ -30,7 +30,7 @@ public class WorldSettings
 		AdvancedWorldGenMod.Instance.UiChanger.OverhauledWorldGenConfigurator = new OverhauledWorldGenConfigurator();
 	}
 
-	private static void SetSize(OnUIWorldCreation.orig_ClickSizeOption orig, UIWorldCreation self, UIMouseEvent evt,
+	private static void SetSize(On_UIWorldCreation.orig_ClickSizeOption orig, UIWorldCreation self, UIMouseEvent evt,
 		UIElement listeningElement)
 	{
 		orig(self, evt, listeningElement);
@@ -59,14 +59,14 @@ public class WorldSettings
 		}
 	}
 
-	private static void SetWorldSize(OnWorldGen.orig_setWorldSize orig)
+	private static void SetWorldSize(On_WorldGen.orig_setWorldSize orig)
 	{
 		SetWorldSize();
 
 		orig();
 	}
 
-	private static void SetWorldSize(OnWorldGen.orig_clearWorld orig)
+	private static void SetWorldSize(On_WorldGen.orig_clearWorld orig)
 	{
 		SetWorldSize();
 
