@@ -17,15 +17,30 @@ public class TerrainPass : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		int leftBeachSize = WorldGen.leftBeachEnd;
-		int rightBeachSize = Main.maxTilesX - WorldGen.rightBeachStart;
-
 		int lowDepthBeachSize = Configuration.Get<int>("FlatBeachPadding");
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.0");
 		TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
 		int worldSurface = (int)(Main.maxTilesY * 0.3 * WorldGen.genRand.Next(90, 110) * 0.005);
-		int rockLayer = (int)(Main.maxTilesY * 0.35 * WorldGen.genRand.Next(90, 110) * 0.01);
+		int rockLayer;
 
+		if (WorldGen.remixWorldGen)
+		{
+			float modifier;
+			if (Main.maxTilesX > 2500)
+			{
+				modifier = 0.6f;
+			}
+			else
+			{
+				modifier = 0.5f;
+			}
+			rockLayer = (int)(Main.maxTilesY * modifier * WorldGen.genRand.Next(95, 106) * 0.01f);
+		}
+		else
+		{
+			rockLayer = worldSurface + (int)(Main.maxTilesY * 0.2 * WorldGen.genRand.Next(90, 110) * 0.01);
+		}
+		
 		if (rockLayer < worldSurface + Main.maxTilesY * 0.05)
 		{
 			if (worldSurface - rockLayer > Main.maxTilesY * 0.05)
@@ -37,15 +52,15 @@ public class TerrainPass : ControlledWorldGenPass
 		if (worldSurface < Main.maxTilesY * 0.07)
 			worldSurface = (int)(Main.maxTilesY * 0.07);
 		int worldSurfaceMax = (int)(Main.maxTilesY * 0.23);
-		int totalBeachSize = leftBeachSize + lowDepthBeachSize;
+		int totalBeachSize = GenVars.leftBeachEnd + lowDepthBeachSize;
 #if !SPECIALDEBUG
 		Stopwatch.Stop();
 #endif
 		AdvancedWorldGenMod.Instance.UiChanger.Stopwatch.Stop();
 		Dictionary<string, object> currentState = new()
 		{
-			{ nameof(leftBeachSize), leftBeachSize },
-			{ nameof(rightBeachSize), rightBeachSize },
+			{ nameof(GenVars.leftBeachEnd), GenVars.leftBeachEnd },
+			{ nameof(GenVars.rightBeachStart), GenVars.rightBeachStart },
 			{ nameof(lowDepthBeachSize), lowDepthBeachSize },
 			{ nameof(worldSurface), worldSurface },
 			{ nameof(rockLayer), rockLayer },
@@ -53,8 +68,8 @@ public class TerrainPass : ControlledWorldGenPass
 			{ nameof(totalBeachSize), totalBeachSize }
 		};
 		DrawTerrainUI(currentState);
-		leftBeachSize = (int)currentState[nameof(leftBeachSize)];
-		rightBeachSize = (int)currentState[nameof(rightBeachSize)];
+		GenVars.leftBeachEnd = (int)currentState[nameof(GenVars.leftBeachEnd)];
+		GenVars.rightBeachStart = (int)currentState[nameof(GenVars.rightBeachStart)];
 		lowDepthBeachSize = (int)currentState[nameof(lowDepthBeachSize)];
 		worldSurface = (int)currentState[nameof(worldSurface)];
 		rockLayer = (int)currentState[nameof(rockLayer)];
@@ -101,7 +116,7 @@ public class TerrainPass : ControlledWorldGenPass
 				num11 = 0.28f;
 			}
 
-			if (i < leftBeachSize + lowDepthBeachSize || i > Main.maxTilesX - rightBeachSize - lowDepthBeachSize)
+			if (i < GenVars.leftBeachEnd + lowDepthBeachSize || i > GenVars.rightBeachStart - lowDepthBeachSize)
 			{
 				worldSurface = (int)Utils.Clamp(worldSurface, Main.maxTilesY * 0.17, worldSurfaceMax);
 			}
@@ -126,7 +141,7 @@ public class TerrainPass : ControlledWorldGenPass
 
 			surfaceHistory.Record(worldSurface);
 			FillColumn(i, worldSurface, rockLayer);
-			if (i == Main.maxTilesX - rightBeachSize - lowDepthBeachSize)
+			if (i == GenVars.rightBeachStart - lowDepthBeachSize)
 			{
 				if (worldSurface > worldSurfaceMax)
 					RetargetSurfaceHistory(surfaceHistory, i, worldSurfaceMax);
@@ -161,14 +176,14 @@ public class TerrainPass : ControlledWorldGenPass
 			worldSurfaceHigh = num15 - num16 / 2;
 		}
 
-		WorldGen.worldSurface = worldSurface;
-		WorldGen.worldSurfaceHigh = worldSurfaceHigh;
-		WorldGen.worldSurfaceLow = worldSurfaceLow;
-		WorldGen.rockLayer = rockLayer;
-		WorldGen.rockLayerHigh = rockLayerHigh;
-		WorldGen.rockLayerLow = rockLayerLow;
-		WorldGen.waterLine = waterLine;
-		WorldGen.lavaLine = lavaLine;
+		GenVars.worldSurface = worldSurface;
+		GenVars.worldSurfaceHigh = worldSurfaceHigh;
+		GenVars.worldSurfaceLow = worldSurfaceLow;
+		GenVars.rockLayer = rockLayer;
+		GenVars.rockLayerHigh = rockLayerHigh;
+		GenVars.rockLayerLow = rockLayerLow;
+		GenVars.waterLine = waterLine;
+		GenVars.lavaLine = lavaLine;
 	}
 
 	private static void DrawTerrainUI(Dictionary<string, object> currentState)
@@ -232,7 +247,7 @@ public class TerrainPass : ControlledWorldGenPass
 			HAlign = 0.5f
 		};
 		Thread thread = Thread.CurrentThread;
-		goBack.OnMouseDown += (_, _) => thread.Interrupt();
+		goBack.OnLeftClick += (_, _) => thread.Interrupt();
 		goBack.OnMouseOver += UiChanger.FadedMouseOver;
 		goBack.OnMouseOut += UiChanger.FadedMouseOut;
 		newState.Append(goBack);
@@ -282,7 +297,7 @@ public class TerrainPass : ControlledWorldGenPass
 		}
 	}
 
-	public static void RetargetColumn(int x, double worldSurface)
+	private static void RetargetColumn(int x, double worldSurface)
 	{
 		for (int i = 0; i < worldSurface; i++)
 		{
@@ -396,7 +411,7 @@ public class TerrainPass : ControlledWorldGenPass
 		return num;
 	}
 
-	public static void RetargetSurfaceHistory(SurfaceHistory history, int targetX, double targetHeight)
+	private static void RetargetSurfaceHistory(SurfaceHistory history, int targetX, double targetHeight)
 	{
 		for (int i = 0; i < history.Length / 2; i++)
 		{
@@ -420,10 +435,10 @@ public class TerrainPass : ControlledWorldGenPass
 		}
 	}
 
-	public class SurfaceHistory
+	private class SurfaceHistory
 	{
-		public readonly double[] Heights;
-		public int Index;
+		private readonly double[] Heights;
+		private int Index;
 
 		public SurfaceHistory(int size)
 		{
