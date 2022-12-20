@@ -1,3 +1,6 @@
+/*
+Removed as beaches are nox constant
+
 namespace AdvancedWorldGen.CustomSized;
 
 public class OverhauledWorld : ModSystem
@@ -25,3 +28,4 @@ public class OverhauledWorld : ModSystem
 		WorldGen.beachDistance = BaseBeachDistance;
 	}
 }
+*/

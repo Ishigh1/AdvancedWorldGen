@@ -23,7 +23,11 @@ public class ResetPass : ControlledWorldGenPass
 		Main.cloudAlpha = 0f;
 		Main.maxRaining = 0f;
 		Main.raining = false;
-		WorldGen.heartCount = 0;
+		
+		//Became private
+		//WorldGen.heartCount = 0;
+		new FieldAccessor<int>(typeof(WorldGen), "heartCount").Value = 0;
+		
 		GenVars.extraBastStatueCount = 0;
 		GenVars.extraBastStatueCountMax = 2 + Main.maxTilesX / 2100;
 		Main.checkXMas();
@@ -168,6 +172,8 @@ public class ResetPass : ControlledWorldGenPass
 		int beachSandRandomWidthRange = (int)(20 * beachMultiplier);
 		int beachSandRandomCenter = beachBordersWidth + 5 + 2 * beachSandRandomWidthRange;
 		GenVars.evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
+		/*
+		No longer applicable
 		if (worldSize < 1)
 		{
 			WorldGen.oceanDistance = beachBordersWidth - 25;
@@ -178,6 +184,7 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.oceanDistance = (int)(WorldGen.oceanDistance * beachMultiplier);
 			WorldGen.beachDistance = (int)(WorldGen.beachDistance * beachMultiplier);
 		}
+		*/
 
 		GenVars.oceanWaterStartRandomMin = (int)(GenVars.oceanWaterStartRandomMin * beachMultiplier);
 		GenVars.oceanWaterStartRandomMax = (int)(GenVars.oceanWaterStartRandomMax * beachMultiplier);
