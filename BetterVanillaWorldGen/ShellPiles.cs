@@ -41,8 +41,8 @@ public class ShellPiles : ControlledWorldGenPass
 		float worldSize = Main.maxTilesX < 4200 ? Main.maxTilesX / 4200f : 1;
 		if (WorldGen.genRand.NextBool(2))
 		{
-			int baseShellStartXLeft = WorldGen.shellStartXLeft;
-			int baseShellStartYLeft = WorldGen.shellStartYLeft;
+			int baseShellStartXLeft = GenVars.shellStartXLeft;
+			int baseShellStartYLeft = GenVars.shellStartYLeft;
 			int shellStartXLeft = baseShellStartXLeft;
 			int shellStartYLeft = baseShellStartYLeft;
 
@@ -96,8 +96,8 @@ public class ShellPiles : ControlledWorldGenPass
 
 		if (WorldGen.genRand.NextBool(2))
 		{
-			int baseShellStartXRight = WorldGen.shellStartXRight;
-			int baseShellStartYRight = WorldGen.shellStartYRight;
+			int baseShellStartXRight = GenVars.shellStartXRight;
+			int baseShellStartYRight = GenVars.shellStartYRight;
 			int shellStartXRight = baseShellStartXRight;
 			int shellStartYRight = baseShellStartYRight;
 
