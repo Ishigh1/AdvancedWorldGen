@@ -1,10 +1,10 @@
 namespace AdvancedWorldGen.SpecialOptions.Halloween;
 
-public class DifficultyValue<T>
+public readonly struct DifficultyValue<T>
 {
-	public T ExpertMode;
-	public T MasterMode;
-	public T NormalMode;
+	private readonly T ExpertMode;
+	private readonly T MasterMode;
+	private readonly T NormalMode;
 
 	public DifficultyValue(T normalMode, T expertMode, T masterMode)
 	{

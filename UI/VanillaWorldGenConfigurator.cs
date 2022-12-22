@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.UI;
 
 public class VanillaWorldGenConfigurator : UIState
 {
-	public WorldGenConfiguration Configuration;
+	public readonly WorldGenConfiguration Configuration;
 
 	public VanillaWorldGenConfigurator()
 	{
@@ -19,7 +19,7 @@ public class VanillaWorldGenConfigurator : UIState
 		WorldGen.Hooks.OnWorldGenConfigProcess -= SetConfig;
 	}
 
-	public void SetupUI()
+	private void SetupUI()
 	{
 		UIPanel uiPanel = new()
 		{
@@ -117,16 +117,17 @@ public class VanillaWorldGenConfigurator : UIState
 				uiPanel.Add(enumInput);
 				break;
 			default:
-				throw new ArgumentOutOfRangeException();
+				throw new ArgumentOutOfRangeException(nameof(jToken), $"{jToken.Type} not implemented for serialization");
 		}
 	}
 
-	public void SetConfig(ref WorldGenConfiguration config)
+	// ReSharper disable once RedundantAssignment
+	private void SetConfig(ref WorldGenConfiguration configuration)
 	{
-		config = Configuration;
+		configuration = Configuration;
 	}
 
-	public static void GoBack(UIMouseEvent evt, UIElement listeningElement)
+	private static void GoBack(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		Main.MenuUI.SetState(new CustomSizeUI());

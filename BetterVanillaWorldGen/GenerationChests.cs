@@ -1225,8 +1225,7 @@ public static class GenerationChests
 					2 => ItemID.BlessingfromTheHeavens,
 					3 => ItemID.Constellation,
 					4 => ItemID.LoveisintheTrashSlot,
-					5 => ItemID.SunOrnament, // not available in vanilla lesion chests, but fixed there because why not
-					_ => throw new ArgumentOutOfRangeException()
+					_ => ItemID.SunOrnament, // not available in vanilla lesion chests, but fixed there because why not
 				};
 				chest.item[index++].SetDefaults(drop);
 

@@ -3,7 +3,7 @@ namespace AdvancedWorldGen.UI;
 public class OverhauledWorldGenConfigurator : UIState
 {
 	public static GameConfiguration Configuration = null!;
-	public static JObject Root;
+	public static JObject? Root;
 
 	public OverhauledWorldGenConfigurator()
 	{
@@ -108,7 +108,7 @@ public class OverhauledWorldGenConfigurator : UIState
 				uiPanel.Add(enumInput);
 				break;
 			default:
-				throw new ArgumentOutOfRangeException();
+				throw new ArgumentOutOfRangeException(nameof(jToken), $"{jToken.Type} not implemented for serialization");
 		}
 	}
 

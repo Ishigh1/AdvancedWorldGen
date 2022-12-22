@@ -2,16 +2,16 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.NPCs;
 
 public static class EyeOfCthulhu
 {
-	public const int DashServerInitAI = -126;
-	public const int DashInitAI = -127;
-	public const int DashAI = -128;
-	public const int RushDuration = 80;
+	private const int DashServerInitAI = -126;
+	private const int DashInitAI = -127;
+	private const int DashAI = -128;
+	private const int RushDuration = 80;
 
-	public static DifficultyValue<int> GhostDuration =
+	private static DifficultyValue<int> GhostDuration =
 		new(RushDuration, RushDuration, RushDuration * 2);
 
-	public static DifficultyValue<int> EyeGhostChances = new(600, 550, 500);
-	public static DifficultyValue<int> EyeSpeed = new(10, 15, 18);
+	private static DifficultyValue<int> EyeGhostChances = new(600, 550, 500);
+	private static DifficultyValue<int> EyeSpeed = new(10, 15, 18);
 
 	public static bool PreAI(NPC npc)
 	{

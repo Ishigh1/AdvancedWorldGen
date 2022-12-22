@@ -67,7 +67,7 @@ public static class DedServUi
 		}
 	}
 
-	public static void PrintConflicts()
+	private static void PrintConflicts()
 	{
 		bool conflict = false;
 
@@ -86,7 +86,7 @@ public static class DedServUi
 		if (conflict) Console.WriteLine();
 	}
 
-	public static void HandleDedServId(string s, ref string errorMessage, bool showHidden)
+	private static void HandleDedServId(string s, ref string errorMessage, bool showHidden)
 	{
 		if (int.TryParse(s, out int id) && (id <= 0 || !ConvertIdToOption(showHidden, id)))
 		{

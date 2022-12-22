@@ -1,4 +1,4 @@
-namespace AdvancedWorldGen.Base;
+namespace AdvancedWorldGen.SpecialOptions;
 
 public class NPCPass : GenPass
 {

@@ -2,12 +2,12 @@ namespace AdvancedWorldGen.SpecialOptions.Halloween.NPCs;
 
 public static class BrainOfCthulhu
 {
-	public const int CreeperServerAI = -126;
-	public const int CreeperInitAI = -127;
-	public const int CreeperAI = -128;
-	public static DifficultyValue<int> NumCreepers = new(5, 10, 10);
+	private const int CreeperServerAI = -126;
+	private const int CreeperInitAI = -127;
+	private const int CreeperAI = -128;
+	private static DifficultyValue<int> NumCreepers = new(5, 10, 10);
 
-	public static bool GhostActive;
+	private static bool GhostActive;
 
 	public static bool PreAI(NPC npc)
 	{

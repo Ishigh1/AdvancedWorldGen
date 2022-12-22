@@ -23,10 +23,10 @@ public static class HardmodeConversion
 
 		float worldSize = Main.maxTilesX / 4200f;
 		float num2 = WorldGen.genRand.Next(200, 250) * worldSize;
-		Vector2 vector = default;
+		Vector2D vector = default;
 		vector.X = x;
 		vector.Y = y;
-		Vector2 vector2 = default;
+		Vector2D vector2 = default;
 		vector2.X = WorldGen.genRand.Next(-10, 11) * 0.1f;
 		vector2.Y = WorldGen.genRand.Next(-10, 11) * 0.1f;
 		if (speedX != 0f || speedY != 0f)
@@ -38,21 +38,10 @@ public static class HardmodeConversion
 		bool flag2 = true;
 		while (flag2)
 		{
-			int num5 = (int)(vector.X - num2 * 0.5);
-			int num6 = (int)(vector.X + num2 * 0.5);
-			int num7 = (int)(vector.Y - num2 * 0.5);
-			int num8 = (int)(vector.Y + num2 * 0.5);
-			if (num5 < 0)
-				num5 = 0;
-
-			if (num6 > Main.maxTilesX)
-				num6 = Main.maxTilesX;
-
-			if (num7 < 0)
-				num7 = 0;
-
-			if (num8 > Main.maxTilesY - 5)
-				num8 = Main.maxTilesY - 5;
+			int num5 = Math.Max((int)(vector.X - num2 * 0.5), 0);
+			int num6 = Math.Min((int)(vector.X + num2 * 0.5), Main.maxTilesX);
+			int num7 = Math.Max((int)(vector.Y - num2 * 0.5), 0);
+			int num8 = Math.Min((int)(vector.Y + num2 * 0.5), Main.maxTilesY - 5);
 
 			for (int m = num5; m < num6; m++)
 			for (int n = num7; n < num8; n++)
