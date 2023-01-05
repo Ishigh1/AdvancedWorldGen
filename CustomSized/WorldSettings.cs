@@ -14,7 +14,11 @@ public class WorldSettings
 		On_WorldGen.clearWorld += SetWorldSize;
 
 		On_WorldGen.SmashAltar += AltarSmash.SmashAltar;
+		#if TEMP
+		HookEndpointManager.Add(typeof(WorldGen).GetMethod("GERunner", BindingFlags.Public | BindingFlags.Static), HardmodeConversion.ReplaceHardmodeConversion);
+		#else
 		On_WorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
+		#endif
 		On_WorldGen.UpdateMapTile += MapRelated.UpdateMapTileInBounds;
 	}
 
@@ -24,7 +28,7 @@ public class WorldSettings
 		UIWorldCreation = self;
 		SetSizeTo(ModLoader.TryGetMod("CalamityMod", out Mod _)
 			? 2
-			: 0); //Calamity have large worlds by defaults and do it in a way that fucks with this logic
+			: 1); //Calamity have large worlds by defaults and do it in a way that fucks with this logic
 		AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator?.Dispose();
 		AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator = new VanillaWorldGenConfigurator();
 		AdvancedWorldGenMod.Instance.UiChanger.OverhauledWorldGenConfigurator = new OverhauledWorldGenConfigurator();

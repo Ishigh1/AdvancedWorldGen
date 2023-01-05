@@ -2,8 +2,14 @@ namespace AdvancedWorldGen.CustomSized;
 
 public static class HardmodeConversion
 {
+	#if TEMP
+	public delegate void orig_GERunner(int i, int j, double speedX, double speedY, bool good);
+	public static void ReplaceHardmodeConversion(orig_GERunner orig, int x, int y, double speedX,
+		double speedY, bool good)
+#else
 	public static void ReplaceHardmodeConversion(On_WorldGen.orig_GERunner orig, int x, int y, double speedX,
 		double speedY, bool good)
+#endif
 	{
 		bool calamity = false;
 

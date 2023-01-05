@@ -136,10 +136,12 @@ public class ModifiedWorld : ModSystem
 	public static void OverrideWorldOptions(ILContext il)
 	{
 		ILCursor cursor = new(il);
-		cursor.GotoNext(instruction => instruction.MatchLdcI4(0));
+		cursor.GotoNext(MoveType.After, instruction => instruction.MatchStloc(0));
 		while (!cursor.Next.MatchLdstr(
-			       "Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}"))
+			       "Creating world - Seed: {0}, Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}"))
+		{
 			cursor.Remove();
+		}
 	}
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
