@@ -81,6 +81,18 @@ public class ModifiedWorld : ModSystem
 		Main.dontStarveWorld |= dontStarve;
 		WorldGen.dontStarveWorldGen |= dontStarve;
 
+		bool noTraps = OptionHelper.OptionsContains("NoTraps");
+		Main.noTrapsWorld |= noTraps;
+		WorldGen.noTrapsWorldGen |= noTraps;
+
+		bool remix = OptionHelper.OptionsContains("Remix");
+		Main.remixWorld |= remix;
+		WorldGen.remixWorldGen |= remix;
+
+		bool zenith = OptionHelper.OptionsContains("Zenith");
+		Main.zenithWorld |= zenith;
+		WorldGen.everythingWorldGen |= zenith;
+
 		if (!Main.dayTime) Main.time = 0;
 	}
 

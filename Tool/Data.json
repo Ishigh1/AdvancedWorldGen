@@ -221,6 +221,13 @@
         },
         "hidden": false
     },
+    "Remix": {
+        "children": {},
+        "conflicts": {},
+        "description": "The remix secret seed.",
+        "displayed_name": "Remix",
+        "hidden": false
+    },
     "Santa": {
         "children": {},
         "conflicts": {
@@ -262,6 +269,13 @@
         },
         "hidden": true
     },
+    "NoTraps": {
+        "children": {},
+        "conflicts": {},
+        "description": "The no traps secret seed.",
+        "displayed_name": "No Traps",
+        "hidden": false
+    },
     "TheConstant": {
         "children": {},
         "conflicts": {},
@@ -275,6 +289,13 @@
             "fr-FR": "Le Constant",
             "ru-RU": "The Constant"
         },
+        "hidden": false
+    },
+    "Zenith": {
+        "children": {},
+        "conflicts": {},
+        "description": "The zenith secret seed.",
+        "displayed_name": "Zenith",
         "hidden": false
     }
 }

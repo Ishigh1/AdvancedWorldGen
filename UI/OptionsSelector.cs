@@ -225,7 +225,7 @@ public class OptionsSelector : UIState
 				else
 					option.Enable();
 
-				if (option.Conflicts
+				if (option.GetType() == typeof(ZenithOption) || option.Conflicts
 				    .Any(conflict => OptionHelper.OptionsContains(conflict)))
 					CreateOptionList();
 				else

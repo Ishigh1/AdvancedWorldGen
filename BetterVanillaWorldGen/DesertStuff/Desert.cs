@@ -6,7 +6,7 @@ public static class Desert
 		typeof(DesertDescription).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance,
 			null, Array.Empty<Type>(), null)!;
 
-	private static readonly Vector2 DefaultBlockScale = new(4f, 2f);
+	private static readonly Vector2D DefaultBlockScale = new(4f, 2f);
 
 	public static bool IsUndergroundDesert(int x, int y)
 	{
@@ -30,7 +30,7 @@ public static class Desert
 
 	public static DesertDescription CreateFromPlacement(Point origin)
 	{
-		Vector2 defaultBlockScale = DefaultBlockScale;
+		Vector2D defaultBlockScale = DefaultBlockScale;
 		float worldSize = Main.maxTilesX / 4200f;
 		float worldSizeY = Main.maxTilesY / 1200f;
 		int width = (int)(80f * worldSize);

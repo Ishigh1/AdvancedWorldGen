@@ -41,7 +41,7 @@ public class Option
 		foreach (Option child in Children) child.Enable();
 	}
 
-	public void WeakEnable()
+	public virtual void WeakEnable()
 	{
 		if (Enabled)
 			return;

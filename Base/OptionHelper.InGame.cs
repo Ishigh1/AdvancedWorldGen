@@ -1,76 +1,7 @@
-namespace AdvancedWorldGen.Base;
+﻿namespace AdvancedWorldGen.Base;
 
-public class OptionHelper
+public partial class OptionHelper
 {
-	public static Dictionary<string, Option> OptionDict = null!;
-	public static WorldSettings WorldSettings;
-
-	public static void InitializeDict(Mod mod)
-	{
-		WorldSettings = new WorldSettings();
-		OptionDict = JsonConvert.DeserializeObject<Dictionary<string, Option>>(
-			Encoding.UTF8.GetString(mod.GetFileBytes("Options.json")));
-
-		for (int index = 0; index < OptionDict.Count; index++)
-		{
-			(_, Option? option) = OptionDict.ElementAt(index);
-			if (option.Children.Count == 0)
-				continue;
-			Option baseOption = new()
-			{
-				Children = new List<Option>(),
-				Conflicts = option.Conflicts,
-				Name = "Base"
-			};
-			option.Conflicts = new List<string>();
-			option.Children.Insert(0, baseOption);
-			foreach (Option optionChild in option.Children)
-			{
-				optionChild.Parent = option;
-				OptionDict.Add(optionChild.FullName, optionChild);
-			}
-		}
-
-		foreach ((_, Option? option) in OptionDict)
-			for (int index = 0; index < option.Conflicts.Count; index++)
-			{
-				string optionConflict = option.Conflicts[index];
-				Option conflict = OptionDict[optionConflict];
-				if (conflict.Children.Count != 0)
-					option.Conflicts[index] = conflict.Children[0].Name;
-			}
-	}
-
-	public static void ClearAll()
-	{
-		foreach ((string? _, Option? option) in OptionDict) option.Disable();
-	}
-
-	public static void Import(ICollection<string> optionNames)
-	{
-		ClearAll();
-		Legacy.ReplaceOldOptions(optionNames);
-		foreach (string optionName in optionNames)
-			if (OptionDict.TryGetValue(optionName, out Option? option))
-				option.WeakEnable();
-	}
-
-	public static List<string> Export()
-	{
-		List<string> list = new();
-		foreach ((string? _, Option? option) in OptionDict)
-			if (option.Enabled && option.Children.Count == 0)
-				list.Add(option.FullName);
-		return list;
-	}
-
-	public static bool OptionsContains(string optionName)
-	{
-		if (!OptionDict.TryGetValue(optionName, out Option? option))
-			return false;
-		return option.Children.Count == 0 ? option.Enabled : option.Children[0].Enabled;
-	}
-
 	public static void OnTick()
 	{
 		SnowWorld.FallSnow();

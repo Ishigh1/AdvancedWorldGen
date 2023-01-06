@@ -11,6 +11,10 @@
       "SaveOnFail": {
         "Label": "Save on failed worldgen",
         "Tooltip": "If the worldgen fails or is aborted, saves it anyway."
+      },
+      "ZenithEnabler": {
+        "Label": "Enable other options with Zenith",
+        "Tooltip": "Enables Drunk, Don't Starve, For The Worthy, No Traps and Remix options when enabling Zenith."
       }
     },
     "WorldGenMessage": {

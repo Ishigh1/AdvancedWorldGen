@@ -362,9 +362,9 @@ public class JungleTemple : ControlledWorldGenPass
 		while (!Main.tile[numX, numY].HasTile)
 		{
 			numY++;
-			if (numY >= num63)
+			if (numY >= maybeTempleRight)
 			{
-				numY = num63;
+				numY = maybeTempleRight;
 				Tile tile = Main.tile[numX, numY];
 				tile.ClearEverything();
 				tile.HasTile = true;
