@@ -150,14 +150,16 @@ public class TerrainPass : ControlledWorldGenPass
 				totalBeachSize = Main.maxTilesX - i;
 			}
 		}
+		if (rockLayer > Main.UnderworldLayer)
+			throw new Exception(Language.GetTextValue("Mods.AdvancedWorldGen.Exceptions.RockUnderHell"));
 
 		Main.worldSurface = (int)(worldSurfaceHigh + 25);
 		Main.rockLayer = Main.worldSurface + rockLayerHigh - Main.worldSurface;
 		int waterLine = (int)(Main.rockLayer + Main.maxTilesY) / 2;
 		waterLine += WorldGen.genRand.Next(-100, 20);
 		int lavaLine = waterLine + WorldGen.genRand.Next(50, 80);
-		if (rockLayer > Main.UnderworldLayer)
-			throw new Exception(Language.GetTextValue("Mods.AdvancedWorldGen.Exceptions.RockUnderHell"));
+		if (WorldGen.remixWorldGen)
+			lavaLine = (int)(Main.worldSurface * 4.0 + rockLayer) / 5;
 		while (lavaLine > Main.UnderworldLayer)
 		{
 			waterLine -= (waterLine - rockLayer) / 8;

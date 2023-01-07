@@ -169,11 +169,11 @@ public class MicroBiomes : ControlledWorldGenPass
 
 	private void MakeExplosiveTraps(WorldGenConfiguration configuration)
 	{
-		if (!WorldGen.notTheBees || WorldGen.remixWorldGen)
+		if (!WorldGen.notTheBees || WorldGen.everythingWorldGen)
 		{
 			MiningExplosivesBiome miningExplosivesBiome = configuration.CreateBiome<MiningExplosivesBiome>();
 			int num40 = (int)Configuration.Get<JsonRange>("ExplosiveTrapCount").GetRandom(WorldGen.genRand);
-			if ((WorldGen.getGoodWorldGen || WorldGen.noTrapsWorldGen) && !WorldGen.notTheBees)
+			if ((WorldGen.getGoodWorldGen || WorldGen.noTrapsWorldGen) && !WorldGen.everythingWorldGen)
 				num40 = (int)(num40 * 1.5);
 
 			int num41 = 0;

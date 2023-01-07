@@ -57,7 +57,7 @@ public class ResetPass : ControlledWorldGenPass
 		}
 
 		if ((Params.Iron == TileExpandableList.Random &&
-		     (WorldGen.genRand.NextBool(2) || (WorldGen.dontStarveWorldGen && !WorldGen.drunkWorldGen)))
+		     ((WorldGen.dontStarveWorldGen && !WorldGen.everythingWorldGen) || WorldGen.genRand.NextBool(2)))
 		    || Params.Iron == TileID.Iron)
 		{
 			WorldGen.SavedOreTiers.Iron = 6;
@@ -85,7 +85,7 @@ public class ResetPass : ControlledWorldGenPass
 		}
 
 		if ((Params.Gold == TileExpandableList.Random &&
-		     ((WorldGen.dontStarveWorldGen && WorldGen.drunkWorldGen) || WorldGen.genRand.NextBool(2)))
+		     ((WorldGen.dontStarveWorldGen && !WorldGen.everythingWorldGen) || WorldGen.genRand.NextBool(2)))
 		    || Params.Gold == TileID.Gold)
 		{
 			WorldGen.SavedOreTiers.Gold = 8;
@@ -192,7 +192,7 @@ public class ResetPass : ControlledWorldGenPass
 			(int)(GenVars.oceanWaterForcedJungleLength * beachMultiplier);
 
 		int leftBeachEnd;
-		if (WorldGen.tenthAnniversaryWorldGen && !WorldGen.remixWorldGen)
+		if (WorldGen.tenthAnniversaryWorldGen && !WorldGen.everythingWorldGen)
 			leftBeachEnd = beachSandRandomCenter + beachSandRandomWidthRange;
 		else
 		{
@@ -204,7 +204,7 @@ public class ResetPass : ControlledWorldGenPass
 		GenVars.leftBeachEnd = leftBeachEnd;
 
 		int rightBeachStart;
-		if (WorldGen.tenthAnniversaryWorldGen && !WorldGen.remixWorldGen)
+		if (WorldGen.tenthAnniversaryWorldGen && !WorldGen.everythingWorldGen)
 			rightBeachStart = Main.maxTilesX - beachSandRandomCenter + beachSandRandomWidthRange;
 		else
 		{

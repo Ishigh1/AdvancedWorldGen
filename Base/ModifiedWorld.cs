@@ -8,7 +8,7 @@ public class ModifiedWorld : ModSystem
 	public List<Dictionary<string, float>> Weights = null!;
 	public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
 
-	public static string DataPath => Main.SavePath + Path.DirectorySeparatorChar + "AdvancedWorldGenPassesData.json";
+	private static string DataPath => Main.SavePath + Path.DirectorySeparatorChar + "AdvancedWorldGenPassesData.json";
 
 	public override void OnModLoad()
 	{

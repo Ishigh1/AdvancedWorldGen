@@ -84,7 +84,7 @@ public class FloatingIslands : ControlledWorldGenPass
 							}
 							else
 							{
-								if (WorldGen.remixWorldGen && WorldGen.drunkWorldGen)
+								if (WorldGen.everythingWorldGen)
 									floatingIslandInfo.Style = (GenVars.crimsonLeft && x < Main.maxTilesX / 2) ||
 									                           (!GenVars.crimsonLeft && x > Main.maxTilesX / 2)
 										? 5

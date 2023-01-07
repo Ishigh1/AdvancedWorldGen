@@ -49,7 +49,7 @@ public static class GenerationChests
 
 			if (WorldGen.SolidTile(chestRightX, groundY) && WorldGen.SolidTile(chestLeftX, groundY))
 				break;
-			if (groundY == y - 10)
+			if (groundY == y + 10)
 				return false;
 		}
 
@@ -220,7 +220,7 @@ public static class GenerationChests
 			                            contain is ItemID.ShinyRedBalloon or ItemID.Starfury
 				                            or ItemID.LuckyHorseshoe or ItemID.CelestialMagnet:
 				sky = true;
-				if (WorldGen.remixWorldGen && !WorldGen.getGoodWorldGen)
+				if (WorldGen.remixWorldGen && !WorldGen.everythingWorldGen)
 				{
 					if (WorldGen.crimson)
 					{
