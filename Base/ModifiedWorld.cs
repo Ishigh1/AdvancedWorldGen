@@ -58,6 +58,25 @@ public class ModifiedWorld : ModSystem
 			tagCompound.Add("Options", options);
 	}
 
+	public void ResetFlags()
+	{
+		Main.notTheBeesWorld = false;
+		WorldGen.notTheBees = false;
+
+		Main.getGoodWorld = false;
+		WorldGen.getGoodWorldGen = false;
+
+		Main.drunkWorld = false;
+		WorldGen.drunkWorldGen = false;
+		WorldGen.drunkWorldGenText = false;
+
+		Main.tenthAnniversaryWorld = false;
+		WorldGen.tenthAnniversaryWorldGen = false;
+
+		Main.dontStarveWorld = false;
+		WorldGen.dontStarveWorldGen = false;
+	}
+
 	public override void PreWorldGen()
 	{
 		bool notTheBees = OptionHelper.OptionsContains("NotTheBees");
@@ -202,11 +221,12 @@ public class ModifiedWorld : ModSystem
 		OptionHelper.OnDusk();
 	}
 
-	public static void ResetSettings(On_UserInterface.orig_SetState orig, UserInterface self, UIState state)
+	public void ResetSettings(On_UserInterface.orig_SetState orig, UserInterface self, UIState state)
 	{
 		orig(self, state);
 		if (state is UIWorldSelect)
 		{
+			ResetFlags();
 			OptionHelper.ClearAll();
 			Params.Wipe();
 		}
