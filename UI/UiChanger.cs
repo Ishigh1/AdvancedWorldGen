@@ -273,4 +273,54 @@ public class UiChanger
 			_ => Language.GetText(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSizedWorld", x, y))
 		};
 	}
+
+#if SPECIALDEBUG
+	public static void DeleteAllButLast()
+	{
+		UIWorldSelect uiWorldSelect = (UIWorldSelect)typeof(Main).GetField("_worldSelectMenu", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)!;
+		uiWorldSelect.Initialize();
+		UITextPanel<string> uiTextPanel = new("Delete all but last worlds")
+		{
+			Left =
+			{
+				Pixels = 100
+			},
+			Top =
+			{
+				Pixels = 100
+			}
+		};
+		uiTextPanel.OnLeftClick += (evt, element) =>
+		{
+			MethodInfo eraser = typeof(Main).GetMethod("EraseWorld", BindingFlags.Static | BindingFlags.NonPublic)!;
+			int saved = -1;
+			for (int index = 0; index < Main.WorldList.Count;)
+			{
+				WorldFileData worldFileData = Main.WorldList[index];
+				if (!worldFileData.IsCloudSave && !worldFileData.IsFavorite)
+				{
+					if (saved == -1)
+						saved = index++;
+					else if (worldFileData.CreationTime > Main.WorldList[saved].CreationTime)
+					{
+						eraser.Invoke(null, new object?[] { saved });
+						saved = index - 1;
+					}
+					else
+						eraser.Invoke(null, new object?[] { index });
+				}
+				else
+					index++;
+			}
+
+			MethodInfo refresher =
+				typeof(UIWorldSelect).GetMethod("UpdateWorldsList", BindingFlags.Instance | BindingFlags.NonPublic)!;
+			refresher.Invoke(uiWorldSelect, null);
+		};
+        uiTextPanel.OnMouseOver += FadedMouseOver;
+        uiTextPanel.OnMouseOut += FadedMouseOut;
+
+        uiWorldSelect.Append(uiTextPanel);
+	}
+#endif
 }

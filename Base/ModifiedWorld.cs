@@ -58,7 +58,7 @@ public class ModifiedWorld : ModSystem
 			tagCompound.Add("Options", options);
 	}
 
-	public void ResetFlags()
+	private static void ResetFlags()
 	{
 		Main.notTheBeesWorld = false;
 		WorldGen.notTheBees = false;
@@ -75,6 +75,15 @@ public class ModifiedWorld : ModSystem
 
 		Main.dontStarveWorld = false;
 		WorldGen.dontStarveWorldGen = false;
+
+		Main.noTrapsWorld = false;
+		WorldGen.noTrapsWorldGen = false;
+
+		Main.remixWorld = false;
+		WorldGen.remixWorldGen = false;
+
+		Main.zenithWorld = false;
+		WorldGen.everythingWorldGen = false;
 	}
 
 	public override void PreWorldGen()
@@ -221,7 +230,7 @@ public class ModifiedWorld : ModSystem
 		OptionHelper.OnDusk();
 	}
 
-	public void ResetSettings(On_UserInterface.orig_SetState orig, UserInterface self, UIState state)
+	public static void ResetSettings(On_UserInterface.orig_SetState orig, UserInterface self, UIState state)
 	{
 		orig(self, state);
 		if (state is UIWorldSelect)

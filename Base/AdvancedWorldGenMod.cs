@@ -18,6 +18,9 @@ public class AdvancedWorldGenMod : Mod
 		On_UIWorldCreation.FinishCreatingWorld += ModifiedWorld.Instance.LastMinuteChecks;
 		On_WorldFileData.SetWorldSize += UiChanger.SetSpecialName;
 		// On_UIWorldListItem.ctor += UiChanger.CopySettingsButton; // Removed until twld can be loaded in a reasonable time
+#if SPECIALDEBUG
+		UiChanger.DeleteAllButLast();
+#endif
 
 		IL_WorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
 		On_WorldFile.CreateMetadata += DedServUi.DedServOptions;
@@ -25,7 +28,7 @@ public class AdvancedWorldGenMod : Mod
 		On_UIWorldLoad.ctor += UiChanger.AddCancel;
 		On_WorldGen.do_worldGenCallBack += UiChanger.ThreadifyWorldGen;
 
-		On_UserInterface.SetState += ModifiedWorld.Instance.ResetSettings;
+		On_UserInterface.SetState += ModifiedWorld.ResetSettings;
 
 		On_WorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
 

@@ -182,7 +182,7 @@ public class MicroBiomes : ControlledWorldGenPass
 				{
 					if (miningExplosivesBiome.Place(
 						    WorldGen.RandomWorldPoint((int)Main.worldSurface, WorldGen.beachDistance,
-							    Main.maxTilesX - (int)GenVars.rockLayer,
+							    Main.maxTilesY - (int)GenVars.rockLayer,
 							    WorldGen.beachDistance), GenVars.structures))
 						num41++;
 				}
