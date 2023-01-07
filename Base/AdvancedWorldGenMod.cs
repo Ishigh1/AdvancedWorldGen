@@ -25,7 +25,7 @@ public class AdvancedWorldGenMod : Mod
 		OnUIWorldLoad.ctor += UiChanger.AddCancel;
 		OnWorldGen.do_worldGenCallBack += UiChanger.ThreadifyWorldGen;
 
-		OnUserInterface.SetState += ModifiedWorld.ResetSettings;
+		OnUserInterface.SetState += ModifiedWorld.Instance.ResetSettings;
 
 		OnWorldGen.NotTheBees += ClassicOptions.SmallNotTheBees;
 		ILWorldGen.makeTemple += ClassicOptions.ReduceTemple;
