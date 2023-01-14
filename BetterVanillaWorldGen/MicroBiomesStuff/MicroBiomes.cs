@@ -96,7 +96,7 @@ public class MicroBiomes : ControlledWorldGenPass
 
 	private void MakeThinIcePatches(WorldGenConfiguration configuration)
 	{
-		if (!WorldGen.notTheBees || WorldGen.remixWorldGen)
+		if (!WorldGen.notTheBees || WorldGen.everythingWorldGen)
 		{
 			ThinIceBiome thinIceBiome = configuration.CreateBiome<ThinIceBiome>();
 			int random2 = (int)Configuration.Get<JsonRange>("ThinIcePatchCount").GetRandom(WorldGen.genRand);
@@ -154,7 +154,7 @@ public class MicroBiomes : ControlledWorldGenPass
 
 	private void MakeCampsites(WorldGenConfiguration configuration)
 	{
-		if (!WorldGen.notTheBees || WorldGen.remixWorldGen)
+		if (!WorldGen.notTheBees || WorldGen.everythingWorldGen)
 		{
 			CampsiteBiome campsiteBiome = configuration.CreateBiome<CampsiteBiome>();
 			int random4 = (int)Configuration.Get<JsonRange>("CampsiteCount").GetRandom(WorldGen.genRand);

@@ -69,7 +69,7 @@ public class FloatingIslands : ControlledWorldGenPass
 						else
 						{
 							skyIslands--;
-							if (WorldGen.drunkWorldGen)
+							if (WorldGen.drunkWorldGen && !WorldGen.everythingWorldGen)
 							{
 								if (WorldGen.genRand.NextBool(2))
 								{

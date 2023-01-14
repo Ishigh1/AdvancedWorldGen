@@ -236,7 +236,7 @@ public static class GenerationChests
 				return;
 		}
 
-		if (WorldGen.noTrapsWorldGen && WorldGen.remixWorldGen && outStyle == 1 && chestTileType == TileID.Containers &&
+		if (WorldGen.everythingWorldGen && outStyle == 1 && chestTileType == TileID.Containers &&
 		    !WorldGen.genRand.NextBool(3))
 		{
 			chestTileType = TileID.Containers2;

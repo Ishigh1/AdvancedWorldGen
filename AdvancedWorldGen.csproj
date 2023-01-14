@@ -17,7 +17,7 @@
         <DefineConstants>TRACE;TEMP</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug release|AnyCPU'">
-        <DefineConstants>TRACE;SPECIALDEBUG</DefineConstants>
+        <DefineConstants>TRACE;TEMP;SPECIALDEBUG</DefineConstants>
     </PropertyGroup>
     <!-- General Debug : FixedSeed -->
     <ItemGroup>

@@ -127,6 +127,13 @@
         },
         "hidden": false
     },
+    "NoTraps": {
+        "children": {},
+        "conflicts": {},
+        "description": "The no traps secret seed.",
+        "displayed_name": "No Traps",
+        "hidden": false
+    },
     "NotTheBees": {
         "children": {
             "JungleWorld": {
@@ -269,13 +276,6 @@
         },
         "hidden": true
     },
-    "NoTraps": {
-        "children": {},
-        "conflicts": {},
-        "description": "The no traps secret seed.",
-        "displayed_name": "No Traps",
-        "hidden": false
-    },
     "TheConstant": {
         "children": {},
         "conflicts": {},
@@ -292,7 +292,15 @@
         "hidden": false
     },
     "Zenith": {
-        "children": {},
+        "children": {
+            "StarGame": {
+                "children": {},
+                "conflicts": {},
+                "description": "Enables the star mini-game",
+                "displayed_name": "Star Game",
+                "hidden": false
+            }
+        },
         "conflicts": {},
         "description": "The zenith secret seed.",
         "displayed_name": "Zenith",
