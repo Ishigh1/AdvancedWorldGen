@@ -108,6 +108,27 @@ public class CustomSizeUI : UIState
 			};
 			uiList.Add(goldList);
 
+			TileExpandableList cobaltList = new(nameof(Params.Cobalt), localizationPath, false,
+				TileExpandableList.Random, TileID.Cobalt, TileID.Palladium)
+			{
+				Order = index++
+			};
+			uiList.Add(cobaltList);
+
+			TileExpandableList mythrilList = new(nameof(Params.Mythril), localizationPath, false,
+				TileExpandableList.Random, TileID.Mythril, TileID.Orichalcum)
+			{
+				Order = index++
+			};
+			uiList.Add(mythrilList);
+
+			TileExpandableList adamantiteList = new(nameof(Params.Adamantite), localizationPath, false,
+				TileExpandableList.Random, TileID.Adamantite, TileID.Titanium)
+			{
+				Order = index++
+			};
+			uiList.Add(adamantiteList);
+
 			BooleanExpandableList beachList = new(nameof(Params.ScaledBeaches), localizationPath)
 			{
 				Order = index++

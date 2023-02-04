@@ -50,7 +50,7 @@ public class UiChanger
 		}
 	}
 
-	public static void EmergencySaving(string suffix)
+	private static void EmergencySaving(string suffix)
 	{
 		if (WorldgenSettings.AbortedSaving)
 		{
@@ -107,6 +107,7 @@ public class UiChanger
 		WorldGen._genRand = null;
 		Thread.Join();
 		Main.tile = tiles;
+		AdvancedWorldGenMod.Instance.Logger.Info("End of abortion, exceptions are now relevant again");
 
 		EmergencySaving("Aborted");
 	}
