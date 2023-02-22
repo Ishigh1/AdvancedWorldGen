@@ -67,7 +67,7 @@ public class CustomSizeUI : UIState
 		templeModifier.Order = index++;
 		uiList.Add(templeModifier);
 
-		if (WorldgenSettings.Revamped)
+		if (WorldgenSettings.Instance.FasterWorldgen)
 		{
 			NumberTextBox<float> dungeonModifier =
 				new ConfigNumberTextBox<float>(nameof(Params.DungeonMultiplier), 0,
@@ -251,7 +251,7 @@ public class CustomSizeUI : UIState
 			}
 		}
 
-		if (WorldgenSettings.Revamped)
+		if (WorldgenSettings.Instance.FasterWorldgen)
 		{
 			if (Params.SizeX < KnownLimits.OverhauledMinX)
 			{

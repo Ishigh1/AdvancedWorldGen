@@ -52,7 +52,7 @@ public class UiChanger
 
 	private static void EmergencySaving(string suffix)
 	{
-		if (WorldgenSettings.AbortedSaving)
+		if (WorldgenSettings.Instance.SaveOnFail)
 		{
 			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
 			Main.worldName += "_" + suffix;

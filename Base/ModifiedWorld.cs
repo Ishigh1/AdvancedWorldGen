@@ -221,7 +221,7 @@ public class ModifiedWorld : ModSystem
 	{
 		void OrigWithLog()
 		{
-			Mod.Logger.Info($"Overhauled : {WorldgenSettings.Revamped}");
+			Mod.Logger.Info($"Overhauled : {WorldgenSettings.Instance.FasterWorldgen}");
 			Mod.Logger.Info("Options : " + OptionsParser.GetJsonText());
 			orig(self);
 		}

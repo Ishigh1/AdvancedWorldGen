@@ -9,7 +9,7 @@ public static partial class Replacer
 	public static void ReplaceGenPasses(List<GenPass> genPasses)
 	{
 		VanillaInterface = new VanillaInterface();
-		if (!WorldgenSettings.Revamped)
+		if (!WorldgenSettings.Instance.FasterWorldgen)
 			return;
 		genPasses.TryReplacePass("Reset", new ResetPass());
 		genPasses.TryReplacePass("Terrain", new TerrainPass());

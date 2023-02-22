@@ -11,6 +11,10 @@
       "SaveOnFail": {
         "Label": "Save on failed worldgen",
         "Tooltip": "If the worldgen fails or is aborted, saves it anyway."
+      },
+      "VanillaWeight": {
+        "Label": "Less accurate worldgen time prediction",
+        "Tooltip": "Enable it to debug your mods faster not much sense to enable it otherwise."
       }
     },
     "WorldGenMessage": {

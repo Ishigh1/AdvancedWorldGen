@@ -12,35 +12,35 @@ public static partial class Replacer
 		OnDesertDescription.CreateFromPlacement += ReplaceDesertDescriptionCreation;
 
 #if !SPECIALDEBUG
-		OnWorldGenerator.GenerateWorld += ChangeWeights;
+		if (!WorldgenSettings.Instance.VanillaWeight)
+			OnWorldGenerator.GenerateWorld += ChangeWeights;
 #endif
 	}
 
-	public static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
+	private static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
 		DesertDescription description)
 	{
-		if (WorldgenSettings.Revamped)
+		if (WorldgenSettings.Instance.FasterWorldgen)
 			ModifiedDesertHive.Place(description);
 		else
 			orig(description);
 	}
 
-	public static bool ReplaceChest(OnWorldGen.orig_AddBuriedChest_int_int_int_bool_int_bool_ushort orig, int i,
+	private static bool ReplaceChest(OnWorldGen.orig_AddBuriedChest_int_int_int_bool_int_bool_ushort orig, int i,
 		int j, int contain, bool notNearOtherChests, int style, bool trySlope, ushort chestTileType)
 	{
-		return WorldgenSettings.Revamped
+		return WorldgenSettings.Instance.FasterWorldgen
 			? GenerationChests.AddBuriedChest(i, j, contain, notNearOtherChests, style, chestTileType)
 			: orig(i, j, contain, notNearOtherChests, style, trySlope, chestTileType);
 	}
 
-	public static DesertDescription ReplaceDesertDescriptionCreation(
-		OnDesertDescription.orig_CreateFromPlacement orig, Point origin)
+	private static DesertDescription ReplaceDesertDescriptionCreation(OnDesertDescription.orig_CreateFromPlacement orig, Point origin)
 	{
-		return WorldgenSettings.Revamped ? Desert.CreateFromPlacement(origin) : orig(origin);
+		return WorldgenSettings.Instance.FasterWorldgen ? Desert.CreateFromPlacement(origin) : orig(origin);
 	}
 
 #if !SPECIALDEBUG
-	public static void ChangeWeights(OnWorldGenerator.orig_GenerateWorld orig, WorldGenerator self, GenerationProgress progress)
+	private static void ChangeWeights(OnWorldGenerator.orig_GenerateWorld orig, WorldGenerator self, GenerationProgress progress)
 	{
 		if (GenPasses != null)
 		{
