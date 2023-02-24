@@ -7,6 +7,10 @@ public class AdvancedWorldGenMod : Mod
 
 	public override void Load()
 	{
+		#if SPECIALDEBUG
+		SteamedWraps.SteamClient = false; // Prevents me from sending the dev version again
+		#endif
+		
 		//Remove ThreadInterruptedException from logging (interrupting thread.sleep)
 		Logging.IgnoreExceptionContents("ThreadInterruptedException");
 

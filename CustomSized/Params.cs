@@ -58,6 +58,24 @@ public static class Params
 		set => Data[nameof(Gold)] = value;
 	}
 
+	public static int Cobalt
+	{
+		get => (int)Data[nameof(Cobalt)];
+		set => Data[nameof(Cobalt)] = value;
+	}
+
+	public static int Mythril
+	{
+		get => (int)Data[nameof(Mythril)];
+		set => Data[nameof(Mythril)] = value;
+	}
+
+	public static int Adamantite
+	{
+		get => (int)Data[nameof(Adamantite)];
+		set => Data[nameof(Adamantite)] = value;
+	}
+
 	public static bool ScaledBeaches
 	{
 		get => (bool)Data[nameof(ScaledBeaches)];
@@ -104,6 +122,10 @@ public static class Params
 		Iron = TileExpandableList.Random;
 		Silver = TileExpandableList.Random;
 		Gold = TileExpandableList.Random;
+		
+		Cobalt = TileExpandableList.Random;
+		Mythril = TileExpandableList.Random;
+		Adamantite = TileExpandableList.Random;
 
 		ScaledBeaches = false;
 		EditTerrainPass = false;

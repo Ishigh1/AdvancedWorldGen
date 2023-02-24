@@ -52,7 +52,7 @@ public class UiChanger
 
 	private static void EmergencySaving(string suffix)
 	{
-		if (WorldgenSettings.AbortedSaving)
+		if (WorldgenSettings.Instance.SaveOnFail)
 		{
 			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
 			Main.worldName += "_" + suffix;
@@ -107,6 +107,7 @@ public class UiChanger
 		WorldGen._genRand = null;
 		Thread.Join();
 		Main.tile = tiles;
+		AdvancedWorldGenMod.Instance.Logger.Info("End of abortion, exceptions are now relevant again");
 
 		EmergencySaving("Aborted");
 	}

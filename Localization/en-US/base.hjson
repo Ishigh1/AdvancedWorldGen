@@ -15,6 +15,10 @@
       "ZenithEnabler": {
         "Label": "Enable other options with Zenith",
         "Tooltip": "Enables Drunk, Don't Starve, For The Worthy, No Traps and Remix options when enabling Zenith."
+      },
+      "VanillaWeight": {
+        "Label": "Less accurate worldgen time prediction",
+        "Tooltip": "Enable it to debug your mods faster not much sense to enable it otherwise."
       }
     },
     "WorldGenMessage": {

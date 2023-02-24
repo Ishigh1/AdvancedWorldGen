@@ -98,6 +98,13 @@ public class ResetPass : ControlledWorldGenPass
 			WorldGen.SavedOreTiers.Gold = 169;
 		}
 
+		if (Params.Cobalt != TileExpandableList.Random)
+			WorldGen.SavedOreTiers.Cobalt = Params.Cobalt;
+		if (Params.Mythril != TileExpandableList.Random)
+			WorldGen.SavedOreTiers.Mythril = Params.Mythril;
+		if (Params.Adamantite != TileExpandableList.Random)
+			WorldGen.SavedOreTiers.Adamantite = Params.Adamantite;
+
 		switch (WorldGen.WorldGenParam_Evil)
 		{
 			case 0:

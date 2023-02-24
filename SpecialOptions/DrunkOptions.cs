@@ -36,7 +36,7 @@ public class DrunkOptions
 		if (OptionHelper.OptionsContains("Drunk.Crimruption"))
 		{
 			int passIndex;
-			if (!WorldgenSettings.Revamped)
+			if (!WorldgenSettings.Instance.FasterWorldgen)
 			{
 				passIndex = tasks.FindIndex(pass => pass.Name == "Corruption");
 				if (passIndex != -1)

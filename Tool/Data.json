@@ -261,6 +261,13 @@
         },
         "hidden": false
     },
+    "SortedWorld": {
+        "children": {},
+        "conflicts": {},
+        "description": "Sorts world by height",
+        "displayed_name": "Sorted World",
+        "hidden": true
+    },
     "Spooky": {
         "children": {},
         "conflicts": {},

@@ -4,7 +4,7 @@ public static class AltarSmash
 {
 	public static void SmashAltar(On_WorldGen.orig_SmashAltar orig, int x, int y)
 	{
-		if (!WorldgenSettings.Revamped || ModLoader.TryGetMod("CalamityMod", out Mod _))
+		if (!WorldgenSettings.Instance.FasterWorldgen || ModLoader.TryGetMod("CalamityMod", out Mod _))
 		{
 			orig(x, y);
 			return;

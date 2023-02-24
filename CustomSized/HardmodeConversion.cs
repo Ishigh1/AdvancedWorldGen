@@ -20,7 +20,7 @@ public static class HardmodeConversion
 			calamity = (bool)type.GetPropertyValue("EarlyHardmodeProgressionRework", config)!;
 		}
 
-		if (!WorldgenSettings.Revamped || calamity)
+		if (!WorldgenSettings.Instance.FasterWorldgen || calamity)
 		{
 			orig(x, y, speedX, speedY, good);
 			return;

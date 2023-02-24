@@ -67,7 +67,7 @@ public class CustomSizeUI : UIState
 		templeModifier.Order = index++;
 		uiList.Add(templeModifier);
 
-		if (WorldgenSettings.Revamped)
+		if (WorldgenSettings.Instance.FasterWorldgen)
 		{
 			NumberTextBox<float> dungeonModifier =
 				new ConfigNumberTextBox<float>(nameof(Params.DungeonMultiplier), 0,
@@ -107,6 +107,27 @@ public class CustomSizeUI : UIState
 				Order = index++
 			};
 			uiList.Add(goldList);
+
+			TileExpandableList cobaltList = new(nameof(Params.Cobalt), localizationPath, false,
+				TileExpandableList.Random, TileID.Cobalt, TileID.Palladium)
+			{
+				Order = index++
+			};
+			uiList.Add(cobaltList);
+
+			TileExpandableList mythrilList = new(nameof(Params.Mythril), localizationPath, false,
+				TileExpandableList.Random, TileID.Mythril, TileID.Orichalcum)
+			{
+				Order = index++
+			};
+			uiList.Add(mythrilList);
+
+			TileExpandableList adamantiteList = new(nameof(Params.Adamantite), localizationPath, false,
+				TileExpandableList.Random, TileID.Adamantite, TileID.Titanium)
+			{
+				Order = index++
+			};
+			uiList.Add(adamantiteList);
 
 			BooleanExpandableList beachList = new(nameof(Params.ScaledBeaches), localizationPath)
 			{
@@ -230,7 +251,7 @@ public class CustomSizeUI : UIState
 			}
 		}
 
-		if (WorldgenSettings.Revamped)
+		if (WorldgenSettings.Instance.FasterWorldgen)
 		{
 			if (Params.SizeX < KnownLimits.OverhauledMinX)
 			{

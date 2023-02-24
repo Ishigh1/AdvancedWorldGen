@@ -211,6 +211,13 @@ public class ModifiedWorld : ModSystem
 			if (passIndex != -1)
 				tasks.Add(tasks[passIndex]);
 		}
+
+		if (OptionHelper.OptionsContains("SortedWorld"))
+		{
+			int passIndex = tasks.FindIndex(pass => pass.Name == "Final Cleanup");
+			if (passIndex != -1)
+				tasks.Add(new SortedWorld());
+		}
 	}
 
 	public override void PostUpdateTime()
@@ -245,7 +252,7 @@ public class ModifiedWorld : ModSystem
 	{
 		void OrigWithLog()
 		{
-			Mod.Logger.Info($"Overhauled : {WorldgenSettings.Revamped}");
+			Mod.Logger.Info($"Overhauled : {WorldgenSettings.Instance.FasterWorldgen}");
 			Mod.Logger.Info("Options : " + OptionsParser.GetJsonText());
 			orig(self);
 		}
