@@ -53,7 +53,7 @@ public class TerrainPass : ControlledWorldGenPass
 			worldSurface = (int)(Main.maxTilesY * 0.07);
 		int worldSurfaceMin = (int)(Main.maxTilesY * (Params.TerrainType is TerrainType.SkyPillars ? 0.05 : 0.17));
 		int worldSurfaceMax = (int)(Main.maxTilesY * (Params.TerrainType is TerrainType.SkyPillars ? 0.40 : 0.23));
-		int totalBeachSize = GenVars.leftBeachSize + lowDepthBeachSize;
+		int totalBeachSize = GenVars.leftBeachEnd + lowDepthBeachSize;
 #if !SPECIALDEBUG
 		Stopwatch.Stop();
 #endif
@@ -180,7 +180,7 @@ public class TerrainPass : ControlledWorldGenPass
 				bogoValues.RemoveAt(index);
 				surfaceHistory.Record(worldSurface);
 				FillColumn(i, worldSurface, rockLayer);
-				if (i == Main.maxTilesX - rightBeachSize - lowDepthBeachSize)
+				if (i == GenVars.rightBeachStart - lowDepthBeachSize)
 				{
 					if (worldSurface > worldSurfaceMax)
 						RetargetSurfaceHistory(surfaceHistory, i, worldSurfaceMax);

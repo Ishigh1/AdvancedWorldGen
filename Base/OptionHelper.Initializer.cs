@@ -33,7 +33,7 @@ public partial class OptionHelper
 
 		#region handle zenith
 
-		if (WorldgenSettings.ZenithEnables)
+		if (WorldgenSettings.Instance.ZenithEnabler)
 		{
 			if (!OptionDict.Remove("Zenith", out Option? zenith))
 				throw new Exception("Zenith option not found, who stole it ?");
