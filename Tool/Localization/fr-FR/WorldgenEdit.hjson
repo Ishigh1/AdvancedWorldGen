@@ -1,5 +1,5 @@
 {
-  "Mods.AdvancedWorldGen.UI.CustomSizes": {
+  "CustomSizes": {
     "SizeX": "Taille horizontale :",
     "SizeY": "Taille verticale :",
     "TempleMultiplier": "Multiplicateur de taille de temple :",

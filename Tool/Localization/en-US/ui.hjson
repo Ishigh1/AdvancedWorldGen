@@ -1,39 +1,38 @@
 {
-  "Mods.AdvancedWorldGen": {
-    "Abort": "Abort",
-    "CopySettings": "Copy settings",
-    "CustomSize": "Custom Size",
-    "CustomSizedWorld": "{0}x{1}",
-    "DedServ": {
-      "Import": "i <options> : Import options",
-      "InvalidId": "Not a valid number",
-      "InvalidImport": "Not a valid import",
-      "InvalidInput": "Input not recognized",
-      "Selected": "(selected)",
-      "ShowHidden": "h : Show hidden options",
-      "Validate": "y : Validate"
-    },
-    "DownLevel": "Edit what will be used from this seed",
-    "Export": "Export to clipboard",
-    "HideHidden": {
-      "Description": "Hide the minor and/or unstable features."
-    },
-    "Import": "Import from clipboard",
-    "NoOptions": "World without options",
-    "NoneSelected": {
-      "Description": "Please choose the options you want."
-    },
-    "OptionButton": "Choose your world generation settings",
-    "Randomize": "Randomize the options",
-    "ShowHidden": {
-      "Description": "Show the minor and/or unstable features."
-    },
-    "Timer": "Time remaining : {0}",
-    "UI": {
-      "VanillaConfig": "Vanilla configuration",
-      "OverhauledConfig": "Overhauled configuration",
-      "OverhauledDisabled": "Enable overhauled worldgen to have more options"
-    },
-    "Warning": "Warning"
-  }
+  "Abort": "Abort",
+  "CopySettings": "Copy settings",
+  "CustomSize": "Custom Size",
+  "CustomSizedWorld": "{0}x{1}",
+  "DedServ": {
+    "Import": "i <options> : Import options",
+    "InvalidId": "Not a valid number",
+    "InvalidImport": "Not a valid import",
+    "InvalidInput": "Input not recognized",
+    "Selected": "(selected)",
+    "ShowHidden": "h : Show hidden options",
+    "Validate": "y : Validate"
+  },
+  "DeleteWorlds": "Delete all but last worlds",
+  "DownLevel": "Edit what will be used from this seed",
+  "Export": "Export to clipboard",
+  "HideHidden": {
+    "Description": "Hide the minor and/or unstable features."
+  },
+  "Import": "Import from clipboard",
+  "NoOptions": "World without options",
+  "NoneSelected": {
+    "Description": "Please choose the options you want."
+  },
+  "OptionButton": "Choose your world generation settings",
+  "Randomize": "Randomize the options",
+  "ShowHidden": {
+    "Description": "Show the minor and/or unstable features."
+  },
+  "Timer": "Time remaining : {0}",
+  "UI": {
+    "VanillaConfig": "Vanilla configuration",
+    "OverhauledConfig": "Overhauled configuration",
+    "OverhauledDisabled": "Enable overhauled worldgen to have more options"
+  },
+  "Warning": "Warning"
 }

@@ -280,7 +280,7 @@ public class UiChanger
 	{
 		UIWorldSelect uiWorldSelect = (UIWorldSelect)typeof(Main).GetField("_worldSelectMenu", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)!;
 		uiWorldSelect.Initialize();
-		UITextPanel<string> uiTextPanel = new("Delete all but last worlds")
+		UITextPanel<string> uiTextPanel = new(Language.GetTextValue("Mods.AdvancedWorldGen.DeleteWorlds"))
 		{
 			Left =
 			{

@@ -92,13 +92,16 @@ while True:
         make("ru-RU")
 
     elif command == "setup":
+        shutil.copy("Options.json", "../Options.json")
         if os.path.isdir("../Localization"):
             shutil.rmtree("../Localization")
-        shutil.copytree("Localization", "../Localization")
-        shutil.copy("Options.json", "../Options.json")
-        shutil.copy("en-US.json", "../Localization/en-US/options.hjson")
-        shutil.copy("fr-FR.json", "../Localization/fr-FR/options.hjson")
-        shutil.copy("ru-RU.json", "../Localization/ru-RU/options.hjson")
+        
+        for folder_name in os.listdir("Localization"):
+            shutil.copy(folder_name + ".json", os.path.join("../Localization", folder_name, "/Options.hjson"))
+            folder_path = os.path.join("Localization", folder_name)
+            os.makedirs(os.path.join("../Localization", folder_name, "Mods/AdvancedWorldGen"), exist_ok=True)
+            new_folder_path = os.path.join("../Localization", folder_name, "Mods/AdvancedWorldGen")
+            shutil.copytree(folder_path, new_folder_path)
 
     elif command == "conflict":
         option1 = input("option 1 : ")

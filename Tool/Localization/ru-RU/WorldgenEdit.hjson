@@ -1,5 +1,5 @@
 ﻿{
-  "Mods.AdvancedWorldGen.UI.CustomSizes": {
+  "CustomSizes": {
     "SizeX": "Ширина :",
     "SizeY": "Высота :",
     "TempleMultiplier": "Множитель размера Храма джунглей :",
