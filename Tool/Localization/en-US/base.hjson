@@ -1,0 +1,40 @@
+{
+  "Mods.AdvancedWorldGen": {
+    "Exceptions": {
+      "RockUnderHell": "Not high enough world !"
+    },
+    "Config": {
+      "FasterWorldgen": {
+        "Label": "Overhauled Worldgen",
+        "Tooltip": "Tweaks the worldgen so it is faster and more adapted to custom sized worlds.\nWorlds smaller than 4200 x ... can't be generated without it."
+      },
+      "SaveOnFail": {
+        "Label": "Save on failed worldgen",
+        "Tooltip": "If the worldgen fails or is aborted, saves it anyway."
+      },
+      "ZenithEnabler": {
+        "Label": "Enable other options with Zenith",
+        "Tooltip": "Enables Drunk, Don't Starve, For The Worthy, No Traps and Remix options when enabling Zenith."
+      },
+      "VanillaWeight": {
+        "Label": "Less accurate worldgen time prediction",
+        "Tooltip": "Enable it to debug your mods faster not much sense to enable it otherwise."
+      }
+    },
+    "WorldGenMessage": {
+      "Evil": "Removing the purity",
+      "Random": "Randomizing tiles",
+      "SnowReplace": "Making the world cooler"
+    },
+    "InvalidSizes": {
+      "TooBigFromRAM": "A world with a size of {0} x {1} is too big for this computer.",
+      "OverhauledMinX": "The world is known to not be able to generate under x={0}.",
+      "OverhauledMinY": "The world is known to not be able to generate under y={0}.",
+      "NormalMinX": "You need to enable the overhauled worldgen in the mod settings \nto be able to generate a world under x={0}.",
+      "ComfortNormalMaxX": "The worldgen will be slow to generate a big world, \nyou should enable the overhauled worldgen in the mod settings. It might also crash.",
+      "NormalMaxX": "The worldgen will crash if you try generate a such big world, \nyou have to enable the overhauled worldgen in the mod settings to produce a such world.",
+      "ClamityMinX": "Calamity isn't designed to generate small worlds",
+      "ClamityMaxX": "Calamity isn't designed to generate XL worlds"
+    }
+  }
+}

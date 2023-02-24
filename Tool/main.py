@@ -1,3 +1,4 @@
+import os
 import shutil
 import string
 
@@ -91,6 +92,9 @@ while True:
         make("ru-RU")
 
     elif command == "setup":
+        if os.path.isdir("../Localization"):
+            shutil.rmtree("../Localization")
+        shutil.copytree("Localization", "../Localization")
         shutil.copy("Options.json", "../Options.json")
         shutil.copy("en-US.json", "../Localization/en-US/options.hjson")
         shutil.copy("fr-FR.json", "../Localization/fr-FR/options.hjson")
