@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class TerrainPass : ControlledWorldGenPass
 {
-	public enum TerrainFeatureType
+	private enum TerrainFeatureType
 	{
 		Plateau,
 		Hill,
@@ -36,7 +36,8 @@ public class TerrainPass : ControlledWorldGenPass
 
 		if (worldSurface < Main.maxTilesY * 0.07)
 			worldSurface = (int)(Main.maxTilesY * 0.07);
-		int worldSurfaceMax = (int)(Main.maxTilesY * 0.23);
+		int worldSurfaceMin = (int)(Main.maxTilesY * (Params.TerrainType is TerrainType.SkyPillars ? 0.05 : 0.17));
+		int worldSurfaceMax = (int)(Main.maxTilesY * (Params.TerrainType is TerrainType.SkyPillars ? 0.40 : 0.23));
 		int totalBeachSize = leftBeachSize + lowDepthBeachSize;
 #if !SPECIALDEBUG
 		Stopwatch.Stop();
@@ -49,6 +50,7 @@ public class TerrainPass : ControlledWorldGenPass
 			{ nameof(lowDepthBeachSize), lowDepthBeachSize },
 			{ nameof(worldSurface), worldSurface },
 			{ nameof(rockLayer), rockLayer },
+			{ nameof(worldSurfaceMin), worldSurfaceMin },
 			{ nameof(worldSurfaceMax), worldSurfaceMax },
 			{ nameof(totalBeachSize), totalBeachSize }
 		};
@@ -70,6 +72,7 @@ public class TerrainPass : ControlledWorldGenPass
 		double rockLayerLow = rockLayer;
 		double rockLayerHigh = rockLayer;
 		SurfaceHistory surfaceHistory = new(500);
+		List<(int, int)> bogoValues = new(); // Only used in bogo
 		for (int i = 0; i < Main.maxTilesX; i++)
 		{
 			Progress.Set(i / (float)Main.maxTilesX);
@@ -101,9 +104,15 @@ public class TerrainPass : ControlledWorldGenPass
 				num11 = 0.28f;
 			}
 
+			if (Params.TerrainType == TerrainType.SkyPillars)
+			{
+				num10 = 0.05f;
+				num11 = 0.40f;
+			}
+
 			if (i < leftBeachSize + lowDepthBeachSize || i > Main.maxTilesX - rightBeachSize - lowDepthBeachSize)
 			{
-				worldSurface = (int)Utils.Clamp(worldSurface, Main.maxTilesY * 0.17, worldSurfaceMax);
+				worldSurface = Utils.Clamp(worldSurface, worldSurfaceMin, worldSurfaceMax);
 			}
 			else if (worldSurface < Main.maxTilesY * num10)
 			{
@@ -124,15 +133,41 @@ public class TerrainPass : ControlledWorldGenPass
 			if (rockLayer > worldSurface + Main.maxTilesY * 0.35)
 				rockLayer -= 1;
 
-			surfaceHistory.Record(worldSurface);
-			FillColumn(i, worldSurface, rockLayer);
+			if (Params.TerrainType == TerrainType.BogoTerrain)
+			{
+				bogoValues.Add((worldSurface, rockLayer));
+			}
+			else
+			{
+				surfaceHistory.Record(worldSurface);
+				FillColumn(i, worldSurface, rockLayer);
+				if (i == Main.maxTilesX - rightBeachSize - lowDepthBeachSize)
+				{
+					if (worldSurface > worldSurfaceMax)
+						RetargetSurfaceHistory(surfaceHistory, i, worldSurfaceMax);
+				}
+			}
 			if (i == Main.maxTilesX - rightBeachSize - lowDepthBeachSize)
 			{
-				if (worldSurface > worldSurfaceMax)
-					RetargetSurfaceHistory(surfaceHistory, i, worldSurfaceMax);
-
 				terrainFeatureType = TerrainFeatureType.Plateau;
 				totalBeachSize = Main.maxTilesX - i;
+			}
+		}
+
+		if (Params.TerrainType == TerrainType.BogoTerrain)
+		{
+			for (int i = 0; i < Main.maxTilesX; i++)
+			{
+				int index = WorldGen.genRand.Next(bogoValues.Count);
+				(worldSurface, rockLayer) = bogoValues[index];
+				bogoValues.RemoveAt(index);
+				surfaceHistory.Record(worldSurface);
+				FillColumn(i, worldSurface, rockLayer);
+				if (i == Main.maxTilesX - rightBeachSize - lowDepthBeachSize)
+				{
+					if (worldSurface > worldSurfaceMax)
+						RetargetSurfaceHistory(surfaceHistory, i, worldSurfaceMax);
+				}
 			}
 		}
 
@@ -284,7 +319,7 @@ public class TerrainPass : ControlledWorldGenPass
 		}
 	}
 
-	public static void RetargetColumn(int x, double worldSurface)
+	private static void RetargetColumn(int x, double worldSurface)
 	{
 		for (int i = 0; i < worldSurface; i++)
 		{
@@ -316,10 +351,22 @@ public class TerrainPass : ControlledWorldGenPass
 			case TerrainType.Flat:
 				featureType = TerrainFeatureType.Plateau;
 				break;
+			case TerrainType.PeaksAndRifts:
+			case TerrainType.SkyPillars:
+				featureType = featureType switch
+				{
+					TerrainFeatureType.Plateau => WorldGen.genRand.NextBool(2)
+						? TerrainFeatureType.Mountain
+						: TerrainFeatureType.Valley,
+					TerrainFeatureType.Hill => TerrainFeatureType.Mountain,
+					TerrainFeatureType.Dale => TerrainFeatureType.Valley,
+					_ => featureType
+				};
+				break;
 		}
 
 		int num = 0;
-		if (Params.TerrainType == TerrainType.Mountainous)
+		if (Params.TerrainType is TerrainType.Mountainous or TerrainType.PeaksAndRifts or TerrainType.SkyPillars)
 			switch (featureType)
 			{
 				case TerrainFeatureType.Plateau:
@@ -394,11 +441,11 @@ public class TerrainPass : ControlledWorldGenPass
 				default:
 					throw new ArgumentOutOfRangeException(nameof(featureType), featureType, null);
 			}
-
-		return num;
+		
+		return Params.TerrainType == TerrainType.SkyPillars ? num * 10 : num;
 	}
 
-	public static void RetargetSurfaceHistory(SurfaceHistory history, int targetX, double targetHeight)
+	private static void RetargetSurfaceHistory(SurfaceHistory history, int targetX, double targetHeight)
 	{
 		for (int i = 0; i < history.Length / 2; i++)
 		{

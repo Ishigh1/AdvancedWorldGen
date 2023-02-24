@@ -187,6 +187,13 @@ public class ModifiedWorld : ModSystem
 			if (passIndex != -1)
 				tasks.Add(tasks[passIndex]);
 		}
+
+		if (OptionHelper.OptionsContains("SortedWorld"))
+		{
+			int passIndex = tasks.FindIndex(pass => pass.Name == "Final Cleanup");
+			if (passIndex != -1)
+				tasks.Add(new SortedWorld());
+		}
 	}
 
 	public override void PostUpdateTime()

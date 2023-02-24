@@ -5,5 +5,8 @@ public enum TerrainType
 	Normal,
 	Superflat,
 	Flat,
-	Mountainous
+	Mountainous,
+	PeaksAndRifts,
+	SkyPillars,
+	BogoTerrain
 }

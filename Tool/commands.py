@@ -19,7 +19,7 @@ def make(language):
     make_options(json_text, options)
 
     file = open("Options.json", "w", encoding="utf8")
-    json.dump(json_text, file, indent=4, ensure_ascii=False)
+    json.dump(json_text, file, indent=2, ensure_ascii=False)
     file.close()
 
 

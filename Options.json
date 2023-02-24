@@ -94,6 +94,12 @@
     "Name": "Santa",
     "Children": []
   },
+  "SortedWorld": {
+    "Hidden": true,
+    "Conflicts": [],
+    "Name": "SortedWorld",
+    "Children": []
+  },
   "Spooky": {
     "Hidden": true,
     "Conflicts": [],

@@ -67,6 +67,7 @@ public class Corruption : ControlledWorldGenPass
 				where corruptionLeft - 100 < islandX && corruptionRight + 100 > islandX
 				select floatingIslandInfo.Y + 50).Prepend((int)WorldGen.worldSurfaceLow - 50).Max();
 
+			minY = Math.Max(minY, 10);
 			MakeSingleCorruptionBiome(corruptionLeft, corruptionRight, corruptionCenter, minY);
 		}
 	}
