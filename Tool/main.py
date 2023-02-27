@@ -95,13 +95,13 @@ while True:
         shutil.copy("Options.json", "../Options.json")
         if os.path.isdir("../Localization"):
             shutil.rmtree("../Localization")
-        
+        os.mkdir(os.path.join("..","Localization"))
         for folder_name in os.listdir("Localization"):
-            shutil.copy(folder_name + ".json", os.path.join("../Localization", folder_name, "/Options.hjson"))
             folder_path = os.path.join("Localization", folder_name)
-            os.makedirs(os.path.join("../Localization", folder_name, "Mods/AdvancedWorldGen"), exist_ok=True)
-            new_folder_path = os.path.join("../Localization", folder_name, "Mods/AdvancedWorldGen")
+            new_folder_path = os.path.join("..","Localization", folder_name, "Mods.AdvancedWorldGen")
+            os.mkdir(os.path.join("..","Localization", folder_name))
             shutil.copytree(folder_path, new_folder_path)
+            shutil.copy(folder_name + ".json", os.path.join(new_folder_path, "Options.hjson"))
 
     elif command == "conflict":
         option1 = input("option 1 : ")

@@ -177,11 +177,18 @@ public class ModifiedWorld : ModSystem
 	{
 		ILCursor cursor = new(il);
 		cursor.GotoNext(MoveType.After, instruction => instruction.MatchStloc(0));
-		while (!cursor.Next.MatchLdstr(
+		while (!cursor.Next!.MatchLdstr(
 			       "Creating world - Seed: {0}, Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}"))
 		{
 			cursor.Remove();
 		}
+		
+		cursor.GotoNext(MoveType.Before, instruction => instruction.MatchLdsfld(typeof(WorldGen).GetField(nameof(WorldGen.everythingWorldGen), BindingFlags.Public | BindingFlags.Static)!));
+		while (!(cursor.Next!.OpCode == OpCodes.Brfalse_S))
+		{
+			cursor.Remove();
+		}
+		cursor.OptionContains("Zenith.StarGame");
 	}
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)

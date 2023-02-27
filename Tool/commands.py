@@ -7,12 +7,11 @@ def make(language):
     file.close()
 
     translation = {}
-    base = {"Mods.AdvancedWorldGen": translation}
 
     make_trans(language, options, translation)
 
     file = open(language + ".json", "w", encoding="utf8")
-    json.dump(base, file, indent=4, sort_keys=True, ensure_ascii=False)
+    json.dump(translation, file, indent=4, sort_keys=True, ensure_ascii=False)
     file.close()
 
     json_text = {}

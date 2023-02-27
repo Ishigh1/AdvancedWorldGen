@@ -276,10 +276,10 @@ public class UiChanger
 	}
 
 #if SPECIALDEBUG
-	public static void DeleteAllButLast()
+	public static void DeleteAllButLast(On_UIWorldSelect.orig_OnInitialize orig, UIWorldSelect uiWorldSelect)
 	{
-		UIWorldSelect uiWorldSelect = (UIWorldSelect)typeof(Main).GetField("_worldSelectMenu", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)!;
-		uiWorldSelect.Initialize();
+		orig(uiWorldSelect);
+		
 		UITextPanel<string> uiTextPanel = new(Language.GetTextValue("Mods.AdvancedWorldGen.DeleteWorlds"))
 		{
 			Left =
@@ -291,7 +291,7 @@ public class UiChanger
 				Pixels = 100
 			}
 		};
-		uiTextPanel.OnLeftClick += (evt, element) =>
+		uiTextPanel.OnLeftClick += (_, _) =>
 		{
 			MethodInfo eraser = typeof(Main).GetMethod("EraseWorld", BindingFlags.Static | BindingFlags.NonPublic)!;
 			int saved = -1;

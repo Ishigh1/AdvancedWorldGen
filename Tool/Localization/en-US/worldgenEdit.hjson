@@ -9,6 +9,7 @@
     "EditTerrainPass": "Enable another customisation during worldgen",
     "TerrainType": "Terrain type"
   },
+  "Overhauled": {},
   "TerrainPass": {},
   "Vanilla": {
     "Passes['Micro_Biomes']": {

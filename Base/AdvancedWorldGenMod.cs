@@ -23,7 +23,7 @@ public class AdvancedWorldGenMod : Mod
 		On_WorldFileData.SetWorldSize += UiChanger.SetSpecialName;
 		// On_UIWorldListItem.ctor += UiChanger.CopySettingsButton; // Removed until twld can be loaded in a reasonable time
 #if SPECIALDEBUG
-		UiChanger.DeleteAllButLast();
+		On_UIWorldSelect.OnInitialize += UiChanger.DeleteAllButLast;
 #endif
 
 		IL_WorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;

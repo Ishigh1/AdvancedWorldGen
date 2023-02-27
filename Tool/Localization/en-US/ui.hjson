@@ -1,6 +1,7 @@
 {
   "Abort": "Abort",
   "CopySettings": "Copy settings",
+  "CopiedSettings": "Settings copied",
   "CustomSize": "Custom Size",
   "CustomSizedWorld": "{0}x{1}",
   "DedServ": {
@@ -29,10 +30,8 @@
     "Description": "Show the minor and/or unstable features."
   },
   "Timer": "Time remaining : {0}",
-  "UI": {
-    "VanillaConfig": "Vanilla configuration",
-    "OverhauledConfig": "Overhauled configuration",
-    "OverhauledDisabled": "Enable overhauled worldgen to have more options"
-  },
+  "VanillaConfig": "Vanilla configuration",
+  "OverhauledConfig": "Overhauled configuration",
+  "OverhauledDisabled": "Enable overhauled worldgen to have more options",
   "Warning": "Warning"
 }
