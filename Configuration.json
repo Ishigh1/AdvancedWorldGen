@@ -10,5 +10,17 @@
       "Max": 300,
       "ScaleWith": "None"
     }
+  },
+  "SkyIslands": {
+    "HouseAmount": {
+      "Min": 3.36,
+      "Max": 3.36,
+      "ScaleWith": "WorldWidth"
+    },
+    "LakeAmount": {
+      "Min": 1.68,
+      "Max": 1.68,
+      "ScaleWith": "WorldWidth"
+    }
   }
 }

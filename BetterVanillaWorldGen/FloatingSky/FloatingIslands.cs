@@ -10,23 +10,31 @@ public class FloatingIslands : ControlledWorldGenPass
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.12");
 		WorldGen.numIslandHouses = 0;
-		int skyIslands = Main.maxTilesX / 1250;
 
-		int skyLakes = Main.maxTilesX / 2500;
+		int skyIslands = (int)OverhauledWorldGenConfigurator.Configuration.Next("SkyIslands").Get<JsonRange>("HouseAmount").GetRandom(WorldGen.genRand);
+
+		int skyLakes = (int)OverhauledWorldGenConfigurator.Configuration.Next("SkyIslands").Get<JsonRange>("LakeAmount").GetRandom(WorldGen.genRand);
 		int totalSkyBiomes = skyIslands + skyLakes;
-		List<(int left, int right)> placedBiomes = new();
-		int malus = 300;
+		List<(int left, int right)> placedBiomes = new() { (Main.maxTilesX / 2 - 150, Main.maxTilesX / 2 + 150) };
+		int malus = 301;
+		int xMin = Math.Max(WorldGen.oceanWaterStartRandomMax, (int)(Main.maxTilesX * 0.1f));
+		int xMax = Main.maxTilesX - xMin;
+		int maxMalus = xMax - xMin;
 		for (int currentSkyItem = 0; currentSkyItem < totalSkyBiomes; currentSkyItem++)
 		{
+			if (malus > maxMalus)
+			{
+				AdvancedWorldGenMod.Instance.Logger.Warn("Too many sky islands requested, reseting the placed island list to place more, islands may collide.");
+				placedBiomes.Add((Main.maxTilesX / 2 - 150, Main.maxTilesX / 2 + 150));
+				malus = 301;
+				placedBiomes.Clear();
+			}
 			Progress.Set(currentSkyItem, totalSkyBiomes);
-			int num820 = Main.maxTilesX;
-			while (--num820 > 0)
+			int tries = Main.maxTilesX;
+			while (--tries > 0)
 			{
 				bool flag54 = true;
-				int x = WorldGen.genRand.Next((int)(Main.maxTilesX * 0.1),
-					(int)(Main.maxTilesX * 0.9) - malus);
-				if (x > Main.maxTilesX / 2 - 150)
-					x += 300;
+				int x = WorldGen.genRand.Next(xMin, xMax - malus);
 				int rightest = 0;
 				foreach ((int left, int right) in placedBiomes)
 				{
@@ -50,7 +58,7 @@ public class FloatingIslands : ControlledWorldGenPass
 
 					if (flag54)
 					{
-						num820 = -1;
+						tries = -1;
 						int y = WorldGen.genRand.Next(Math.Max(50, Math.Min(90, (int)WorldGen.worldSurfaceLow - 50)),
 							num823 - 100);
 
