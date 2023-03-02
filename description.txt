@@ -12,8 +12,7 @@ The custom world option works better when the worldgen overhaul, and is even nec
 Note that if you have a X/Y ratio too different from vanilla, the generation might look weird (for now at least).
 
 This mod is compatible with nearly every mod and I try to fix them as soon as some issues are reported. 
-However, there is a known issue with Calamity, someone in their team said it was going to be fixed (and I can't reasonably fix it on my side)
-
+However, there is a known issue with Calamity, but it should be fixed by them.
 
 Also thanks to Exterminator for contributing to the code and Math!EW! for the mod icon
 This mod has a discord server that you can find here : https://discord.gg/ZPjnjpqeYE
