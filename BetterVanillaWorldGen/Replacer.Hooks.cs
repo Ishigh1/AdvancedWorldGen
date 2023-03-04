@@ -11,10 +11,8 @@ public static partial class Replacer
 		OnWorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
 		OnDesertDescription.CreateFromPlacement += ReplaceDesertDescriptionCreation;
 
-#if !SPECIALDEBUG
 		if (!WorldgenSettings.Instance.VanillaWeight)
 			OnWorldGenerator.GenerateWorld += ChangeWeights;
-#endif
 	}
 
 	private static void ReplaceDesertHive(OnDesertHive.orig_Place orig,
@@ -39,7 +37,6 @@ public static partial class Replacer
 		return WorldgenSettings.Instance.FasterWorldgen ? Desert.CreateFromPlacement(origin) : orig(origin);
 	}
 
-#if !SPECIALDEBUG
 	private static void ChangeWeights(OnWorldGenerator.orig_GenerateWorld orig, WorldGenerator self, GenerationProgress progress)
 	{
 		if (GenPasses != null)
@@ -112,5 +109,4 @@ public static partial class Replacer
 		else
 			orig(self, progress, configuration);
 	}
-#endif
 }
