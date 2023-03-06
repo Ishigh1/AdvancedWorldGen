@@ -1,5 +1,3 @@
-import os
-import shutil
 import string
 
 from commands import *
@@ -87,21 +85,10 @@ while True:
         translate_options(options, options, language)
 
     elif command == "make":
-        make("en-US")
-        make("fr-FR")
-        make("ru-RU")
+        make_files()
 
     elif command == "setup":
-        shutil.copy("Options.json", "../Options.json")
-        if os.path.isdir("../Localization"):
-            shutil.rmtree("../Localization")
-        os.mkdir(os.path.join("..","Localization"))
-        for folder_name in os.listdir("Localization"):
-            folder_path = os.path.join("Localization", folder_name)
-            new_folder_path = os.path.join("..","Localization", folder_name, "Mods.AdvancedWorldGen")
-            os.mkdir(os.path.join("..","Localization", folder_name))
-            shutil.copytree(folder_path, new_folder_path)
-            shutil.copy(folder_name + ".json", os.path.join(new_folder_path, "Options.hjson"))
+        setup()
 
     elif command == "conflict":
         option1 = input("option 1 : ")

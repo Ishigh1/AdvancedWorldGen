@@ -1,3 +1,5 @@
+import os
+import shutil
 import json
 
 
@@ -131,3 +133,22 @@ def translate(key, initial, language):
         result[language] = input_text
 
     return result
+
+
+def make_files():
+    make("en-US")
+    make("fr-FR")
+    make("ru-RU")
+
+
+def setup():
+    shutil.copy("Options.json", "../Options.json")
+    if os.path.isdir("../Localization"):
+        shutil.rmtree("../Localization")
+    os.mkdir(os.path.join("..", "Localization"))
+    for folder_name in os.listdir("Localization"):
+        folder_path = os.path.join("Localization", folder_name)
+        new_folder_path = os.path.join("..", "Localization", folder_name, "Mods.AdvancedWorldGen")
+        os.mkdir(os.path.join("..", "Localization", folder_name))
+        shutil.copytree(folder_path, new_folder_path)
+        shutil.copy(folder_name + ".json", os.path.join(new_folder_path, "Options.hjson"))
