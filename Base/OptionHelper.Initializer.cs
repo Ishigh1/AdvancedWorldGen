@@ -35,17 +35,21 @@ public partial class OptionHelper
 
 		if (WorldgenSettings.Instance.ZenithEnabler)
 		{
-			if (!OptionDict.Remove("Zenith", out Option? zenith))
+			if (!OptionDict.Remove("Zenith.Base", out Option? zenith))
 				throw new Exception("Zenith option not found, who stole it ?");
 
-			zenith = new ZenithOption
+			Option newZenith = new ZenithOption
 			{
 				Children = zenith.Children,
 				Conflicts = zenith.Conflicts,
 				Name = zenith.Name,
 				Parent = zenith.Parent
 			};
-			OptionDict.Add("Zenith", zenith);
+			OptionDict.Add("Zenith.Base", newZenith);
+			foreach (Option optionChild in newZenith.Children)
+			{
+				optionChild.Parent = newZenith;
+			}
 		}
 
 		#endregion

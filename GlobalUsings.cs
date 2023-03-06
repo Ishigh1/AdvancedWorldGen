@@ -63,7 +63,6 @@ global using Terraria.ModLoader;
 global using Terraria.ModLoader.Config;
 global using Terraria.ModLoader.IO;
 global using Terraria.ModLoader.UI;
-global using Terraria.Social.Steam;
 global using Terraria.UI;
 global using Terraria.Utilities;
 global using Terraria.WorldBuilding;
