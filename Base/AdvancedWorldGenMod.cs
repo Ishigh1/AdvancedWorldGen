@@ -5,12 +5,23 @@ public class AdvancedWorldGenMod : Mod
 	public UiChanger UiChanger = null!;
 	public static AdvancedWorldGenMod Instance => ModContent.GetInstance<AdvancedWorldGenMod>();
 
+#if SPECIALDEBUG
+	private delegate void PublishMod(object o1, object o2);
+
+	private static void Crash(PublishMod orig, object o1, object o2)
+	{
+		throw new Exception();
+	}
+#endif
+
 	public override void Load()
 	{
-		#if SPECIALDEBUG
-		SteamedWraps.SteamClient = false; // Prevents me from sending the dev version again
-		#endif
-		
+#if SPECIALDEBUG
+		MethodInfo method =
+			typeof(WorkshopHelper).GetMethod("PublishMod", BindingFlags.NonPublic | BindingFlags.Static)!;
+		HookEndpointManager.Add(method, Crash);
+#endif
+
 		//Remove ThreadInterruptedException from logging (interrupting thread.sleep)
 		Logging.IgnoreExceptionContents("ThreadInterruptedException");
 

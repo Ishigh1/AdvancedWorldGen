@@ -46,10 +46,8 @@ public partial class OptionHelper
 				Parent = zenith.Parent
 			};
 			OptionDict.Add("Zenith.Base", newZenith);
-			foreach (Option optionChild in newZenith.Children)
-			{
-				optionChild.Parent = newZenith;
-			}
+			zenith.Parent!.Children.Remove(zenith);
+			zenith.Parent!.Children.Add(newZenith);
 		}
 
 		#endregion
