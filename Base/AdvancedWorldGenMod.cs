@@ -12,7 +12,7 @@ public class AdvancedWorldGenMod : Mod
 		#endif
 		
 		//Remove ThreadInterruptedException from logging (interrupting thread.sleep)
-		Logging.IgnoreExceptionContents("ThreadInterruptedException");
+		Logging.IgnoreExceptionContents("System.Threading.ThreadInterruptedException");
 		
 		TileReplacer.Initialize();
 
