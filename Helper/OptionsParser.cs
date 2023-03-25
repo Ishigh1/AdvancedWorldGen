@@ -1,3 +1,5 @@
+using AdvancedWorldGen.CustomSized.Secret;
+
 namespace AdvancedWorldGen.Helper;
 
 public static class OptionsParser
@@ -12,6 +14,7 @@ public static class OptionsParser
 		catch (JsonReaderException)
 		{
 			AdvancedWorldGenMod.Instance.Logger.Info($"Error parsing JSON: {jsonText} is not valid JSON");
+			DumbSecret.SecretString = jsonText;
 			return;
 		}
 
