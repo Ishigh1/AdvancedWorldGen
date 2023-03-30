@@ -55,13 +55,19 @@ public static class OptionsParser
 
 
 		if (jsonObject.TryGetValue("customParams", out jsonNode) && jsonNode is JObject customParams)
-			foreach ((string? key, JToken? value) in customParams)
-				if (value is JValue jValue && Params.TryGetValue(key, out object? dataValue) && jValue.Value != null &&
+			foreach ((string? key, JToken? v) in customParams)
+				if (v is JValue jValue && Params.TryGetValue(key, out object? dataValue) && jValue.Value != null &&
 				    dataValue != null)
-					Params.Set(key,
-						dataValue is Enum
-							? Enum.Parse(dataValue.GetType(), (string)jValue.Value)
-							: Convert.ChangeType(jValue.Value, dataValue.GetType()));
+				{
+					object value;
+					if (dataValue is Enum)
+						value = Enum.Parse(dataValue.GetType(), (string)jValue.Value);
+					else if (jValue.Value is "Infinity")
+						value = float.PositiveInfinity;
+					else
+						value = Convert.ChangeType(jValue.Value, dataValue.GetType());
+					Params.Set(key, value);
+				}
 
 		if (jsonObject.TryGetValue("legacyParams", out jsonNode) && jsonNode is JObject legacyParams)
 		{

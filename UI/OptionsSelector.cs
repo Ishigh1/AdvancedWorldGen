@@ -78,7 +78,7 @@ public class OptionsSelector : UIState
 		{
 			Width = new StyleDimension(0f, 0.1f),
 			Top = new StyleDimension(0f, 0.8f),
-			HAlign = 0.4f
+			HAlign = 0.35f
 		};
 		goBack.OnMouseDown += GoBack;
 		goBack.OnMouseOver += UiChanger.FadedMouseOver;
@@ -89,7 +89,7 @@ public class OptionsSelector : UIState
 		{
 			Width = new StyleDimension(0f, 0.1f),
 			Top = new StyleDimension(0f, 0.8f),
-			HAlign = 0.6f
+			HAlign = 0.65f
 		};
 		customSize.OnMouseDown += delegate
 		{
@@ -104,7 +104,7 @@ public class OptionsSelector : UIState
 		{
 			Width = new StyleDimension(0f, 0.1f),
 			Top = new StyleDimension(0f, 0.75f),
-			HAlign = 0.4f
+			HAlign = 0.35f
 		};
 		importButton.OnMouseDown += delegate
 		{
@@ -119,7 +119,7 @@ public class OptionsSelector : UIState
 		{
 			Width = new StyleDimension(0f, 0.1f),
 			Top = new StyleDimension(0f, 0.75f),
-			HAlign = 0.6f
+			HAlign = 0.65f
 		};
 		exportButton.OnMouseDown += delegate { Platform.Get<IClipboard>().Value = OptionsParser.GetJsonText(); };
 		exportButton.OnMouseOver += UiChanger.FadedMouseOver;
