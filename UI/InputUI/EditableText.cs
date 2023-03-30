@@ -14,7 +14,7 @@ public class EditableText<T> : FocusElement where T : IConvertible, IComparable
 		FrameNumber = 0;
 	}
 
-	public override string DisplayText => ParentBox.Value.ToString()!;
+	public override string DisplayText => ParentBox.Value!.ToString()!;
 
 	public override void Focus()
 	{
@@ -32,7 +32,7 @@ public class EditableText<T> : FocusElement where T : IConvertible, IComparable
 		Type type = typeof(T);
 		Type[] types = { typeof(string), typeof(T).MakeByRefType() };
 		MethodInfo methodInfo = type.GetMethod("TryParse", BindingFlags.Public | BindingFlags.Static, types)!;
-		object[] parameters = { CurrentContent, ParentBox.Value };
+		object[] parameters = { CurrentContent!, ParentBox.Value! };
 		bool isValid = (bool)methodInfo.Invoke(null, parameters)!;
 		if (isValid)
 		{

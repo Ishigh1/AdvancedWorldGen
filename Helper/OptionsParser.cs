@@ -75,8 +75,13 @@ public static class OptionsParser
 
 		if (jsonObject.TryGetValue("overhauledParams", out jsonNode) && jsonNode is JObject overhauledParams)
 		{
-			JObject? worldGenConfiguration = OverhauledWorldGenConfigurator.Root;
+			JObject worldGenConfiguration = OverhauledWorldGenConfigurator.Root;
 			CopyJson(worldGenConfiguration, overhauledParams);
+		}
+
+		if (jsonObject.TryGetValue("secretOption", out jsonNode) && jsonNode is JValue secretOption)
+		{
+			DumbSecret.SecretString = secretOption.Value?.ToString();
 		}
 	}
 
@@ -96,14 +101,18 @@ public static class OptionsParser
 				}
 	}
 
-	public static string GetJsonText()
+	public static string GetJsonText(bool includeSeed = true)
 	{
 		JObject jsonObject = new();
 
 		JObject vanillaParams = new();
-		ReflectionAccessor<string> seedAccessor = new FieldAccessor<string>(typeof(UIWorldCreation), "_optionSeed",
-			OptionHelper.WorldSettings.UIWorldCreation);
-		vanillaParams.Add("seed", seedAccessor.Value);
+		if (includeSeed)
+		{
+			ReflectionAccessor<string> seedAccessor = new FieldAccessor<string>(typeof(UIWorldCreation), "_optionSeed",
+				OptionHelper.WorldSettings.UIWorldCreation);
+			vanillaParams.Add("seed", seedAccessor.Value);
+		}
+
 		ReflectionAccessor<int> evilAccessor = new FieldAccessor<int>(typeof(UIWorldCreation), "_optionEvil",
 			OptionHelper.WorldSettings.UIWorldCreation);
 		vanillaParams.Add("evil", evilAccessor.Value.ToString());
@@ -134,6 +143,9 @@ public static class OptionsParser
 		jsonObject.Add("legacyParams", legacyParams);
 
 		jsonObject.Add("overhauledParams", OverhauledWorldGenConfigurator.Root);
+		
+		if (DumbSecret.SecretString != null)
+			jsonObject.Add("secretOption", DumbSecret.SecretString);
 
 		return jsonObject.ToString();
 	}

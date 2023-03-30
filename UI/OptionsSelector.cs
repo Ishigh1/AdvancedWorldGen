@@ -1,3 +1,5 @@
+using AdvancedWorldGen.UI.Preset;
+
 namespace AdvancedWorldGen.UI;
 
 public class OptionsSelector : UIState
@@ -15,8 +17,6 @@ public class OptionsSelector : UIState
 		PreviousState = previousState;
 		Parent = parent;
 		Description = Language.GetText("Mods.AdvancedWorldGen.NoneSelected.Description");
-
-		CreateOptionPanel();
 	}
 
 	private void GoBack(UIMouseEvent evt, UIElement listeningElement)
@@ -25,7 +25,7 @@ public class OptionsSelector : UIState
 		Main.MenuUI.SetState(PreviousState);
 	}
 
-	private void CreateOptionPanel()
+	public override void OnInitialize()
 	{
 		UIPanel uiPanel = new()
 		{
@@ -72,7 +72,7 @@ public class OptionsSelector : UIState
 		uIDescriptionBox.Append(UIDescription);
 		uiPanel.Append(uIDescriptionBox);
 
-		uiPanel.Recalculate();
+		UIList.Recalculate();
 
 		UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 		{
@@ -91,7 +91,11 @@ public class OptionsSelector : UIState
 			Top = new StyleDimension(0f, 0.8f),
 			HAlign = 0.6f
 		};
-		customSize.OnMouseDown += GoToCustomSize;
+		customSize.OnMouseDown += delegate
+		{
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			Main.MenuUI.SetState(new CustomSizeUI());
+		};
 		customSize.OnMouseOver += UiChanger.FadedMouseOver;
 		customSize.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(customSize);
@@ -125,19 +129,28 @@ public class OptionsSelector : UIState
 		UITextPanel<string> randomizeButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Randomize"))
 		{
 			Width = new StyleDimension(0f, 0.1f),
-			Top = new StyleDimension(0f, 0.85f),
+			Top = new StyleDimension(0f, 0.8f),
 			HAlign = 0.5f
 		};
 		randomizeButton.OnMouseDown += RandomizeSettings;
 		randomizeButton.OnMouseOver += UiChanger.FadedMouseOver;
 		randomizeButton.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(randomizeButton);
-	}
 
-	private static void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Main.MenuUI.SetState(new CustomSizeUI());
+		UITextPanel<string> presetButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Presets"))
+		{
+			Width = new StyleDimension(0f, 0.1f),
+			Top = new StyleDimension(0f, 0.75f),
+			HAlign = 0.5f
+		};
+		presetButton.OnMouseDown += delegate
+		{
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			Main.MenuUI.SetState(new PresetUI(this));
+		};
+		presetButton.OnMouseOver += UiChanger.FadedMouseOver;
+		presetButton.OnMouseOut += UiChanger.FadedMouseOut;
+		Append(presetButton);
 	}
 
 	private void CreateSelectableOptions(UIElement uiPanel)

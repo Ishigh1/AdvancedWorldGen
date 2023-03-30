@@ -2,7 +2,7 @@
 
 public class DumbSecret : ModSystem
 {
-	public static string SecretString = "";
+	public static string? SecretString;
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 	{
@@ -13,5 +13,10 @@ public class DumbSecret : ModSystem
 			Main.spawnTileX = 10;
 			Main.spawnTileY = 10;
 		}
+	}
+
+	public override void OnWorldUnload()
+	{
+		SecretString = null;
 	}
 }

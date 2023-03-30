@@ -4,15 +4,20 @@ public class AdvancedWorldGenMod : Mod
 {
 	public UiChanger UiChanger = null!;
 	public static AdvancedWorldGenMod Instance => ModContent.GetInstance<AdvancedWorldGenMod>();
+	public static string FolderPath => Path.Combine(Main.SavePath, "AdvancedWorldGen");
 
 	public override void Load()
 	{
-		#if SPECIALDEBUG
+#if SPECIALDEBUG
 		SteamedWraps.SteamClient = false; // Prevents me from sending the dev version again
-		#endif
+#endif
 		
 		//Remove ThreadInterruptedException from logging (interrupting thread.sleep)
 		Logging.IgnoreExceptionContents("System.Threading.ThreadInterruptedException");
+
+		if (!Directory.Exists(FolderPath))
+			Directory.CreateDirectory(FolderPath);
+		Legacy.MoveFiles();
 		
 		TileReplacer.Initialize();
 
