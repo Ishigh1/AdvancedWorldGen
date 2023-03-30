@@ -104,7 +104,7 @@ public class PresetUI : UIState
 				tagCompound = TagIO.FromFile(DataPath);
 			else
 				tagCompound = new TagCompound();
-			tagCompound.Add(text, OptionsParser.GetJsonText(false));
+			tagCompound.Set(text, OptionsParser.GetJsonText(false));
 			TagIO.ToFile(tagCompound, DataPath);
 			Main.MenuUI.SetState(new PresetUI(PreviousState));
 		}, () =>
