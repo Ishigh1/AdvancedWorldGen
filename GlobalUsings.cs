@@ -35,6 +35,7 @@ global using Microsoft.Xna.Framework.Graphics;
 global using Microsoft.Xna.Framework.Input;
 global using Mono.Cecil.Cil;
 global using MonoMod.Cil;
+global using MonoMod.RuntimeDetour;
 global using MonoMod.RuntimeDetour.HookGen;
 global using Newtonsoft.Json;
 global using Newtonsoft.Json.Linq;

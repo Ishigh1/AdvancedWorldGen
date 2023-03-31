@@ -4,10 +4,8 @@ public abstract class ControlledWorldGenPass : GenPass
 {
 	public GameConfiguration Configuration = null!;
 	public GenerationProgress Progress = null!;
-#if !SPECIALDEBUG
-	public Stopwatch Stopwatch = null!;
-#endif
 	public VanillaInterface VanillaInterface;
+	public Stopwatch? Stopwatch;
 
 	protected ControlledWorldGenPass(string name, float loadWeight) : base(name, loadWeight)
 	{

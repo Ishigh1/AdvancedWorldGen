@@ -1,3 +1,5 @@
+using AdvancedWorldGen.UI.Preset;
+
 namespace AdvancedWorldGen.UI;
 
 public class OptionsSelector : UIState
@@ -15,8 +17,6 @@ public class OptionsSelector : UIState
 		PreviousState = previousState;
 		Parent = parent;
 		Description = Language.GetText("Mods.AdvancedWorldGen.NoneSelected.Description");
-
-		CreateOptionPanel();
 	}
 
 	private void GoBack(UIMouseEvent evt, UIElement listeningElement)
@@ -25,7 +25,7 @@ public class OptionsSelector : UIState
 		Main.MenuUI.SetState(PreviousState);
 	}
 
-	private void CreateOptionPanel()
+	public override void OnInitialize()
 	{
 		UIPanel uiPanel = new()
 		{
@@ -72,13 +72,13 @@ public class OptionsSelector : UIState
 		uIDescriptionBox.Append(UIDescription);
 		uiPanel.Append(uIDescriptionBox);
 
-		uiPanel.Recalculate();
+		UIList.Recalculate();
 
 		UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 		{
 			Width = new StyleDimension(0f, 0.1f),
 			Top = new StyleDimension(0f, 0.8f),
-			HAlign = 0.4f
+			HAlign = 0.35f
 		};
 		goBack.OnLeftClick += GoBack;
 		goBack.OnMouseOver += UiChanger.FadedMouseOver;
@@ -89,9 +89,13 @@ public class OptionsSelector : UIState
 		{
 			Width = new StyleDimension(0f, 0.1f),
 			Top = new StyleDimension(0f, 0.8f),
-			HAlign = 0.6f
+			HAlign = 0.65f
 		};
-		customSize.OnLeftClick += GoToCustomSize;
+		customSize.OnLeftClick += delegate
+		{
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			Main.MenuUI.SetState(new CustomSizeUI());
+		};
 		customSize.OnMouseOver += UiChanger.FadedMouseOver;
 		customSize.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(customSize);
@@ -100,7 +104,7 @@ public class OptionsSelector : UIState
 		{
 			Width = new StyleDimension(0f, 0.1f),
 			Top = new StyleDimension(0f, 0.75f),
-			HAlign = 0.4f
+			HAlign = 0.35f
 		};
 		importButton.OnLeftClick += delegate
 		{
@@ -115,7 +119,7 @@ public class OptionsSelector : UIState
 		{
 			Width = new StyleDimension(0f, 0.1f),
 			Top = new StyleDimension(0f, 0.75f),
-			HAlign = 0.6f
+			HAlign = 0.65f
 		};
 		exportButton.OnLeftClick += delegate { Platform.Get<IClipboard>().Value = OptionsParser.GetJsonText(); };
 		exportButton.OnMouseOver += UiChanger.FadedMouseOver;
@@ -125,19 +129,28 @@ public class OptionsSelector : UIState
 		UITextPanel<string> randomizeButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Randomize"))
 		{
 			Width = new StyleDimension(0f, 0.1f),
-			Top = new StyleDimension(0f, 0.85f),
+			Top = new StyleDimension(0f, 0.8f),
 			HAlign = 0.5f
 		};
 		randomizeButton.OnLeftClick += RandomizeSettings;
 		randomizeButton.OnMouseOver += UiChanger.FadedMouseOver;
 		randomizeButton.OnMouseOut += UiChanger.FadedMouseOut;
 		Append(randomizeButton);
-	}
 
-	private static void GoToCustomSize(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Main.MenuUI.SetState(new CustomSizeUI());
+		UITextPanel<string> presetButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Presets"))
+		{
+			Width = new StyleDimension(0f, 0.1f),
+			Top = new StyleDimension(0f, 0.75f),
+			HAlign = 0.5f
+		};
+		presetButton.OnLeftClick += delegate
+		{
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			Main.MenuUI.SetState(new PresetUI(this));
+		};
+		presetButton.OnMouseOver += UiChanger.FadedMouseOver;
+		presetButton.OnMouseOut += UiChanger.FadedMouseOut;
+		Append(presetButton);
 	}
 
 	private void CreateSelectableOptions(UIElement uiPanel)

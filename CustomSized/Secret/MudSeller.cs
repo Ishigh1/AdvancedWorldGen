@@ -2,15 +2,22 @@ namespace AdvancedWorldGen.CustomSized.Secret;
 
 public class MudSeller : GlobalNPC
 {
-	public override void SetupShop(int type, Chest shop, ref int nextSlot)
+	public override void ModifyShop(NPCShop shop)
 	{
-		if (Special.TempleWorld && type == NPCID.Dryad)
+		if (shop.NpcType == NPCID.Dryad)
 		{
-			shop.item[nextSlot].SetDefaults(ItemID.MudBlock);
-			shop.item[nextSlot++].shopCustomPrice = Item.buyPrice(gold: 20);
-
-			shop.item[nextSlot].SetDefaults(ItemID.WaterBucket);
-			shop.item[nextSlot++].shopCustomPrice = Item.buyPrice(5);
+			Condition condition = new("TempleWorld", () => Special.TempleWorld);
+			Item mudBlock = new(ItemID.MudBlock)
+			{
+				shopCustomPrice = Item.buyPrice(gold: 20)
+			};
+			shop.Add(mudBlock, condition);
+			
+			Item waterBucket = new(ItemID.WaterBucket)
+			{
+				shopCustomPrice = Item.buyPrice(5)
+			};
+			shop.Add(waterBucket, condition);
 		}
 	}
 }

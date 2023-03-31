@@ -2,20 +2,18 @@ namespace AdvancedWorldGen.ModHooks;
 
 public class WorldGenPreviewer : ModSystem
 {
+	private Hook? Hook;
 	public override void Load()
 	{
 		if (ModLoader.TryGetMod("WorldGenPreviewer", out Mod mod) &&
 		    mod.TryGetMethod("WorldGenPreviewer.UIWorldLoadSpecial", "CancelClick",
 			    BindingFlags.NonPublic | BindingFlags.Instance, out MethodInfo? methodInfo))
-			HookEndpointManager.Add(methodInfo, CancelClick);
+			Hook = new Hook(methodInfo, CancelClick);
 	}
 
 	public override void Unload()
 	{
-		if (ModLoader.TryGetMod("WorldGenPreviewer", out Mod mod) &&
-		    mod.TryGetMethod("WorldGenPreviewer.UIWorldLoadSpecial", "CancelClick",
-			    BindingFlags.NonPublic | BindingFlags.Instance, out MethodInfo? methodInfo))
-			HookEndpointManager.Remove(methodInfo, CancelClick);
+		Hook?.Dispose();
 	}
 
 	private static void Unpause()

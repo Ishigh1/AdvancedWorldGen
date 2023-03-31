@@ -8,7 +8,7 @@ public class ModifiedWorld : ModSystem
 	public List<Dictionary<string, float>> Weights = null!;
 	public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
 
-	private static string DataPath => Main.SavePath + Path.DirectorySeparatorChar + "AdvancedWorldGenPassesData.json";
+	private static string DataPath => Path.Combine(AdvancedWorldGenMod.FolderPath, "PassesData.json");
 
 	public override void OnModLoad()
 	{
@@ -16,7 +16,7 @@ public class ModifiedWorld : ModSystem
 		LoadWeights();
 	}
 
-	public void LoadWeights()
+	private void LoadWeights()
 	{
 		if (File.Exists(DataPath))
 		{
@@ -141,11 +141,15 @@ public class ModifiedWorld : ModSystem
 			Weights.Add(weights);
 			SaveWeights();
 
-#if !SPECIALDEBUG
-			foreach (MethodInfo methodInfo in Replacer.MethodInfos)
-				HookEndpointManager.Remove(methodInfo, Replacer.Timer);
-			Replacer.MethodInfos.Clear();
-#endif
+			if (Replacer.TimerHooks != null)
+			{
+				foreach (Hook timerHook in Replacer.TimerHooks)
+				{
+					timerHook.Dispose();
+				}
+
+				Replacer.TimerHooks = null;
+			}
 
 			Times = null;
 		}

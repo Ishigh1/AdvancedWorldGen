@@ -11,13 +11,13 @@
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DefineConstants>TRACE;SPECIALDEBUG;DEBUG;TEMP</DefineConstants>
+        <DefineConstants>TRACE;SPECIALDEBUG;DEBUG;</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DefineConstants>TRACE;TEMP</DefineConstants>
+        <DefineConstants>TRACE;</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug release|AnyCPU'">
-        <DefineConstants>TRACE;TEMP;SPECIALDEBUG</DefineConstants>
+        <DefineConstants>TRACE;SPECIALDEBUG</DefineConstants>
     </PropertyGroup>
     <!-- General Debug : FixedSeed -->
     <ItemGroup>

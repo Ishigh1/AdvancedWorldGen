@@ -2,6 +2,7 @@
 
 public class Spooky : ModSystem
 {
+	private ILHook? Hook;
 	private static ILContext.Manipulator GetManipulator(ILContext.Manipulator self)
 	{
 		return self;
@@ -13,16 +14,12 @@ public class Spooky : ModSystem
 		    mod.TryGetMethod("Spooky.Content.Generation.SpookyHell", "ClearArea",
 			    BindingFlags.Public | BindingFlags.Instance,
 			    out MethodInfo? methodInfo))
-			HookEndpointManager.Modify(methodInfo, GetManipulator(AvoidRight));
+			Hook = new ILHook(methodInfo, GetManipulator(AvoidRight));
 	}
 
 	public override void Unload()
 	{
-		if (ModLoader.TryGetMod("Spooky", out Mod mod) &&
-		    mod.TryGetMethod("Spooky.Content.Generation.SpookyHell", "ClearArea",
-			    BindingFlags.Public | BindingFlags.Instance,
-			    out MethodInfo? methodInfo))
-			HookEndpointManager.Unmodify(methodInfo, GetManipulator(AvoidRight));
+		Hook?.Dispose();
 	}
 
 	private static void AvoidRight(ILContext ilContext) //Will have to remove when it is implemented

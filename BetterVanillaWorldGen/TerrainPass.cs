@@ -54,9 +54,7 @@ public class TerrainPass : ControlledWorldGenPass
 		int worldSurfaceMin = (int)(Main.maxTilesY * (Params.TerrainType is TerrainType.SkyPillars ? 0.05 : 0.17));
 		int worldSurfaceMax = (int)(Main.maxTilesY * (Params.TerrainType is TerrainType.SkyPillars ? 0.40 : 0.23));
 		int totalBeachSize = GenVars.leftBeachEnd + lowDepthBeachSize;
-#if !SPECIALDEBUG
-		Stopwatch.Stop();
-#endif
+		Stopwatch?.Stop();
 		AdvancedWorldGenMod.Instance.UiChanger.Stopwatch.Stop();
 		Dictionary<string, object> currentState = new()
 		{
@@ -77,9 +75,7 @@ public class TerrainPass : ControlledWorldGenPass
 		rockLayer = (int)currentState[nameof(rockLayer)];
 		worldSurfaceMax = (int)currentState[nameof(worldSurfaceMax)];
 		totalBeachSize = (int)currentState[nameof(totalBeachSize)];
-#if !SPECIALDEBUG
-		Stopwatch.Start();
-#endif
+		Stopwatch?.Start();
 		AdvancedWorldGenMod.Instance.UiChanger.Stopwatch.Start();
 
 		double worldSurfaceLow = worldSurface;

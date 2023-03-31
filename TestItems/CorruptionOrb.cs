@@ -11,7 +11,7 @@ public class CorruptionOrb : ModItem
 		Item.useAnimation = 45;
 		Item.useTime = 45;
 		Item.maxStack = 20;
-#if !DEBUG
+#if !SPECIALDEBUG
 		ItemID.Sets.Deprecated[Item.type] = true;
 #endif
 	}

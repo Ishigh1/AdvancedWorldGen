@@ -3,7 +3,7 @@ namespace AdvancedWorldGen.BetterVanillaWorldGen;
 public static partial class Replacer
 {
 	private static List<GenPass>? GenPasses;
-	public static HashSet<MethodInfo> MethodInfos = new();
+	public static List<Hook>? TimerHooks;
 
 	public static void Replace()
 	{
@@ -11,10 +11,8 @@ public static partial class Replacer
 		On_WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
 		On_DesertDescription.CreateFromPlacement += ReplaceDesertDescriptionCreation;
 
-#if !SPECIALDEBUG
 		if (!WorldgenSettings.Instance.VanillaWeight)
 			On_WorldGenerator.GenerateWorld += ChangeWeights;
-#endif
 	}
 
 	private static void ReplaceDesertHive(On_DesertHive.orig_Place orig,
@@ -40,7 +38,6 @@ public static partial class Replacer
 		return WorldgenSettings.Instance.FasterWorldgen ? Desert.CreateFromPlacement(origin) : orig(origin);
 	}
 
-#if !SPECIALDEBUG
 	private static void ChangeWeights(On_WorldGenerator.orig_GenerateWorld orig, WorldGenerator self,
 		GenerationProgress progress)
 	{
@@ -74,6 +71,8 @@ public static partial class Replacer
 					}
 			}
 
+			HashSet<MethodInfo> methodInfos = new();
+			TimerHooks = new List<Hook>();
 			foreach (GenPass genPass in GenPasses)
 			{
 				(double weight, int found) = weights[genPass.Name];
@@ -84,11 +83,11 @@ public static partial class Replacer
 						new[] { typeof(GenerationProgress), typeof(GameConfiguration) });
 				if (methodInfo != null)
 				{
-					if (!MethodInfos.Contains(methodInfo) &&
-					    MethodInfos.All(info => info.DeclaringType != methodInfo.DeclaringType))
+					if (!methodInfos.Contains(methodInfo) &&
+					    methodInfos.All(info => info.DeclaringType != methodInfo.DeclaringType))
 					{
-						HookEndpointManager.Add(methodInfo, Timer);
-						MethodInfos.Add(methodInfo);
+						TimerHooks.Add(new Hook(methodInfo, Timer));
+						methodInfos.Add(methodInfo);
 					}
 				}
 				else
@@ -122,5 +121,4 @@ public static partial class Replacer
 			orig(self, progress, configuration);
 		}
 	}
-#endif
 }

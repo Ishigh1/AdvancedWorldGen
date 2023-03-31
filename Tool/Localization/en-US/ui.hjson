@@ -26,6 +26,7 @@
   },
   "OptionButton": "Choose your world generation settings",
   "Randomize": "Randomize the options",
+  "Presets": "Presets",
   "ShowHidden": {
     "Description": "Show the minor and/or unstable features."
   },

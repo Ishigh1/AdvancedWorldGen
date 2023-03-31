@@ -2,13 +2,15 @@ namespace AdvancedWorldGen.SpecialOptions;
 
 public class SellDirt : GlobalNPC
 {
-	public override void SetupShop(int type, Chest shop, ref int nextSlot)
+	public override void ModifyShop(NPCShop shop)
 	{
-		if (type == NPCID.Dryad && OptionHelper.OptionsContains("Random"))
+		if (shop.NpcType == NPCID.Dryad)
 		{
-			Item expensiveDirt = shop.item[nextSlot++];
-			expensiveDirt.SetDefaults(ItemID.DirtBlock);
-			expensiveDirt.shopCustomPrice = Item.buyPrice(gold: 20);
+			Item expensiveDirt = new(ItemID.DirtBlock)
+			{
+				shopCustomPrice = Item.buyPrice(gold: 20)
+			};
+			shop.Add(expensiveDirt, new Condition("randomWorld", () => OptionHelper.OptionsContains("Random")));
 		}
 	}
 }
