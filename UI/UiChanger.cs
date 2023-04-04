@@ -36,10 +36,15 @@ public class UiChanger
 				try
 				{
 					orig(threadContext);
+					Analytics.AnalyticSystem.Instance.SendData();
 				}
-				catch (Exception)
+				catch (Exception exception)
 				{
-					if (Main.tile.Width > 0) EmergencySaving("Failed");
+					if (Main.tile.Width > 0)
+					{
+						Analytics.AnalyticSystem.Instance.SendData(exception.StackTrace);
+						EmergencySaving("Failed");
+					}
 				}
 			}) { Name = "WorldGen" };
 			Thread.Start();

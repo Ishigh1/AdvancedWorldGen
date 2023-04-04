@@ -8,25 +8,16 @@ public class Legacy
 		string advancedWorldGenPassesDataPath = Path.Combine(Main.SavePath, "AdvancedWorldGenPassesData.json");
 		if (File.Exists(advancedWorldGenPassesDataPath))
 		{
-			File.Move(advancedWorldGenPassesDataPath, Path.Combine(AdvancedWorldGenMod.FolderPath, "PassesData.json"));
+			File.Move(advancedWorldGenPassesDataPath, ModifiedWorld.DataPath);
 		}
 		#endregion
-	}
-	
-	public static void ReplaceOldOptions(ICollection<string> options)
-	{
-		#region 2.6, 29/12/2021
-
-		if (options.Remove("Crimruption"))
-			options.Add("Drunk.Crimruption");
-
-		#endregion
-
-		#region 2.6.4.5, 23/03/2022
-
-		if (options.Remove("Painted"))
-			options.Add("Random.Painted");
-
+		
+		#region 3.1, 04/04/2023
+		string presetDataPath = Path.Combine(AdvancedWorldGenMod.FolderPath, "Presets.json");
+		if (File.Exists(presetDataPath))
+		{
+			File.Move(presetDataPath, PresetUI.DataPath);
+		}
 		#endregion
 	}
 }

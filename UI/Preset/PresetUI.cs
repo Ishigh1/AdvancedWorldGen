@@ -2,7 +2,7 @@
 
 public class PresetUI : UIState
 {
-	private static string DataPath => Path.Combine(AdvancedWorldGenMod.FolderPath, "Presets.json");
+	public static string DataPath => Path.Combine(AdvancedWorldGenMod.FolderPath, "Presets.nbt");
 	private OptionsSelector PreviousState;
 
 	public PresetUI(OptionsSelector previousState)

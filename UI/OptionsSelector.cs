@@ -1,5 +1,3 @@
-using AdvancedWorldGen.UI.Preset;
-
 namespace AdvancedWorldGen.UI;
 
 public class OptionsSelector : UIState

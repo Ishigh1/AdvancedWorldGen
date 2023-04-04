@@ -20,7 +20,7 @@ public class AdvancedWorldGenMod : Mod
 #if SPECIALDEBUG
 		MethodInfo method =
 			typeof(WorkshopHelper).GetMethod("PublishMod", BindingFlags.NonPublic | BindingFlags.Static)!;
-		HookEndpointManager.Add(method, Crash); // Prevents me from sending the dev version again
+		new Hook(method, Crash); // Prevents me from sending the dev version again
 #endif
 		
 		//Remove ThreadInterruptedException from logging (interrupting thread.sleep)

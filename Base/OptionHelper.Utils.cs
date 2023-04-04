@@ -7,10 +7,9 @@ public partial class OptionHelper
 		foreach ((string? _, Option? option) in OptionDict) option.Disable();
 	}
 
-	public static void Import(ICollection<string> optionNames)
+	public static void Import(IEnumerable<string> optionNames)
 	{
 		ClearAll();
-		Legacy.ReplaceOldOptions(optionNames);
 		foreach (string optionName in optionNames)
 			if (OptionDict.TryGetValue(optionName, out Option? option))
 				option.WeakEnable();

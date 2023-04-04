@@ -1,4 +1,4 @@
-namespace AdvancedWorldGen.BetterVanillaWorldGen;
+namespace AdvancedWorldGen.Base;
 
 public class WorldgenSettings : ModConfig
 {
@@ -21,6 +21,12 @@ public class WorldgenSettings : ModConfig
 	[Tooltip("$Mods.AdvancedWorldGen.Config.ZenithEnabler.Tooltip")]
 	[DefaultValue(true)]
 	public bool ZenithEnabler;
+
+	[Label("$Mods.AdvancedWorldGen.Config.Analytics.Label")]
+	[Tooltip("$Mods.AdvancedWorldGen.Config.Analytics.Tooltip")]
+	[DefaultValue(false)]
+	[ReloadRequired]
+	public bool Analytics;
 
 	public static WorldgenSettings Instance => ModContent.GetInstance<WorldgenSettings>();
 

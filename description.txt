@@ -13,6 +13,11 @@ Note that if you have a X/Y ratio too different from vanilla, the generation mig
 
 This mod is compatible with nearly every mod and I try to fix them as soon as some issues are reported. 
 However, there is a known issue with Calamity, but it should be fixed by them.
+Anyway, this mod can't cause any issues just by being enabled. 
+If someone tells you to disable it, that's dumb, if you want to fix the issue with a mod by yourself : 
+ * Some mod doesn't support the size you are trying, try to be closer to vanilla
+ * Some option you enabled may not be supported by your combination of mods
+ * Unlikely, but the overhauled option may be conflicting with another mod
 
 Also thanks to Exterminator for contributing to the code and Math!EW! for the mod icon
 This mod has a discord server that you can find here : https://discord.gg/ZPjnjpqeYE

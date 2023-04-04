@@ -18,6 +18,10 @@
     "VanillaWeight": {
       "Label": "Less accurate worldgen time prediction",
       "Tooltip": "Enable it to debug your mods faster not much sense to enable it otherwise."
+    },
+    "Analytics": {
+      "Label": "Analytics",
+      "Tooltip": "Anonymized data will be sent every time a world is generated to help me developing the mod."
     }
   },
   "WorldGenMessage": {
