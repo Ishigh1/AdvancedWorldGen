@@ -51,12 +51,12 @@ public static partial class Replacer
 				originalWeights += pass.Weight;
 			}
 
-			foreach (Dictionary<string, float> instanceWeight in ModifiedWorld.Instance.Weights)
+			foreach (Dictionary<string, double> instanceWeight in ModifiedWorld.Instance.Weights)
 			{
 				double totalWeight = 0;
 				double passWeights = originalWeights;
 				foreach (GenPass genPass in GenPasses)
-					if (instanceWeight.TryGetValue(genPass.Name, out float weight))
+					if (instanceWeight.TryGetValue(genPass.Name, out double weight))
 						totalWeight += weight;
 					else
 						passWeights -= genPass.Weight;
@@ -64,7 +64,7 @@ public static partial class Replacer
 				totalWeight /= passWeights;
 
 				foreach (GenPass genPass in GenPasses)
-					if (instanceWeight.TryGetValue(genPass.Name, out float weight))
+					if (instanceWeight.TryGetValue(genPass.Name, out double weight))
 					{
 						(double currentWeight, int found) = weights[genPass.Name];
 						weights[genPass.Name] = (currentWeight + weight / totalWeight, found + 1);

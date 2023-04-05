@@ -49,7 +49,7 @@ public class CustomSizeUI : UIState
 		uiPanel.Append(uiList);
 		int index = 0;
 
-		const string localizationPath = "Mods.AdvancedWorldGen.UI.CustomSizes";
+		const string localizationPath = "Mods.AdvancedWorldGen.CustomSizes";
 
 		NumberTextBox<int> sizeXInput =
 			new ConfigNumberTextBox<int>(nameof(Params.SizeX), 100, ushort.MaxValue, localizationPath);
@@ -150,14 +150,14 @@ public class CustomSizeUI : UIState
 		else
 		{
 			UITextPanel<string> overhauledDisabled =
-				new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.OverhauledDisabled"))
+				new(Language.GetTextValue("Mods.AdvancedWorldGen.OverhauledDisabled"))
 				{
 					Width = new StyleDimension(0f, 1f)
 				};
 			uiList.Add(overhauledDisabled);
 		}
 
-		UITextPanel<string> goToVanillaConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.VanillaConfig"))
+		UITextPanel<string> goToVanillaConfig = new(Language.GetTextValue("Mods.AdvancedWorldGen.VanillaConfig"))
 		{
 			Width = new StyleDimension(0f, 1f)
 		};
@@ -168,7 +168,7 @@ public class CustomSizeUI : UIState
 		goToVanillaConfig.OnMouseOut += UiChanger.FadedMouseOut;
 
 		UITextPanel<string> goToOverhauledConfig =
-			new(Language.GetTextValue("Mods.AdvancedWorldGen.UI.OverhauledConfig"))
+			new(Language.GetTextValue("Mods.AdvancedWorldGen.OverhauledConfig"))
 			{
 				Width = new StyleDimension(0f, 1f)
 			};

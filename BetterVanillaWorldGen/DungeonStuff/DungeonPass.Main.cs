@@ -717,12 +717,59 @@ public partial class DungeonPass
 			}
 		}
 
-		int evilChests = 5;
-		if (OptionHelper.OptionsContains("Drunk.Crimruption"))
-			evilChests = 6;
+		int evilChests = OptionHelper.OptionsContains("Drunk.Crimruption") ? 6 : 5;
 
 		for (int numChest = 0; numChest < evilChests; numChest++)
 		{
+			int contain = 0;
+			int style2 = 0;
+			ushort chestTileType = TileID.Containers;
+			switch (numChest)
+			{
+				case 0:
+					style2 = 23;
+					contain = ItemID.PiranhaGun;
+					break;
+				case 1:
+					if (!WorldGen.crimson)
+					{
+						style2 = 24;
+						contain = ItemID.ScourgeoftheCorruptor;
+					}
+					else
+					{
+						style2 = 25;
+						contain = ItemID.VampireKnives;
+					}
+
+					break;
+				case 5:
+					if (WorldGen.crimson)
+					{
+						style2 = 24;
+						contain = ItemID.ScourgeoftheCorruptor;
+					}
+					else
+					{
+						style2 = 25;
+						contain = ItemID.VampireKnives;
+					}
+
+					break;
+				case 2:
+					style2 = 26;
+					contain = ItemID.RainbowGun;
+					break;
+				case 3:
+					style2 = 27;
+					contain = ItemID.StaffoftheFrostHydra;
+					break;
+				case 4:
+					chestTileType = TileID.Containers2;
+					style2 = 13;
+					contain = ItemID.StormTigerStaff;
+					break;
+			}
 			bool chestPlaced = false;
 			while (!chestPlaced)
 			{
@@ -730,57 +777,7 @@ public partial class DungeonPass
 				int randY = WorldGen.genRand.Next((int)Main.worldSurface, GenVars.dMaxY);
 				if (!Main.wallDungeon[Main.tile[randX, randY].WallType] || Main.tile[randX, randY].HasTile)
 					continue;
-
-				ushort chestTileType = TileID.Containers;
-				int contain = 0;
-				int style2 = 0;
-				switch (numChest)
-				{
-					case 0:
-						style2 = 23;
-						contain = ItemID.PiranhaGun;
-						break;
-					case 1:
-						if (!WorldGen.crimson)
-						{
-							style2 = 24;
-							contain = ItemID.ScourgeoftheCorruptor;
-						}
-						else
-						{
-							style2 = 25;
-							contain = ItemID.VampireKnives;
-						}
-
-						break;
-					case 5:
-						if (WorldGen.crimson)
-						{
-							style2 = 24;
-							contain = ItemID.ScourgeoftheCorruptor;
-						}
-						else
-						{
-							style2 = 25;
-							contain = ItemID.VampireKnives;
-						}
-
-						break;
-					case 2:
-						style2 = 26;
-						contain = ItemID.RainbowGun;
-						break;
-					case 3:
-						style2 = 27;
-						contain = ItemID.StaffoftheFrostHydra;
-						break;
-					case 4:
-						chestTileType = TileID.Containers2;
-						style2 = 13;
-						contain = ItemID.StormTigerStaff;
-						break;
-				}
-
+				
 				chestPlaced = GenerationChests.AddBuriedChest(randX, randY, contain, false, style2, chestTileType);
 			}
 		}

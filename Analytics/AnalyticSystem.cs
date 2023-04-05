@@ -48,7 +48,7 @@ public class AnalyticSystem : ModSystem
 			{
 				new KeyValuePair<string, string>("id", Id.ToString()),
 				new KeyValuePair<string, string>("options", OptionsParser.GetJsonText()),
-				new KeyValuePair<string, string>("overhauled", WorldgenSettings.Instance.FasterWorldgen.ToString())
+				new KeyValuePair<string, string>("overhauled", WorldgenSettings.Instance.FasterWorldgen.ToInt().ToString())
 			};
 			if (log != null)
 			{

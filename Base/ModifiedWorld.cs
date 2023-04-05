@@ -5,7 +5,7 @@ public class ModifiedWorld : ModSystem
 	public Dictionary<string, TimeSpan>? Times;
 
 
-	public List<Dictionary<string, float>> Weights = null!;
+	public List<Dictionary<string, double>> Weights = null!;
 	public static ModifiedWorld Instance => ModContent.GetInstance<ModifiedWorld>();
 
 	public static string DataPath => Path.Combine(AdvancedWorldGenMod.FolderPath, "PassesData.json");
@@ -22,11 +22,11 @@ public class ModifiedWorld : ModSystem
 		{
 			using StreamReader r = new(DataPath);
 			string json = r.ReadToEnd();
-			Weights = JsonConvert.DeserializeObject<List<Dictionary<string, float>>>(json);
+			Weights = JsonConvert.DeserializeObject<List<Dictionary<string, double>>>(json);
 		}
 		else
 		{
-			Weights = new List<Dictionary<string, float>>();
+			Weights = new List<Dictionary<string, double>>();
 		}
 	}
 
@@ -128,15 +128,23 @@ public class ModifiedWorld : ModSystem
 	{
 		if (Times != null)
 		{
-			float totalTime = 0;
+			double totalTime = 0;
 			foreach ((string? _, TimeSpan value) in Times) totalTime += value.Milliseconds;
 			totalTime /= 10_000f;
 
 			if (Weights.Count >= 20) Weights.RemoveAt(0);
 
-			Dictionary<string, float> weights = new();
+			Dictionary<string, double> weights = new();
+#if SPECIALDEBUG
+			using TextWriter textWriter = new StreamWriter(@"d:\debug.txt", true);
+#endif
 			foreach ((string? key, TimeSpan value) in Times)
-				weights.Add(key, value.Milliseconds / totalTime);
+			{
+#if SPECIALDEBUG
+				textWriter.WriteLine(key + " : " + value);
+#endif
+				weights.Add(key, value.TotalMilliseconds / totalTime);
+			}
 
 			Weights.Add(weights);
 			SaveWeights();
@@ -186,12 +194,15 @@ public class ModifiedWorld : ModSystem
 		{
 			cursor.Remove();
 		}
-		
-		cursor.GotoNext(MoveType.Before, instruction => instruction.MatchLdsfld(typeof(WorldGen).GetField(nameof(WorldGen.everythingWorldGen), BindingFlags.Public | BindingFlags.Static)!));
+
+		cursor.GotoNext(MoveType.Before,
+			instruction => instruction.MatchLdsfld(typeof(WorldGen).GetField(nameof(WorldGen.everythingWorldGen),
+				BindingFlags.Public | BindingFlags.Static)!));
 		while (!(cursor.Next!.OpCode == OpCodes.Brfalse_S))
 		{
 			cursor.Remove();
 		}
+
 		cursor.OptionContains("Zenith.StarGame");
 	}
 
