@@ -20,6 +20,7 @@ global using AdvancedWorldGen.BetterVanillaWorldGen.Interface;
 global using AdvancedWorldGen.BetterVanillaWorldGen.Jungle;
 global using AdvancedWorldGen.BetterVanillaWorldGen.MicroBiomesStuff;
 global using AdvancedWorldGen.CustomSized;
+global using AdvancedWorldGen.CustomSized.Secret;
 global using AdvancedWorldGen.Helper;
 global using AdvancedWorldGen.Helper.Accessors;
 global using AdvancedWorldGen.SpecialOptions;

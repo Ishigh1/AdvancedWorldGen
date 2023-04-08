@@ -1,5 +1,3 @@
-using AdvancedWorldGen.CustomSized.Secret;
-
 namespace AdvancedWorldGen.Helper;
 
 public static class OptionsParser

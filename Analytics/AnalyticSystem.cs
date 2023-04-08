@@ -59,7 +59,7 @@ public class AnalyticSystem : ModSystem
 				JObject jsonObject = new();
 				foreach ((string? key, TimeSpan value) in ModifiedWorld.Instance.Times)
 				{
-					jsonObject.Add(key, value.Milliseconds);
+					jsonObject.Add(key, value.TotalMilliseconds);
 				}
 				arguments.Add(new KeyValuePair<string, string>("time", jsonObject.ToString()));
 			}

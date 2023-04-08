@@ -82,7 +82,7 @@ public static class PlaceTraps
 			{
 				for (int j = y - 3; j <= y + 3; j++)
 				{
-					if (Main.tile[i, j].TileType == 147 || Main.tile[i, j].TileType == 161)
+					if (Main.tile[i, j].TileType is 147 or 161)
 						type = 0;
 				}
 			}
@@ -181,9 +181,7 @@ public static class PlaceTraps
 				if (num26 == 1)
 					Main.tile[num20, num21].TileFrameX += 18;
 
-				int num27 = x;
-				int num28 = y;
-				RunWire(num27, num28, num20, num21);
+				RunWire(x, y, num20, num21);
 
 				return true;
 			}
@@ -229,14 +227,14 @@ public static class PlaceTraps
 
 							if (Main.tile[m, n].HasTile)
 							{
-								if (Main.tile[m, n].TileType == 226)
+								switch (Main.tile[m, n].TileType)
 								{
-									return false;
+									case 226:
+										return false;
+									case 0 or 1 or 59:
+										num5++;
+										break;
 								}
-
-								if (Main.tile[m, n].TileType == 0 || Main.tile[m, n].TileType == 1 ||
-								    Main.tile[m, n].TileType == 59)
-									num5++;
 							}
 						}
 					}
@@ -302,27 +300,7 @@ public static class PlaceTraps
 				tile2.RedWire = true;
 				Tile tile3 = Main.tile[num3 + 1, num4 + 1];
 				tile3.RedWire = true;
-				int num10 = x;
-				int num11 = y;
-				while (num10 != num3 || num11 != num4)
-				{
-					Tile tile4 = Main.tile[num10, num11];
-					tile4.RedWire = true;
-					if (num10 > num3)
-						num10--;
-
-					if (num10 < num3)
-						num10++;
-
-					tile4.RedWire = true;
-					if (num11 > num4)
-						num11--;
-
-					if (num11 < num4)
-						num11++;
-
-					tile4.RedWire = true;
-				}
+				RunWire(x, y, num3, num4);
 
 				return true;
 			}
@@ -409,27 +387,21 @@ public static class PlaceTraps
 	{
 		Tile tile = Main.tile[x, y];
 		tile.RedWire = true;
+		int dx = Math.Sign(targetX - x);
+		int dy = Math.Sign(targetY - y);
 		while (x != targetX || y != targetY)
 		{
-			if (x > targetX)
+			if (x != targetX)
 			{
-				tile = Main.tile[--x, y];
-				tile.RedWire = true;
-			}
-			else if (x < targetX)
-			{
-				tile = Main.tile[++x, y];
+				x += dx;
+				tile = Main.tile[x, y];
 				tile.RedWire = true;
 			}
 
-			if (y > targetY)
+			if (y != targetY)
 			{
-				tile = Main.tile[x, --y];
-				tile.RedWire = true;
-			}
-			else if (y < targetY)
-			{
-				tile = Main.tile[x, ++y];
+				y += dy;
+				tile = Main.tile[x, y];
 				tile.RedWire = true;
 			}
 		}
