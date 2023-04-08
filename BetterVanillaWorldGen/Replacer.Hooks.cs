@@ -1,3 +1,5 @@
+using AdvancedWorldGen.BetterVanillaWorldGen.Traps;
+
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public static partial class Replacer
@@ -7,35 +9,48 @@ public static partial class Replacer
 
 	public static void Replace()
 	{
-		On_DesertHive.Place += ReplaceDesertHive;
-		On_WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
-		On_DesertDescription.CreateFromPlacement += ReplaceDesertDescriptionCreation;
+		if (WorldgenSettings.Instance.FasterWorldgen)
+		{
+			On_DesertHive.Place += ReplaceDesertHive;
+			On_WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort += ReplaceChest;
+			On_WorldGen.placeTrap += PlaceTraps.ReplaceTraps;
+			On_DesertDescription.CreateFromPlacement += ReplaceDesertDescriptionCreation;
+		}
 
 		if (!WorldgenSettings.Instance.VanillaWeight)
 			On_WorldGenerator.GenerateWorld += ChangeWeights;
+	}
+	
+	public static void Unreplace()
+	{
+		if (WorldgenSettings.Instance.FasterWorldgen)
+		{
+			On_DesertHive.Place -= ReplaceDesertHive;
+			On_WorldGen.AddBuriedChest_int_int_int_bool_int_bool_ushort -= ReplaceChest;
+			On_WorldGen.placeTrap -= PlaceTraps.ReplaceTraps;
+			On_DesertDescription.CreateFromPlacement -= ReplaceDesertDescriptionCreation;
+		}
+
+		if (!WorldgenSettings.Instance.VanillaWeight)
+			On_WorldGenerator.GenerateWorld -= ChangeWeights;
 	}
 
 	private static void ReplaceDesertHive(On_DesertHive.orig_Place orig,
 		DesertDescription description)
 	{
-		if (WorldgenSettings.Instance.FasterWorldgen)
-			ModifiedDesertHive.Place(description);
-		else
-			orig(description);
+		ModifiedDesertHive.Place(description);
 	}
 
 	private static bool ReplaceChest(On_WorldGen.orig_AddBuriedChest_int_int_int_bool_int_bool_ushort orig, int i,
 		int j, int contain, bool notNearOtherChests, int style, bool trySlope, ushort chestTileType)
 	{
-		return WorldgenSettings.Instance.FasterWorldgen
-			? GenerationChests.AddBuriedChest(i, j, contain, notNearOtherChests, style, chestTileType)
-			: orig(i, j, contain, notNearOtherChests, style, trySlope, chestTileType);
+		return GenerationChests.AddBuriedChest(i, j, contain, notNearOtherChests, style, chestTileType);
 	}
 
 	private static DesertDescription ReplaceDesertDescriptionCreation(
 		On_DesertDescription.orig_CreateFromPlacement orig, Point origin)
 	{
-		return WorldgenSettings.Instance.FasterWorldgen ? Desert.CreateFromPlacement(origin) : orig(origin);
+		return Desert.CreateFromPlacement(origin);
 	}
 
 	private static void ChangeWeights(On_WorldGenerator.orig_GenerateWorld orig, WorldGenerator self,

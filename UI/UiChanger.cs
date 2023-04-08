@@ -57,6 +57,7 @@ public class UiChanger
 
 	private static void EmergencySaving(string suffix)
 	{
+		Replacer.Unreplace();
 		if (WorldgenSettings.Instance.SaveOnFail)
 		{
 			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);

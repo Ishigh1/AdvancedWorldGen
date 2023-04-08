@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace AdvancedWorldGen.Analytics;
+﻿namespace AdvancedWorldGen.Analytics;
 
 public class AnalyticSystem : ModSystem
 {
@@ -48,12 +46,24 @@ public class AnalyticSystem : ModSystem
 			{
 				new KeyValuePair<string, string>("id", Id.ToString()),
 				new KeyValuePair<string, string>("options", OptionsParser.GetJsonText()),
-				new KeyValuePair<string, string>("overhauled", WorldgenSettings.Instance.FasterWorldgen.ToInt().ToString())
+				new KeyValuePair<string, string>("overhauled", WorldgenSettings.Instance.FasterWorldgen.ToInt().ToString()),
+				new KeyValuePair<string, string>("version", AdvancedWorldGenMod.Instance.Version.ToString())
 			};
 			if (log != null)
 			{
 				arguments.Add(new KeyValuePair<string, string>("log", log));
 			}
+
+			if (ModifiedWorld.Instance.Times != null)
+			{
+				JObject jsonObject = new();
+				foreach ((string? key, TimeSpan value) in ModifiedWorld.Instance.Times)
+				{
+					jsonObject.Add(key, value.Milliseconds);
+				}
+				arguments.Add(new KeyValuePair<string, string>("time", jsonObject.ToString()));
+			}
+			
 			FormUrlEncodedContent content = new(arguments);
 
 			// Send the POST request without waiting for a response

@@ -59,8 +59,6 @@ public class AdvancedWorldGenMod : Mod
 
 		IL_WorldGen.MakeDungeon += DrunkOptions.CrimruptionChest;
 
-		Replacer.Replace();
-
 		HalloweenCommon.Setup();
 	}
 

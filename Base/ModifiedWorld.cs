@@ -88,6 +88,7 @@ public class ModifiedWorld : ModSystem
 
 	public override void PreWorldGen()
 	{
+		Replacer.Replace();
 		bool notTheBees = OptionHelper.OptionsContains("NotTheBees");
 		Main.notTheBeesWorld |= notTheBees;
 		WorldGen.notTheBees |= notTheBees;
@@ -126,6 +127,7 @@ public class ModifiedWorld : ModSystem
 
 	public override void PostWorldGen()
 	{
+		Replacer.Unreplace();
 		if (Times != null)
 		{
 			double totalTime = 0;
@@ -158,8 +160,6 @@ public class ModifiedWorld : ModSystem
 
 				Replacer.TimerHooks = null;
 			}
-
-			Times = null;
 		}
 	}
 
