@@ -205,25 +205,7 @@ public class CustomSizeUI : UIState
 	private void GoBack(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		int size = Params.SizeX switch
-		{
-			4200 when Params.SizeY == 1200 => 0,
-			6400 when Params.SizeY == 1800 => 1,
-			8400 when Params.SizeY == 2400 => 2,
-			_ => -1
-		};
-
-		FieldAccessor<int> optionSize = VanillaInterface.OptionSize(WorldSettings.UIWorldCreation);
-		optionSize.Value = size;
-
-		object[] sizeButtons = VanillaInterface.SizeButtons(WorldSettings.UIWorldCreation).Value;
-
-		Type groupOptionButtonType = sizeButtons.GetType().GetElementType()!;
-		MethodInfo setCurrentOptionMethod =
-			groupOptionButtonType.GetMethod("SetCurrentOption", BindingFlags.Instance | BindingFlags.Public)!;
-
-		foreach (object groupOptionButton in sizeButtons)
-			setCurrentOptionMethod.Invoke(groupOptionButton, new object[] { size });
+		WorldSettings.ApplySize();
 
 #if !SPECIALDEBUG
 		UIState? Prev()
