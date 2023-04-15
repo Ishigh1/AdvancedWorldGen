@@ -237,7 +237,7 @@ public class OptionsSelector : UIState
 					option.Enable();
 
 				if (option.GetType() == typeof(ZenithOption) || option.Conflicts
-				    .Any(conflict => OptionHelper.OptionsContains(conflict)))
+					    .Any(conflict => OptionHelper.OptionsContains(conflict)))
 					CreateOptionList();
 				else
 					clickableText.SetCurrentOption(!selected);

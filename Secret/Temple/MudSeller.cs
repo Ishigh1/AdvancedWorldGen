@@ -1,4 +1,4 @@
-namespace AdvancedWorldGen.CustomSized.Secret;
+namespace AdvancedWorldGen.Secret.Temple;
 
 public class MudSeller : GlobalNPC
 {
@@ -12,7 +12,7 @@ public class MudSeller : GlobalNPC
 				shopCustomPrice = Item.buyPrice(gold: 20)
 			};
 			shop.Add(mudBlock, condition);
-			
+
 			Item waterBucket = new(ItemID.WaterBucket)
 			{
 				shopCustomPrice = Item.buyPrice(5)

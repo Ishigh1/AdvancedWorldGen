@@ -34,11 +34,9 @@ public partial class OptionHelper
 	public static IEnumerable<Option> GetOptions(params string[] names)
 	{
 		foreach (string name in names)
-		{
 			if (OptionDict.TryGetValue(name, out Option? option))
 				yield return option;
 			else
 				throw new ArgumentException($"{name} not found !");
-		}
 	}
 }

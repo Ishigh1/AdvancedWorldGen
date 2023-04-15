@@ -1,4 +1,5 @@
 using AdvancedWorldGen.BetterVanillaWorldGen.Traps;
+using AdvancedWorldGen.Secret._100k_special;
 
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
@@ -19,8 +20,10 @@ public static partial class Replacer
 
 		if (!WorldgenSettings.Instance.VanillaWeight)
 			On_WorldGenerator.GenerateWorld += ChangeWeights;
+
+		_100kWorld.Replace();
 	}
-	
+
 	public static void Unreplace()
 	{
 		if (WorldgenSettings.Instance.FasterWorldgen)
@@ -33,6 +36,8 @@ public static partial class Replacer
 
 		if (!WorldgenSettings.Instance.VanillaWeight)
 			On_WorldGenerator.GenerateWorld -= ChangeWeights;
+		
+		_100kWorld.Unreplace();
 	}
 
 	private static void ReplaceDesertHive(On_DesertHive.orig_Place orig,

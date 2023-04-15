@@ -1,3 +1,5 @@
+using AdvancedWorldGen.Secret._100k_special;
+
 namespace AdvancedWorldGen.BetterVanillaWorldGen.FloatingSky;
 
 public class FloatingIslands : ControlledWorldGenPass
@@ -10,12 +12,35 @@ public class FloatingIslands : ControlledWorldGenPass
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.12");
 		GenVars.numIslandHouses = 0;
-		int skyIslands = (int)OverhauledWorldGenConfigurator.Configuration.Next("SkyIslands").Get<JsonRange>("HouseAmount").GetRandom(WorldGen.genRand);
+		int skyIslands = (int)OverhauledWorldGenConfigurator.Configuration.Next("SkyIslands")
+			.Get<JsonRange>("HouseAmount").GetRandom(WorldGen.genRand);
 
-		int skyLakes = (int)OverhauledWorldGenConfigurator.Configuration.Next("SkyIslands").Get<JsonRange>("LakeAmount").GetRandom(WorldGen.genRand);
+		int skyLakes = (int)OverhauledWorldGenConfigurator.Configuration.Next("SkyIslands").Get<JsonRange>("LakeAmount")
+			.GetRandom(WorldGen.genRand);
 		int totalSkyBiomes = skyIslands + skyLakes;
-		List<(int left, int right)> placedBiomes = new() { (Main.maxTilesX / 2 - 150, Main.maxTilesX / 2 + 150) };
+		List<(int left, int right)> placedBiomes = new()
+		{
+			(Main.maxTilesX / 2 - 150, Main.maxTilesX / 2 + 150)
+		};
 		int malus = 301;
+
+		if (_100kWorld.Enabled)
+		{
+			placedBiomes.Add((GenVars.UndergroundDesertLocation.Left - 100, GenVars.UndergroundDesertLocation.Right + 100));
+			if (GenVars.UndergroundDesertLocation.Left - 100 <= Main.maxTilesX / 2 + 150)
+			{
+				malus += GenVars.UndergroundDesertLocation.Right + 100 - Main.maxTilesX / 2 + 150;
+			}
+			else if (GenVars.UndergroundDesertLocation.Right - 100 >= Main.maxTilesX / 2 - 150)
+			{
+				malus += Main.maxTilesX / 2 - 150 - GenVars.UndergroundDesertLocation.Left - 100;
+			}
+			else
+			{
+				malus += 201;
+			}
+		}
+		
 		int xMin = Math.Max(GenVars.oceanWaterStartRandomMax, (int)(Main.maxTilesX * 0.1f));
 		int xMax = Main.maxTilesX - xMin;
 		int maxMalus = xMax - xMin;
@@ -23,11 +48,13 @@ public class FloatingIslands : ControlledWorldGenPass
 		{
 			if (malus > maxMalus)
 			{
-				AdvancedWorldGenMod.Instance.Logger.Warn("Too many sky islands requested, reseting the placed island list to place more, islands may collide.");
+				AdvancedWorldGenMod.Instance.Logger.Warn(
+					"Too many sky islands requested, resetting the placed island list to place more, islands may collide.");
 				placedBiomes.Add((Main.maxTilesX / 2 - 150, Main.maxTilesX / 2 + 150));
 				malus = 301;
 				placedBiomes.Clear();
 			}
+
 			Progress.Set(currentSkyItem, totalSkyBiomes);
 			int tries = Main.maxTilesX;
 			while (--tries > 0)

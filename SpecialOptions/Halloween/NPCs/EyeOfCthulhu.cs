@@ -7,11 +7,11 @@ public static class EyeOfCthulhu
 	private const int DashAI = -128;
 	private const int RushDuration = 80;
 
-	private static DifficultyValue<int> GhostDuration =
+	private static readonly DifficultyValue<int> GhostDuration =
 		new(RushDuration, RushDuration, RushDuration * 2);
 
-	private static DifficultyValue<int> EyeGhostChances = new(600, 550, 500);
-	private static DifficultyValue<int> EyeSpeed = new(10, 15, 18);
+	private static readonly DifficultyValue<int> EyeGhostChances = new(600, 550, 500);
+	private static readonly DifficultyValue<int> EyeSpeed = new(10, 15, 18);
 
 	public static bool PreAI(NPC npc)
 	{

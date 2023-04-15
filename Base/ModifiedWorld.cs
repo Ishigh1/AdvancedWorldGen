@@ -153,10 +153,7 @@ public class ModifiedWorld : ModSystem
 
 			if (Replacer.TimerHooks != null)
 			{
-				foreach (Hook timerHook in Replacer.TimerHooks)
-				{
-					timerHook.Dispose();
-				}
+				foreach (Hook timerHook in Replacer.TimerHooks) timerHook.Dispose();
 
 				Replacer.TimerHooks = null;
 			}
@@ -191,17 +188,12 @@ public class ModifiedWorld : ModSystem
 		cursor.GotoNext(MoveType.After, instruction => instruction.MatchStloc(0));
 		while (!cursor.Next!.MatchLdstr(
 			       "Creating world - Seed: {0}, Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}"))
-		{
 			cursor.Remove();
-		}
 
 		cursor.GotoNext(MoveType.Before,
 			instruction => instruction.MatchLdsfld(typeof(WorldGen).GetField(nameof(WorldGen.everythingWorldGen),
 				BindingFlags.Public | BindingFlags.Static)!));
-		while (!(cursor.Next!.OpCode == OpCodes.Brfalse_S))
-		{
-			cursor.Remove();
-		}
+		while (!(cursor.Next!.OpCode == OpCodes.Brfalse_S)) cursor.Remove();
 
 		cursor.OptionContains("Zenith.StarGame");
 	}

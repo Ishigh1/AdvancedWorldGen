@@ -108,7 +108,8 @@ public class OverhauledWorldGenConfigurator : UIState
 				uiPanel.Add(enumInput);
 				break;
 			default:
-				throw new ArgumentOutOfRangeException(nameof(jToken), $"{jToken.Type} not implemented for serialization");
+				throw new ArgumentOutOfRangeException(nameof(jToken),
+					$"{jToken.Type} not implemented for serialization");
 		}
 	}
 

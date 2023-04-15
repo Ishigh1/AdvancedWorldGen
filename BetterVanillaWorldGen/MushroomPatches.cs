@@ -9,21 +9,13 @@ public class MushroomPatches : ControlledWorldGenPass
 	protected override void ApplyPass()
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.13");
-		
+
 		if (WorldGen.remixWorldGen)
-		{
 			for (int num927 = 10; num927 < Main.maxTilesX - 10; num927++)
-			{
-				for (int num928 = Main.maxTilesY + WorldGen.genRand.Next(3) - 350; num928 < Main.maxTilesY - 10; num928++)
-				{
-					if (Main.tile[num927, num928].TileType == 0)
-					{
-						Main.tile[num927, num928].TileType = 59;
-					}
-				}
-			}
-		}
-		
+			for (int num928 = Main.maxTilesY + WorldGen.genRand.Next(3) - 350; num928 < Main.maxTilesY - 10; num928++)
+				if (Main.tile[num927, num928].TileType == 0)
+					Main.tile[num927, num928].TileType = 59;
+
 		int mushroomBiomes = (int)Math.Max(1, Math.Sqrt(Main.maxTilesX * Main.maxTilesY) / 374);
 
 		RTree mushroomBiomesRectangles = RTree.Root();

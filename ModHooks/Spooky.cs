@@ -3,6 +3,7 @@
 public class Spooky : ModSystem
 {
 	private ILHook? Hook;
+
 	private static ILContext.Manipulator GetManipulator(ILContext.Manipulator self)
 	{
 		return self;

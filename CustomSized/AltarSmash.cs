@@ -165,14 +165,13 @@ public static class AltarSmash
 				};
 				yy = WorldGen.genRand.Next((int)Main.worldSurface + 15, (int)max);
 			}
+
 			if (Main.tenthAnniversaryWorld)
-			{
-				WorldGen.OreRunner(xx, yy, WorldGen.genRand.Next(5, 11 + num4), WorldGen.genRand.Next(5, 11 + num4), (ushort)num);
-			}
+				WorldGen.OreRunner(xx, yy, WorldGen.genRand.Next(5, 11 + num4), WorldGen.genRand.Next(5, 11 + num4),
+					(ushort)num);
 			else
-			{
-				WorldGen.OreRunner(xx, yy, WorldGen.genRand.Next(5, 9 + num4), WorldGen.genRand.Next(5, 9 + num4), (ushort)num);
-			}
+				WorldGen.OreRunner(xx, yy, WorldGen.genRand.Next(5, 9 + num4), WorldGen.genRand.Next(5, 9 + num4),
+					(ushort)num);
 		}
 
 		int num9 = WorldGen.genRand.Next(3);

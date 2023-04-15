@@ -2,9 +2,9 @@
 
 public class Preset : UITextPanel<string>
 {
-	private string Name;
-	private string Content;
-	private PresetUI PresetUI;
+	private readonly string Content;
+	private readonly string Name;
+	private readonly PresetUI PresetUI;
 
 	public Preset(string key, string value, PresetUI parent) : base(key)
 	{

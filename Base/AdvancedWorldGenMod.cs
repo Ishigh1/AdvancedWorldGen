@@ -22,14 +22,14 @@ public class AdvancedWorldGenMod : Mod
 			typeof(WorkshopHelper).GetMethod("PublishMod", BindingFlags.NonPublic | BindingFlags.Static)!;
 		new Hook(method, Crash); // Prevents me from sending the dev version again
 #endif
-		
+
 		//Remove ThreadInterruptedException from logging (interrupting thread.sleep)
 		Logging.IgnoreExceptionContents("System.Threading.ThreadInterruptedException");
 
 		if (!Directory.Exists(FolderPath))
 			Directory.CreateDirectory(FolderPath);
 		Legacy.MoveFiles();
-		
+
 		TileReplacer.Initialize();
 
 		UiChanger = new UiChanger(this);

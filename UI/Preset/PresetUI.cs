@@ -2,13 +2,14 @@
 
 public class PresetUI : UIState
 {
-	public static string DataPath => Path.Combine(AdvancedWorldGenMod.FolderPath, "Presets.nbt");
-	private OptionsSelector PreviousState;
+	private readonly OptionsSelector PreviousState;
 
 	public PresetUI(OptionsSelector previousState)
 	{
 		PreviousState = previousState;
 	}
+
+	public static string DataPath => Path.Combine(AdvancedWorldGenMod.FolderPath, "Presets.nbt");
 
 	public override void OnInitialize()
 	{
@@ -21,7 +22,7 @@ public class PresetUI : UIState
 			BackgroundColor = UICommon.MainPanelBackground
 		};
 		Append(uiPanel);
-		
+
 		UIText uiTitle = new("Presets", 0.75f, true) { HAlign = 0.5f };
 		uiTitle.Height = uiTitle.MinHeight;
 		uiPanel.Append(uiTitle);
@@ -69,10 +70,7 @@ public class PresetUI : UIState
 		if (File.Exists(DataPath))
 		{
 			TagCompound tagCompound = TagIO.FromFile(DataPath);
-			foreach ((string key, object value) in tagCompound)
-			{
-				uiList.Add(new Preset(key, (string)value, this));
-			}
+			foreach ((string key, object value) in tagCompound) uiList.Add(new Preset(key, (string)value, this));
 		}
 
 		UITextPanel<string> newPresetButton = new(Language.GetTextValue("Add Preset"))
@@ -107,10 +105,7 @@ public class PresetUI : UIState
 			tagCompound.Set(text, OptionsParser.GetJsonText(false), true);
 			TagIO.ToFile(tagCompound, DataPath);
 			Main.MenuUI.SetState(new PresetUI(PreviousState));
-		}, () =>
-		{
-			Main.MenuUI.SetState(new PresetUI(PreviousState));
-		});
+		}, () => { Main.MenuUI.SetState(new PresetUI(PreviousState)); });
 		Main.MenuUI.SetState(uIVirtualKeyboard);
 	}
 

@@ -3,6 +3,7 @@ namespace AdvancedWorldGen.ModHooks;
 public class WorldGenPreviewer : ModSystem
 {
 	private Hook? Hook;
+
 	public override void Load()
 	{
 		if (ModLoader.TryGetMod("WorldGenPreviewer", out Mod mod) &&

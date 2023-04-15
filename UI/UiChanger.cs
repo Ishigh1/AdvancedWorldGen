@@ -1,3 +1,5 @@
+using AdvancedWorldGen.Analytics;
+
 namespace AdvancedWorldGen.UI;
 
 public class UiChanger
@@ -36,13 +38,13 @@ public class UiChanger
 				try
 				{
 					orig(threadContext);
-					Analytics.AnalyticSystem.Instance.SendData();
+					AnalyticSystem.Instance.SendData();
 				}
 				catch (Exception exception)
 				{
 					if (Main.tile.Width > 0)
 					{
-						Analytics.AnalyticSystem.Instance.SendData(exception.StackTrace);
+						AnalyticSystem.Instance.SendData(exception.StackTrace);
 						EmergencySaving("Failed");
 					}
 				}

@@ -23,11 +23,11 @@ public class ResetPass : ControlledWorldGenPass
 		Main.cloudAlpha = 0f;
 		Main.maxRaining = 0f;
 		Main.raining = false;
-		
+
 		//Became private
 		//WorldGen.heartCount = 0;
 		new FieldAccessor<int>(typeof(WorldGen), "heartCount").Value = 0;
-		
+
 		GenVars.extraBastStatueCount = 0;
 		GenVars.extraBastStatueCountMax = 2 + Main.maxTilesX / 2100;
 		Main.checkXMas();
@@ -146,6 +146,7 @@ public class ResetPass : ControlledWorldGenPass
 			minShift = 15;
 			maxShift = 30;
 		}
+
 		int shift = (int)(Main.maxTilesX * WorldGen.genRand.Next(minShift, maxShift) * 0.01f);
 		GenVars.jungleOriginX = dungeonSide == 1 ? shift : Main.maxTilesX - shift;
 
@@ -200,7 +201,9 @@ public class ResetPass : ControlledWorldGenPass
 
 		int leftBeachEnd;
 		if (WorldGen.tenthAnniversaryWorldGen && !WorldGen.everythingWorldGen)
+		{
 			leftBeachEnd = beachSandRandomCenter + beachSandRandomWidthRange;
+		}
 		else
 		{
 			leftBeachEnd = beachSandRandomCenter +
@@ -214,10 +217,8 @@ public class ResetPass : ControlledWorldGenPass
 		if (WorldGen.tenthAnniversaryWorldGen && !WorldGen.everythingWorldGen)
 			rightBeachStart = Main.maxTilesX - beachSandRandomCenter + beachSandRandomWidthRange;
 		else
-		{
 			rightBeachStart = Main.maxTilesX - beachSandRandomCenter +
 			                  WorldGen.genRand.Next(-beachSandRandomWidthRange, beachSandRandomWidthRange + 1);
-		}
 
 		rightBeachStart -= dungeonSide == -1 ? beachSandDungeonExtraWidth : beachSandJungleExtraWidth;
 		GenVars.rightBeachStart = rightBeachStart;
@@ -230,7 +231,7 @@ public class ResetPass : ControlledWorldGenPass
 				WorldGen.genRand.Next((int)(Main.maxTilesX * 0.8), rightBeachStart - dungeonShift);
 
 		Main.tileSolid[659] = false;
-		
+
 		// Allow worlds to be bigger than x >= 31000, I don't like this fix though, fixed size arrays are bad.
 		int numCaves = Math.Max(30, (int)(Main.maxTilesX * 0.001));
 		GenVars.mCaveX = new int[numCaves];

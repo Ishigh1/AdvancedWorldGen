@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.CustomSized;
 
 public static class HardmodeConversion
 {
-	#if TEMP
+#if TEMP
 	public delegate void orig_GERunner(int i, int j, double speedX, double speedY, bool good);
 	public static void ReplaceHardmodeConversion(orig_GERunner orig, int x, int y, double speedX,
 		double speedY, bool good)
@@ -91,17 +91,17 @@ public static class HardmodeConversion
 							Main.tile[m, n].TileType = 109;
 							break;
 						case 1:
-							case 25:
-								case 203:
+						case 25:
+						case 203:
 							Main.tile[m, n].TileType = 117;
 							break;
 						case 53:
 						case 123:
-							case 234:
+						case 234:
 							Main.tile[m, n].TileType = 116;
 							break;
 						case 661:
-							case 662:
+						case 662:
 							Main.tile[m, n].TileType = 60;
 							break;
 						case 23:
@@ -122,6 +122,7 @@ public static class HardmodeConversion
 						default:
 							goto skipTileFrame;
 					}
+
 					WorldGen.SquareTileFrame(m, n);
 				}
 				else if (WorldGen.crimson)
@@ -151,16 +152,16 @@ public static class HardmodeConversion
 							Main.tile[m, n].TileType = 399;
 							break;
 						case 60:
-							case 661:
-								
+						case 661:
+
 							Main.tile[m, n].TileType = 662;
 							break;
 						case 2:
-							case 109:
+						case 109:
 							Main.tile[m, n].TileType = 199;
 							break;
 						case 1:
-							case 117:
+						case 117:
 							Main.tile[m, n].TileType = 203;
 							break;
 						case 53:
@@ -181,6 +182,7 @@ public static class HardmodeConversion
 						default:
 							goto skipTileFrame;
 					}
+
 					WorldGen.SquareTileFrame(m, n);
 				}
 				else
@@ -213,8 +215,8 @@ public static class HardmodeConversion
 							Main.tile[m, n].TileType = 398;
 							break;
 						case 60:
-							case 662:
-								
+						case 662:
+
 							Main.tile[m, n].TileType = 661;
 							break;
 						case 2:
@@ -236,9 +238,11 @@ public static class HardmodeConversion
 						default:
 							goto skipTileFrame;
 					}
+
 					WorldGen.SquareTileFrame(m, n);
 				}
 			}
+
 			skipTileFrame:
 
 			vector += vector2;

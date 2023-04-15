@@ -770,6 +770,7 @@ public partial class DungeonPass
 					contain = ItemID.StormTigerStaff;
 					break;
 			}
+
 			bool chestPlaced = false;
 			while (!chestPlaced)
 			{
@@ -777,7 +778,7 @@ public partial class DungeonPass
 				int randY = WorldGen.genRand.Next((int)Main.worldSurface, GenVars.dMaxY);
 				if (!Main.wallDungeon[Main.tile[randX, randY].WallType] || Main.tile[randX, randY].HasTile)
 					continue;
-				
+
 				chestPlaced = GenerationChests.AddBuriedChest(randX, randY, contain, false, style2, chestTileType);
 			}
 		}

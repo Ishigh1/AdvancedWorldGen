@@ -1,8 +1,9 @@
-namespace AdvancedWorldGen.CustomSized.Secret;
+﻿namespace AdvancedWorldGen.Secret;
 
 public class Special : ModSystem
 {
 	public static bool TempleWorld;
+	public static string? SecretString;
 
 	public override void Load()
 	{
@@ -18,6 +19,14 @@ public class Special : ModSystem
 				pass.Name is not ("Reset" or "Smooth World" or "NPCs" or "Lihzahrd Altars" or "Final Cleanup"));
 			tasks.Insert(1, new TempleWorld());
 		}
+
+		if (SecretString == "Spookypizza")
+		{
+			totalWeight = 0;
+			tasks.Clear();
+			Main.spawnTileX = 10;
+			Main.spawnTileY = 10;
+		}
 	}
 
 	public override void ModifyHardmodeTasks(List<GenPass> tasks)
@@ -28,6 +37,7 @@ public class Special : ModSystem
 	public override void OnWorldUnload()
 	{
 		TempleWorld = false;
+		SecretString = null;
 	}
 
 	public override void SaveWorldData(TagCompound tag)

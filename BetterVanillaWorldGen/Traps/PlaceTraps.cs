@@ -36,7 +36,6 @@ public static class PlaceTraps
 			flag = true;
 
 		if (Main.remixWorld)
-		{
 			type = type switch
 			{
 				-1 when WorldGen.genRand.Next(20) == 0 => 2,
@@ -44,7 +43,6 @@ public static class PlaceTraps
 				-1 => WorldGen.genRand.Next(2),
 				_ => type
 			};
-		}
 		else
 			type = type switch
 			{
@@ -77,16 +75,10 @@ public static class PlaceTraps
 		}
 
 		if (type == 1)
-		{
 			for (int i = x - 3; i <= x + 3; i++)
-			{
-				for (int j = y - 3; j <= y + 3; j++)
-				{
-					if (Main.tile[i, j].TileType is 147 or 161)
-						type = 0;
-				}
-			}
-		}
+			for (int j = y - 3; j <= y + 3; j++)
+				if (Main.tile[i, j].TileType is 147 or 161)
+					type = 0;
 
 		if (WorldGen.noTrapsWorldGen)
 			Main.tileSolid[138] = false;
@@ -157,27 +149,21 @@ public static class PlaceTraps
 				}
 				else
 				{
-					if (!flag5)
-					{
-						return false;
-					}
+					if (!flag5) return false;
 
 					num20 = num22;
 					num26 = 1;
 				}
 
-				if (Main.tile[num20, num21].TileType == 190)
-				{
-					return false;
-				}
+				if (Main.tile[num20, num21].TileType == 190) return false;
 
 				if (Main.tile[x, y].WallType > 0)
-					WorldGen.PlaceTile(x, y, 135, mute: true, forced: true, -1, 2);
+					WorldGen.PlaceTile(x, y, 135, true, true, -1, 2);
 				else
-					WorldGen.PlaceTile(x, y, 135, mute: true, forced: true, -1, WorldGen.genRand.Next(2, 4));
+					WorldGen.PlaceTile(x, y, 135, true, true, -1, WorldGen.genRand.Next(2, 4));
 
 				WorldGen.KillTile(num20, num21);
-				WorldGen.PlaceTile(num20, num21, 137, mute: true, forced: true);
+				WorldGen.PlaceTile(num20, num21, 137, true, true);
 				if (num26 == 1)
 					Main.tile[num20, num21].TileFrameX += 18;
 
@@ -219,70 +205,49 @@ public static class PlaceTraps
 					bool flag4 = true;
 					int num5 = 0;
 					for (int m = num3 - 2; m <= num3 + 3; m++)
+					for (int n = num4; n <= num4 + 3; n++)
 					{
-						for (int n = num4; n <= num4 + 3; n++)
-						{
-							if (!WorldGen.SolidTile(m, n))
-								flag4 = false;
+						if (!WorldGen.SolidTile(m, n))
+							flag4 = false;
 
-							if (Main.tile[m, n].HasTile)
+						if (Main.tile[m, n].HasTile)
+							switch (Main.tile[m, n].TileType)
 							{
-								switch (Main.tile[m, n].TileType)
-								{
-									case 226:
-										return false;
-									case 0 or 1 or 59:
-										num5++;
-										break;
-								}
+								case 226:
+									return false;
+								case 0 or 1 or 59:
+									num5++;
+									break;
 							}
-						}
 					}
 
 					num4--;
-					if (num4 < Main.worldSurface)
-					{
-						return false;
-					}
+					if (num4 < Main.worldSurface) return false;
 
 					if (flag4 && num5 > 2)
 						flag3 = false;
 				}
 
-				if (y - num4 <= 5 || y - num4 >= 40)
-				{
-					return false;
-				}
+				if (y - num4 <= 5 || y - num4 >= 40) return false;
 
 				for (int num6 = num3; num6 <= num3 + 1; num6++)
-				{
-					for (int num7 = num4; num7 <= y; num7++)
-					{
-						WorldGen.KillTile(num6, num7);
-					}
-				}
+				for (int num7 = num4; num7 <= y; num7++)
+					WorldGen.KillTile(num6, num7);
 
 				for (int num8 = num3 - 2; num8 <= num3 + 3; num8++)
-				{
-					for (int num9 = num4 - 2; num9 <= num4 + 3; num9++)
-					{
-						if (WorldGen.SolidTile(num8, num9))
-							Main.tile[num8, num9].TileType = 1;
-					}
-				}
+				for (int num9 = num4 - 2; num9 <= num4 + 3; num9++)
+					if (WorldGen.SolidTile(num8, num9))
+						Main.tile[num8, num9].TileType = 1;
 
-				if (WorldGen.IsTileNearby(num3, num4, 21, 4) || WorldGen.IsTileNearby(num3, num4, 467, 4))
-				{
-					return false;
-				}
+				if (WorldGen.IsTileNearby(num3, num4, 21, 4) || WorldGen.IsTileNearby(num3, num4, 467, 4)) return false;
 
-				WorldGen.PlaceTile(x, y, 135, mute: true, forced: true, -1, 7);
-				WorldGen.PlaceTile(num3, num4 + 2, 130, mute: true);
-				WorldGen.PlaceTile(num3 + 1, num4 + 2, 130, mute: true);
+				WorldGen.PlaceTile(x, y, 135, true, true, -1, 7);
+				WorldGen.PlaceTile(num3, num4 + 2, 130, true);
+				WorldGen.PlaceTile(num3 + 1, num4 + 2, 130, true);
 				if ((WorldGen.tenthAnniversaryWorldGen || WorldGen.noTrapsWorldGen) && WorldGen.genRand.Next(3) == 0)
-					WorldGen.PlaceTile(num3 + 1, num4 + 1, 664, mute: true);
+					WorldGen.PlaceTile(num3 + 1, num4 + 1, 664, true);
 				else
-					WorldGen.PlaceTile(num3 + 1, num4 + 1, 138, mute: true);
+					WorldGen.PlaceTile(num3 + 1, num4 + 1, 138, true);
 
 				num4 += 2;
 				Tile tile = Main.tile[num3, num4];
@@ -290,12 +255,12 @@ public static class PlaceTraps
 				tile.RedWire = true;
 				tile1.RedWire = true;
 				num4++;
-				WorldGen.PlaceTile(num3, num4, 130, mute: true);
-				WorldGen.PlaceTile(num3 + 1, num4, 130, mute: true);
+				WorldGen.PlaceTile(num3, num4, 130, true);
+				WorldGen.PlaceTile(num3 + 1, num4, 130, true);
 				tile.RedWire = true;
 				tile1.RedWire = true;
-				WorldGen.PlaceTile(num3, num4 + 1, 130, mute: true);
-				WorldGen.PlaceTile(num3 + 1, num4 + 1, 130, mute: true);
+				WorldGen.PlaceTile(num3, num4 + 1, 130, true);
+				WorldGen.PlaceTile(num3 + 1, num4 + 1, 130, true);
 				Tile tile2 = Main.tile[num3, num4 + 1];
 				tile2.RedWire = true;
 				Tile tile3 = Main.tile[num3 + 1, num4 + 1];
@@ -313,20 +278,13 @@ public static class PlaceTraps
 				for (int num15 = 0; num15 < num12; num15++)
 				{
 					num14++;
-					if (!WorldGen.SolidTile(num13, num14))
-					{
-						return false;
-					}
+					if (!WorldGen.SolidTile(num13, num14)) return false;
 				}
 
 				for (int num16 = num13 - 2; num16 <= num13 + 2; num16++)
-				{
-					for (int num17 = num14 - 2; num17 <= num14 + 2; num17++)
-					{
-						if (!WorldGen.SolidTile(num16, num17))
-							return false;
-					}
-				}
+				for (int num17 = num14 - 2; num17 <= num14 + 2; num17++)
+					if (!WorldGen.SolidTile(num16, num17))
+						return false;
 
 				WorldGen.KillTile(num13, num14);
 				Tile tile = Main.tile[num13, num14];
@@ -334,7 +292,7 @@ public static class PlaceTraps
 				tile.TileType = 141;
 				tile.TileFrameX = 0;
 				tile.TileFrameY = (short)(18 * WorldGen.genRand.Next(2));
-				WorldGen.PlaceTile(x, y, 135, mute: true, forced: true, -1, WorldGen.genRand.Next(2, 4));
+				WorldGen.PlaceTile(x, y, 135, true, true, -1, WorldGen.genRand.Next(2, 4));
 				RunWire(x, y, num13, num14);
 
 				break;

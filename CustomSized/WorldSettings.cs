@@ -14,11 +14,11 @@ public class WorldSettings
 		On_WorldGen.clearWorld += SetWorldSize;
 
 		On_WorldGen.SmashAltar += AltarSmash.SmashAltar;
-		#if TEMP
+#if TEMP
 		HookEndpointManager.Add(typeof(WorldGen).GetMethod("GERunner", BindingFlags.Public | BindingFlags.Static), HardmodeConversion.ReplaceHardmodeConversion);
-		#else
+#else
 		On_WorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
-		#endif
+#endif
 		On_WorldGen.UpdateMapTile += MapRelated.UpdateMapTileInBounds;
 	}
 

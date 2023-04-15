@@ -122,7 +122,7 @@ public static class Params
 		Iron = TileExpandableList.Random;
 		Silver = TileExpandableList.Random;
 		Gold = TileExpandableList.Random;
-		
+
 		Cobalt = TileExpandableList.Random;
 		Mythril = TileExpandableList.Random;
 		Adamantite = TileExpandableList.Random;

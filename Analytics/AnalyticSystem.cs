@@ -2,10 +2,10 @@
 
 public class AnalyticSystem : ModSystem
 {
+	private HttpClient HttpClient = null!;
+	private long Id;
 	public static string DataPath => Path.Combine(AdvancedWorldGenMod.FolderPath, "Id.bin");
 	public static AnalyticSystem Instance => ModContent.GetInstance<AnalyticSystem>();
-	private long Id;
-	private HttpClient HttpClient = null!;
 
 	public override void OnModLoad()
 	{
@@ -30,14 +30,15 @@ public class AnalyticSystem : ModSystem
 			binaryWriter.Write(Id);
 		}
 
-		if (WorldgenSettings.Instance.Analytics)
-		{
-			HttpClient = new HttpClient();
-		}
+		if (WorldgenSettings.Instance.Analytics) HttpClient = new HttpClient();
 	}
 
 	public void SendData(string? log = null)
 	{
+#if SPECIALDEBUG
+		return;
+#endif
+		
 		if (WorldgenSettings.Instance.Analytics)
 		{
 			const string url = "http://awg.alwaysdata.net/register.php";
@@ -46,24 +47,20 @@ public class AnalyticSystem : ModSystem
 			{
 				new KeyValuePair<string, string>("id", Id.ToString()),
 				new KeyValuePair<string, string>("options", OptionsParser.GetJsonText()),
-				new KeyValuePair<string, string>("overhauled", WorldgenSettings.Instance.FasterWorldgen.ToInt().ToString()),
+				new KeyValuePair<string, string>("overhauled",
+					WorldgenSettings.Instance.FasterWorldgen.ToInt().ToString()),
 				new KeyValuePair<string, string>("version", AdvancedWorldGenMod.Instance.Version.ToString())
 			};
-			if (log != null)
-			{
-				arguments.Add(new KeyValuePair<string, string>("log", log));
-			}
+			if (log != null) arguments.Add(new KeyValuePair<string, string>("log", log));
 
 			if (ModifiedWorld.Instance.Times != null)
 			{
 				JObject jsonObject = new();
 				foreach ((string? key, TimeSpan value) in ModifiedWorld.Instance.Times)
-				{
 					jsonObject.Add(key, value.TotalMilliseconds);
-				}
 				arguments.Add(new KeyValuePair<string, string>("time", jsonObject.ToString()));
 			}
-			
+
 			FormUrlEncodedContent content = new(arguments);
 
 			// Send the POST request without waiting for a response

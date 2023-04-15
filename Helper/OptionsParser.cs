@@ -1,3 +1,5 @@
+using AdvancedWorldGen.Secret;
+
 namespace AdvancedWorldGen.Helper;
 
 public static class OptionsParser
@@ -12,7 +14,7 @@ public static class OptionsParser
 		catch (JsonReaderException)
 		{
 			AdvancedWorldGenMod.Instance.Logger.Info($"Error parsing JSON: {jsonText} is not valid JSON");
-			DumbSecret.SecretString = jsonText;
+			Special.SecretString = jsonText;
 			return;
 		}
 
@@ -84,9 +86,7 @@ public static class OptionsParser
 		}
 
 		if (jsonObject.TryGetValue("secretOption", out jsonNode) && jsonNode is JValue secretOption)
-		{
-			DumbSecret.SecretString = secretOption.Value?.ToString();
-		}
+			Special.SecretString = secretOption.Value?.ToString();
 	}
 
 	private static void CopyJson(JObject? source, JObject target)
@@ -147,9 +147,9 @@ public static class OptionsParser
 		jsonObject.Add("legacyParams", legacyParams);
 
 		jsonObject.Add("overhauledParams", OverhauledWorldGenConfigurator.Root);
-		
-		if (DumbSecret.SecretString != null)
-			jsonObject.Add("secretOption", DumbSecret.SecretString);
+
+		if (Special.SecretString != null)
+			jsonObject.Add("secretOption", Special.SecretString);
 
 		return jsonObject.ToString();
 	}
