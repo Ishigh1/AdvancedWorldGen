@@ -1,4 +1,4 @@
-﻿namespace AdvancedWorldGen.Secret._100k_special.Entities;
+﻿namespace AdvancedWorldGen.SpecialOptions._100k_special.Entities;
 
 public class EyeOfCthulhu : GlobalNPC
 {

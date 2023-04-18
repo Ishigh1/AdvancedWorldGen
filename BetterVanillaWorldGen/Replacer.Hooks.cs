@@ -1,6 +1,3 @@
-using AdvancedWorldGen.BetterVanillaWorldGen.Traps;
-using AdvancedWorldGen.Secret._100k_special;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public static partial class Replacer

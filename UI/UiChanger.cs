@@ -1,5 +1,3 @@
-using AdvancedWorldGen.Analytics;
-
 namespace AdvancedWorldGen.UI;
 
 public class UiChanger

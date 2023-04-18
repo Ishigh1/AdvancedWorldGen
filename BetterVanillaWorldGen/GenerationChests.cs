@@ -409,11 +409,16 @@ public static class GenerationChests
 					index++;
 				}
 
-				if (WorldGen.genRand.NextBool(2))
+				bool dimaryp = _100kWorld.Enabled && pyramid;
+				if (WorldGen.genRand.NextBool(2) || dimaryp)
 				{
-					chest.item[index].SetDefaults(ItemID.Rope);
-					chest.item[index].stack = WorldGen.genRand.Next(50, 101);
-					index++;
+					int ropeStacks = dimaryp ? 10 : 1;
+					for (int i = 0; i < ropeStacks; i++)
+					{
+						chest.item[index].SetDefaults(ItemID.Rope);
+						chest.item[index].stack = WorldGen.genRand.Next(50, 101);
+						index++;
+					}
 				}
 
 				if (WorldGen.genRand.Next(3) != 0)

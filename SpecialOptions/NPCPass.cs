@@ -1,6 +1,6 @@
 namespace AdvancedWorldGen.SpecialOptions;
 
-public class NPCPass : GenPass
+public class NPCPass : ControlledWorldGenPass
 {
 	public static readonly List<int> NPCs = new()
 	{
@@ -16,7 +16,7 @@ public class NPCPass : GenPass
 	{
 	}
 
-	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+	protected override void ApplyPass()
 	{
 		HashSet<int> availableNPCs = NPCs.ToHashSet();
 		int alreadyPlaced = 0;
@@ -83,8 +83,18 @@ public class NPCPass : GenPass
 		npc.homeTileX = spawnPointX;
 		npc.homeTileY = Main.spawnTileY;
 		npc.direction = alreadyPlaced % 2 == 0 ? 1 : -1;
-		npc.homeless = true;
 		availableNPCs.Remove(npcType);
+
+		if (_100kWorld.Enabled && alreadyPlaced == 0)
+		{
+			npc.homeless = false;
+			npc.homeTileX = Main.spawnTileX;
+			npc.homeTileY = Main.spawnTileY;
+		}
+		else
+		{
+			npc.homeless = true;
+		}
 
 		alreadyPlaced++;
 

@@ -1,5 +1,3 @@
-using AdvancedWorldGen.Secret._100k_special;
-
 namespace AdvancedWorldGen.BetterVanillaWorldGen.FloatingSky;
 
 public class FloatingIslands : ControlledWorldGenPass

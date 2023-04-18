@@ -69,6 +69,9 @@ public partial class OptionHelper
 			case PacketId.EntropyHappening:
 				new Entropy(500, reader).TreatTiles();
 				break;
+			case PacketId.Puff:
+				Bnuuy.Puff(new Vector2(reader.ReadSingle(), reader.ReadSingle()));
+				break;
 			default:
 				throw new ArgumentOutOfRangeException(nameof(packetId), packetId, null);
 		}

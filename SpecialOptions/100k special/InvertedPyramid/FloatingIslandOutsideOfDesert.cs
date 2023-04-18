@@ -1,4 +1,4 @@
-﻿namespace AdvancedWorldGen.Secret._100k_special.InvertedPyramid;
+﻿namespace AdvancedWorldGen.SpecialOptions._100k_special.InvertedPyramid;
 
 public class FloatingIslandOutsideOfDesert : ControlledWorldGenPass
 {

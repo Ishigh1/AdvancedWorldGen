@@ -1,5 +1,3 @@
-using AdvancedWorldGen.Secret;
-
 namespace AdvancedWorldGen.Helper;
 
 public static class OptionsParser

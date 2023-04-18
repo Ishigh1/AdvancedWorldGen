@@ -1,7 +1,4 @@
-﻿using AdvancedWorldGen.Secret._100k_special.Entities;
-using AdvancedWorldGen.Secret._100k_special.InvertedPyramid;
-
-namespace AdvancedWorldGen.Secret._100k_special;
+﻿namespace AdvancedWorldGen.SpecialOptions._100k_special;
 
 public class _100kWorld : ModSystem
 {
@@ -33,7 +30,12 @@ public class _100kWorld : ModSystem
 			{
 				GenPass genPass = tasks[index2];
 				tasks.RemoveAt(index2);
-				tasks.Insert(index + 1, genPass);
+				tasks.Insert(++index, genPass);
+			}
+			index2 = tasks.FindIndex(pass => pass.Name == "Spawn Point");
+			if (index2 != -1)
+			{
+				tasks.RemoveAt(index2);
 			}
 		}
 		

@@ -11,7 +11,9 @@ public class TerrainPass : ControlledWorldGenPass
 		int lowDepthBeachSize = Configuration.Get<int>("FlatBeachPadding");
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.0");
 		TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
-		int worldSurface = (int)(Main.maxTilesY * 0.3 * WorldGen.genRand.Next(90, 110) * 0.005);
+		int worldSurface = _100kWorld.Enabled
+			? (int)(Main.maxTilesY * 0.4 * WorldGen.genRand.Next(90, 110) * 0.005)
+			: (int)(Main.maxTilesY * 0.3 * WorldGen.genRand.Next(90, 110) * 0.005);
 		int rockLayer;
 
 		if (WorldGen.remixWorldGen)

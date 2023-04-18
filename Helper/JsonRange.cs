@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Converters;
-
-namespace AdvancedWorldGen.Helper;
+﻿namespace AdvancedWorldGen.Helper;
 
 public class JsonRange
 {
