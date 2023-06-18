@@ -158,11 +158,22 @@ public class AdvancedWorldGenMod : Mod
 					break;
 
 				// Syntax : Call("Disable Option", optionName);
-				case "Disable Option" when argCount is 3:
+				case "Disable Option" when argCount is 2:
 				{
 					if (args[1] is string optionName)
 						if (OptionHelper.OptionDict.TryGetValue(optionName, out Option? option))
 							option.Disable();
+				}
+					break;
+				
+				// Syntax : Call("Set Default Size", x, y);
+				case "Set Default Size" when argCount is 3:
+				{
+					if (args[1] is int baseX && args[2] is int baseY)
+					{
+						WorldSettings.BaseX = baseX;
+						WorldSettings.BaseY = baseY;
+					}
 				}
 					break;
 			}

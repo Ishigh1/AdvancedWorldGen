@@ -3,6 +3,8 @@ namespace AdvancedWorldGen.CustomSized;
 public class WorldSettings
 {
 	public UIWorldCreation UIWorldCreation = null!;
+	public static int BaseX;
+	public static int BaseY;
 
 	public WorldSettings()
 	{
@@ -14,11 +16,7 @@ public class WorldSettings
 		On_WorldGen.clearWorld += SetWorldSize;
 
 		On_WorldGen.SmashAltar += AltarSmash.SmashAltar;
-#if TEMP
-		HookEndpointManager.Add(typeof(WorldGen).GetMethod("GERunner", BindingFlags.Public | BindingFlags.Static), HardmodeConversion.ReplaceHardmodeConversion);
-#else
 		On_WorldGen.GERunner += HardmodeConversion.ReplaceHardmodeConversion;
-#endif
 		On_WorldGen.UpdateMapTile += MapRelated.UpdateMapTileInBounds;
 	}
 
@@ -26,9 +24,20 @@ public class WorldSettings
 	{
 		orig(self);
 		UIWorldCreation = self;
-		SetSizeTo(ModLoader.TryGetMod("CalamityMod", out Mod _)
-			? 2
-			: 1); //Calamity have large worlds by defaults and do it in a way that fucks with this logic
+		if (BaseX <= 0 && BaseY <= 0)
+		{
+			SetSizeTo(ModLoader.TryGetMod("CalamityMod", out Mod _)
+				? 2
+				: 1); //Calamity have large worlds by defaults and do it in a way that fucks with this logic
+		}
+
+		if (BaseX > 0)
+			Params.SizeX = BaseX;
+		if (BaseY > 0)
+			Params.SizeY = BaseY;
+		if (BaseX > 0 || BaseY > 0)
+			ApplySize();
+
 		AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator?.Dispose();
 		AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator = new VanillaWorldGenConfigurator();
 		AdvancedWorldGenMod.Instance.UiChanger.OverhauledWorldGenConfigurator = new OverhauledWorldGenConfigurator();
@@ -42,6 +51,29 @@ public class WorldSettings
 		FieldAccessor<int> optionSize = VanillaInterface.OptionSize(self);
 		int newSize = optionSize.Value;
 		SetSizeTo(newSize);
+	}
+
+	public void ApplySize()
+	{
+		int size = Params.SizeX switch
+		{
+			4200 when Params.SizeY == 1200 => 0,
+			6400 when Params.SizeY == 1800 => 1,
+			8400 when Params.SizeY == 2400 => 2,
+			_ => -1
+		};
+
+		FieldAccessor<int> optionSize = VanillaInterface.OptionSize(UIWorldCreation);
+		optionSize.Value = size;
+
+		object[] sizeButtons = VanillaInterface.SizeButtons(UIWorldCreation).Value;
+
+		Type groupOptionButtonType = sizeButtons.GetType().GetElementType()!;
+		MethodInfo setCurrentOptionMethod =
+			groupOptionButtonType.GetMethod("SetCurrentOption", BindingFlags.Instance | BindingFlags.Public)!;
+
+		foreach (object groupOptionButton in sizeButtons)
+			setCurrentOptionMethod.Invoke(groupOptionButton, new object[] { size });
 	}
 
 	private static void SetSizeTo(int sizeId)
