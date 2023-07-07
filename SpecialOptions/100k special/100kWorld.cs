@@ -2,25 +2,12 @@
 
 public class _100kWorld : ModSystem
 {
-	public static bool Enabled => true;
-	
-	public override void OnWorldLoad()
-	{
-		EyeOfCthulhu.CurrentlyFighting = false;
-	}
-
-	public override void LoadWorldData(TagCompound tag)
-	{
-		EyeOfCthulhu.CurrentlyFighting = tag.GetBool(nameof(EyeOfCthulhu.CurrentlyFighting));
-	}
-
-	public override void SaveWorldData(TagCompound tag)
-	{
-		tag.Set(nameof(EyeOfCthulhu.CurrentlyFighting), EyeOfCthulhu.CurrentlyFighting);
-	}
+	public static bool Enabled => false;
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 	{
+		if (!Enabled)
+			return;
 		int index = tasks.FindIndex(pass => pass.Name == "Pyramids");
 		if (index != -1 && tasks[index].GetType().Assembly == typeof(PassLegacy).Assembly)
 		{
@@ -43,12 +30,16 @@ public class _100kWorld : ModSystem
 
 	public static void Replace()
 	{
+		if (!Enabled)
+			return;
 		if (!WorldgenSettings.Instance.FasterWorldgen)
 			On_WorldGen.FloatingIsland += FloatingIslandOutsideOfDesert.IDontHaveAnyIdeaAsTheClassNameSaysAll;
 	}
 
 	public static void Unreplace()
 	{
+		if (!Enabled)
+			return;
 		if (!WorldgenSettings.Instance.FasterWorldgen)
 			On_WorldGen.FloatingIsland += FloatingIslandOutsideOfDesert.IDontHaveAnyIdeaAsTheClassNameSaysAll;
 	}

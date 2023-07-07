@@ -33,6 +33,7 @@ public class Bnuuy : GlobalNPC
 
 	public override void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
 	{
+		if (!_100kWorld.Enabled) return;
 		if (!npc.lavaWet)
 		{
 			if (npc.type != NPCID.ExplosiveBunny)

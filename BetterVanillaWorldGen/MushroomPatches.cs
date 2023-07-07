@@ -101,8 +101,7 @@ public class MushroomPatches : ControlledWorldGenPass
 			if (x >= jungleMinX)
 				x += jungleSpread;
 
-			int y;
-			y = Main.rockLayer + 200 < Main.UnderworldLayer
+			int y = Main.rockLayer + 200 < Main.UnderworldLayer
 				? WorldGen.genRand.Next((int)Main.rockLayer + 50, Main.UnderworldLayer - 100)
 				: WorldGen.genRand.Next((int)Main.rockLayer, Main.UnderworldLayer);
 
