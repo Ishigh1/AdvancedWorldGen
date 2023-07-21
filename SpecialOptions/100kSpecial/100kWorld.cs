@@ -9,6 +9,8 @@ public class _100kWorld : ModSystem
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 	{
+		if (!Enabled)
+			return;
 		int index = tasks.FindIndex(pass => pass.Name == "Pyramids");
 		if (index != -1)
 		{
