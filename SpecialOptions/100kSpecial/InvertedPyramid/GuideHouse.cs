@@ -1,4 +1,4 @@
-﻿namespace AdvancedWorldGen.SpecialOptions._100k_special.InvertedPyramid;
+﻿namespace AdvancedWorldGen.SpecialOptions._100kSpecial.InvertedPyramid;
 
 public class GuideHouse
 {

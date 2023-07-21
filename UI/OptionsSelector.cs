@@ -324,7 +324,7 @@ public class OptionsSelector : UIState
 
 		CreateOptionList();
 
-		double maxSize = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (double)KnownLimits.DataLoad;
+		double maxSize = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (double)KnownLimits.EweLoad;
 		double ratio = Main.rand.NextFloat(2, 5);
 		double lambda = 7 / maxSize;
 		double size = -Math.Log(Main.rand.NextDouble()) / lambda + 1_000_000;

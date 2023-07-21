@@ -1,3 +1,5 @@
+using AdvancedWorldGen.SpecialOptions._100kSpecial;
+
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public static partial class Replacer
@@ -5,7 +7,7 @@ public static partial class Replacer
 	private static List<GenPass>? GenPasses;
 	public static List<Hook>? TimerHooks;
 
-	public static void Replace()
+	public static void WorldgenReplace()
 	{
 		if (WorldgenSettings.Instance.FasterWorldgen)
 		{
@@ -18,10 +20,10 @@ public static partial class Replacer
 		if (!WorldgenSettings.Instance.VanillaWeight)
 			On_WorldGenerator.GenerateWorld += ChangeWeights;
 
-		_100kWorld.Replace();
+		_100kWorld.WorldgenReplace();
 	}
 
-	public static void Unreplace()
+	public static void WorldgenUnreplace()
 	{
 		if (WorldgenSettings.Instance.FasterWorldgen)
 		{
@@ -34,7 +36,17 @@ public static partial class Replacer
 		if (!WorldgenSettings.Instance.VanillaWeight)
 			On_WorldGenerator.GenerateWorld -= ChangeWeights;
 		
-		_100kWorld.Unreplace();
+		_100kWorld.WorldgenUnreplace();
+	}
+
+	public static void IngameReplace()
+	{
+		_100kWorld.IngameReplace();
+	}
+	
+	public static void IngameUnreplace()
+	{
+		_100kWorld.IngameUnreplace();
 	}
 
 	private static void ReplaceDesertHive(On_DesertHive.orig_Place orig,

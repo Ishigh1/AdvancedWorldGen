@@ -1,4 +1,4 @@
-﻿namespace AdvancedWorldGen.SpecialOptions._100k_special.InvertedPyramid;
+﻿namespace AdvancedWorldGen.SpecialOptions._100kSpecial.InvertedPyramid;
 
 public class Dimaryp : ControlledWorldGenPass
 {
@@ -179,7 +179,8 @@ public class Dimaryp : ControlledWorldGenPass
 			_ => num25
 		};
 
-		GenerationChests.AddBuriedChest((num23 + num24) / 2, entranceStartY + playerHeight, num25, notNearOtherChests: false, 1);
+		GenerationChests.AddBuriedChest((num23 + num24) / 2, entranceStartY + playerHeight, num25,
+			notNearOtherChests: false, 1);
 		int num26 = _random.Next(1, 10);
 		for (int num27 = 0; num27 < num26; num27++)
 		{
@@ -224,6 +225,9 @@ public class Dimaryp : ControlledWorldGenPass
 				break;
 			}
 		}
+
+		if (holeLeft == -1 || holeRight == -1)
+			throw new Exception("Hole not found !");
 
 		new GuideHouse(holeLeft, holeRight, bottomY).GenerateHouse();
 
@@ -270,12 +274,13 @@ public class Dimaryp : ControlledWorldGenPass
 			int y = bottomY - up - 1;
 			while (x < middleLeft || y < bottomY)
 			{
-				for (int j = y;; j++)
+				int j = y;
+				while (true)
 				{
 					Tile tile = Main.tile[x, j];
-					if (tile.HasTile)
-						break;
+					if (tile.HasTile) break;
 					tile.ResetToType(TileID.Dirt);
+					j++;
 				}
 
 				if (x < middleLeft && _random.NextBool(5))
@@ -290,7 +295,7 @@ public class Dimaryp : ControlledWorldGenPass
 
 		#endregion
 
-		#region border left
+		#region border right
 
 		depth = _random.Next(3, 9);
 		up = 0;
@@ -329,7 +334,7 @@ public class Dimaryp : ControlledWorldGenPass
 		int middleRight = (endRightHill + farRight) / 2;
 		{
 			int y = bottomY - up - 1;
-			while (x < middleLeft || y < bottomY)
+			while (x > middleRight || y < bottomY)
 			{
 				for (int j = y;; j++)
 				{
@@ -338,7 +343,7 @@ public class Dimaryp : ControlledWorldGenPass
 						break;
 					tile.ResetToType(TileID.Dirt);
 				}
-				
+
 				if (x > middleRight && _random.NextBool(5))
 					y--;
 				else if (x < middleRight && _random.NextBool(4))

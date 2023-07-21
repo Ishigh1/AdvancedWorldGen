@@ -1,3 +1,5 @@
+using AdvancedWorldGen.SpecialOptions._100kSpecial;
+
 namespace AdvancedWorldGen.BetterVanillaWorldGen;
 
 public class TerrainPass : ControlledWorldGenPass

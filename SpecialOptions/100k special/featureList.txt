@@ -1,5 +1,0 @@
-This is a list of implemented things up to now :
-- Inverted pyramid above the desert, with an house on it. The spawn is located threr
-- All bunnies are named "Baba", enemies can't kill them, but if they die, they spawn a jungle turtle or the moon lord instead (for the explosive one)
-- Brain of Corruption behaves like Eater of World should
-- The surface is lower than usual on overhauled, to leave space to the many things above ground

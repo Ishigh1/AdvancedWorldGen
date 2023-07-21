@@ -1,3 +1,5 @@
+using AdvancedWorldGen.SpecialOptions._100kSpecial;
+
 namespace AdvancedWorldGen.SpecialOptions;
 
 public class NPCPass : ControlledWorldGenPass

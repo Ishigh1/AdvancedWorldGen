@@ -30,7 +30,7 @@ public class ModifiedWorld : ModSystem
 		}
 	}
 
-	public void SaveWeights()
+	private void SaveWeights()
 	{
 		using StreamWriter writer = new(DataPath);
 		writer.Write(JsonConvert.SerializeObject(Weights));
@@ -38,7 +38,13 @@ public class ModifiedWorld : ModSystem
 
 	public override void OnWorldLoad()
 	{
+		Replacer.IngameReplace();
 		OptionHelper.ClearAll();
+	}
+
+	public override void OnWorldUnload()
+	{
+		Replacer.IngameUnreplace();
 	}
 
 	public override void LoadWorldData(TagCompound tag)
@@ -88,7 +94,8 @@ public class ModifiedWorld : ModSystem
 
 	public override void PreWorldGen()
 	{
-		Replacer.Replace();
+		Replacer.WorldgenReplace();
+		Replacer.IngameReplace();
 		bool notTheBees = OptionHelper.OptionsContains("NotTheBees");
 		Main.notTheBeesWorld |= notTheBees;
 		WorldGen.notTheBees |= notTheBees;
@@ -127,7 +134,8 @@ public class ModifiedWorld : ModSystem
 
 	public override void PostWorldGen()
 	{
-		Replacer.Unreplace();
+		Replacer.IngameUnreplace();
+		Replacer.WorldgenUnreplace();
 		if (Times != null)
 		{
 			double totalTime = 0;

@@ -1,4 +1,6 @@
-﻿namespace AdvancedWorldGen.Base;
+﻿using AdvancedWorldGen.SpecialOptions._100kSpecial.Entities;
+
+namespace AdvancedWorldGen.Base;
 
 public partial class OptionHelper
 {
