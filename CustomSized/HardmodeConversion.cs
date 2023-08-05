@@ -2,14 +2,8 @@ namespace AdvancedWorldGen.CustomSized;
 
 public static class HardmodeConversion
 {
-#if TEMP
-	public delegate void orig_GERunner(int i, int j, double speedX, double speedY, bool good);
-	public static void ReplaceHardmodeConversion(orig_GERunner orig, int x, int y, double speedX,
-		double speedY, bool good)
-#else
-	public static void ReplaceHardmodeConversion(On_WorldGen.orig_GERunner orig, int x, int y, double speedX,
-		double speedY, bool good)
-#endif
+	public static void ReplaceHardmodeConversion(On_WorldGen.orig_GERunner orig, int baseX, int baseY, double baseSpeedX,
+		double baseSpeedY, bool good)
 	{
 		bool calamity = false;
 
@@ -22,38 +16,40 @@ public static class HardmodeConversion
 
 		if (!WorldgenSettings.Instance.FasterWorldgen || calamity)
 		{
-			orig(x, y, speedX, speedY, good);
+			orig(baseX, baseY, baseSpeedX, baseSpeedY, good);
 			return;
 		}
 
 
 		float worldSize = Main.maxTilesX / 4200f;
-		float num2 = WorldGen.genRand.Next(200, 250) * worldSize;
-		Vector2D vector = default;
-		vector.X = x;
-		vector.Y = y;
-		Vector2D vector2 = default;
-		vector2.X = WorldGen.genRand.Next(-10, 11) * 0.1f;
-		vector2.Y = WorldGen.genRand.Next(-10, 11) * 0.1f;
-		if (speedX != 0f || speedY != 0f)
+		float stripeSize = WorldGen.genRand.Next(200, 250) * worldSize / 2;
+		double x = baseX;
+		double y = baseY;
+		double speedX;
+		double speedY;
+		if (baseSpeedX != 0f || baseSpeedY != 0f)
 		{
-			vector2.X = speedX;
-			vector2.Y = speedY;
+			speedX = baseSpeedX;
+			speedY = baseSpeedY;
+		}
+		else
+		{
+			speedX = WorldGen.genRand.Next(-10, 11) * 0.1f;
+			speedY = WorldGen.genRand.Next(-10, 11) * 0.1f;
 		}
 
-		bool flag2 = true;
-		while (flag2)
+		while (true)
 		{
-			int num5 = Math.Max((int)(vector.X - num2 * 0.5), 0);
-			int num6 = Math.Min((int)(vector.X + num2 * 0.5), Main.maxTilesX);
-			int num7 = Math.Max((int)(vector.Y - num2 * 0.5), 0);
-			int num8 = Math.Min((int)(vector.Y + num2 * 0.5), Main.maxTilesY - 5);
+			int xMin = Math.Max((int)(x - stripeSize), 0);
+			int xMax = Math.Min((int)(x + stripeSize), Main.maxTilesX);
+			int yMin = Math.Max((int)(y - stripeSize), 0);
+			int yMax = Math.Min((int)(y + stripeSize), Main.maxTilesY - 5);
 
-			for (int m = num5; m < num6; m++)
-			for (int n = num7; n < num8; n++)
+			for (int m = xMin; m < xMax; m++)
+			for (int n = yMin; n < yMax; n++)
 			{
-				if (!(Math.Abs(m - vector.X) + Math.Abs(n - vector.Y) <
-				      num2 * 0.5 * (1.0 + WorldGen.genRand.Next(-10, 11) * 0.015)))
+				if (!(Math.Abs(m - x) + Math.Abs(n - y) <
+				      stripeSize * (1.0 + WorldGen.genRand.Next(-10, 11) * 0.015)))
 					continue;
 
 				if (good)
@@ -245,17 +241,18 @@ public static class HardmodeConversion
 
 			skipTileFrame:
 
-			vector += vector2;
-			vector2.X += WorldGen.genRand.Next(-10, 11) * 0.05f;
-			if (vector2.X > speedX + 1f)
-				vector2.X = speedX + 1f;
+			x += (float) speedX;
+			y += (float) speedY;
+			speedX += WorldGen.genRand.Next(-10, 11) * 0.05f;
+			if (speedX > baseSpeedX + 1f)
+				speedX = baseSpeedX + 1f;
 
-			if (vector2.X < speedX - 1f)
-				vector2.X = speedX - 1f;
+			if (speedX < baseSpeedX - 1f)
+				speedX = baseSpeedX - 1f;
 
-			if (vector.X < -num2 || vector.Y < -num2 ||
-			    vector.X > Main.maxTilesX + num2 || vector.Y > Main.maxTilesY + num2)
-				flag2 = false;
+			if (x < -stripeSize || y < -stripeSize ||
+			    x > Main.maxTilesX + stripeSize || y > Main.maxTilesY + stripeSize)
+				break;
 		}
 	}
 }

@@ -15,7 +15,8 @@ public class Legacy
 		#region 3.1, 04/04/2023
 
 		string presetDataPath = Path.Combine(AdvancedWorldGenMod.FolderPath, "Presets.json");
-		if (File.Exists(presetDataPath)) File.Move(presetDataPath, PresetUI.DataPath);
+		if (File.Exists(presetDataPath)) 
+			File.Move(presetDataPath, PresetUI.DataPath);
 
 		#endregion
 	}

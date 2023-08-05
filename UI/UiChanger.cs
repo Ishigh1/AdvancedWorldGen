@@ -42,7 +42,7 @@ public class UiChanger
 				{
 					if (Main.tile.Width > 0)
 					{
-						AnalyticSystem.Instance.SendData(exception.StackTrace);
+						AnalyticSystem.Instance.SendData(exception + "\n" + exception.StackTrace);
 						EmergencySaving("Failed");
 					}
 				}
