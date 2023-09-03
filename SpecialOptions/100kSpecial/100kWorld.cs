@@ -5,7 +5,11 @@ namespace AdvancedWorldGen.SpecialOptions._100kSpecial;
 
 public class _100kWorld : ModSystem
 {
+#if SPECIALDEBUG
 	public static bool Enabled => false;
+#else
+	public static bool Enabled => false;
+#endif
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 	{

@@ -134,7 +134,7 @@ public static class GenerationChests
 						? Utils.SelectRandom(WorldGen.genRand, ItemID.AncientChisel, ItemID.SandBoots,
 							ItemID.MysticCoilSnake, ItemID.MagicConch)
 						: Utils.SelectRandom(WorldGen.genRand, ItemID.ThunderSpear, ItemID.ThunderStaff,
-							ItemID.DripplerFlail);
+							ItemID.CatBast);
 				return;
 			}
 			case TileID.Containers when outStyle == 11 || (contain == ItemID.None &&
@@ -336,9 +336,9 @@ public static class GenerationChests
 							break;
 						case 7:
 							if (WorldGen.remixWorldGen)
-								chest.item[index].SetDefaults(ItemID.WandofSparking);
-							else
 								chest.item[index].SetDefaults(ItemID.MagicDagger);
+							else
+								chest.item[index].SetDefaults(ItemID.WandofSparking);
 							chest.item[index].Prefix(-1);
 							break;
 						case 10:
