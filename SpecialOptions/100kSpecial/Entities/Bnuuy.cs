@@ -26,7 +26,7 @@ public class Bnuuy : GlobalNPC
 
 	public override bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
 	{
-		return !_100kWorld.Enabled || projectile.hostile;
+		return _100kWorld.Enabled && projectile.hostile ? false : null;
 	}
 
 	public override void ModifyIncomingHit(NPC npc, ref HitModifiers modifiers)

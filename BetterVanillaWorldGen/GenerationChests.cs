@@ -341,11 +341,11 @@ public static class GenerationChests
 								chest.item[index].SetDefaults(ItemID.WandofSparking);
 							chest.item[index].Prefix(-1);
 							break;
-						case 10:
+						case 8:
 							chest.item[index].SetDefaults(ItemID.Radar);
 							chest.item[index].Prefix(-1);
 							break;
-						case 11:
+						case 9:
 							chest.item[index].SetDefaults(ItemID.PortableStool);
 							chest.item[index].Prefix(-1);
 							break;
