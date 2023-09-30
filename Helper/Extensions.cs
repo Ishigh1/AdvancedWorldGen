@@ -33,6 +33,20 @@ public static class Extensions
 		cursor.Emit(OpCodes.Call, typeof(OptionHelper).GetMethod(nameof(OptionHelper.OptionsContains)));
 	}
 
+	public static void DeleteUntil(this ILCursor cursor, Func<Instruction, bool> validator)
+	{
+		List<ILLabel> labels = new();
+		while (!validator(cursor.Next))
+		{
+			labels.AddRange(cursor.IncomingLabels);
+			cursor.Remove();
+		}
+		foreach (ILLabel ilLabel in labels)
+		{
+			cursor.MarkLabel(ilLabel);
+		}
+	}
+
 	#endregion
 
 	#region Print

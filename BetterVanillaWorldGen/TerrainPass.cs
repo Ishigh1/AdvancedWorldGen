@@ -46,7 +46,7 @@ public class TerrainPass : ControlledWorldGenPass
 		int worldSurfaceMax = (int)(Main.maxTilesY * (Params.TerrainType is TerrainType.SkyPillars ? 0.40 : 0.23));
 		int totalBeachSize = GenVars.leftBeachEnd + lowDepthBeachSize;
 		Stopwatch?.Stop();
-		AdvancedWorldGenMod.Instance.UiChanger.Stopwatch.Stop();
+		AdvancedWorldGenMod.Instance.UIChanger.Stopwatch.Stop();
 		Dictionary<string, object> currentState = new()
 		{
 			{ nameof(GenVars.leftBeachEnd), GenVars.leftBeachEnd },
@@ -67,7 +67,7 @@ public class TerrainPass : ControlledWorldGenPass
 		worldSurfaceMax = (int)currentState[nameof(worldSurfaceMax)];
 		totalBeachSize = (int)currentState[nameof(totalBeachSize)];
 		Stopwatch?.Start();
-		AdvancedWorldGenMod.Instance.UiChanger.Stopwatch.Start();
+		AdvancedWorldGenMod.Instance.UIChanger.Stopwatch.Start();
 
 		double worldSurfaceLow = worldSurface;
 		double worldSurfaceHigh = worldSurface;
@@ -268,8 +268,8 @@ public class TerrainPass : ControlledWorldGenPass
 		};
 		Thread thread = Thread.CurrentThread;
 		goBack.OnLeftClick += (_, _) => thread.Interrupt();
-		goBack.OnMouseOver += UiChanger.FadedMouseOver;
-		goBack.OnMouseOut += UiChanger.FadedMouseOut;
+		goBack.OnMouseOver += UIChanger.FadedMouseOver;
+		goBack.OnMouseOut += UIChanger.FadedMouseOut;
 		newState.Append(goBack);
 
 		Main.MenuUI.SetState(newState);

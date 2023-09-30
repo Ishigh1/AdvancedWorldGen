@@ -38,5 +38,5 @@
     "NormalMaxX": "The worldgen will crash if you try generate a such big world, \nyou have to enable the overhauled worldgen in the mod settings to produce a such world.",
     "ClamityMinX": "Calamity isn't designed to generate small worlds",
     "ClamityMaxX": "Calamity isn't designed to generate XL worlds"
-  }
+  },
 }

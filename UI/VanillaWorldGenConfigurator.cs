@@ -73,8 +73,8 @@ public class VanillaWorldGenConfigurator : UIState
 			HAlign = 0.5f
 		};
 		goBack.OnLeftClick += GoBack;
-		goBack.OnMouseOver += UiChanger.FadedMouseOver;
-		goBack.OnMouseOut += UiChanger.FadedMouseOut;
+		goBack.OnMouseOver += UIChanger.FadedMouseOver;
+		goBack.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(goBack);
 		Recalculate();
 	}

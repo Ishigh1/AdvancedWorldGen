@@ -25,8 +25,8 @@ public class Preset : UITextPanel<string>
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			OptionsParser.Parse(Content);
 		};
-		OnMouseOver += UiChanger.FadedMouseOver;
-		OnMouseOut += UiChanger.FadedMouseOut;
+		OnMouseOver += UIChanger.FadedMouseOver;
+		OnMouseOut += UIChanger.FadedMouseOut;
 
 		UITextPanel<string> deletePresetBox = new("X", 0.5f)
 		{
@@ -43,8 +43,8 @@ public class Preset : UITextPanel<string>
 			SoundEngine.PlaySound(SoundID.MenuClose);
 			PresetUI.Delete(Name);
 		};
-		deletePresetBox.OnMouseOver += UiChanger.FadedMouseOver;
-		deletePresetBox.OnMouseOut += UiChanger.FadedMouseOut;
+		deletePresetBox.OnMouseOver += UIChanger.FadedMouseOver;
+		deletePresetBox.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(deletePresetBox);
 	}
 }

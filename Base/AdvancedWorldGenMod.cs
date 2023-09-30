@@ -2,7 +2,7 @@ namespace AdvancedWorldGen.Base;
 
 public class AdvancedWorldGenMod : Mod
 {
-	public UiChanger UiChanger = null!;
+	public UIChanger UIChanger = null!;
 	public static AdvancedWorldGenMod Instance => ModContent.GetInstance<AdvancedWorldGenMod>();
 	public static string FolderPath => Path.Combine(Main.SavePath, "AdvancedWorldGen");
 
@@ -32,21 +32,21 @@ public class AdvancedWorldGenMod : Mod
 
 		TileReplacer.Initialize();
 
-		UiChanger = new UiChanger(this);
+		UIChanger = new UIChanger(this);
 
-		On_UIWorldCreation.AddDescriptionPanel += UiChanger.TweakWorldGenUi;
+		On_UIWorldCreation.AddDescriptionPanel += UIChanger.TweakWorldGenUi;
 		On_UIWorldCreation.FinishCreatingWorld += ModifiedWorld.Instance.LastMinuteChecks;
-		On_WorldFileData.SetWorldSize += UiChanger.SetSpecialName;
+		On_WorldFileData.SetWorldSize += UIChanger.SetSpecialName;
 		// On_UIWorldListItem.ctor += UiChanger.CopySettingsButton; // Removed until twld can be loaded in a reasonable time
 #if SPECIALDEBUG
-		On_UIWorldSelect.OnInitialize += UiChanger.DeleteAllButLast;
+		On_UIWorldSelect.OnInitialize += UIChanger.DeleteAllButLast;
 #endif
 
 		IL_WorldGen.GenerateWorld += ModifiedWorld.OverrideWorldOptions;
 		On_WorldFile.CreateMetadata += DedServUi.DedServOptions;
 
-		On_UIWorldLoad.ctor += UiChanger.AddCancel;
-		On_WorldGen.do_worldGenCallBack += UiChanger.ThreadifyWorldGen;
+		On_UIWorldLoad.ctor += UIChanger.AddCancel;
+		On_WorldGen.do_worldGenCallBack += UIChanger.ThreadifyWorldGen;
 
 		On_UserInterface.SetState += ModifiedWorld.ResetSettings;
 
@@ -152,7 +152,7 @@ public class AdvancedWorldGenMod : Mod
 							if (argCount == 3 && args[2] is true)
 								option.Enable();
 							else
-								option.WeakEnable();
+								option.OnEnable();
 						}
 				}
 					break;

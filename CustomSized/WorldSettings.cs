@@ -38,9 +38,9 @@ public class WorldSettings
 		if (BaseX > 0 || BaseY > 0)
 			ApplySize();
 
-		AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator?.Dispose();
-		AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator = new VanillaWorldGenConfigurator();
-		AdvancedWorldGenMod.Instance.UiChanger.OverhauledWorldGenConfigurator = new OverhauledWorldGenConfigurator();
+		AdvancedWorldGenMod.Instance.UIChanger.VanillaWorldGenConfigurator?.Dispose();
+		AdvancedWorldGenMod.Instance.UIChanger.VanillaWorldGenConfigurator = new VanillaWorldGenConfigurator();
+		AdvancedWorldGenMod.Instance.UIChanger.OverhauledWorldGenConfigurator = new OverhauledWorldGenConfigurator();
 	}
 
 	private static void SetSize(On_UIWorldCreation.orig_ClickSizeOption orig, UIWorldCreation self, UIMouseEvent evt,

@@ -89,13 +89,13 @@ def translate_options(base_options, options, language, path=""):
         else:
             new_path = path + "." + key
         option = options[key]
-        option["displayed_name"] = translate(key + ".displayed_name", option["displayed_name"], language)
+        option["displayed_name"] = translate(new_path + ".displayed_name", option["displayed_name"], language)
         save_data(base_options)
-        option["description"] = translate(key + ".description", option["description"], language)
+        option["description"] = translate(new_path + ".description", option["description"], language)
         save_data(base_options)
 
         for conflict_key in option["conflicts"]:
-            option["conflicts"][conflict_key] = translate(key + ".conflict." + conflict_key,
+            option["conflicts"][conflict_key] = translate(new_path + ".conflict." + conflict_key,
                                                           option["conflicts"][conflict_key], language)
 
             address = conflict_key.split(".")

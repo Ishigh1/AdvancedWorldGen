@@ -211,6 +211,8 @@ public class ModifiedWorld : ModSystem
 		Replacer.ReplaceGenPasses(tasks);
 		DrunkOptions.AddDrunkEdits(tasks);
 
+		tasks.TryReplacePass("Spawn Point", new SpawnPass());
+
 		tasks.TryReplacePass("Guide", new NPCPass());
 
 		HalloweenCommon.InsertTasks(tasks);

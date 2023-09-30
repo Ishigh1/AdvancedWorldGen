@@ -12,14 +12,14 @@ public partial class OptionHelper
 		ClearAll();
 		foreach (string optionName in optionNames)
 			if (OptionDict.TryGetValue(optionName, out Option? option))
-				option.WeakEnable();
+				option.OnEnable();
 	}
 
 	public static List<string> Export()
 	{
 		List<string> list = new();
 		foreach ((string? _, Option? option) in OptionDict)
-			if (option.Enabled && option.Children.Count == 0)
+			if (option.Enabled is true && option.Children.Count == 0)
 				list.Add(option.FullName);
 		return list;
 	}
@@ -28,7 +28,7 @@ public partial class OptionHelper
 	{
 		if (!OptionDict.TryGetValue(optionName, out Option? option))
 			return false;
-		return option.Children.Count == 0 ? option.Enabled : option.Children[0].Enabled;
+		return option.Children.Count == 0 ? option.Enabled is true : option.Children[0].Enabled is true;
 	}
 
 	public static IEnumerable<Option> GetOptions(params string[] names)

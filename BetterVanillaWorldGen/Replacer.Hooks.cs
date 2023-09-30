@@ -21,6 +21,8 @@ public static partial class Replacer
 			On_WorldGenerator.GenerateWorld += ChangeWeights;
 
 		_100kWorld.WorldgenReplace();
+
+		IL_WorldGen.AddGenPasses += ILReplace;
 	}
 
 	public static void WorldgenUnreplace()
@@ -37,6 +39,8 @@ public static partial class Replacer
 			On_WorldGenerator.GenerateWorld -= ChangeWeights;
 		
 		_100kWorld.WorldgenUnreplace();
+
+		ILUnreplace();
 	}
 
 	public static void IngameReplace()

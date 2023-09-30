@@ -43,7 +43,6 @@ global using Microsoft.Xna.Framework.Input;
 global using Mono.Cecil.Cil;
 global using MonoMod.Cil;
 global using MonoMod.RuntimeDetour;
-global using MonoMod.RuntimeDetour.HookGen;
 global using Newtonsoft.Json;
 global using Newtonsoft.Json.Converters;
 global using Newtonsoft.Json.Linq;
@@ -72,8 +71,11 @@ global using Terraria.ModLoader;
 global using Terraria.ModLoader.Config;
 global using Terraria.ModLoader.IO;
 global using Terraria.ModLoader.UI;
-global using Terraria.Social.Steam;
 global using Terraria.UI;
 global using Terraria.Utilities;
 global using Terraria.WorldBuilding;
-global using static Terraria.NPC;
+
+#if SPECIALDEBUG
+global using AdvancedWorldGen.Debug;
+global using Terraria.Social.Steam;
+#endif

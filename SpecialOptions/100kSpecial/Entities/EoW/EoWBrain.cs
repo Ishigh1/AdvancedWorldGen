@@ -20,11 +20,11 @@ public class EoWBrain : GlobalNPC
 	{
 		if (!_100kWorld.Enabled)
 			return true;
-		crimsonBoss = npc.whoAmI;
+		NPC.crimsonBoss = npc.whoAmI;
 		if (Main.netMode != NetmodeID.MultiplayerClient && npc.localAI[0] == 0f)
 		{
 			npc.localAI[0] = 1f;
-			int brainOfCthuluCreepersCount = GetBrainOfCthuluCreepersCount();
+			int brainOfCthuluCreepersCount = NPC.GetBrainOfCthuluCreepersCount();
 			for (int num837 = 0; num837 < brainOfCthuluCreepersCount; num837++)
 			{
 				float x2 = npc.Center.X;
@@ -32,7 +32,7 @@ public class EoWBrain : GlobalNPC
 				x2 += Main.rand.Next(-npc.width, npc.width);
 				y4 += Main.rand.Next(-npc.height, npc.height);
 				int type = num837 == 0 ? NPCID.EaterofWorldsTail : NPCID.EaterofWorldsBody;
-				int num838 = NewNPC(new EntitySource_BossSpawn(npc), (int)x2, (int)y4, type);
+				int num838 = NPC.NewNPC(new EntitySource_BossSpawn(npc), (int)x2, (int)y4, type);
 				Main.npc[num838].velocity = new Vector2(Main.rand.Next(-30, 31) * 0.1f, Main.rand.Next(-30, 31) * 0.1f);
 				Main.npc[num838].netUpdate = true;
 			}
@@ -55,7 +55,7 @@ public class EoWBrain : GlobalNPC
 		if (npc.ai[0] < 0f)
 		{
 			if (Main.getGoodWorld)
-				brainOfGravity = npc.whoAmI;
+				NPC.brainOfGravity = npc.whoAmI;
 
 			if (npc.localAI[2] == 0f)
 			{

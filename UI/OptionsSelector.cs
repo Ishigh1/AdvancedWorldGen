@@ -6,11 +6,15 @@ public class OptionsSelector : UIState
 	private readonly LocalizedText Description;
 	private new readonly Option? Parent;
 
-	private readonly UIState PreviousState;
+	private readonly object? PreviousState;
 	private UIText UIDescription = null!;
 	private UIList UIList = null!;
 
-	public OptionsSelector(UIState previousState, Option? parent)
+	public OptionsSelector() : this(null, null)
+	{
+	}
+
+	public OptionsSelector(object? previousState, Option? parent)
 	{
 		PreviousState = previousState;
 		Parent = parent;
@@ -20,7 +24,13 @@ public class OptionsSelector : UIState
 	private void GoBack(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		Main.MenuUI.SetState(PreviousState);
+		if (PreviousState is null)
+			Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UIChanger.UIWorldCreation);
+		else
+		{
+			(object? previousState, Option? parent) = ((object? previousState, Option? parent))PreviousState;
+			Main.MenuUI.SetState(new OptionsSelector(previousState, parent));
+		}
 	}
 
 	public override void OnInitialize()
@@ -79,8 +89,8 @@ public class OptionsSelector : UIState
 			HAlign = 0.35f
 		};
 		goBack.OnLeftClick += GoBack;
-		goBack.OnMouseOver += UiChanger.FadedMouseOver;
-		goBack.OnMouseOut += UiChanger.FadedMouseOut;
+		goBack.OnMouseOver += UIChanger.FadedMouseOver;
+		goBack.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(goBack);
 
 		UITextPanel<string> customSize = new(Language.GetTextValue("Mods.AdvancedWorldGen.CustomSize"))
@@ -94,8 +104,8 @@ public class OptionsSelector : UIState
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Main.MenuUI.SetState(new CustomSizeUI());
 		};
-		customSize.OnMouseOver += UiChanger.FadedMouseOver;
-		customSize.OnMouseOut += UiChanger.FadedMouseOut;
+		customSize.OnMouseOver += UIChanger.FadedMouseOver;
+		customSize.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(customSize);
 
 		UITextPanel<string> importButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Import"))
@@ -109,8 +119,8 @@ public class OptionsSelector : UIState
 			OptionsParser.Parse(Platform.Get<IClipboard>().Value);
 			CreateOptionList();
 		};
-		importButton.OnMouseOver += UiChanger.FadedMouseOver;
-		importButton.OnMouseOut += UiChanger.FadedMouseOut;
+		importButton.OnMouseOver += UIChanger.FadedMouseOver;
+		importButton.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(importButton);
 
 		UITextPanel<string> exportButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Export"))
@@ -120,8 +130,8 @@ public class OptionsSelector : UIState
 			HAlign = 0.65f
 		};
 		exportButton.OnLeftClick += delegate { Platform.Get<IClipboard>().Value = OptionsParser.GetJsonText(); };
-		exportButton.OnMouseOver += UiChanger.FadedMouseOver;
-		exportButton.OnMouseOut += UiChanger.FadedMouseOut;
+		exportButton.OnMouseOver += UIChanger.FadedMouseOver;
+		exportButton.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(exportButton);
 
 		UITextPanel<string> randomizeButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Randomize"))
@@ -131,8 +141,8 @@ public class OptionsSelector : UIState
 			HAlign = 0.5f
 		};
 		randomizeButton.OnLeftClick += RandomizeSettings;
-		randomizeButton.OnMouseOver += UiChanger.FadedMouseOver;
-		randomizeButton.OnMouseOut += UiChanger.FadedMouseOut;
+		randomizeButton.OnMouseOver += UIChanger.FadedMouseOver;
+		randomizeButton.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(randomizeButton);
 
 		UITextPanel<string> presetButton = new(Language.GetTextValue("Mods.AdvancedWorldGen.Presets"))
@@ -146,8 +156,8 @@ public class OptionsSelector : UIState
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Main.MenuUI.SetState(new PresetUI(this));
 		};
-		presetButton.OnMouseOver += UiChanger.FadedMouseOver;
-		presetButton.OnMouseOut += UiChanger.FadedMouseOut;
+		presetButton.OnMouseOver += UIChanger.FadedMouseOver;
+		presetButton.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(presetButton);
 	}
 
@@ -225,7 +235,9 @@ public class OptionsSelector : UIState
 			currentHeight += 40;
 			UIList.Add(clickableText);
 
-			clickableText.SetCurrentOption(option.Enabled);
+			clickableText.SetCurrentOption(option.Enabled is not false);
+			if (option.Enabled is null)
+				clickableText.SetColor(Colors.InventoryDefaultColor, 0.35f);
 			clickableText.OnLeftClick += delegate
 			{
 				if (Main.MenuUI.CurrentState != this)
@@ -236,11 +248,7 @@ public class OptionsSelector : UIState
 				else
 					option.Enable();
 
-				if (option.GetType() == typeof(ZenithOption) || option.Conflicts
-					    .Any(conflict => OptionHelper.OptionsContains(conflict)))
-					CreateOptionList();
-				else
-					clickableText.SetCurrentOption(!selected);
+				CreateOptionList();
 			};
 			clickableText.OnMouseOver += delegate
 			{
@@ -253,7 +261,7 @@ public class OptionsSelector : UIState
 			if (option.Children.Count != 0)
 			{
 				LocalizedText downLevel = Language.GetText("Mods.AdvancedWorldGen.DownLevel");
-				UIImage uiImage = new(UiChanger.CopyOptionsTexture)
+				UIImage uiImage = new(UIChanger.CopyOptionsTexture)
 				{
 					Left = new StyleDimension(-15, 0f),
 					HAlign = 1f,
@@ -274,11 +282,11 @@ public class OptionsSelector : UIState
 				uiImage.OnLeftClick += delegate
 				{
 					SoundEngine.PlaySound(SoundID.MenuOpen);
-					Main.MenuUI.SetState(new OptionsSelector(this, option));
+					Main.MenuUI.SetState(new OptionsSelector((PreviousState, Parent), option));
 				};
 				clickableText.Append(uiImage);
 			}
-			else if (option.Enabled)
+			else if (option.Enabled is not false)
 			{
 				foreach (string conflict in option.Conflicts)
 					if (OptionHelper.OptionsContains(conflict))

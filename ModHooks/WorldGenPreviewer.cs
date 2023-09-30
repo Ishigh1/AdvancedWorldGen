@@ -30,6 +30,6 @@ public class WorldGenPreviewer : ModSystem
 		UIElement listeningElement)
 	{
 		Unpause();
-		AdvancedWorldGenMod.Instance.UiChanger.Abort(evt, listeningElement);
+		AdvancedWorldGenMod.Instance.UIChanger.Abort(evt, listeningElement);
 	}
 }

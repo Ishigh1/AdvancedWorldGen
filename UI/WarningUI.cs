@@ -42,8 +42,8 @@ public class WarningUI : UIState
 			if (state != null)
 				Main.MenuUI.SetState(state);
 		};
-		goBack.OnMouseOver += UiChanger.FadedMouseOver;
-		goBack.OnMouseOut += UiChanger.FadedMouseOut;
+		goBack.OnMouseOver += UIChanger.FadedMouseOver;
+		goBack.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(goBack);
 
 		UITextPanel<string> goForward = new(Language.GetTextValue("tModLoader.Continue"))
@@ -59,8 +59,8 @@ public class WarningUI : UIState
 			if (state != null)
 				Main.MenuUI.SetState(state);
 		};
-		goForward.OnMouseOver += UiChanger.FadedMouseOver;
-		goForward.OnMouseOut += UiChanger.FadedMouseOut;
+		goForward.OnMouseOver += UIChanger.FadedMouseOver;
+		goForward.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(goForward);
 	}
 }

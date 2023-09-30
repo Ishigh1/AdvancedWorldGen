@@ -69,8 +69,8 @@ public class ValuesList : FocusElement
 				ParentBox.Value = enumString;
 				Unfocus();
 			};
-			option.OnMouseOver += UiChanger.FadedMouseOver;
-			option.OnMouseOut += UiChanger.FadedMouseOut;
+			option.OnMouseOver += UIChanger.FadedMouseOver;
+			option.OnMouseOut += UIChanger.FadedMouseOut;
 			ShownOptions.Add(option);
 			parentPanel.Parent.Append(option);
 		}

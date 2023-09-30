@@ -60,8 +60,8 @@ public class PresetUI : UIState
 			HAlign = 0.4f
 		};
 		goBack.OnLeftClick += GoBack;
-		goBack.OnMouseOver += UiChanger.FadedMouseOver;
-		goBack.OnMouseOut += UiChanger.FadedMouseOut;
+		goBack.OnMouseOver += UIChanger.FadedMouseOver;
+		goBack.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(goBack);
 	}
 
@@ -80,8 +80,8 @@ public class PresetUI : UIState
 			Height = new StyleDimension(40f, 0f)
 		};
 		newPresetButton.OnLeftClick += SaveNewPreset;
-		newPresetButton.OnMouseOver += UiChanger.FadedMouseOver;
-		newPresetButton.OnMouseOut += UiChanger.FadedMouseOut;
+		newPresetButton.OnMouseOver += UIChanger.FadedMouseOver;
+		newPresetButton.OnMouseOut += UIChanger.FadedMouseOut;
 		uiList.Add(newPresetButton);
 	}
 

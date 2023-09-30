@@ -1,316 +1,356 @@
 {
-  "Celebrationmk10": {
-    "children": {},
-    "conflicts": {},
-    "description": {
-      "en-US": "The tenth anniversary secret seed.",
-      "fr-FR": "La graine secrète du dixième anniversaire.",
-      "ru-RU": "Секретный сид на 10-летие игры."
+    "Celebrationmk10": {
+        "children": {
+            "BeachSpawn": {
+                "children": {},
+                "conflicts": {},
+                "description": {
+                    "en-US": "Spawns the group on the beach",
+                    "fr-FR": "Faît apparaître le joueur et les PNJ à la plage"
+                },
+                "displayed_name": {
+                    "en-US": "Beach Spawn",
+                    "fr-FR": "Apparition à la plage"
+                },
+                "hidden": false
+            },
+            "Painted": {
+                "children": {},
+                "conflicts": {},
+                "description": {
+                    "en-US": "Paints the world with the Celebration colors",
+                    "fr-FR": "Peint le monde entier avec les couleurs de Celebrationmk10"
+                },
+                "displayed_name": {
+                    "en-US": "Painted",
+                    "fr-FR": "Peint"
+                },
+                "hidden": false
+            }
+        },
+        "conflicts": {},
+        "description": {
+            "en-US": "The tenth anniversary secret seed.",
+            "fr-FR": "La graine secrète du dixième anniversaire.",
+            "ru-RU": "Секретный сид на 10-летие игры."
+        },
+        "displayed_name": {
+            "en-US": "Celebration Mk 10",
+            "fr-FR": "Celebration Mk 10",
+            "ru-RU": "Celebration Mk 10"
+        },
+        "hidden": false
     },
-    "displayed_name": {
-      "en-US": "Celebration Mk 10",
-      "fr-FR": "Celebration Mk 10",
-      "ru-RU": "Celebration Mk 10"
+    "Drunk": {
+        "children": {
+            "BothOres": {
+                "children": {},
+                "conflicts": {},
+                "description": {
+                    "en-US": "Makes so both ores are generated",
+                    "fr-FR": "Fait en sourte que tous les types de minerais sont générés",
+                    "ru-RU": "Оба типа руд будут сгенерированы"
+                },
+                "displayed_name": {
+                    "en-US": "Both Ores",
+                    "fr-FR": "Tous les minerais",
+                    "ru-RU": "Оба типа руд"
+                },
+                "hidden": false
+            },
+            "Crimruption": {
+                "children": {},
+                "conflicts": {},
+                "description": {
+                    "en-US": "Both Crimson and Corruption are in this world",
+                    "fr-FR": "Le Carmin et la Corruption sont tous eux générés.",
+                    "ru-RU": "Кримзон и Порча будут сгенерированы в мире"
+                },
+                "displayed_name": {
+                    "en-US": "Crimruption",
+                    "fr-FR": "Carmruption",
+                    "ru-RU": "Кримпорча"
+                },
+                "hidden": false
+            },
+            "MiddleLavaOcean": {
+                "children": {},
+                "conflicts": {},
+                "description": {
+                    "en-US": "Makes so the Underworld has a lava ocean in the middle of the world.",
+                    "fr-FR": "Crée un océan de lave au milieu de l'Enfer",
+                    "ru-RU": "В Преисподней по центру будет большое озеро лавы."
+                },
+                "displayed_name": {
+                    "en-US": "Spread Underworld",
+                    "fr-FR": "Océan de lave",
+                    "ru-RU": "Раздвинутая Преисподняя"
+                },
+                "hidden": false
+            }
+        },
+        "conflicts": {},
+        "description": {
+            "en-US": "The ninth anniversary secret seed.",
+            "fr-FR": "La graine secrète du neuvième anniversaire.",
+            "ru-RU": "Сид на 9-летие игры."
+        },
+        "displayed_name": {
+            "en-US": "Drunk",
+            "fr-FR": "Ivre",
+            "ru-RU": "Drunk"
+        },
+        "hidden": false
     },
-    "hidden": false
-  },
-  "Drunk": {
-    "children": {
-      "BothOres": {
+    "Entropy": {
         "children": {},
         "conflicts": {},
         "description": {
-          "en-US": "Makes so both ores are generated",
-          "ru-RU": "Оба типа руд будут сгенерированы"
+            "en-US": "A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.",
+            "fr-FR": "A monde où chaque aube et crépuscule, une partie du monde a un type de blocs et murs randomisé.",
+            "ru-RU": "Каждый день часть мира будет заменяться на случайные блоки."
         },
         "displayed_name": {
-          "en-US": "Both Ores",
-          "ru-RU": "Оба типа руд"
+            "en-US": "Entropy",
+            "fr-FR": "Entropie",
+            "ru-RU": "Энтропия"
         },
-        "hidden": false
-      },
-      "Crimruption": {
-        "children": {},
-        "conflicts": {},
-        "description": {
-          "en-US": "Both Crimson and Corruption are in this world",
-          "fr-FR": "Le Carmin et la Corruption sont tous eux générés.",
-          "ru-RU": "Кримзон и Порча будут сгенерированы в мире"
-        },
-        "displayed_name": {
-          "en-US": "Crimruption",
-          "fr-FR": "Carmruption",
-          "ru-RU": "Кримпорча"
-        },
-        "hidden": false
-      },
-      "MiddleLavaOcean": {
-        "children": {},
-        "conflicts": {},
-        "description": {
-          "en-US": "Makes so the Underworld has a lava ocean in the middle of the world.",
-          "ru-RU": "В Преисподней по центру будет большое озеро лавы."
-        },
-        "displayed_name": {
-          "en-US": "Spread Underworld",
-          "ru-RU": "Раздвинутая Преисподняя"
-        },
-        "hidden": false
-      }
+        "hidden": true
     },
-    "conflicts": {},
-    "description": {
-      "en-US": "The ninth anniversary secret seed.",
-      "fr-FR": "La graine secrète du neuvième anniversaire.",
-      "ru-RU": "Сид на 9-летие игры."
-    },
-    "displayed_name": {
-      "en-US": "Drunk",
-      "fr-FR": "Ivre",
-      "ru-RU": "Drunk"
-    },
-    "hidden": false
-  },
-  "Entropy": {
-    "children": {},
-    "conflicts": {},
-    "description": {
-      "en-US": "A world where each dusk and dawn, a part of the world has one type of tiles and walls randomized.",
-      "fr-FR": "A monde où chaque aube et crépuscule, une partie du monde a un type de blocs et murs randomisé.",
-      "ru-RU": "Каждый день часть мира будет заменяться на случайные блоки."
-    },
-    "displayed_name": {
-      "en-US": "Entropy",
-      "fr-FR": "Entropie",
-      "ru-RU": "Энтропия"
-    },
-    "hidden": true
-  },
-  "Evil": {
-    "children": {},
-    "conflicts": {
-      "NotTheBees.JungleWorld": {
-        "en-US": "Not The Bees leaves nearly no corruptible tile.",
-        "fr-FR": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
-        "ru-RU": "В мире пчёл нет заражаемых блоков."
-      },
-      "Random": {
-        "en-US": "Evil only leaves a few blocks to be randomized.",
-        "fr-FR": "Maléfique ne laisse que peu de blocs à randomiser.",
-        "ru-RU": "Слишком мало блоков останется для рандомизации."
-      }
-    },
-    "description": {
-      "en-US": "Transforms every tile into an evil one.",
-      "fr-FR": "Transforme chaque bloc en un bloc démoniaque.",
-      "ru-RU": "Весь мир будет заражён."
-    },
-    "displayed_name": {
-      "en-US": "Evil",
-      "fr-FR": "Maléfique",
-      "ru-RU": "Зло"
-    },
-    "hidden": false
-  },
-  "ForTheWorthy": {
-    "children": {},
-    "conflicts": {},
-    "description": {
-      "en-US": "The \"for the worthy\" secret seed.",
-      "fr-FR": "La graine secrète \"for the worthy\".",
-      "ru-RU": "Секретный сид \"for the worthy\"."
-    },
-    "displayed_name": {
-      "en-US": "For The Worthy",
-      "fr-FR": "For The Worthy",
-      "ru-RU": "For The Worthy"
-    },
-    "hidden": false
-  },
-  "NoTraps": {
-    "children": {},
-    "conflicts": {},
-    "description": "The no traps secret seed.",
-    "displayed_name": "No Traps",
-    "hidden": false
-  },
-  "NotTheBees": {
-    "children": {
-      "JungleWorld": {
+    "Evil": {
         "children": {},
         "conflicts": {
-          "Evil": {
-            "en-US": "Not The Bees leaves nearly no corruptible tile.",
-            "fr-FR": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
-            "ru-RU": "В мире пчёл нет заражаемых блоков."
-          },
-          "Random": {
-            "en-US": "Not The Bees only leaves a few blocks to be randomized.",
-            "fr-FR": "Not The Bees ne laisse que peu de blocs à randomiser.",
-            "ru-RU": "Слишком мало блоков останется для рандомизации."
-          },
-          "Santa": {
-            "en-US": "Santa will not have much effect on a Not The Bees world.",
-            "fr-FR": "Noël n'aura pas beaucoup d'effets avec Not The Bees.",
-            "ru-RU": "Не будет заметного эффекта в мире."
-          }
+            "NotTheBees.JungleWorld": {
+                "en-US": "Not The Bees leaves nearly no corruptible tile.",
+                "fr-FR": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
+                "ru-RU": "В мире пчёл нет заражаемых блоков."
+            },
+            "Random": {
+                "en-US": "Evil only leaves a few blocks to be randomized.",
+                "fr-FR": "Maléfique ne laisse que peu de blocs à randomiser.",
+                "ru-RU": "Слишком мало блоков останется для рандомизации."
+            }
         },
         "description": {
-          "en-US": "Makes the entire world a jungle.",
-          "fr-FR": "Le monde entier est une jungle.",
-          "ru-RU": "Весь мир будет джунглями."
+            "en-US": "Transforms every tile into an evil one.",
+            "fr-FR": "Transforme chaque bloc en un bloc démoniaque.",
+            "ru-RU": "Весь мир будет заражён."
         },
         "displayed_name": {
-          "en-US": "Jungle World",
-          "fr-FR": "Monde Jungle",
-          "ru-RU": "Мир джунглей"
+            "en-US": "Evil",
+            "fr-FR": "Maléfique",
+            "ru-RU": "Зло"
         },
         "hidden": false
-      }
     },
-    "conflicts": {},
-    "description": {
-      "en-US": "The Not The Bees secret seed.",
-      "fr-FR": "La graine secrète \"Not The Bees\".",
-      "ru-RU": "Секретный сид \"not the bees\"."
-    },
-    "displayed_name": {
-      "en-US": "Not The Bees",
-      "fr-FR": "Not The Bees",
-      "ru-RU": "Только Не Пчёлы!"
-    },
-    "hidden": false
-  },
-  "Random": {
-    "children": {
-      "Painted": {
+    "ForTheWorthy": {
         "children": {},
         "conflicts": {},
         "description": {
-          "en-US": "A world where each block and wall type get a paint.",
-          "fr-FR": "A monde où chaque type de bloc et mur est peint.",
-          "ru-RU": "Мир, в котором каждый блок и стены будут покрашены."
+            "en-US": "The \"for the worthy\" secret seed.",
+            "fr-FR": "La graine secrète \"for the worthy\".",
+            "ru-RU": "Секретный сид \"for the worthy\"."
         },
         "displayed_name": {
-          "en-US": "Painted",
-          "fr-FR": "Peint",
-          "ru-RU": "Покрашенный"
+            "en-US": "For The Worthy",
+            "fr-FR": "For The Worthy",
+            "ru-RU": "For The Worthy"
         },
         "hidden": false
-      }
     },
-    "conflicts": {
-      "Evil": {
-        "en-US": "Evil only leaves a few blocks to be randomized.",
-        "fr-FR": "Maléfique ne laisse que peu de blocs à randomiser.",
-        "ru-RU": "Слишком мало блоков останется для рандомизации."
-      },
-      "NotTheBees.JungleWorld": {
-        "en-US": "Not The Bees only leaves a few blocks to be randomized.",
-        "fr-FR": "Not The Bees ne laisse que peu de blocs à randomiser.",
-        "ru-RU": "Слишком мало блоков останется для рандомизации."
-      },
-      "Santa": {
-        "en-US": "Santa only leaves a few blocks to be randomized.",
-        "fr-FR": "Noël ne laisse que peu de blocs Ã  randomiser.",
-        "ru-RU": "Слишком мало блоков останется для рандомизации."
-      }
-    },
-    "description": {
-      "en-US": "A world where each block and wall type is randomized.",
-      "fr-FR": "Un monde où chaque type de bloc et mur est randomisé.",
-      "ru-RU": "Мир, в котором каждый блок и стены случайны."
-    },
-    "displayed_name": {
-      "en-US": "Random",
-      "fr-FR": "Aléatoire",
-      "ru-RU": "Случайный"
-    },
-    "hidden": false
-  },
-  "Remix": {
-    "children": {},
-    "conflicts": {},
-    "description": "The remix secret seed.",
-    "displayed_name": "Remix",
-    "hidden": false
-  },
-  "Santa": {
-    "children": {},
-    "conflicts": {
-      "NotTheBees.JungleWorld": {
-        "en-US": "Santa will not have much effect on a Not The Bees world.",
-        "fr-FR": "Noël n'aura pas beaucoup d'effets avec Not The Bees.",
-        "ru-RU": "Не будет заметного эффекта в мире."
-      },
-      "Random": {
-        "en-US": "Santa only leaves a few blocks to be randomized.",
-        "fr-FR": "Noël ne laisse que peu de blocs Ã  randomiser.",
-        "ru-RU": "Слишком мало блоков останется для рандомизации."
-      }
-    },
-    "description": {
-      "en-US": "A christmas themed world.",
-      "fr-FR": "Un monde sur le thème de Noël.",
-      "ru-RU": "Рождественский мир."
-    },
-    "displayed_name": {
-      "en-US": "Santa",
-      "fr-FR": "Noël",
-      "ru-RU": "Санта"
-    },
-    "hidden": false
-  },
-  "SortedWorld": {
-    "children": {},
-    "conflicts": {},
-    "description": "Sorts world by height",
-    "displayed_name": "Sorted World",
-    "hidden": true
-  },
-  "Spooky": {
-    "children": {},
-    "conflicts": {},
-    "description": {
-      "en-US": "An halloween themed world.",
-      "fr-FR": "Un monde sur le thème d'Halloween.",
-      "ru-RU": "Мир Хэллоуина."
-    },
-    "displayed_name": {
-      "en-US": "Spooky",
-      "fr-FR": "Sinistre",
-      "ru-RU": "Spooky"
-    },
-    "hidden": true
-  },
-  "TheConstant": {
-    "children": {},
-    "conflicts": {},
-    "description": {
-      "en-US": "The Don't Starve secret seed.",
-      "fr-FR": "La graine secrète de Don't Starve.",
-      "ru-RU": "Секретный сид Don't Starve."
-    },
-    "displayed_name": {
-      "en-US": "The Constant",
-      "fr-FR": "Le Constant",
-      "ru-RU": "The Constant"
-    },
-    "hidden": false
-  },
-  "Zenith": {
-    "children": {
-      "StarGame": {
+    "NoTraps": {
         "children": {},
         "conflicts": {},
-        "description": "Enables the star mini-game",
-        "displayed_name": "Star Game",
+        "description": {
+            "en-US": "The no traps secret seed."
+        },
+        "displayed_name": {
+            "en-US": "No Traps"
+        },
         "hidden": false
-      }
     },
-    "conflicts": {},
-    "description": "The zenith secret seed.",
-    "displayed_name": "Zenith",
-    "hidden": false
-  }
+    "NotTheBees": {
+        "children": {
+            "JungleWorld": {
+                "children": {},
+                "conflicts": {
+                    "Evil": {
+                        "en-US": "Not The Bees leaves nearly no corruptible tile.",
+                        "fr-FR": "Not The Bees ne laisse pas beaucoup de bloc corruptibles.",
+                        "ru-RU": "В мире пчёл нет заражаемых блоков."
+                    },
+                    "Random": {
+                        "en-US": "Not The Bees only leaves a few blocks to be randomized.",
+                        "fr-FR": "Not The Bees ne laisse que peu de blocs à randomiser.",
+                        "ru-RU": "Слишком мало блоков останется для рандомизации."
+                    },
+                    "Santa": {
+                        "en-US": "Santa will not have much effect on a Not The Bees world.",
+                        "fr-FR": "Noël n'aura pas beaucoup d'effets avec Not The Bees.",
+                        "ru-RU": "Не будет заметного эффекта в мире."
+                    }
+                },
+                "description": {
+                    "en-US": "Makes the entire world a jungle.",
+                    "fr-FR": "Le monde entier est une jungle.",
+                    "ru-RU": "Весь мир будет джунглями."
+                },
+                "displayed_name": {
+                    "en-US": "Jungle World",
+                    "fr-FR": "Monde Jungle",
+                    "ru-RU": "Мир джунглей"
+                },
+                "hidden": false
+            }
+        },
+        "conflicts": {},
+        "description": {
+            "en-US": "The Not The Bees secret seed.",
+            "fr-FR": "La graine secrète \"Not The Bees\".",
+            "ru-RU": "Секретный сид \"not the bees\"."
+        },
+        "displayed_name": {
+            "en-US": "Not The Bees",
+            "fr-FR": "Not The Bees",
+            "ru-RU": "Только Не Пчёлы!"
+        },
+        "hidden": false
+    },
+    "Random": {
+        "children": {
+            "Painted": {
+                "children": {},
+                "conflicts": {},
+                "description": {
+                    "en-US": "A world where each block and wall type get a paint.",
+                    "fr-FR": "A monde où chaque type de bloc et mur est peint.",
+                    "ru-RU": "Мир, в котором каждый блок и стены будут покрашены."
+                },
+                "displayed_name": {
+                    "en-US": "Painted",
+                    "fr-FR": "Peint",
+                    "ru-RU": "Покрашенный"
+                },
+                "hidden": false
+            }
+        },
+        "conflicts": {
+            "Evil": {
+                "en-US": "Evil only leaves a few blocks to be randomized.",
+                "fr-FR": "Maléfique ne laisse que peu de blocs à randomiser.",
+                "ru-RU": "Слишком мало блоков останется для рандомизации."
+            },
+            "NotTheBees.JungleWorld": {
+                "en-US": "Not The Bees only leaves a few blocks to be randomized.",
+                "fr-FR": "Not The Bees ne laisse que peu de blocs à randomiser.",
+                "ru-RU": "Слишком мало блоков останется для рандомизации."
+            },
+            "Santa": {
+                "en-US": "Santa only leaves a few blocks to be randomized.",
+                "fr-FR": "Noël ne laisse que peu de blocs Ã  randomiser.",
+                "ru-RU": "Слишком мало блоков останется для рандомизации."
+            }
+        },
+        "description": {
+            "en-US": "A world where each block and wall type is randomized.",
+            "fr-FR": "Un monde où chaque type de bloc et mur est randomisé.",
+            "ru-RU": "Мир, в котором каждый блок и стены случайны."
+        },
+        "displayed_name": {
+            "en-US": "Random",
+            "fr-FR": "Aléatoire",
+            "ru-RU": "Случайный"
+        },
+        "hidden": false
+    },
+    "Remix": {
+        "children": {},
+        "conflicts": {},
+        "description": {
+            "en-US": "The remix secret seed."
+        },
+        "displayed_name": {
+            "en-US": "Remix",
+            "fr-FR": "Remix"
+        },
+        "hidden": false
+    },
+    "Santa": {
+        "children": {},
+        "conflicts": {
+            "NotTheBees.JungleWorld": {
+                "en-US": "Santa will not have much effect on a Not The Bees world.",
+                "fr-FR": "Noël n'aura pas beaucoup d'effets avec Not The Bees.",
+                "ru-RU": "Не будет заметного эффекта в мире."
+            },
+            "Random": {
+                "en-US": "Santa only leaves a few blocks to be randomized.",
+                "fr-FR": "Noël ne laisse que peu de blocs Ã  randomiser.",
+                "ru-RU": "Слишком мало блоков останется для рандомизации."
+            }
+        },
+        "description": {
+            "en-US": "A christmas themed world.",
+            "fr-FR": "Un monde sur le thème de Noël.",
+            "ru-RU": "Рождественский мир."
+        },
+        "displayed_name": {
+            "en-US": "Santa",
+            "fr-FR": "Noël",
+            "ru-RU": "Санта"
+        },
+        "hidden": false
+    },
+    "SortedWorld": {
+        "children": {},
+        "conflicts": {},
+        "description": "Sorts world by height",
+        "displayed_name": "Sorted World",
+        "hidden": true
+    },
+    "Spooky": {
+        "children": {},
+        "conflicts": {},
+        "description": {
+            "en-US": "An halloween themed world.",
+            "fr-FR": "Un monde sur le thème d'Halloween.",
+            "ru-RU": "Мир Хэллоуина."
+        },
+        "displayed_name": {
+            "en-US": "Spooky",
+            "fr-FR": "Sinistre",
+            "ru-RU": "Spooky"
+        },
+        "hidden": true
+    },
+    "TheConstant": {
+        "children": {},
+        "conflicts": {},
+        "description": {
+            "en-US": "The Don't Starve secret seed.",
+            "fr-FR": "La graine secrète de Don't Starve.",
+            "ru-RU": "Секретный сид Don't Starve."
+        },
+        "displayed_name": {
+            "en-US": "The Constant",
+            "fr-FR": "Le Constant",
+            "ru-RU": "The Constant"
+        },
+        "hidden": false
+    },
+    "Zenith": {
+        "children": {
+            "StarGame": {
+                "children": {},
+                "conflicts": {},
+                "description": "Enables the star mini-game",
+                "displayed_name": "Star Game",
+                "hidden": false
+            }
+        },
+        "conflicts": {},
+        "description": "The zenith secret seed.",
+        "displayed_name": "Zenith",
+        "hidden": false
+    }
 }

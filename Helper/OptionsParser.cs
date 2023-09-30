@@ -70,7 +70,7 @@ public static class OptionsParser
 		if (jsonObject.TryGetValue("legacyParams", out jsonNode) && jsonNode is JObject legacyParams)
 		{
 			WorldGenConfiguration worldGenConfiguration =
-				AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator!.Configuration;
+				AdvancedWorldGenMod.Instance.UIChanger.VanillaWorldGenConfigurator!.Configuration;
 			foreach (JObject? jObject in typeof(WorldGenConfiguration)
 				         .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
 				         .Select(fieldInfo => (JObject)fieldInfo.GetValue(worldGenConfiguration)!))
@@ -135,7 +135,7 @@ public static class OptionsParser
 
 		JObject legacyParams = new();
 		WorldGenConfiguration worldGenConfiguration =
-			AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator!.Configuration;
+			AdvancedWorldGenMod.Instance.UIChanger.VanillaWorldGenConfigurator!.Configuration;
 		foreach (JObject jObject in typeof(WorldGenConfiguration)
 			         .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
 			         .Select(fieldInfo => (JObject)fieldInfo.GetValue(worldGenConfiguration)!))

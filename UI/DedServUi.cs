@@ -47,7 +47,7 @@ public static class DedServUi
 			if (option.Children.Count == 0 && (!option.Hidden || showHidden))
 				Console.WriteLine(id++ + " : " +
 				                  Language.GetTextValue("Mods." + option.ModName + "." + option.SimplifiedName) +
-				                  (option.Enabled
+				                  (option.Enabled is true
 					                  ? Language.GetTextValue("Mods.AdvancedWorldGen.DedServ.Selected")
 					                  : ""));
 
@@ -72,7 +72,7 @@ public static class DedServUi
 		bool conflict = false;
 
 		foreach ((string? _, Option? option) in OptionHelper.OptionDict)
-			if (option.Enabled && option.Children.Count == 0)
+			if (option.Enabled is true && option.Children.Count == 0)
 				foreach (string conflictName in option.Conflicts)
 					if (string.Compare(option.SimplifiedName, conflictName, StringComparison.Ordinal) < 0 &&
 					    OptionHelper.OptionsContains(conflictName))
@@ -117,10 +117,10 @@ public static class DedServUi
 			(string _, Option option) = OptionHelper.OptionDict.ElementAt(i);
 			if ((!option.Hidden || showHidden) && option.Children.Count == 0 && --id == 0)
 			{
-				if (option.Enabled)
+				if (option.Enabled is true)
 					option.Disable();
 				else
-					option.WeakEnable();
+					option.Enable();
 
 				return true;
 			}

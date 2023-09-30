@@ -23,7 +23,7 @@ public class BoCCreeper : GlobalNPC
 		{
 			if (npc.ai[2] >= 0)
 			{
-				npc.ai[0] = NewNPC(new EntitySource_BossSpawn(npc), (int)(npc.position.X + npc.width / 2f),
+				npc.ai[0] = NPC.NewNPC(new EntitySource_BossSpawn(npc), (int)(npc.position.X + npc.width / 2f),
 					(int)(npc.position.Y + npc.height), NPCID.Creeper, npc.whoAmI);
 				Main.npc[(int)npc.ai[0]].ai[1] = npc.whoAmI;
 				Main.npc[(int)npc.ai[0]].ai[2] = npc.ai[2] - 1f;

@@ -164,8 +164,8 @@ public class CustomSizeUI : UIState
 		uiList.Add(goToVanillaConfig);
 
 		goToVanillaConfig.OnLeftClick += ConfigVanillaWorldGen;
-		goToVanillaConfig.OnMouseOver += UiChanger.FadedMouseOver;
-		goToVanillaConfig.OnMouseOut += UiChanger.FadedMouseOut;
+		goToVanillaConfig.OnMouseOver += UIChanger.FadedMouseOver;
+		goToVanillaConfig.OnMouseOut += UIChanger.FadedMouseOut;
 
 		UITextPanel<string> goToOverhauledConfig =
 			new(Language.GetTextValue("Mods.AdvancedWorldGen.OverhauledConfig"))
@@ -175,8 +175,8 @@ public class CustomSizeUI : UIState
 		uiList.Add(goToOverhauledConfig);
 
 		goToOverhauledConfig.OnLeftClick += ConfigOverhauledWorldGen;
-		goToOverhauledConfig.OnMouseOver += UiChanger.FadedMouseOver;
-		goToOverhauledConfig.OnMouseOut += UiChanger.FadedMouseOut;
+		goToOverhauledConfig.OnMouseOver += UIChanger.FadedMouseOver;
+		goToOverhauledConfig.OnMouseOut += UIChanger.FadedMouseOut;
 
 		UITextPanel<string> goBack = new(Language.GetTextValue("UI.Back"))
 		{
@@ -185,21 +185,21 @@ public class CustomSizeUI : UIState
 			HAlign = 0.5f
 		};
 		goBack.OnLeftClick += GoBack;
-		goBack.OnMouseOver += UiChanger.FadedMouseOver;
-		goBack.OnMouseOut += UiChanger.FadedMouseOut;
+		goBack.OnMouseOver += UIChanger.FadedMouseOver;
+		goBack.OnMouseOut += UIChanger.FadedMouseOut;
 		Append(goBack);
 	}
 
 	public static void ConfigVanillaWorldGen(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.VanillaWorldGenConfigurator);
+		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UIChanger.VanillaWorldGenConfigurator);
 	}
 
 	private static void ConfigOverhauledWorldGen(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.OverhauledWorldGenConfigurator);
+		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UIChanger.OverhauledWorldGenConfigurator);
 	}
 
 	private void GoBack(UIMouseEvent evt, UIElement listeningElement)
@@ -215,7 +215,7 @@ public class CustomSizeUI : UIState
 
 		UIState? Next()
 		{
-			return AdvancedWorldGenMod.Instance.UiChanger.OptionsSelector;
+			return new OptionsSelector();
 		}
 
 		int oldSizeX = Main.tile.Width;
@@ -274,6 +274,6 @@ public class CustomSizeUI : UIState
 		}
 #endif
 
-		Main.MenuUI.SetState(AdvancedWorldGenMod.Instance.UiChanger.OptionsSelector);
+		Main.MenuUI.SetState(new OptionsSelector());
 	}
 }

@@ -29,20 +29,20 @@ public class Bnuuy : GlobalNPC
 		return _100kWorld.Enabled && projectile.hostile ? false : null;
 	}
 
-	public override void ModifyIncomingHit(NPC npc, ref HitModifiers modifiers)
+	public override void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
 	{
 		if (!_100kWorld.Enabled) return;
 		if (!npc.lavaWet)
 		{
 			if (npc.type != NPCID.ExplosiveBunny)
 			{
-				int npcIndex = NewNPC(new EntitySource_Death(npc), (int)npc.Center.X, (int)npc.Center.Y,
+				int npcIndex = NPC.NewNPC(new EntitySource_Death(npc), (int)npc.Center.X, (int)npc.Center.Y,
 					NPCID.GiantTortoise);
 				Main.npc[npcIndex].SpawnedFromStatue = true;
 			}
 			else
 			{
-				SpawnBoss((int)npc.Center.X, (int)npc.Center.Y, NPCID.MoonLordCore, npc.target);
+				NPC.SpawnBoss((int)npc.Center.X, (int)npc.Center.Y, NPCID.MoonLordCore, npc.target);
 			}
 		}
 

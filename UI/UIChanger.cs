@@ -1,18 +1,18 @@
 namespace AdvancedWorldGen.UI;
 
-public class UiChanger
+public class UIChanger
 {
 	public static Asset<Texture2D> CopyOptionsTexture = null!;
 	private readonly Asset<Texture2D> OptionsTexture;
 	private UIText Description = null!;
-	public OptionsSelector OptionsSelector = null!;
 	public OverhauledWorldGenConfigurator? OverhauledWorldGenConfigurator;
 	private GenerationProgress? Progress;
 	public Stopwatch Stopwatch;
 	private Thread Thread = null!;
 	public VanillaWorldGenConfigurator? VanillaWorldGenConfigurator;
+	public UIState UIWorldCreation;
 
-	public UiChanger(Mod mod)
+	public UIChanger(Mod mod)
 	{
 		if (!Main.dedServ)
 		{
@@ -123,6 +123,7 @@ public class UiChanger
 		UIWorldCreation self, UIElement container, float accumulatedHeight, string tagGroup)
 	{
 		origAddDescriptionPanel(self, container, accumulatedHeight, tagGroup);
+		UIWorldCreation = self;
 
 		UICharacterNameButton characterNameButton = VanillaInterface.SeedPlate(self).Value;
 		characterNameButton.Width.Pixels -= 48;
@@ -149,13 +150,12 @@ public class UiChanger
 		container.Append(groupOptionButton);
 
 		OptionHelper.ClearAll();
-		OptionsSelector = new OptionsSelector(self, null);
 	}
 
 	public void ToOptionsMenu(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Main.MenuUI.SetState(OptionsSelector);
+		Main.MenuUI.SetState(new OptionsSelector());
 	}
 
 	public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement)
