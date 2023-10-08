@@ -237,9 +237,8 @@ public static class HardmodeConversion
 
 					WorldGen.SquareTileFrame(m, n);
 				}
+				skipTileFrame: ;
 			}
-
-			skipTileFrame:
 
 			x += (float) speedX;
 			y += (float) speedY;

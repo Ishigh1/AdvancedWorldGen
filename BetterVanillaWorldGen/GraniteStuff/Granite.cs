@@ -8,8 +8,11 @@ public class Granite : ControlledWorldGenPass
 
 	protected override void ApplyPass()
 	{
-		Progress.Message = Lang.gen[81].Value;
 		int count = Configuration.Get<WorldGenRange>("Count").GetRandom(WorldGen.genRand);
+		if (count <= 0)
+			return;
+		
+		Progress.Message = Lang.gen[81].Value;
 		int num797 = (Main.maxTilesX - 200) / count;
 		List<Point> list2 = new(count);
 		int num798 = 0;
