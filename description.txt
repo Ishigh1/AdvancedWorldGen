@@ -21,3 +21,4 @@ If someone tells you to disable it, that's dumb, if you want to fix the issue wi
 
 Also thanks to Exterminator for contributing to the code and Math!EW! for the mod icon
 This mod has a discord server that you can find here : https://discord.gg/ZPjnjpqeYE
+Github link : https://github.com/Ishigh1/AdvancedWorldGen
