@@ -238,8 +238,8 @@ public static class GenerationChests
 				return;
 		}
 
-		if (WorldGen.everythingWorldGen && outStyle == 1 && chestTileType == TileID.Containers &&
-		    !WorldGen.genRand.NextBool(3))
+		if (WorldGen.noTrapsWorldGen && outStyle == 1 && chestTileType == TileID.Containers &&
+		    !(WorldGen.everythingWorldGen && WorldGen.genRand.NextBool(3)))
 		{
 			chestTileType = TileID.Containers2;
 			outStyle = 4;
