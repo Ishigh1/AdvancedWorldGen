@@ -172,7 +172,7 @@ public class TerrainPass : ControlledWorldGenPass
 			}
 
 		Main.worldSurface = (int)(worldSurfaceHigh + 25);
-		Main.rockLayer = Main.worldSurface + rockLayerHigh - Main.worldSurface;
+		Main.rockLayer = rockLayerHigh - (rockLayerHigh - Main.worldSurface) % 6; //I have this, but it makes so that the difference between rocklayer and worldsurface is a multiple of 6
 		int waterLine = (int)(Main.rockLayer + Main.maxTilesY) / 2;
 		waterLine += WorldGen.genRand.Next(-100, 20);
 		int lavaLine = waterLine + WorldGen.genRand.Next(50, 80);
