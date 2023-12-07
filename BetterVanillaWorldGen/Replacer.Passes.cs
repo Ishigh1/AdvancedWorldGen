@@ -17,6 +17,7 @@ public static partial class Replacer
 		genPasses.TryReplacePass("Mushroom Patches", new MushroomPatches());
 		genPasses.TryReplacePass("Corruption", new Corruption());
 		genPasses.TryReplacePass("Dungeon", new DungeonPass());
+		genPasses.TryReplacePass("Gems", new Gems());
 		genPasses.TryReplacePass("Granite", new Granite());
 		genPasses.TryReplacePass("Jungle Temple", new JungleTemple());
 		genPasses.TryReplacePass("Jungle Chests", new JungleChests());
