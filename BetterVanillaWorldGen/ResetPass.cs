@@ -152,9 +152,9 @@ public class ResetPass : ControlledWorldGenPass
 
 		int snowCenter;
 		if ((dungeonSide == 1 && !WorldGen.drunkWorldGen) || (dungeonSide == -1 && WorldGen.drunkWorldGen))
-			snowCenter = (int)(Main.maxTilesX * 0.6f + Main.maxTilesX * 0.15f);
+			snowCenter = (int)(Main.maxTilesX * 0.6f + WorldGen.genRand.Next((int)(Main.maxTilesX * 0.15f)));
 		else
-			snowCenter = (int)(Main.maxTilesX * 0.25f + Main.maxTilesX * 0.15f);
+			snowCenter = (int)(Main.maxTilesX * 0.25f + WorldGen.genRand.Next((int)(Main.maxTilesX * 0.15f)));
 
 		int num921 = WorldGen.genRand.Next(50, 90);
 		float worldSize = Main.maxTilesX / 4200f;
