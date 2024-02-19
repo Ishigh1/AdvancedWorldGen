@@ -205,8 +205,8 @@ public class MicroBiomes : ControlledWorldGenPass
 		int tries = 0;
 		int top = (int)Main.worldSurface + 50;
 		const int bottom = 500;
-		int left = VanillaInterface.JungleLeft;
-		int right = Main.maxTilesX - VanillaInterface.JungleRight;
+		int left = GenVars.jungleMinX;
+		int right = Main.maxTilesX - GenVars.jungleMaxX;
 		const int mahoganyMaxAttempts = 20000;
 
 		while (placed < treeNumber && tries < mahoganyMaxAttempts)

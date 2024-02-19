@@ -21,8 +21,8 @@ public class MushroomPatches : ControlledWorldGenPass
 		RTree mushroomBiomesRectangles = RTree.Root();
 
 		const int spread = 100;
-		int jungleMinX = Math.Max(VanillaInterface.JungleLeft - spread, spread);
-		int jungleSpread = Math.Min(VanillaInterface.JungleRight + spread, Main.maxTilesX - spread) -
+		int jungleMinX = Math.Max(GenVars.jungleMinX - spread, spread);
+		int jungleSpread = Math.Min(GenVars.jungleMaxX + spread, Main.maxTilesX - spread) -
 		                   jungleMinX;
 		int xMax = Main.maxTilesX - jungleSpread - spread;
 

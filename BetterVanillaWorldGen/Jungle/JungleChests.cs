@@ -32,8 +32,8 @@ public class JungleChests : ControlledWorldGenPass
 		for (int step = 0; step < GenVars.numJChests; step++)
 		{
 			Progress.Set(step, GenVars.numJChests);
-			int minX = VanillaInterface.JungleLeft;
-			int maxX = VanillaInterface.JungleRight;
+			int minX = GenVars.jungleMinX;
+			int maxX = GenVars.jungleMaxX;
 			int x = WorldGen.genRand.Next(minX, maxX);
 
 			int y;

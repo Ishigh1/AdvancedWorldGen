@@ -189,8 +189,8 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 
 	public void GenerateHolesInMudWalls()
 	{
-		int minX = VanillaInterface.JungleLeft;
-		int maxX = VanillaInterface.JungleRight;
+		int minX = GenVars.jungleMinX;
+		int maxX = GenVars.jungleMaxX;
 		for (int i = 0; i < Main.maxTilesX / 4; i++)
 		{
 			int x = WorldGen.genRand.Next(minX, maxX);
@@ -222,7 +222,7 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 			currentX -= 3;
 		}
 
-		VanillaInterface.JungleLeft = secondTry ? Math.Min(VanillaInterface.JungleLeft, importantX) : importantX;
+		GenVars.jungleMinX = secondTry ? Math.Min(GenVars.jungleMinX, importantX) : importantX;
 
 		importantX = JungleOriginX;
 		currentX = JungleOriginX;
@@ -243,7 +243,7 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 			currentX += 3;
 		}
 
-		VanillaInterface.JungleRight = secondTry ? Math.Max(VanillaInterface.JungleRight, importantX) : importantX;
+		GenVars.jungleMaxX = secondTry ? Math.Max(GenVars.jungleMaxX, importantX) : importantX;
 	}
 
 	public void GenerateFinishingTouches(int middleX, int middleY)

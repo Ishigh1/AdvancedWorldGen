@@ -9,7 +9,7 @@ public class JungleTemple : ControlledWorldGenPass
 	protected override void ApplyPass()
 	{
 		Progress.Message = Language.GetTextValue("LegacyWorldGen.70");
-		int x = WorldGen.genRand.Next(VanillaInterface.JungleLeft, VanillaInterface.JungleRight);
+		int x = WorldGen.genRand.Next(GenVars.jungleMinX, GenVars.jungleMaxX);
 		MakeTemple(Progress, x);
 	}
 

@@ -88,7 +88,7 @@ public class Corruption : ControlledWorldGenPass
 			OtherBiomes.AddBlock(true, GenVars.UndergroundDesertLocation.Left,
 				GenVars.UndergroundDesertLocation.Right); //Desert
 		OtherBiomes.AddBlock(false, GenVars.snowOriginLeft, GenVars.snowOriginRight); //Snow
-		OtherBiomes.AddBlock(false, VanillaInterface.JungleLeft, VanillaInterface.JungleRight); //Jungle
+		OtherBiomes.AddBlock(false, GenVars.jungleMinX, GenVars.jungleMaxX); //Jungle
 		OtherBiomes.AddBlock(false, GenVars.dungeonLocation - dungeonAvoidance,
 			GenVars.dungeonLocation + dungeonAvoidance); // Dungeon
 	}
