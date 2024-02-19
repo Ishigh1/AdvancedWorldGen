@@ -59,6 +59,8 @@ public class AdvancedWorldGenMod : Mod
 
 		IL_WorldGen.MakeDungeon += DrunkOptions.CrimruptionChest;
 
+		IL_WaterfallManager.FindWaterfalls += WaterfallFix.FixWaterfalls;
+
 		HalloweenCommon.Setup();
 	}
 
