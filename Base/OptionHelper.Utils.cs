@@ -12,7 +12,7 @@ public partial class OptionHelper
 		ClearAll();
 		foreach (string optionName in optionNames)
 			if (OptionDict.TryGetValue(optionName, out Option? option))
-				option.OnEnable();
+				option.Enable();
 	}
 
 	public static List<string> Export()
