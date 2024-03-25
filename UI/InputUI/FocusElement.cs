@@ -21,10 +21,10 @@ public abstract class FocusElement : UIElement
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
 		if (Main.mouseLeft && Main.mouseLeftRelease)
-			if (Parent.IsMouseHovering)
-				Focus();
-			else if (IsTheCurrentFocus)
+			if (IsTheCurrentFocus)
 				Unfocus();
+			else if (Parent.IsMouseHovering)
+				Focus();
 
 		if (!IsTheCurrentFocus) DrawText(spriteBatch, DisplayText);
 	}
