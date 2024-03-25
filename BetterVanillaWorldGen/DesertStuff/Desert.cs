@@ -31,10 +31,9 @@ public static class Desert
 	public static DesertDescription CreateFromPlacement(Point origin)
 	{
 		Vector2D defaultBlockScale = DefaultBlockScale;
-		float worldSize = Main.maxTilesX / 4200f;
 		float worldSizeY = Main.maxTilesY / 1200f;
-		int width = (int)(80f * worldSize);
-		int height = (int)Math.Min((WorldGen.genRand.NextFloat() + 1f) * 170f * worldSizeY,
+		int width = (int)OverhauledWorldGenConfigurator.Configuration.Next("Desert").Get<JsonRange>("Width").GetRandom(WorldGen.genRand);
+		int height = (int)Math.Min((WorldGen.genRand.NextFloat() + 1f) * OverhauledWorldGenConfigurator.Configuration.Next("Desert").Get<JsonRange>("Height").GetRandom(WorldGen.genRand),
 			Main.UnderworldLayer - origin.Y);
 		int scaledWidth = (int)(defaultBlockScale.X * width);
 		int scaledHeight = (int)(defaultBlockScale.Y * height);

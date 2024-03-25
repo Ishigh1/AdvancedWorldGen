@@ -22,5 +22,17 @@
       "Max": 1.68,
       "ScaleWith": "WorldWidth"
     }
+  },
+  "Desert": {
+    "Width": {
+      "Min": 80,
+      "Max": 80,
+      "ScaleWith": "WorldWidth"
+    },
+    "Height": {
+      "Min": 170,
+      "Max": 170,
+      "ScaleWith": "WorldHeight"
+    }
   }
 }
