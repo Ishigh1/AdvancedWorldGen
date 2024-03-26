@@ -32,8 +32,11 @@ public static class Desert
 	{
 		Vector2D defaultBlockScale = DefaultBlockScale;
 		float worldSizeY = Main.maxTilesY / 1200f;
-		int width = (int)OverhauledWorldGenConfigurator.Configuration.Next("Desert").Get<JsonRange>("Width").GetRandom(WorldGen.genRand);
-		int height = (int)Math.Min((WorldGen.genRand.NextFloat() + 1f) * OverhauledWorldGenConfigurator.Configuration.Next("Desert").Get<JsonRange>("Height").GetRandom(WorldGen.genRand),
+		int width = (int)OverhauledWorldGenConfigurator.Configuration.Next("Desert").Get<JsonRange>("Width")
+			.GetRandom(WorldGen.genRand);
+		int height = (int)Math.Min(
+			(WorldGen.genRand.NextFloat() + 1f) * OverhauledWorldGenConfigurator.Configuration.Next("Desert")
+				.Get<JsonRange>("Height").GetRandom(WorldGen.genRand),
 			Main.UnderworldLayer - origin.Y);
 		int scaledWidth = (int)(defaultBlockScale.X * width);
 		int scaledHeight = (int)(defaultBlockScale.Y * height);

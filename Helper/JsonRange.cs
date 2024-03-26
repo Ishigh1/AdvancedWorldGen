@@ -38,7 +38,7 @@ public class JsonRange
 		{
 			ScalingMode.WorldArea => Main.maxTilesX * Main.maxTilesY / (4200.0 * 1200.0),
 			ScalingMode.WorldWidth => Main.maxTilesX / 4200.0,
-			ScalingMode.WorldHeight => Main.maxTilesX / 1200.0,
+			ScalingMode.WorldHeight => Main.maxTilesY / 1200.0,
 			_ => 1.0
 		};
 
