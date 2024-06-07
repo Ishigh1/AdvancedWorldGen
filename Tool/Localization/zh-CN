@@ -1,0 +1,42 @@
+{
+  "Exceptions": {
+    "RockUnderHell": "世界不够高!"
+  },
+  "Config": {
+    "FasterWorldgen": {
+      "Label": "大修世界",
+      "Tooltip": "调整世界，使其生成更快，更适应自定义大小的世界。."
+    },
+    "SaveOnFail": {
+      "Label": "保存生成失败或被中止的世界",
+      "Tooltip": "如果世界生成失败或被中止，无论如何都要保存它"
+    },
+    "ZenithEnabler": {
+      "Label": "启用天顶世界时启用其他选项",
+      "Tooltip": "启用天顶世界时，启用醉酒世界,永恒领域(饥荒联动),FTW世界,没有陷阱和Remix选项。"
+    },
+    "VanillaWeight": {
+      "Label": "较不准确的世界时间预测",
+      "Tooltip": "启用它可以更快地调试你的MOD，除此之外启用它没有多大意义。"
+    },
+    "Analytics": {
+      "Label": "分析",
+      "Tooltip": "每次生成世界时都会发送匿名数据，以帮助我开发mod。"
+    }
+  },
+  "WorldGenMessage": {
+    "Evil": "全邪恶",
+    "Random": "随机化图块",
+    "SnowReplace": "让世界变得更酷。"
+  },
+  "InvalidSizes": {
+    "TooBigFromRAM": "对于这台计算机来说，大小为{0} x {1}的世界太大了。",
+    "OverhauledMinX": "已知在 x={0} 下无法生成。",
+    "OverhauledMinY": "已知在 y={0} 下无法生成。",
+    "NormalMinX": "您需要在mod设置中启用修改后的世界，以便能够生成 x={0} 下的世界。",
+    "ComfortNormalMaxX": "世界将缓慢生成一个大的世界，你应该在mod设置中启用修改后的世界。",
+    "NormalMaxX": "如果你试图生成一个这么大的世界，世界会崩溃，你必须在mod设置中启用大修世界来生成这样的世界。",
+    "ClamityMinX": "灾厄并不是为了创造小世界而设计的",
+    "ClamityMaxX": "灾厄并不是为了生成XL世界而设计的"
+  },
+}
