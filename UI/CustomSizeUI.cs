@@ -52,12 +52,12 @@ public class CustomSizeUI : UIState
 		const string localizationPath = "Mods.AdvancedWorldGen.CustomSizes";
 
 		NumberTextBox<int> sizeXInput =
-			new ConfigNumberTextBox<int>(nameof(Params.SizeX), 100, ushort.MaxValue, localizationPath);
+			new ConfigNumberTextBox<int>(nameof(Params.SizeX), 100, ushort.MaxValue / Main.sectionWidth * Main.sectionWidth, localizationPath);
 		sizeXInput.Order = index++;
 		uiList.Add(sizeXInput);
 
 		NumberTextBox<int> sizeYInput =
-			new ConfigNumberTextBox<int>(nameof(Params.SizeY), 100, ushort.MaxValue, localizationPath);
+			new ConfigNumberTextBox<int>(nameof(Params.SizeY), 100, ushort.MaxValue / Main.sectionHeight * Main.sectionHeight, localizationPath);
 		sizeYInput.Order = index++;
 		uiList.Add(sizeYInput);
 
