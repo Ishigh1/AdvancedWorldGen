@@ -228,11 +228,21 @@ public class ResetPass : ControlledWorldGenPass
         if (dungeonSide == -1)
         {
             int upperBound = Math.Max((int)(Main.maxTilesX * 0.2), leftBeachEnd + dungeonShift * 2);
+            if (upperBound != (int)(Main.maxTilesX * 0.2))
+            {
+                AdvancedWorldGenMod.Instance.Logger.Info(
+                    "Pushed the dungeon right to leave some space for the huge beach");
+            }
             GenVars.dungeonLocation = WorldGen.genRand.Next(leftBeachEnd + dungeonShift, upperBound);
         }
         else
         {
             int lowerBound = Math.Min((int)(Main.maxTilesX * 0.8), rightBeachStart - dungeonShift * 2);
+            if (lowerBound != (int)(Main.maxTilesX * 0.8))
+            {
+                AdvancedWorldGenMod.Instance.Logger.Info(
+                    "Pushed the dungeon left to leave some space for the huge beach");
+            }
             GenVars.dungeonLocation =
                 WorldGen.genRand.Next(lowerBound, rightBeachStart - dungeonShift);
         }
