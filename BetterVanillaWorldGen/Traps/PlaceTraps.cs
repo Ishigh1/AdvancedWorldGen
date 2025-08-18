@@ -10,7 +10,7 @@ public static class PlaceTraps
 		bool flag = false;
 		bool flag2 = false;
 		if (WorldGen.noTrapsWorldGen)
-			Main.tileSolid[138] = false;
+			Main.tileSolid[TileID.Boulder] = false;
 
 		while (!WorldGen.SolidTile(x, y))
 		{
@@ -23,7 +23,7 @@ public static class PlaceTraps
 		}
 
 		if (WorldGen.noTrapsWorldGen)
-			Main.tileSolid[138] = true;
+			Main.tileSolid[TileID.Boulder] = true;
 
 		y--;
 		if (!WorldGen.noTrapsWorldGen && WorldGen.IsTileNearby(x, y, 70, 20))
@@ -81,7 +81,7 @@ public static class PlaceTraps
 					type = 0;
 
 		if (WorldGen.noTrapsWorldGen)
-			Main.tileSolid[138] = false;
+			Main.tileSolid[TileID.Boulder] = false;
 
 		switch (type)
 		{
@@ -158,9 +158,9 @@ public static class PlaceTraps
 				if (Main.tile[num20, num21].TileType == 190) return false;
 
 				if (Main.tile[x, y].WallType > 0)
-					WorldGen.PlaceTile(x, y, 135, true, true, -1, 2);
+					WorldGen.PlaceTile(x, y, TileID.PressurePlates, true, true, -1, 2);
 				else
-					WorldGen.PlaceTile(x, y, 135, true, true, -1, WorldGen.genRand.Next(2, 4));
+					WorldGen.PlaceTile(x, y, TileID.PressurePlates, true, true, -1, WorldGen.genRand.Next(2, 4));
 
 				WorldGen.KillTile(num20, num21);
 				WorldGen.PlaceTile(num20, num21, 137, true, true);
@@ -174,28 +174,28 @@ public static class PlaceTraps
 			case 1:
 			{
 				if (WorldGen.noTrapsWorldGen)
-					Main.tileSolid[138] = true;
+					Main.tileSolid[TileID.Boulder] = true;
 
-				int num3 = x;
-				int num4 = y - 8;
-				num3 += WorldGen.genRand.Next(-1, 2);
+				int boulderX = x;
+				int boulderY = y - 8;
+				boulderX += WorldGen.genRand.Next(-1, 2);
 				if (WorldGen.noTrapsWorldGen)
 				{
-					if (WorldGen.IsTileNearby(num3, num4, 138, 6))
+					if (WorldGen.IsTileNearby(boulderX, boulderY, TileID.Boulder, 6))
 						return false;
 
-					if (WorldGen.IsTileNearby(num3, num4, 664, 6))
+					if (WorldGen.IsTileNearby(boulderX, boulderY, 664, 6))
 						return false;
 				}
 				else
 				{
-					if (WorldGen.IsTileNearby(num3, num4, 138, 10))
+					if (WorldGen.IsTileNearby(boulderX, boulderY, TileID.Boulder, 10))
 						return false;
 
-					if (WorldGen.IsTileNearby(num3, num4, 664, 10))
+					if (WorldGen.IsTileNearby(boulderX, boulderY, 664, 10))
 						return false;
 
-					if (WorldGen.IsTileNearby(num3, num4, 665, 10))
+					if (WorldGen.IsTileNearby(boulderX, boulderY, 665, 10))
 						return false;
 				}
 
@@ -204,8 +204,8 @@ public static class PlaceTraps
 				{
 					bool flag4 = true;
 					int num5 = 0;
-					for (int m = num3 - 2; m <= num3 + 3; m++)
-					for (int n = num4; n <= num4 + 3; n++)
+					for (int m = boulderX - 2; m <= boulderX + 3; m++)
+					for (int n = boulderY; n <= boulderY + 3; n++)
 					{
 						if (!WorldGen.SolidTile(m, n))
 							flag4 = false;
@@ -221,51 +221,55 @@ public static class PlaceTraps
 							}
 					}
 
-					num4--;
-					if (num4 < Main.worldSurface) return false;
+					boulderY--;
+					if (boulderY < Main.worldSurface) return false;
 
 					if (flag4 && num5 > 2)
 						flag3 = false;
 				}
 
-				if (y - num4 <= 5 || y - num4 >= 40) return false;
+				if (y - boulderY <= 5 || y - boulderY >= 40) return false;
 
-				for (int num6 = num3; num6 <= num3 + 1; num6++)
-				for (int num7 = num4; num7 <= y; num7++)
+				for (int num6 = boulderX; num6 <= boulderX + 1; num6++)
+				for (int num7 = boulderY; num7 <= y; num7++)
 					WorldGen.KillTile(num6, num7);
 
-				for (int num8 = num3 - 2; num8 <= num3 + 3; num8++)
-				for (int num9 = num4 - 2; num9 <= num4 + 3; num9++)
+				for (int num8 = boulderX - 2; num8 <= boulderX + 3; num8++)
+				for (int num9 = boulderY - 2; num9 <= boulderY + 3; num9++)
 					if (WorldGen.SolidTile(num8, num9))
 						Main.tile[num8, num9].TileType = 1;
 
-				if (WorldGen.IsTileNearby(num3, num4, 21, 4) || WorldGen.IsTileNearby(num3, num4, 467, 4)) return false;
+				if (WorldGen.IsTileNearby(boulderX, boulderY, 21, 4) || WorldGen.IsTileNearby(boulderX, boulderY, 467, 4)) return false;
+				
+				WorldGen.PlaceTile(boulderX, boulderY + 2, TileID.ActiveStoneBlock, true);
+				WorldGen.PlaceTile(boulderX + 1, boulderY + 2, TileID.ActiveStoneBlock, true);
+				Tile tile = Main.tile[boulderX, boulderY + 2];
+				Tile tile1 = Main.tile[boulderX + 1, boulderY + 2];
+				tile.RedWire = true;
+				tile1.RedWire = true;
 
-				WorldGen.PlaceTile(x, y, 135, true, true, -1, 7);
-				WorldGen.PlaceTile(num3, num4 + 2, 130, true);
-				WorldGen.PlaceTile(num3 + 1, num4 + 2, 130, true);
-				if ((WorldGen.tenthAnniversaryWorldGen || WorldGen.noTrapsWorldGen) && WorldGen.genRand.Next(3) == 0)
-					WorldGen.PlaceTile(num3 + 1, num4 + 1, 664, true);
+				WorldGen.PlaceTile(boulderX, boulderY + 3, TileID.ActiveStoneBlock, true);
+				WorldGen.PlaceTile(boulderX + 1, boulderY + 3, TileID.ActiveStoneBlock, true);
+				tile = Main.tile[boulderX, boulderY + 3];
+				tile1 = Main.tile[boulderX + 1, boulderY + 3];
+				tile.RedWire = true;
+				tile1.RedWire = true;
+				
+				WorldGen.PlaceTile(boulderX, boulderY + 4, TileID.ActiveStoneBlock, true);
+				WorldGen.PlaceTile(boulderX + 1, boulderY + 4, TileID.ActiveStoneBlock, true);
+				tile = Main.tile[boulderX, boulderY + 4];
+				tile1 = Main.tile[boulderX + 1, boulderY + 4];
+				tile.RedWire = true;
+				tile1.RedWire = true;
+
+				WorldGen.PlaceTile(x, y, TileID.PressurePlates, true, true, -1, 7);
+				
+				RunWire(x, y, boulderX, boulderY + 3);
+				
+				if ((WorldGen.tenthAnniversaryWorldGen || WorldGen.noTrapsWorldGen) && WorldGen.genRand.NextBool(3))
+					WorldGen.PlaceTile(boulderX + 1, boulderY + 1, 664, true);
 				else
-					WorldGen.PlaceTile(num3 + 1, num4 + 1, 138, true);
-
-				num4 += 2;
-				Tile tile = Main.tile[num3, num4];
-				Tile tile1 = Main.tile[num3 + 1, num4];
-				tile.RedWire = true;
-				tile1.RedWire = true;
-				num4++;
-				WorldGen.PlaceTile(num3, num4, 130, true);
-				WorldGen.PlaceTile(num3 + 1, num4, 130, true);
-				tile.RedWire = true;
-				tile1.RedWire = true;
-				WorldGen.PlaceTile(num3, num4 + 1, 130, true);
-				WorldGen.PlaceTile(num3 + 1, num4 + 1, 130, true);
-				Tile tile2 = Main.tile[num3, num4 + 1];
-				tile2.RedWire = true;
-				Tile tile3 = Main.tile[num3 + 1, num4 + 1];
-				tile3.RedWire = true;
-				RunWire(x, y, num3, num4);
+					WorldGen.PlaceTile(boulderX + 1, boulderY + 1, TileID.Boulder, true);
 
 				return true;
 			}
@@ -292,7 +296,7 @@ public static class PlaceTraps
 				tile.TileType = 141;
 				tile.TileFrameX = 0;
 				tile.TileFrameY = (short)(18 * WorldGen.genRand.Next(2));
-				WorldGen.PlaceTile(x, y, 135, true, true, -1, WorldGen.genRand.Next(2, 4));
+				WorldGen.PlaceTile(x, y, TileID.PressurePlates, true, true, -1, WorldGen.genRand.Next(2, 4));
 				RunWire(x, y, num13, num14);
 
 				break;
@@ -307,7 +311,7 @@ public static class PlaceTraps
 
 				if (WorldGen.noTrapsWorldGen && (WorldGen.tenthAnniversaryWorldGen || WorldGen.notTheBees))
 				{
-					if (WorldGen.genRand.Next(3) != 0)
+					if (!WorldGen.genRand.NextBool(3))
 						return false;
 
 					if (WorldGen.IsTileNearby(x, y, 443, 30))
@@ -336,7 +340,7 @@ public static class PlaceTraps
 		}
 
 		if (WorldGen.noTrapsWorldGen)
-			Main.tileSolid[138] = true;
+			Main.tileSolid[TileID.Boulder] = true;
 
 		return false;
 	}

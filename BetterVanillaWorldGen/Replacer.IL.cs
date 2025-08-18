@@ -60,7 +60,6 @@ public static partial class Replacer
 	private static void CelebrationPaint(ILContext il)
 	{
 		ILCursor cursor = new(il);
-		bool finishedPainting = false;
 		bool celebration = OptionHelper.OptionsContains("Celebrationmk10");
 		bool painting = OptionHelper.OptionsContains("Celebrationmk10.Painted");
 		if (!(painting ^ celebration))

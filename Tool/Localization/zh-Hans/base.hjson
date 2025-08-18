@@ -18,10 +18,6 @@
     "VanillaWeight": {
       "Label": "较不准确的世界时间预测",
       "Tooltip": "启用它可以更快地调试你的MOD，除此之外启用它没有多大意义。"
-    },
-    "Analytics": {
-      "Label": "分析",
-      "Tooltip": "每次生成世界时都会发送匿名数据，以帮助我开发mod。"
     }
   },
   "WorldGenMessage": {

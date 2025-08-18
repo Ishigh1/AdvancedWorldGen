@@ -36,13 +36,11 @@ public class UIChanger
 				try
 				{
 					orig(threadContext);
-					AnalyticSystem.Instance.SendData();
 				}
 				catch (Exception exception)
 				{
 					if (Main.tile.Width > 0)
 					{
-						AnalyticSystem.Instance.SendData(exception + "\n" + exception.StackTrace);
 						EmergencySaving("Failed");
 					}
 				}
