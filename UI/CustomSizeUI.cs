@@ -258,14 +258,21 @@ public class CustomSizeUI : UIState
 				return;
 			}
 
-			if (Params.SizeY > KnownLimits.NormalMaxX)
+			if (Params.SizeY < KnownLimits.OverhauledMinY)
+			{
+				Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
+					"Mods.AdvancedWorldGen.InvalidSizes.OverhauledMinY", KnownLimits.OverhauledMinY), Prev, Next));
+				return;
+			}
+
+			if (Params.SizeX > KnownLimits.NormalMaxX)
 			{
 				Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.NormalMaxX"), Prev, Next));
 				return;
 			}
 
-			if (Params.SizeY > KnownLimits.ComfortNormalMaxX)
+			if (Params.SizeX > KnownLimits.ComfortNormalMaxX)
 			{
 				Main.MenuUI.SetState(new WarningUI(Language.GetTextValue(
 					"Mods.AdvancedWorldGen.InvalidSizes.ComfortNormalMaxX"), Prev, Next));
