@@ -50,26 +50,20 @@ public partial class DungeonPass
 
 		ushort tileType;
 		ushort wallType;
-		int brickType;
-		if (Params.DungeonBrickColor == TileExpandableList.Random)
-		{
-			brickType = WorldGen.genRand.Next(3);
-		}
-		else
-		{
-			brickType = Params.DungeonBrickColor;
-		}
+		int brickType = Params.DungeonBrickColor == TileExpandableList.Random
+			? WorldGen.genRand.Next(3)
+			: Params.DungeonBrickColor;
 		
 		switch (brickType)
 		{
-			case TileID.BlueDungeonBrick:
 			case 0:
+			case TileID.BlueDungeonBrick:
 				tileType = TileID.BlueDungeonBrick;
 				wallType = WallID.BlueDungeonUnsafe;
 				GenVars.crackedType = TileID.CrackedBlueDungeonBrick;
 				break;
-			case  TileID.GreenDungeonBrick:
 			case 1:
+			case TileID.GreenDungeonBrick:
 				tileType = TileID.GreenDungeonBrick;
 				wallType = WallID.GreenDungeonUnsafe;
 				GenVars.crackedType = TileID.CrackedGreenDungeonBrick;
