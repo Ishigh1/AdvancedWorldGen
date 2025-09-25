@@ -79,6 +79,13 @@ public class CustomSizeUI : UIState
 				float.PositiveInfinity, localizationPath);
 			beachModifier.Order = index++;
 			uiList.Add(beachModifier);
+			
+			TileExpandableList dungeonBrickColorList = new(nameof(Params.DungeonBrickColor), localizationPath, false,
+				TileExpandableList.Random, TileID.BlueDungeonBrick, TileID.GreenDungeonBrick, TileID.PinkDungeonBrick)
+			{
+				Order = index++
+			};
+			uiList.Add(dungeonBrickColorList);
 
 			TileExpandableList copperList = new(nameof(Params.Copper), localizationPath, false,
 				TileExpandableList.Random, TileID.Copper, TileID.Tin)
