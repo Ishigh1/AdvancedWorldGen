@@ -128,6 +128,7 @@ public class ModifiedJunglePass : ControlledWorldGenPass
 		int num2 = 0;
 		while (true)
 		{
+			GenVars.JungleX = (int)vector.X;
 			num += WorldGen.genRand.Next(-20, 21) * 0.1f;
 			num = Utils.Clamp(num, 5, 10);
 
