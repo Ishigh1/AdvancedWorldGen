@@ -33,6 +33,12 @@ public static class Params
 		get => (float)Data[nameof(BeachMultiplier)];
 		set => Data[nameof(BeachMultiplier)] = value;
 	}
+	
+	public static int DungeonBrickColor
+	{
+		get => (int)Data[nameof(DungeonBrickColor)];
+		set => Data[nameof(DungeonBrickColor)] = value;
+	}
 
 	public static int Copper
 	{
@@ -117,6 +123,8 @@ public static class Params
 		TempleMultiplier = 1;
 		DungeonMultiplier = 1;
 		BeachMultiplier = 1;
+		
+		DungeonBrickColor = TileExpandableList.Random;
 
 		Copper = TileExpandableList.Random;
 		Iron = TileExpandableList.Random;
