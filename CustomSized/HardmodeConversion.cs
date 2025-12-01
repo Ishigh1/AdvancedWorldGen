@@ -5,16 +5,7 @@ public static class HardmodeConversion
 	public static void ReplaceHardmodeConversion(On_WorldGen.orig_GERunner orig, int baseX, int baseY, double baseSpeedX,
 		double baseSpeedY, bool good)
 	{
-		bool calamity = false;
-
-		if (ModLoader.TryGetMod("CalamityMod", out Mod calamityMod))
-		{
-			Type type = calamityMod.GetType("CalamityMod.CalamityConfig")!;
-			object config = type.GetFieldValue("Instance")!;
-			calamity = (bool)type.GetPropertyValue("EarlyHardmodeProgressionRework", config)!;
-		}
-
-		if (!WorldgenSettings.Instance.FasterWorldgen || calamity)
+		if (!WorldgenSettings.Instance.FasterWorldgen)
 		{
 			orig(baseX, baseY, baseSpeedX, baseSpeedY, good);
 			return;
